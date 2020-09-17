@@ -7,6 +7,8 @@ import com.zhongsheng.education.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StudentServiceImpl implements StudentService {
 
@@ -14,15 +16,19 @@ public class StudentServiceImpl implements StudentService {
    private StudentMapper studentMapper;
 
     public User selectWho(Integer username, String password){
-        System.out.println("service");
-        return studentMapper.selectWho(username,password);
-    };
 
-    public String selectTeacher(Integer uid){
-        return studentMapper.selectTeacher(uid);
+        return studentMapper.selectWho(username,password);
     };
 
     public Student selectStudent(Integer uid){
         return studentMapper.selectStudent(uid);
     };
+
+    public List<Student> selectAllStudent(String classes, String sname, String major){
+        return studentMapper.selectAllStudent(classes, sname, major);
+    };
+
+    public Student addScore(Integer sid,Integer scope){
+        return studentMapper.addScore(sid,scope);
+    }
 }

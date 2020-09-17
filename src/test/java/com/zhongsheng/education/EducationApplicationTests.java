@@ -12,8 +12,6 @@ class EducationApplicationTests {
     @Test
     void contextLoads() {
 
-        UserService userService = new UserServiceImpl();
-        System.out.println(userService.test());
     }
 
 }

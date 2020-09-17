@@ -3,9 +3,13 @@ package com.zhongsheng.education.service;
 import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.entiy.User;
 
+import java.util.List;
+
 public interface StudentService {
 
     public User selectWho(Integer username,String password);
-    public String selectTeacher(Integer uid);
     public Student selectStudent(Integer uid);
+    public List<Student> selectAllStudent(String classes, String sname, String major);
+    public Student addScore(Integer sid,Integer scope);
+
 }

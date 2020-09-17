@@ -8,7 +8,11 @@ import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/StudentController")
@@ -16,31 +20,28 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+    //查询所有学生(班级 classes/姓名 sname/专业 major)
+    @RequestMapping("/selectAllStudent")
+    public String selectAllStudent(String classes,String sname,String major) throws Exception {
+        List<Student> studentList = studentService.selectAllStudent(classes,sname,major);
 
-    //登录
-    @RequestMapping("/login")
-    public String login(Integer username, String password) throws Exception {
-        System.out.println(username + "------------" + password);
-        //根据账号密码判断登录人
-        User user = studentService.selectWho(username, password);
-        System.out.println(user);
-        //账号或密码错误
-        if (user == null) {
-            System.out.println("12121212");
-            return "账号或密码错误";
-            //1==老师
-        } else if (user.getWhoid() == 1) {
-            System.out.println("老师");
-            String teacher = studentService.selectTeacher(user.getUid());
-            System.out.println(teacher + "====ttttttttttttttt");
-            return teacher;
-            //2==学生
-        } else if (user.getWhoid() == 2) {
-            System.out.println("学生");
-            Student student = studentService.selectStudent(user.getUid());
-            System.out.println(student + "====ssssssssssssssss");
-            return student.toString();
-        }
         return "";
     }
+
+    /**
+     * @创建人 xueke
+     * @参数 
+     * @返回值 
+     * @创建时间 2020/9/17
+     * @描述
+    */
+    //给学生添加积分
+    @RequestMapping("/addScore")
+    public String addScore(Integer sid,Integer scope) throws Exception {
+        Student student= studentService.addScore(sid,scope);
+        return "";
+    }
+
+    
+
 }
