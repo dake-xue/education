@@ -11,7 +11,6 @@ public interface StudentService {
     public Student selectStudent(Integer uid);
     public List<Student> selectAllStudent(String modules,String keyword);
     public Integer addScore(Integer sid,Integer scope);
-    public List<Student> selectAllStudent(String classes, String sname, String major);
     List<Student> allStudent();
 
 }

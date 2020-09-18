@@ -1,8 +1,9 @@
 package com.zhongsheng.education.controller;
 
-import com.zhongsheng.education.entiy.Student;
-import com.zhongsheng.education.entiy.Teacher;
-import com.zhongsheng.education.entiy.User;
+import com.alibaba.fastjson.JSON;
+import com.zhongsheng.education.entiy.*;
+import com.zhongsheng.education.service.FamilyService;
+import com.zhongsheng.education.service.SchoolService;
 import com.zhongsheng.education.service.StudentService;
 import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 import com.zhongsheng.education.service.UserService;
@@ -24,7 +25,16 @@ import java.util.Map;
 public class StudentController {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private FamilyService familyService;
+
+    @Autowired
+    private SchoolService schoolService;
     //查询所有学生(班级 classes/姓名 sname/专业 major)
     @RequestMapping(value = "/allStudent",method = RequestMethod.GET)
     public String allStudent() throws Exception {

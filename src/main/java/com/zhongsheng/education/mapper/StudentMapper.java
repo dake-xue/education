@@ -26,5 +26,5 @@ public interface StudentMapper {
     public List<Student> allStudent();
 
     @Update("update student set score=score+#{scope} where sid=#{sid}")
-    public Student addScore(Integer sid,Integer scope);
+    public Integer addScore(Integer sid,Integer scope);
 }

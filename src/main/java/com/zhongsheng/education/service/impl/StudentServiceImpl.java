@@ -42,4 +42,6 @@ public class StudentServiceImpl implements StudentService {
     public Integer addScore(Integer sid, Integer scope) {
         return studentMapper.addScore(sid, scope);
     }
+
+
 }
