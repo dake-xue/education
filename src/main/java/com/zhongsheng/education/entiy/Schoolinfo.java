@@ -5,6 +5,15 @@ public class Schoolinfo {
     private String scname;
     private String screlation;
     private int scphone;
+    private int ssid;
+
+    public int getSsid() {
+        return ssid;
+    }
+
+    public void setSsid(int ssid) {
+        this.ssid = ssid;
+    }
 
     public int getScid() {
         return scid;

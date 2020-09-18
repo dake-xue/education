@@ -18,13 +18,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectAllUser();
     }
 
-    @Override
-    public Integer addUser(Integer phone, String pwd) {
-        return userMapper.addUser(phone,pwd);
+    public Integer addUser(Integer username,String password,Integer whoid) {
+        return userMapper.addUser(username, password,whoid);
     }
 
-    @Override
-    public User selectUserId() {
-        return userMapper.selectUserId();
-    }
+    public User selectUserId(Integer whoid) {
+        return userMapper.selectUserId(whoid);
+    };
 }

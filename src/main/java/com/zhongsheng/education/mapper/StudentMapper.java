@@ -20,7 +20,7 @@ public interface StudentMapper {
     public Student selectStudent(Integer uid);
 
     @SelectProvider(type = StudentDao.class, method = "selectAllStudent")
-    public List<Student> selectAllStudent(String classes, String sname, String major);
+    public List<Student> selectAllStudent(String modules,String keyword);
 
     @Select("select * from student")
     public List<Student> allStudent();

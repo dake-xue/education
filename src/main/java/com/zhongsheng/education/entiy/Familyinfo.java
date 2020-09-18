@@ -1,11 +1,23 @@
 package com.zhongsheng.education.entiy;
 
-public class Familyinfo {
+import java.io.Serializable;
+
+
+public class Familyinfo implements Serializable {
 
     private int fid;
     private String fname;
     private String relation;
     private int fphone;
+    private int sfid;
+
+    public int getSfid() {
+        return sfid;
+    }
+
+    public void setSfid(int sfid) {
+        this.sfid = sfid;
+    }
 
     public int getFid() {
         return fid;
