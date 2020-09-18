@@ -7,10 +7,11 @@ import com.zhongsheng.education.service.TeacherService;
 import com.zhongsheng.education.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/UserController")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -26,15 +27,15 @@ public class UserController {
         User user = studentService.selectWho(username, password);
         //账号或密码错误
         if (user == null) {
-            return "账号或密码错误";
+            return "";
             //1==老师
         } else if (user.getWhoid() == 1) {
-            String teacher = teacherService.selectTeacherName(user.getUid());
-            return teacher;
+            String teacherName = teacherService.selectTeacherName(user.getUid());
+            return teacherName;
             //2==学生
         } else if (user.getWhoid() == 2) {
             Student student = studentService.selectStudent(user.getUid());
-            return student.toString();
+            return user.getUid()+"";
         }
         return "error";
     }

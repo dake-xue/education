@@ -17,4 +17,12 @@ public class UserServiceImpl implements UserService {
     public User selectAllUser() {
         return null;
     }
+
+    public Integer addUser(Integer phone, String pwd) {
+        return userMapper.addUser(phone, pwd);
+    }
+
+    public User selectUserId() {
+        return userMapper.selectUserId();
+    };
 }
