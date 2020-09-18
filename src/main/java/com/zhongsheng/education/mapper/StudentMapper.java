@@ -19,8 +19,8 @@ public interface StudentMapper {
     public Student selectStudent(Integer uid);
 
     @SelectProvider(type = StudentDao.class, method = "selectAllStudent")
-    public List<Student> selectAllStudent(String classes, String sname, String major);
+    public List<Student> selectAllStudent(String modules,String keyword);
 
     @Select("update student set score=score+#{scope} where sid=#{sid}")
-    public Student addScore(Integer sid,Integer scope);
+    public Integer addScore(Integer sid,Integer scope);
 }

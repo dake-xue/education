@@ -12,6 +12,11 @@ public class TeacherServiceImpl implements TeacherService {
     private  TeacherMapper teacherMapper;
     @Override
     public String selectTeacherName(Integer uid) {
+
         return teacherMapper.selectTeacherName(uid);
+    }
+
+    public Integer addTeacher(Integer id,String tname){
+        return teacherMapper.addTeacher(id,tname);
     }
 }

@@ -48,10 +48,10 @@ public class Student {
     private int offlinenumber;
     //职务
     private String job;
-    //家属紧急联系方式
-    private int homephoneid;
-    //校园紧急联系方式
-    private int schoolphoneid;
+//    //家属紧急联系方式
+//    private String homephoneid;
+//    //校园紧急联系方式
+//    private String schoolphoneid;
     //收件家庭住址
     private String homeaddress;
     //身份证号
@@ -64,6 +64,83 @@ public class Student {
     private String remarks;
     //积分
     private int score;
+
+    //家长联系方式
+    private int fid;
+    private String fname;
+    private String relation;
+    private int fphone;
+    private int sfid;
+    //学校联系方式
+    private int scid;
+    private String scname;
+    private String screlation;
+    private int scphone;
+    private int ssid;
+
+    public int getFid() {
+        return fid;
+    }
+
+    public void setFid(int fid) {
+        this.fid = fid;
+    }
+
+    public String getFname() {
+        return fname;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public String getRelation() {
+        return relation;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
+    }
+
+    public int getFphone() {
+        return fphone;
+    }
+
+    public void setFphone(int fphone) {
+        this.fphone = fphone;
+    }
+
+    public int getScid() {
+        return scid;
+    }
+
+    public void setScid(int scid) {
+        this.scid = scid;
+    }
+
+    public String getScname() {
+        return scname;
+    }
+
+    public void setScname(String scname) {
+        this.scname = scname;
+    }
+
+    public String getScrelation() {
+        return screlation;
+    }
+
+    public void setScrelation(String screlation) {
+        this.screlation = screlation;
+    }
+
+    public int getScphone() {
+        return scphone;
+    }
+
+    public void setScphone(int scphone) {
+        this.scphone = scphone;
+    }
 
     public int getSid() {
         return sid;
@@ -233,21 +310,6 @@ public class Student {
         this.job = job;
     }
 
-    public int getHomephoneid() {
-        return homephoneid;
-    }
-
-    public void setHomephoneid(int homephoneid) {
-        this.homephoneid = homephoneid;
-    }
-
-    public int getSchoolphoneid() {
-        return schoolphoneid;
-    }
-
-    public void setSchoolphoneid(int schoolphoneid) {
-        this.schoolphoneid = schoolphoneid;
-    }
 
     public String getHomeaddress() {
         return homeaddress;
@@ -321,8 +383,6 @@ public class Student {
                 ", onlinenumber=" + onlinenumber +
                 ", offlinenumber=" + offlinenumber +
                 ", job='" + job + '\'' +
-                ", homephoneid=" + homephoneid +
-                ", schoolphoneid=" + schoolphoneid +
                 ", homeaddress='" + homeaddress + '\'' +
                 ", idcard='" + idcard + '\'' +
                 ", birthday=" + birthday +

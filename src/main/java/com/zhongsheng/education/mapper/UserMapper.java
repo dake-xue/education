@@ -12,19 +12,16 @@ public interface UserMapper {
     @Select("select * from user")
     User selectAllUser();
 
+    //添加用户
     @Insert("insert into user(username,password,whoid) values(#{username},#{password},#{whoid})")
-    int addUser(User user);
+    public Integer addUser(Integer username,String password,Integer whoid);
 
     //修改密码
     @Update("update user set password = #{password} where uid = #{uid} ")
     int updateUserPassword(User user);
 
-    //添加用户——学生——2
-    @Insert("insert into user(username,password,whoid) values(${phone},${pwd},2) ")
-    public Integer addUser(Integer phone,String pwd);
-
-    //查询添加用户id
-    @Select("select * from user whoid=2 order by uid desc limit 0,1")
-    public User selectUserId();
+    //查询新用户id
+    @Select("select * from user whoid=#{whoid} order by uid desc limit 0,1")
+    public User selectUserId(Integer whoid);
 
 }

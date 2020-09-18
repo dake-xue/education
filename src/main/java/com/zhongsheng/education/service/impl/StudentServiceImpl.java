@@ -13,22 +13,28 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService {
 
     @Autowired
-   private StudentMapper studentMapper;
+    private StudentMapper studentMapper;
 
-    public User selectWho(Integer username, String password){
+    public User selectWho(Integer username, String password) {
 
-        return studentMapper.selectWho(username,password);
-    };
+        return studentMapper.selectWho(username, password);
+    }
 
-    public Student selectStudent(Integer uid){
+    ;
+
+    public Student selectStudent(Integer uid) {
         return studentMapper.selectStudent(uid);
-    };
+    }
 
-    public List<Student> selectAllStudent(String classes, String sname, String major){
-        return studentMapper.selectAllStudent(classes, sname, major);
-    };
+    ;
 
-    public Student addScore(Integer sid,Integer scope){
-        return studentMapper.addScore(sid,scope);
+    public List<Student> selectAllStudent(String modules, String keyword) {
+        return studentMapper.selectAllStudent(modules, keyword);
+    }
+
+    ;
+
+    public Integer addScore(Integer sid, Integer scope) {
+        return studentMapper.addScore(sid, scope);
     }
 }
