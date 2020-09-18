@@ -33,7 +33,7 @@ public class Student {
     //缴费方式
     private String paymethod;
     //意向专业
-    private String Stringentionmajor;
+    private String intentionmajor;
     //公共课
     private String publiccours;
     //专业课
@@ -169,12 +169,12 @@ public class Student {
         this.paymethod = paymethod;
     }
 
-    public String getStringentionmajor() {
-        return Stringentionmajor;
+    public String getIntentionmajor() {
+        return intentionmajor;
     }
 
-    public void setStringentionmajor(String stringentionmajor) {
-        Stringentionmajor = stringentionmajor;
+    public void setIntentionmajor(String intentionmajor) {
+        this.intentionmajor = intentionmajor;
     }
 
     public String getPubliccours() {
@@ -299,7 +299,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "student{" +
+        return "Student{" +
                 "sid=" + sid +
                 ", campus='" + campus + '\'' +
                 ", schoolname='" + schoolname + '\'' +
@@ -313,7 +313,7 @@ public class Student {
                 ", signupdate=" + signupdate +
                 ", addmoneydate=" + addmoneydate +
                 ", paymethod='" + paymethod + '\'' +
-                ", Stringentionmajor='" + Stringentionmajor + '\'' +
+                ", ingentionmajor='" + intentionmajor + '\'' +
                 ", publiccours='" + publiccours + '\'' +
                 ", majorcours='" + majorcours + '\'' +
                 ", campusmanager='" + campusmanager + '\'' +

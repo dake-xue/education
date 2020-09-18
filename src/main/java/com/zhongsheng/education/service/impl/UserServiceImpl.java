@@ -15,14 +15,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User selectAllUser() {
-        return null;
+        return userMapper.selectAllUser();
     }
 
+    @Override
     public Integer addUser(Integer phone, String pwd) {
-        return userMapper.addUser(phone, pwd);
+        return userMapper.addUser(phone,pwd);
     }
 
+    @Override
     public User selectUserId() {
         return userMapper.selectUserId();
-    };
+    }
 }

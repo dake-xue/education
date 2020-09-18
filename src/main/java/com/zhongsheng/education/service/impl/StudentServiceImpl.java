@@ -24,9 +24,17 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.selectStudent(uid);
     };
 
+
     public List<Student> selectAllStudent(String classes, String sname, String major){
         return studentMapper.selectAllStudent(classes, sname, major);
-    };
+    }
+
+    @Override
+    public List<Student> allStudent() {
+        return studentMapper.allStudent();
+    }
+
+    ;
 
     public Student addScore(Integer sid,Integer scope){
         return studentMapper.addScore(sid,scope);

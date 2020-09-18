@@ -6,6 +6,7 @@ import com.zhongsheng.education.entiy.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -21,6 +22,9 @@ public interface StudentMapper {
     @SelectProvider(type = StudentDao.class, method = "selectAllStudent")
     public List<Student> selectAllStudent(String classes, String sname, String major);
 
-    @Select("update student set score=score+#{scope} where sid=#{sid}")
+    @Select("select * from student")
+    public List<Student> allStudent();
+
+    @Update("update student set score=score+#{scope} where sid=#{sid}")
     public Student addScore(Integer sid,Integer scope);
 }

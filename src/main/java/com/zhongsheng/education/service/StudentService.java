@@ -10,6 +10,7 @@ public interface StudentService {
     public User selectWho(Integer username,String password);
     public Student selectStudent(Integer uid);
     public List<Student> selectAllStudent(String classes, String sname, String major);
+    List<Student> allStudent();
     public Student addScore(Integer sid,Integer scope);
 
 }

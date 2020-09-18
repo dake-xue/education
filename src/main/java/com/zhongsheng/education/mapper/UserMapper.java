@@ -13,7 +13,7 @@ public interface UserMapper {
     User selectAllUser();
 
     @Insert("insert into user(username,password,whoid) values(#{username},#{password},#{whoid})")
-    int addUser(User user);
+    int addUser1(User user);
 
     //修改密码
     @Update("update user set password = #{password} where uid = #{uid} ")
