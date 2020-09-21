@@ -1,42 +1,59 @@
 package com.zhongsheng.education.controller;
 
-import com.zhongsheng.education.entiy.Familyinfo;
-import com.zhongsheng.education.entiy.Schoolinfo;
-import com.zhongsheng.education.entiy.Student;
-import com.zhongsheng.education.entiy.User;
+import com.alibaba.fastjson.JSON;
+import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.service.FamilyService;
 import com.zhongsheng.education.service.SchoolService;
 import com.zhongsheng.education.service.StudentService;
+import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 import com.zhongsheng.education.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/student")
 @Controller
 public class StudentController {
 
     @Autowired
-    private StudentService studentService;
-    @Autowired
-    FamilyService familyService;
-    @Autowired
-    SchoolService schoolService;
-    @Autowired
     private UserService userService;
 
-    //查询所有学生(班级 classes/姓名 sname/专业 major)
-    @RequestMapping(value = "/allStudent", method = RequestMethod.GET)
-    public String selectAllStudent(String modules,String keyword) throws Exception {
+    @Autowired
+    private StudentService studentService;
 
-        List<Student> studentList = studentService.selectAllStudent(modules, keyword);
+    @Autowired
+    private FamilyService familyService;
+
+    @Autowired
+    private SchoolService schoolService;
+    //查询所有学生(班级 classes/姓名 sname/专业 major)
+    @RequestMapping(value = "/allStudent",method = RequestMethod.GET)
+    public String allStudent() throws Exception {
+
         return "/allStudentInfo";
     }
 
+    @GetMapping("/allStudentInfo")
+    @ResponseBody
+    public String allStudentInfo()throws Exception{
+        List<Student> studentList = studentService.allStudent();
+        Map< String,Object> map = new HashMap();
+        map.put("code", 0);
+        map.put("msg", "");
+        map.put("count",1000);
+        map.put("data",studentList);
+        String studentinfo =  JSON.toJSONString(map);
+        return  studentinfo;
+    }
     //学生详情页面
     @RequestMapping("/studentDetails")
     public String studentDetails(Integer sid, Model model) {
@@ -51,11 +68,11 @@ public class StudentController {
 
     /**
      * @创建人 xueke
-     * @参数
-     * @返回值
+     * @参数 
+     * @返回值 
      * @创建时间 2020/9/17
      * @描述
-     */
+    */
     //给学生添加积分
     @RequestMapping("/addScore")
     public Integer addScore(Integer sid, Integer scope) throws Exception {
@@ -93,5 +110,7 @@ public class StudentController {
 
         return "";
     }
+
+    
 
 }

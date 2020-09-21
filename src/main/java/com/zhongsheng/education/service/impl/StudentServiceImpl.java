@@ -32,9 +32,16 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.selectAllStudent(modules, keyword);
     }
 
-    ;
+
+    @Override
+    public List<Student> allStudent() {
+        return studentMapper.allStudent();
+    }
+
 
     public Integer addScore(Integer sid, Integer scope) {
         return studentMapper.addScore(sid, scope);
     }
+
+
 }

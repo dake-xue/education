@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User selectAllUser() {
-        return null;
+        return userMapper.selectAllUser();
     }
 
     public Integer addUser(Integer username,String password,Integer whoid) {
