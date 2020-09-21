@@ -47,9 +47,7 @@ public class StudentController {
         model.addAttribute("family",familyInfoList);
         model.addAttribute("school",schoolInfoList);
         return "";
-    }
-
-    ;
+    };
 
     /**
      * @创建人 xueke

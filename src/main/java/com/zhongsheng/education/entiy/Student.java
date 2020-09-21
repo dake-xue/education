@@ -25,7 +25,7 @@ public class Student {
     private String classes;
 
     //缴费金额
-    private String money;
+    private int money;
     //报名日期
     private Date signupdate;
     //补费日期
@@ -214,12 +214,28 @@ public class Student {
         this.classes = classes;
     }
 
-    public String getMoney() {
+    public int getMoney() {
         return money;
     }
 
-    public void setMoney(String money) {
+    public void setMoney(int money) {
         this.money = money;
+    }
+
+    public int getSfid() {
+        return sfid;
+    }
+
+    public void setSfid(int sfid) {
+        this.sfid = sfid;
+    }
+
+    public int getSsid() {
+        return ssid;
+    }
+
+    public void setSsid(int ssid) {
+        this.ssid = ssid;
     }
 
     public Date getSignupdate() {
