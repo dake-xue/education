@@ -38,6 +38,11 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.allStudent();
     }
 
+    @Override
+    public int addStudentInfo(Student student) {
+        return studentMapper.addStudentInfo(student);
+    }
+
 
     public Integer addScore(Integer sid, Integer scope) {
         return studentMapper.addScore(sid, scope);

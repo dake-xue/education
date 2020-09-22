@@ -20,12 +20,21 @@ public class Student {
     //专业
     private String major;
     //手机号码
-    private int phone;
+    private String phone;
     //班次
     private String classes;
+<<<<<<< HEAD
 
     //缴费金额
     private int money;
+=======
+    //考试年份
+    private String examinationtime;
+    //入学年份
+    private String admissiontime;
+    //学费
+    private String money;
+>>>>>>> e01d17c... 薛可第6次提交
     //报名日期
     private Date signupdate;
     //补费日期
@@ -69,13 +78,13 @@ public class Student {
     private int fid;
     private String fname;
     private String relation;
-    private int fphone;
+    private String fphone;
     private int sfid;
     //学校联系方式
     private int scid;
     private String scname;
     private String screlation;
-    private int scphone;
+    private String scphone;
     private int ssid;
 
     public int getFid() {
@@ -102,12 +111,20 @@ public class Student {
         this.relation = relation;
     }
 
-    public int getFphone() {
+    public String getFphone() {
         return fphone;
     }
 
-    public void setFphone(int fphone) {
+    public void setFphone(String fphone) {
         this.fphone = fphone;
+    }
+
+    public String getScphone() {
+        return scphone;
+    }
+
+    public void setScphone(String scphone) {
+        this.scphone = scphone;
     }
 
     public int getScid() {
@@ -134,13 +151,6 @@ public class Student {
         this.screlation = screlation;
     }
 
-    public int getScphone() {
-        return scphone;
-    }
-
-    public void setScphone(int scphone) {
-        this.scphone = scphone;
-    }
 
     public int getSid() {
         return sid;
@@ -198,11 +208,11 @@ public class Student {
         this.major = major;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -375,6 +385,38 @@ public class Student {
         this.score = score;
     }
 
+    public String getExaminationtime() {
+        return examinationtime;
+    }
+
+    public void setExaminationtime(String examinationtime) {
+        this.examinationtime = examinationtime;
+    }
+
+    public String getAdmissiontime() {
+        return admissiontime;
+    }
+
+    public void setAdmissiontime(String admissiontime) {
+        this.admissiontime = admissiontime;
+    }
+
+    public int getSfid() {
+        return sfid;
+    }
+
+    public void setSfid(int sfid) {
+        this.sfid = sfid;
+    }
+
+    public int getSsid() {
+        return ssid;
+    }
+
+    public void setSsid(int ssid) {
+        this.ssid = ssid;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -387,11 +429,13 @@ public class Student {
                 ", major='" + major + '\'' +
                 ", phone=" + phone +
                 ", classes='" + classes + '\'' +
+                ", examinationtime='" + examinationtime + '\'' +
+                ", admissiontime='" + admissiontime + '\'' +
                 ", money='" + money + '\'' +
                 ", signupdate=" + signupdate +
                 ", addmoneydate=" + addmoneydate +
                 ", paymethod='" + paymethod + '\'' +
-                ", ingentionmajor='" + intentionmajor + '\'' +
+                ", intentionmajor='" + intentionmajor + '\'' +
                 ", publiccours='" + publiccours + '\'' +
                 ", majorcours='" + majorcours + '\'' +
                 ", campusmanager='" + campusmanager + '\'' +
@@ -405,6 +449,16 @@ public class Student {
                 ", nation='" + nation + '\'' +
                 ", remarks='" + remarks + '\'' +
                 ", score=" + score +
+                ", fid=" + fid +
+                ", fname='" + fname + '\'' +
+                ", relation='" + relation + '\'' +
+                ", fphone=" + fphone +
+                ", sfid=" + sfid +
+                ", scid=" + scid +
+                ", scname='" + scname + '\'' +
+                ", screlation='" + screlation + '\'' +
+                ", scphone=" + scphone +
+                ", ssid=" + ssid +
                 '}';
     }
 }

@@ -35,12 +35,6 @@ public class StudentController {
 
     @Autowired
     private SchoolService schoolService;
-    //查询所有学生(班级 classes/姓名 sname/专业 major)
-    @RequestMapping(value = "/allStudent",method = RequestMethod.GET)
-    public String allStudent() throws Exception {
-
-        return "/allStudentInfo";
-    }
 
     @GetMapping("/allStudentInfo")
     @ResponseBody
@@ -86,29 +80,13 @@ public class StudentController {
 
     //添加学生
     @RequestMapping("/addStudent")
+    @ResponseBody
     public String addStudent(Student student) throws Exception {
-        String pw = String.valueOf(student.getPhone());
-        //截取手机号后六位
-        String pwd = pw.substring(pw.length() - 6);
-        System.out.println(pwd);
-        //添加用户  学生whoid为2
-        Integer i = userService.addUser(student.getPhone(), pwd, 2);
-        //添加成功
-        if (i == 1) {
-            //获取新学生用户id
-            User user = userService.selectUserId(2);
-            Integer newSid = user.getUid();
-            //把newSid赋值给sid
-            student.setSid(newSid);
-            //添加学生
-           // Student stu=studentService.addStudent();
-            //添加家长联系方式
+        student.setSid(2233333);
+        System.out.println(student);
+        int i = studentService.addStudentInfo(student);
 
-            //添加学校联系方式
-
-        }
-
-        return "";
+        return i+"";
     }
 
     
