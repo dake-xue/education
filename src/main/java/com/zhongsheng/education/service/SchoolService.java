@@ -1,10 +1,12 @@
 package com.zhongsheng.education.service;
 
-import com.zhongsheng.education.entiy.Schoolinfo;
+import com.zhongsheng.education.entiy.SchoolInfo;
 
 import java.util.List;
 
 public interface SchoolService {
 
-    public List<Schoolinfo> selectInfoInfo(Integer sid);
+    public List<SchoolInfo> selectInfoInfo(Integer sid);
+
+    int addSchoolInfo(SchoolInfo schoolInfo);
 }

@@ -1,6 +1,6 @@
 package com.zhongsheng.education.service.impl;
 
-import com.zhongsheng.education.entiy.Familyinfo;
+import com.zhongsheng.education.entiy.FamilyInfo;
 import com.zhongsheng.education.mapper.FamilyMapper;
 import com.zhongsheng.education.service.FamilyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,15 @@ public class FamilyServiceImpl implements FamilyService {
     @Autowired
     FamilyMapper familyMapper;
 
-    public List<Familyinfo> selectFamilyInfo(Integer sid){
+    public List<FamilyInfo> selectFamilyInfo(Integer sid){
         return familyMapper.selectFamilyInfo(sid);
-    };
+    }
+
+    @Override
+    public int addFamilyInfo(FamilyInfo familyinfo) {
+        System.out.println("familyinfo:"+familyinfo);
+        return familyMapper.addFamilyInfo(familyinfo);
+    }
+
+
 }

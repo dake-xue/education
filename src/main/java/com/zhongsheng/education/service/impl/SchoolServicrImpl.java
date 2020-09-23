@@ -1,6 +1,6 @@
 package com.zhongsheng.education.service.impl;
 
-import com.zhongsheng.education.entiy.Schoolinfo;
+import com.zhongsheng.education.entiy.SchoolInfo;
 import com.zhongsheng.education.mapper.SchoolMapper;
 import com.zhongsheng.education.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,14 @@ public class SchoolServicrImpl implements SchoolService {
     @Autowired
     SchoolMapper schoolMapper;
 
-    public List<Schoolinfo> selectInfoInfo(Integer sid){
-     return    schoolMapper.selectInfoInfo(sid);
-    };
+    public List<SchoolInfo> selectInfoInfo(Integer sid){
+        return    schoolMapper.selectInfoInfo(sid);
+    }
+
+    @Override
+    public int addSchoolInfo(SchoolInfo schoolInfo) {
+        return schoolMapper.addSchoolInfo(schoolInfo);
+    }
+
 
 }

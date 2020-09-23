@@ -26,12 +26,54 @@
 	<!-- Custom and plugin javascript -->
 	<script th:src="@{/js/inspinia.js}"></script>
 	<script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+
+	<style>
+		.important:after{
+			content:"*";
+			color:red;
+			position: absolute;
+			top:10px;
+			font-size: 20px;
+			left: 0;
+		}
+	</style>
     <script>
-		//Demo
+
+			//Demo
 		layui.use('form', function(){
 		  var form = layui.form;
-		  
-		  //监听提交
+			getClassify();
+			form.verify({
+				chinese: function(value, item){ //value：表单的值、item：表单的DOM对象
+					if(!new RegExp("^[\u4e00-\u9fa5\]+$").test(value)){
+						return '只能是中文';
+					}
+
+				}
+			});
+
+
+			function c(){
+				$.ajax({
+					type: 'post',
+					url: '/table/all',
+					contentType: 'application/json',
+					data:{"tableName":"subject_dic"},
+					success: function (data) {
+						if(data.success){
+							for(var i = 0; i < data.length; i++){
+								$("#subject").append("<option value=\""+data[i].id+"\">"+data[i].name+"</option>");
+							}
+							//重新渲染
+							layui.form.render("select");
+						}else{
+							layer.msg(data.message);
+						}
+
+					}
+				});
+
+			//监听提交
 		  form.on('submit(formDemo)', function(data){
 			  var student = data.field;
 			  $.ajax({
@@ -40,7 +82,15 @@
 				  dataType: "text",
 				  data:student,
 				  success: function(data){
-						alert(data);
+				  	if(data=="1"){
+				  		layer.msg('添加成功！',{icon: 6},{time:3000});
+						// 重置清空
+						$('#form')[0].reset();
+						form.render();//必须写
+				  	}else {
+						layer.msg('添加失败！',{icon: 5},{time:3000});
+					}
+
 				  }
 			  });
 		    return false;
@@ -160,18 +210,18 @@
             
             <div class="row wrapper border-bottom white-bg page-heading">
             	
-            	<form class="layui-form" action="" style="padding-top: 15px;">
+            	<form class="layui-form" id="form" style="padding-top: 15px;">
             		
 				  <div class="layui-input-inline">
-				    <label class="layui-form-label">姓名</label>
+				    <label class="layui-form-label important">姓名</label>
 				    <div class="layui-input-inline">
-				      <input type="text" name="sname" required  lay-verify="required" placeholder="姓名"
+				      <input type="text" name="sname" required  lay-verify="chinese" placeholder="姓名"
 				      	 autocomplete="off" class="layui-input">
 				    </div>
 				  </div>
 				  
 				<div class="layui-input-inline">
-					<label class="layui-form-label">选择框</label>
+					<label class="layui-form-label important">性别</label>
 					<div class="layui-input-inline" style="width: 187px;">
 						<select name="sex" lay-verify="required">
 					        <option value="男">男</option>
@@ -182,100 +232,122 @@
 
 				  
 				  <div class="layui-input-inline">
-				    <label class="layui-form-label">民族</label>
+				    <label class="layui-form-label important">民族</label>
 				    <div class="layui-input-inline">
-				      <input type="text" name="nation" required  lay-verify="required" placeholder="民族"
+				      <input type="text" name="nation" required  lay-verify="chinese" placeholder="民族"
 				      	 autocomplete="off" class="layui-input">
 				    </div>
 				  </div>
 				  
 				  <div class="layui-input-inline">
-				    <label class="layui-form-label" style="white-space:nowrap!important;">联系方式</label>
+				    <label class="layui-form-label important" style="white-space:nowrap!important;">联系方式</label>
 				    <div class="layui-input-inline">
-				      <input name="phone" class="layui-input" type="text"  placeholder="请输入手机号"
+				      <input name="phone" class="layui-input" type="text" lay-verify="phone"  placeholder="请输入手机号"
 				      	style="ime-mode:disabled;" maxlength="11"/>
 				    </div>
 				  </div>
 				  
 				  <div class="layui-input-inline">
-				    <label class="layui-form-label" style="white-space:nowrap!important;">身份证号</label>
+				    <label class="layui-form-label important" style="white-space:nowrap!important;">身份证号</label>
 				    <div class="layui-input-inline">
-				      <input type="text" name="idcard" required  lay-verify="required" placeholder="身份证号"
-				      	 autocomplete="off" class="layui-input">
+				      <input type="text" name="idcard" required  lay-verify="identity" placeholder="身份证号"
+				      	 autocomplete="off" class="layui-input" maxlength="18">
 				    </div>
 				  </div>
 				  
 				  <div class="layui-input-inline">
-				    <label class="layui-form-label" style="white-space:nowrap!important;">生日</label>
+				    <label class="layui-form-label important">生日</label>
 				    <div class="layui-input-inline">
 				      <input type="text" class="layui-input" id="birthday" name="birthday">
 				    </div>
 				  </div>
-				  
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label">年级</label>
+
+					<div class="layui-input-inline">
+						<label class="layui-form-label important" style="white-space:nowrap!important;">上课校区</label>
+						<div class="layui-input-inline" style="width: 187px;">
+							<select name="campus" lay-verify="required">
+								<option value="龙子湖">龙子湖</option>
+								<option value="龙湖">龙湖</option>
+								<option value="象湖">象湖</option>
+								<option value="开封校区">开封校区</option>
+							</select>
+						</div>
+					</div>
+
+				   <div class="layui-input-inline">
+				    <label class="layui-form-label important" style="white-space:nowrap!important;">升本专业</label>
 				    <div class="layui-input-inline">
-				      <input type="text" name="grade" required  lay-verify="required" placeholder="年级"
+				      <input type="text" name="intentionmajor" required  lay-verify="required" placeholder="升本专业"
 				      	 autocomplete="off" class="layui-input">
 				    </div>
 				  </div>
 				  
 				  <div class="layui-input-inline">
-				    <label class="layui-form-label">校区</label>
+				    <label class="layui-form-label important" style="white-space:nowrap!important;">专科专业</label>
 				    <div class="layui-input-inline">
-				      <input type="text" name="campus" required  lay-verify="required" placeholder="校区"
+				      <input type="text" name="major" required  lay-verify="required" placeholder="专科专业"
+				      	 autocomplete="off" class="layui-input">
+				    </div>
+				  </div>
+
+					<div class="layui-input-inline">
+						<label class="layui-form-label important">院系</label>
+						<div class="layui-input-inline">
+							<input type="text" name="department" required  lay-verify="chinese" placeholder="院系"
+								   autocomplete="off" class="layui-input">
+						</div>
+					</div>
+
+					<div class="layui-input-inline">
+						<label class="layui-form-label important">班级</label>
+						<div class="layui-input-inline">
+							<input type="text" name="" required  lay-verify="chinese" placeholder="班级"
+								   autocomplete="off" class="layui-input">
+						</div>
+					</div>
+
+					<div class="layui-input-inline">
+						<label class="layui-form-label important" style="white-space:nowrap!important;">考试科目</label>
+						<div class="layui-input-inline layui-form" style="width: 187px;">
+							<select id="subject" name="subject" lay-verify="required">
+								<option value="0">考试科目</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="layui-input-inline">
+						<label class="layui-form-label important">班次</label>
+						<div class="layui-input-inline" style="width: 187px;">
+							<select name="classes" lay-verify="required">
+								<option value="基础全程班">基础全程班</option>
+								<option value="考前特训营">考前特训营</option>
+								<option value="无忧密训营">无忧密训营</option>
+								<option value="协议定制班">协议定制班</option>
+								<option value="美术无忧密训营">美术无忧密训营</option>
+								<option value="美术基础全程班">美术基础全程班</option>
+							</select>
+						</div>
+					</div>
+
+				  
+				  <div class="layui-input-inline">
+				    <label class="layui-form-label" style="white-space:nowrap!important;">在校职务</label>
+				    <div class="layui-input-inline">
+				      <input type="text" name="job" required  lay-verify="" placeholder="在校职务"
 				      	 autocomplete="off" class="layui-input">
 				    </div>
 				  </div>
 				  
 				   <div class="layui-input-inline">
-				    <label class="layui-form-label" style="white-space:nowrap!important;">意向专业</label>
+				    <label class="layui-form-label important" style="white-space:nowrap!important;">专科学校</label>
 				    <div class="layui-input-inline">
-				      <input type="text" name="intentionmajor" required  lay-verify="required" placeholder="意向专业"
+				      <input type="text" name="schoolname" required  lay-verify="required" placeholder="专科学校"
 				      	 autocomplete="off" class="layui-input">
 				    </div>
 				  </div>
-				  
+
 				  <div class="layui-input-inline">
-				    <label class="layui-form-label">专业</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="major" required  lay-verify="required" placeholder="专业"
-				      	 autocomplete="off" class="layui-input">
-				    </div>
-				  </div>
-				  
-				  
-				    
-				  
-				  
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label">班次</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="classes" required  lay-verify="required" placeholder="班次"
-				      	 autocomplete="off" class="layui-input">
-				    </div>
-				  </div>
-				  
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label">职务</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="job" required  lay-verify="required" placeholder="职务"
-				      	 autocomplete="off" class="layui-input">
-				    </div>
-				  </div>
-				  
-				   <div class="layui-input-inline">
-				    <label class="layui-form-label" style="white-space:nowrap!important;">学校名称</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="schoolname" required  lay-verify="required" placeholder="学校名称"
-				      	 autocomplete="off" class="layui-input">
-				    </div>
-				  </div>
-				  
-				  
-				  
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label">公共课</label>
+				    <label class="layui-form-label important">公共课</label>
 				    <div class="layui-input-inline">
 				      <input type="text" name="publiccours" required  lay-verify="required" placeholder="公共课"
 				      	 autocomplete="off" class="layui-input">
@@ -283,7 +355,7 @@
 				  </div>
 				  
 				  <div class="layui-input-inline">
-				    <label class="layui-form-label">专业课</label>
+				    <label class="layui-form-label important">专业课</label>
 				    <div class="layui-input-inline">
 				      <input type="text" name="majorcours" required  lay-verify="required" placeholder="专业课"
 				      	 autocomplete="off" class="layui-input">
@@ -291,50 +363,50 @@
 				  </div>
 				  
 				  <div class="layui-input-inline">
-				    <label class="layui-form-label" style="white-space:nowrap!important;">负责人</label>
+				    <label class="layui-form-label important" style="white-space:nowrap!important;">校区经理</label>
 				    <div class="layui-input-inline">
-				      <input type="text" name="campusmanager" required  lay-verify="required" placeholder="校区负责人"
+				      <input type="text" name="campusmanager" required  lay-verify="required" placeholder="校区经理"
 				      	 autocomplete="off" class="layui-input">
 				    </div>
 				  </div>
 				  
 				  <div class="layui-input-inline">
-				    <label class="layui-form-label" style="white-space:nowrap!important;">校园代理</label>
+				    <label class="layui-form-label" style="white-space:nowrap!important;">校园伙伴</label>
 				    <div class="layui-input-inline">
-				      <input type="text" name="campusagent" required  lay-verify="required" placeholder="校园代理"
+				      <input type="text" name="campusagent" required  lay-verify="" placeholder="校园伙伴"
 				      	 autocomplete="off" class="layui-input">
 				    </div>
 				  </div>
 				  
 				  <div class="layui-input-inline">
-				    <label class="layui-form-label" style="white-space:nowrap!important;">报名日期</label>
+				    <label class="layui-form-label important" style="white-space:nowrap!important;">报名日期</label>
 				    <div class="layui-input-inline">
 				      <input type="text" name="signupdate" class="layui-input" id="signUp">
 				    </div>
 				  </div>
 
-					<div class="layui-input-inline">
+					<div class="layui-input-inline important">
 						<label class="layui-form-label" style="white-space:nowrap!important;">考试年份</label>
 						<div class="layui-input-inline">
 							<input type="text" name="examinationtime" class="layui-input" id="examinationt">
 						</div>
 					</div>
 
-					<div class="layui-input-inline">
+					<div class="layui-input-inline important">
 						<label class="layui-form-label" style="white-space:nowrap!important;">入学年份</label>
 						<div class="layui-input-inline">
 							<input type="text" name="admissiontime" class="layui-input" id="admission">
 						</div>
 					</div>
 				  
-				  <div class="layui-input-inline">
+				  <div class="layui-input-inline important">
 				    <label class="layui-form-label" style="white-space:nowrap!important;">补费日期</label>
 				    <div class="layui-input-inline">
 				      <input type="text" name="addmoneydate" class="layui-input" id="addMoney">
 				    </div>
 				  </div>
 				  
-				  <div class="layui-input-inline">
+				  <div class="layui-input-inline important">
 				    <label class="layui-form-label" style="white-space:nowrap!important;">缴费金额</label>
 				    <div class="layui-input-inline">
 				      <input type="text" name="money" required  lay-verify="required" placeholder="缴费金额"
@@ -342,7 +414,7 @@
 				    </div>
 				  </div>
 				  
-				  <div class="layui-input-inline">
+				  <div class="layui-input-inline important">
 				    <label class="layui-form-label" style="white-space:nowrap!important;">缴费方式</label>
 				    <div class="layui-input-inline">
 				      <input type="text" name="paymethod" required  lay-verify="required" placeholder="缴费方式"
@@ -350,14 +422,14 @@
 				    </div>
 				  </div>
 				  
-				  <div class="layui-input-inline">
+				  <div class="layui-input-inline important">
 				    <label class="layui-form-label">线上</label>
 				    <div class="layui-input-inline">
 				      <input name="onlinenumber" class="layui-input" type="text"  placeholder="线上上课轮数" />
 				    </div>
 				  </div>
 				  
-				  <div class="layui-input-inline">
+				  <div class="layui-input-inline important">
 				    <label class="layui-form-label">线下</label>
 				    <div class="layui-input-inline">
 				      <input name="offlinenumber" class="layui-input" type="text"  placeholder="线下上课轮数"/>
@@ -371,51 +443,45 @@
 				    </div>
 				  </div>
 				  <div class="layui-form-item">
-				    <label class="layui-form-label" style="white-space:nowrap!important;width: 140px;">家属紧急联系方式</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="fname" required  lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input">
-				    </div>
-				    <div class="layui-input-inline" style="width: 63px;">
-				      <input type="text" name="relation" required  lay-verify="required" placeholder="关系"
-				      	 autocomplete="off" class="layui-input" value="父子">
-				    </div>
-				    <div class="layui-input-inline">
-				      <input type="text" name="fphone" required  lay-verify="required" placeholder="电话" autocomplete="off" class="layui-input">
-				    </div>
-				    <div class="layui-input-inline">
-				      <input type="text" name="fname1" required  lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input">
-				    </div>
-				    <div class="layui-input-inline" style="width: 63px;">
-				      <input type="text" name="relation1" required  lay-verify="required" placeholder="关系"
-				      	 autocomplete="off" class="layui-input" value="母子">
-				    </div>
-				    <div class="layui-input-inline">
-				      <input type="text" name="fphone1" required  lay-verify="required" placeholder="电话" autocomplete="off" class="layui-input">
-				    </div>
+				    <label class="layui-form-label important" style="white-space:nowrap!important;width: 140px;">家属联系方式</label>
+
+					  <div class="layui-input-inline">
+						  <select name="familyInfo.relation" lay-verify="required">
+							  <option value="父亲">父亲</option>
+							  <option value="母亲">母亲</option>
+						  </select>
+					  </div>
+
+						<div class="layui-input-inline">
+						  <input type="text" name="familyInfo.fname" required  lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input">
+						</div>
+
+						<div class="layui-input-inline">
+						  <input type="text" name="familyInfo.fphone" required  lay-verify="phone" placeholder="电话" autocomplete="off" class="layui-input">
+						</div>
+
 				  </div>
 				  
 				  <div class="layui-form-item">
-				    <label class="layui-form-label" style="white-space:nowrap!important;width: 140px;">校园紧急联系方式</label>
+				    <label class="layui-form-label important" style="white-space:nowrap!important;width: 140px;">校园联系方式</label>
+
+					  <div class="layui-input-inline">
+						  <div class="layui-input-inline" style="width: 187px;">
+							  <select name="schoolInfo.screlation" lay-verify="required">
+								  <option value="导员">导员</option>
+								  <option value="舍友">舍友</option>
+							  </select>
+						  </div>
+					  </div>
+
+					  <div class="layui-input-inline">
+				      <input type="text" name="schoolInfo.scname" required  lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input">
+					  </div>
+
 				    <div class="layui-input-inline">
-				      <input type="text" name="scname" required  lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input">
+				      <input type="text" name="schoolInfo.scphone" required  lay-verify="phone" placeholder="电话" autocomplete="off" class="layui-input">
 				    </div>
-				    <div class="layui-input-inline" style="width: 63px;">
-				      <input type="text" name="screlation" required  lay-verify="required"
-				      	 placeholder="关系" autocomplete="off" class="layui-input" value="导员">
-				    </div>
-				    <div class="layui-input-inline">
-				      <input type="text" name="scfphone" required  lay-verify="required" placeholder="电话" autocomplete="off" class="layui-input">
-				    </div>
-				    <div class="layui-input-inline">
-				      <input type="text" name="scname1" required  lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input">
-				    </div>
-				    <div class="layui-input-inline" style="width: 63px;">
-				      <input type="text" name="screlation1" required  lay-verify="required" placeholder="关系"
-				      	 autocomplete="off" class="layui-input" value="舍友">
-				    </div>
-				    <div class="layui-input-inline">
-				      <input type="text" name="scfphone1" required  lay-verify="required" placeholder="电话" autocomplete="off" class="layui-input">
-				    </div>
+
 				  </div>
 				  
 				  

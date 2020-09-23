@@ -30,6 +30,7 @@ public class Student {
     private String examinationtime;
     //入学年份
     private String admissiontime;
+
     //报名日期
     private Date signupdate;
     //补费日期
@@ -52,10 +53,6 @@ public class Student {
     private int offlinenumber;
     //职务
     private String job;
-//    //家属紧急联系方式
-//    private String homephoneid;
-//    //校园紧急联系方式
-//    private String schoolphoneid;
     //收件家庭住址
     private String homeaddress;
     //身份证号
@@ -69,83 +66,31 @@ public class Student {
     //积分
     private int score;
 
-    //家长联系方式
-    private int fid;
-    private String fname;
-    private String relation;
-    private String fphone;
-    private int sfid;
+    //考试科目
+    private String subject;
+    //院系
+    private String department;
+
+    //家庭联系方式
+    private FamilyInfo familyInfo;
     //学校联系方式
-    private int scid;
-    private String scname;
-    private String screlation;
-    private String scphone;
-    private int ssid;
+    private SchoolInfo schoolInfo;
 
-    public int getFid() {
-        return fid;
+    public FamilyInfo getFamilyInfo() {
+        return familyInfo;
     }
 
-    public void setFid(int fid) {
-        this.fid = fid;
+    public void setFamilyInfo(FamilyInfo familyInfo) {
+        this.familyInfo = familyInfo;
     }
 
-    public String getFname() {
-        return fname;
+    public SchoolInfo getSchoolInfo() {
+        return schoolInfo;
     }
 
-    public void setFname(String fname) {
-        this.fname = fname;
+    public void setSchoolInfo(SchoolInfo schoolInfo) {
+        this.schoolInfo = schoolInfo;
     }
-
-    public String getRelation() {
-        return relation;
-    }
-
-    public void setRelation(String relation) {
-        this.relation = relation;
-    }
-
-    public String getFphone() {
-        return fphone;
-    }
-
-    public void setFphone(String fphone) {
-        this.fphone = fphone;
-    }
-
-    public String getScphone() {
-        return scphone;
-    }
-
-    public void setScphone(String scphone) {
-        this.scphone = scphone;
-    }
-
-    public int getScid() {
-        return scid;
-    }
-
-    public void setScid(int scid) {
-        this.scid = scid;
-    }
-
-    public String getScname() {
-        return scname;
-    }
-
-    public void setScname(String scname) {
-        this.scname = scname;
-    }
-
-    public String getScrelation() {
-        return screlation;
-    }
-
-    public void setScrelation(String screlation) {
-        this.screlation = screlation;
-    }
-
 
     public int getSid() {
         return sid;
@@ -227,9 +172,7 @@ public class Student {
         this.money = money;
     }
 
-    public void setMoney(Integer money) {
-        this.money = money;
-    }
+
 
     public Date getSignupdate() {
         return signupdate;
@@ -384,20 +327,20 @@ public class Student {
         this.admissiontime = admissiontime;
     }
 
-    public int getSfid() {
-        return sfid;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setSfid(int sfid) {
-        this.sfid = sfid;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
-    public int getSsid() {
-        return ssid;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setSsid(int ssid) {
-        this.ssid = ssid;
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     @Override
@@ -410,11 +353,11 @@ public class Student {
                 ", sex='" + sex + '\'' +
                 ", grade='" + grade + '\'' +
                 ", major='" + major + '\'' +
-                ", phone=" + phone +
+                ", phone='" + phone + '\'' +
                 ", classes='" + classes + '\'' +
+                ", money=" + money +
                 ", examinationtime='" + examinationtime + '\'' +
                 ", admissiontime='" + admissiontime + '\'' +
-                ", money='" + money + '\'' +
                 ", signupdate=" + signupdate +
                 ", addmoneydate=" + addmoneydate +
                 ", paymethod='" + paymethod + '\'' +
@@ -432,16 +375,10 @@ public class Student {
                 ", nation='" + nation + '\'' +
                 ", remarks='" + remarks + '\'' +
                 ", score=" + score +
-                ", fid=" + fid +
-                ", fname='" + fname + '\'' +
-                ", relation='" + relation + '\'' +
-                ", fphone=" + fphone +
-                ", sfid=" + sfid +
-                ", scid=" + scid +
-                ", scname='" + scname + '\'' +
-                ", screlation='" + screlation + '\'' +
-                ", scphone=" + scphone +
-                ", ssid=" + ssid +
+                ", subject='" + subject + '\'' +
+                ", department='" + department + '\'' +
+                ", familyInfo=" + familyInfo +
+                ", schoolInfo=" + schoolInfo +
                 '}';
     }
 }

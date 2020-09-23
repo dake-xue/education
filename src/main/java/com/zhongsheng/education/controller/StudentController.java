@@ -11,6 +11,7 @@ import com.zhongsheng.education.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -34,7 +35,7 @@ public class StudentController {
     @Autowired
     private SchoolService schoolService;
 
-    @RequestMapping("/allStudentInfo")
+    @GetMapping("/allStudentInfo")
     @ResponseBody
     public String allStudentInfo(String modules, String keyword)throws Exception{
         List<Student> studentList = studentService.selectAllStudent(modules,keyword);
@@ -46,7 +47,6 @@ public class StudentController {
         String studentinfo =  JSON.toJSONString(map);
         return  studentinfo;
     }
-
     //学生详情页面
     @RequestMapping("/studentDetails")
     public String studentDetails(Integer sid, Model model) {

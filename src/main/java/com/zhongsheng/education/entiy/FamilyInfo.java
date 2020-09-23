@@ -3,13 +3,23 @@ package com.zhongsheng.education.entiy;
 import java.io.Serializable;
 
 
-public class Familyinfo implements Serializable {
+public class FamilyInfo implements Serializable {
 
     private int fid;
     private String fname;
     private String relation;
-    private int fphone;
+    private String fphone;
     private int sfid;
+
+    public FamilyInfo() {
+    }
+
+    public FamilyInfo(String fname, String relation, String fphone, int sfid) {
+        this.fname = fname;
+        this.relation = relation;
+        this.fphone = fphone;
+        this.sfid = sfid;
+    }
 
     public int getSfid() {
         return sfid;
@@ -43,11 +53,11 @@ public class Familyinfo implements Serializable {
         this.relation = relation;
     }
 
-    public int getFphone() {
+    public String getFphone() {
         return fphone;
     }
 
-    public void setFphone(int fphone) {
+    public void setFphone(String fphone) {
         this.fphone = fphone;
     }
 

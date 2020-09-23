@@ -1,11 +1,21 @@
 package com.zhongsheng.education.entiy;
 
-public class Schoolinfo {
+public class SchoolInfo {
     private int scid;
     private String scname;
     private String screlation;
-    private int scphone;
+    private String scphone;
     private int ssid;
+
+    public SchoolInfo() {
+    }
+
+    public SchoolInfo(String scname, String screlation, String scphone, int ssid) {
+        this.scname = scname;
+        this.screlation = screlation;
+        this.scphone = scphone;
+        this.ssid = ssid;
+    }
 
     public int getSsid() {
         return ssid;
@@ -39,11 +49,11 @@ public class Schoolinfo {
         this.screlation = screlation;
     }
 
-    public int getScphone() {
+    public String getScphone() {
         return scphone;
     }
 
-    public void setScphone(int scphone) {
+    public void setScphone(String scphone) {
         this.scphone = scphone;
     }
 

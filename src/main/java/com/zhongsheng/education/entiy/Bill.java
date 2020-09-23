@@ -2,7 +2,7 @@ package com.zhongsheng.education.entiy;
 
 import java.io.Serializable;
 
-public class bill implements Serializable {
+public class Bill implements Serializable {
 
     private int bid;
     private int bsid;
