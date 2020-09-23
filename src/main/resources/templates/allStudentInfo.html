@@ -84,20 +84,21 @@
             form.on('select(modules)', function (data) {
                 if (data.value==1){
                     $("#keyword").empty();
-                    $("#keyword").append("<input type=\"text\" name=\"keyword\"  required lay-verify=\"required\" placeholder=\"请输入姓名\"\n" +
-                        "                           autocomplete=\"off\" class=\"layui-input\" style=\"width: 400px\">");
+                    $("#keyword").append("<input type='text' name='keyword' placeholder='请输入姓名' autocomplete='off' class='layui-input' style='width: 200px'>");
                 }
                 if (data.value==2){
                     $("#keyword").empty();
-                    var str="<select name='keyword'  style='width: 200px;' class='layui-form-select'>"
+                    var str="<select  style='width: 200px;' name='keyword' class='layui-form-select'>"
                     $.ajax({
                         type:"post",
-                        url:"../../afterSell/selectUser.do",
-                        contentType:"application/json",
+                        url: '/zhongsheng/table/all',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data:{"tableName":"classes_dic"},
+                        dataType:"json",
                         success:function (data) {
                             str+="<option value='0'>请选择班次</option>";
                             for (var i=0;i<data.length;i++){
-                                str+="<option value='"+data[i].username+"'>"+data[i].username+"</option>";
+                                str+="<option value='"+data[i].name+"'>"+data[i].name+"</option>";
                             }
                             str+="</select>";
                             $("#keyword").append(str);
@@ -107,7 +108,7 @@
                 }
                 if (data.value == 3) {
                     $("#keyword").empty();
-                    $("#keyword").append(" <input type='text'  class='layui-input' id='textTime' placeholder='yyyy'>");
+                    $("#keyword").append(" <input type='text' name='keyword' style='width: 200px;'  class='layui-input' id='textTime' placeholder='yyyy'>");
                     //年选择器
                     laydate.render({
                         elem: '#textTime'
@@ -120,12 +121,14 @@
                     var str="<select name='keyword'  style='width: 200px;' class='layui-form-select'>"
                     $.ajax({
                         type:"post",
-                        url:"../../afterSell/selectUser.do",
-                        contentType:"application/json",
+                        url: '/zhongsheng/table/all',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data:{"tableName":"subject_dic"},
+                        dataType:"json",
                         success:function (data) {
                             str+="<option value='0'>请选择考试科目</option>";
                             for (var i=0;i<data.length;i++){
-                                str+="<option value='"+data[i].username+"'>"+data[i].username+"</option>";
+                                str+="<option value='"+data[i].name+"'>"+data[i].name+"</option>";
                             }
                             str+="</select>";
                             $("#keyword").append(str);
@@ -134,7 +137,6 @@
                     });
                 }
             });
-
         });
 
     </script>
@@ -227,7 +229,7 @@
                 <form class="layui-form layui-form-pane">
                     <div class="layui-form-item" id="search">
                             <div class="layui-input-inline">
-                                <select name="modules"  lay-filter="modules" lay-verify="required" class="layui-form-select">
+                                <select name="modules"  lay-filter="modules" class="layui-form-select">
                                     <option value="1">按姓名</option>
                                     <option value="2">按班次</option>
                                     <option value="3">按考试年份</option>
@@ -235,8 +237,7 @@
                                 </select>
                             </div>
                         <div class="layui-inline" id="keyword">
-                            <input type="text" name="keyword" required lay-verify="required" placeholder="请输入关键字"
-                                   autocomplete="off" class="layui-input" style="width: 300px">
+                            <input type="text" name='keyword'  placeholder="请输入姓名" autocomplete="off" class="layui-input" style="width: 300px">
                         </div>
                         <div class="layui-inline">
                             <button class="layui-btn layui-btn-primary" lay-submit
@@ -287,7 +288,6 @@
 
     </div>
 </div>
-
 
 </body>
 

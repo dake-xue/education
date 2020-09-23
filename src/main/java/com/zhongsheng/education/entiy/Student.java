@@ -76,6 +76,7 @@ public class Student {
     //学校联系方式
     private SchoolInfo schoolInfo;
 
+
     public FamilyInfo getFamilyInfo() {
         return familyInfo;
     }

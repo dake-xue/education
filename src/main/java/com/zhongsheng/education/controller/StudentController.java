@@ -1,8 +1,8 @@
 package com.zhongsheng.education.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.zhongsheng.education.entiy.Familyinfo;
-import com.zhongsheng.education.entiy.Schoolinfo;
+import com.zhongsheng.education.entiy.FamilyInfo;
+import com.zhongsheng.education.entiy.SchoolInfo;
 import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.service.FamilyService;
 import com.zhongsheng.education.service.SchoolService;
@@ -37,8 +37,8 @@ public class StudentController {
 
     @GetMapping("/allStudentInfo")
     @ResponseBody
-    public String allStudentInfo(String modules, String keyword)throws Exception{
-        List<Student> studentList = studentService.selectAllStudent(modules,keyword);
+    public String allStudentInfo(String keyword,Integer modules)throws Exception{
+        List<Student> studentList = studentService.selectAllStudent(keyword,modules);
         Map< String,Object> map = new HashMap();
         map.put("code", 0);
         map.put("msg", "");
@@ -51,8 +51,8 @@ public class StudentController {
     @RequestMapping("/studentDetails")
     public String studentDetails(Integer sid, Model model) {
         Student student = studentService.selectStudent(sid);
-        List<Familyinfo> familyInfoList = familyService.selectFamilyInfo(sid);
-        List<Schoolinfo> schoolInfoList =schoolService.selectInfoInfo(sid);
+        List<FamilyInfo> familyInfoList = familyService.selectFamilyInfo(sid);
+        List<SchoolInfo> schoolInfoList =schoolService.selectInfoInfo(sid);
         model.addAttribute("student",student);
         model.addAttribute("family",familyInfoList);
         model.addAttribute("school",schoolInfoList);

@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface TableDicMapper {
 
-    @Select("select * from #{tableName}")
+    @Select("select * from ${tableName}")
     List<TableDic> searchAll(TableDic tableDic);
 
     @Select("select * from #{tableName} where id = #{id}")

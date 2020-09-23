@@ -42,8 +42,8 @@ public class StudentServiceImpl implements StudentService {
 
 
     @Override
-    public List<Student> selectAllStudent(String modules, String keyword) {
-        return studentMapper.selectAllStudent(modules, keyword);
+    public List<Student> selectAllStudent(String keyword,Integer modules) {
+        return studentMapper.selectAllStudent(keyword,modules);
     }
 
 
