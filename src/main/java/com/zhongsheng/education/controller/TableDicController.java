@@ -19,6 +19,7 @@ public class TableDicController {
     //查询所有
     @RequestMapping("/all")
     public String all(TableDic tableDic){
+        System.out.println(tableDic);
         List<TableDic> tableDicList = tableDicService.searchAll(tableDic);
         return JSON.toJSONString(tableDicList);
     }
