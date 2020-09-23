@@ -5,16 +5,13 @@ import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.service.FamilyService;
 import com.zhongsheng.education.service.SchoolService;
 import com.zhongsheng.education.service.StudentService;
-import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 import com.zhongsheng.education.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,12 +26,12 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
-
     @Autowired
     private FamilyService familyService;
 
     @Autowired
     private SchoolService schoolService;
+
 
     @GetMapping("/allStudentInfo")
     @ResponseBody
@@ -52,8 +49,8 @@ public class StudentController {
     @RequestMapping("/studentDetails")
     public String studentDetails(Integer sid, Model model) {
         Student student = studentService.selectStudent(sid);
-        List<Familyinfo> familyInfoList = familyService.selectFamilyInfo(sid);
-        List<Schoolinfo> schoolInfoList =schoolService.selectInfoInfo(sid);
+        List<FamilyInfo> familyInfoList = familyService.selectFamilyInfo(sid);
+        List<SchoolInfo> schoolInfoList =schoolService.selectInfoInfo(sid);
         model.addAttribute("student",student);
         model.addAttribute("family",familyInfoList);
         model.addAttribute("school",schoolInfoList);
@@ -82,7 +79,7 @@ public class StudentController {
     @RequestMapping("/addStudent")
     @ResponseBody
     public String addStudent(Student student) throws Exception {
-        student.setSid(2233333);
+        student.setSid(223311111);
         System.out.println(student);
         int i = studentService.addStudentInfo(student);
 
