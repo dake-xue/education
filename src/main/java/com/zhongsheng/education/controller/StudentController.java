@@ -1,20 +1,18 @@
 package com.zhongsheng.education.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.zhongsheng.education.entiy.*;
+import com.zhongsheng.education.entiy.Familyinfo;
+import com.zhongsheng.education.entiy.Schoolinfo;
+import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.service.FamilyService;
 import com.zhongsheng.education.service.SchoolService;
 import com.zhongsheng.education.service.StudentService;
-import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 import com.zhongsheng.education.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,10 +34,10 @@ public class StudentController {
     @Autowired
     private SchoolService schoolService;
 
-    @GetMapping("/allStudentInfo")
+    @RequestMapping("/allStudentInfo")
     @ResponseBody
-    public String allStudentInfo()throws Exception{
-        List<Student> studentList = studentService.allStudent();
+    public String allStudentInfo(String modules, String keyword)throws Exception{
+        List<Student> studentList = studentService.selectAllStudent(modules,keyword);
         Map< String,Object> map = new HashMap();
         map.put("code", 0);
         map.put("msg", "");
@@ -48,6 +46,7 @@ public class StudentController {
         String studentinfo =  JSON.toJSONString(map);
         return  studentinfo;
     }
+
     //学生详情页面
     @RequestMapping("/studentDetails")
     public String studentDetails(Integer sid, Model model) {

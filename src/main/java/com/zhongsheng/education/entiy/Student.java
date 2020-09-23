@@ -23,18 +23,13 @@ public class Student {
     private String phone;
     //班次
     private String classes;
-<<<<<<< HEAD
 
     //缴费金额
     private int money;
-=======
     //考试年份
     private String examinationtime;
     //入学年份
     private String admissiontime;
-    //学费
-    private String money;
->>>>>>> e01d17c... 薛可第6次提交
     //报名日期
     private Date signupdate;
     //补费日期
@@ -232,20 +227,8 @@ public class Student {
         this.money = money;
     }
 
-    public int getSfid() {
-        return sfid;
-    }
-
-    public void setSfid(int sfid) {
-        this.sfid = sfid;
-    }
-
-    public int getSsid() {
-        return ssid;
-    }
-
-    public void setSsid(int ssid) {
-        this.ssid = ssid;
+    public void setMoney(Integer money) {
+        this.money = money;
     }
 
     public Date getSignupdate() {

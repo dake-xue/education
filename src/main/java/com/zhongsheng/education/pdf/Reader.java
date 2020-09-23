@@ -6,6 +6,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -16,47 +17,56 @@ import java.util.Map.Entry;
 public class Reader {
 
     public static void main(String[] args) {
+        // 获得当前时间
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat format1 = new SimpleDateFormat("yyyyMMddHH");
+        // 转换为字符串
+        String formatDate = format.format(new Date());
+        String formatDate1 = format1.format(new Date());
+        // 随机生成文件编号
+        int random = new Random().nextInt(10000);
+        StringBuffer sr=new StringBuffer();
+        sr.append(formatDate1);
+        sr.append(random);
+        sr.toString();
         //1 准备要填充的数据
         Map paraMap = new HashMap();
         paraMap.put("Text1", "易烊千玺");
         paraMap.put("Text2", "男");
-        paraMap.put("Text3", "15933333333");
-        paraMap.put("Text4", "河南省贸易职业技术学院");
-        paraMap.put("Text5", "管理系");
+        paraMap.put("Text3", "河南省贸易职业技术学院");
+        paraMap.put("Text4", "院系");
+        paraMap.put("Text5", "班级");
         paraMap.put("Text6", "2020");
-        paraMap.put("Text7", "41132222222222222");
+        paraMap.put("Text7", "2021");
         paraMap.put("Text8", "1");
-        paraMap.put("Text9", "30000");
-        paraMap.put("Text10", "你毕设购入我根本卡就发生口角的就是比如");
-        paraMap.put("Text11", "英语");
-        paraMap.put("Text12", "英语");
-        paraMap.put("Text13", "英语");
-        paraMap.put("Text14", "龙子湖校区");
+        paraMap.put("Text9", "4222222222222222");
+        paraMap.put("Text10", "3000");
+        paraMap.put("Text11", "叁仟圆");
+        paraMap.put("Text12", "那部分v和技术v安康均可点击支付");
+        paraMap.put("Text13", formatDate);
+        paraMap.put("Text14", sr);
         paraMap.put("Text15", "15333333333");
-        paraMap.put("Text16", "2020.9.21");
-        paraMap.put("Text17", "202009211128");
-        paraMap.put("Text18", "章");
-        paraMap.put("Text19", "陈槿一");
-        paraMap.put("Text23", "码");
-        paraMap.put("Text24", "2021");
-        paraMap.put("Text25", "叁万");
+        paraMap.put("Text16", "英语");
+        paraMap.put("Text17", "英语");
+        paraMap.put("Text18", "英语");
+        paraMap.put("Text19", "龙子湖");
+        paraMap.put("Text20", "12345678909");
+        paraMap.put("Text21", "码");
+        paraMap.put("Text22", "胖虎");
 
         try {
 
 //2 读入pdf表单
             PdfReader reader = new PdfReader("D:\\workspace\\education\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\electronicBills.pdf");
 //3 根据表单生成一个新的pdf
-            // 获得当前时间
-            DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-            // 转换为字符串
-            String formatDate = format.format(new Date());
-            // 随机生成文件编号
-            int random = new Random().nextInt(10000);
-            StringBuffer sr=new StringBuffer();
-            sr.append(formatDate);
-            sr.append(random);
-            sr.toString();
-            PdfStamper ps = new PdfStamper(reader, new FileOutputStream("D:\\pdf\\"+sr+".pdf"));
+            File file= new File("D:\\pdf\\bi.pdf");
+            if(file.exists()){
+                file.delete();
+                file.createNewFile();
+            }else{
+                file.createNewFile();
+            };
+            PdfStamper ps = new PdfStamper(reader, new FileOutputStream(file));
  //4 获取pdf表单
             AcroFields s = ps.getAcroFields();
 //5给表单添加中文字体 这里采用系统字体。不设置的话，中文可能无法显示
