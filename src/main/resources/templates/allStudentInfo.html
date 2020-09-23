@@ -24,49 +24,119 @@
     <!-- Custom and plugin javascript -->
     <script th:src="@{/js/inspinia.js}"></script>
     <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
-    <script>
-        $(function(){
+    <script type="text/javascript">
+        $(function () {
             var name = param("username");
             $("#name").html(name);
             $("#add").click(function () {
                 window.location.href = '/zhongsheng/student/toAddStudent';
             });
         });
-
-        function param(key){
-            var reg = new RegExp("(^|&)"+key+"=([^&]*)(&|$)");
+        function param(key) {
+            var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
             var result = window.location.search.substr(1).match(reg);
-            return result?decodeURIComponent(result[2]):null;
+            return result ? decodeURIComponent(result[2]) : null;
         }
-
-        layui.use('table', function(){
-            var table = layui.table;
-
+    </script>
+    <script>
+        layui.use(['form', 'table','laydate'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                table = layui.table,
+                laydate=layui.laydate;
             //第一个实例
             table.render({
                 elem: '#demo'
-                ,height: 312
-                ,url: '/zhongsheng/student/allStudentInfo' //数据接口
-                ,page: true //开启分页
-                ,cols: [
+                , height: 312
+                , url: '/zhongsheng/student/allStudentInfo' //数据接口
+                , page: true //开启分页
+                , cols: [
                     [//表头
-                    {field: 'sid', title: '学号', width:110, sort: true, fixed: 'left'}
-                    ,{field: 'sname', title: '姓名', width:102}
-                    ,{field: 'sex', title: '性别', width:97, sort: true}
-                    ,{field: 'major', title: '专业', width:102}
-                    ,{field: 'signupdate', title: '报名日期', width:120
-                        ,templet:'<div>{{ layui.util.toDateString(d.signupdate, "yyyy-MM-dd") }}</div>'}
-                    ,{field: 'paymethod', title: '缴费方式', width:100}
-                    ,{field: 'phone', title: '联系方式', width: 150}
-                    ,{field: 'classes', title: '班次', width: 115, sort: true}
-                    ,{field: 'intentionmajor', title: '意向专业', width: 100, sort: true}
-                    ,{field: 'score', title: '积分', width: 82}
-                    ,{field: 'wealth', title: '操作', width: 135, sort: true ,toolbar: '#tableBtn', align: 'center'}
-                ]
+                        {field: 'sid', title: '学号', width: 110, sort: true, fixed: 'left'}
+                        , {field: 'sname', title: '姓名', width: 102}
+                        , {field: 'sex', title: '性别', width: 97, sort: true}
+                        , {field: 'major', title: '专业', width: 102}
+                        , {
+                        field: 'signupdate', title: '报名日期', width: 120
+                        , templet: '<div>{{ layui.util.toDateString(d.signupdate, "yyyy-MM-dd") }}</div>'
+                    }
+                        , {field: 'paymethod', title: '缴费方式', width: 100}
+                        , {field: 'phone', title: '联系方式', width: 150}
+                        , {field: 'classes', title: '班次', width: 115, sort: true}
+                        , {field: 'intentionmajor', title: '意向专业', width: 100, sort: true}
+                        , {field: 'score', title: '积分', width: 82}
+                        , {field: 'wealth', title: '操作', width: 135, sort: true, toolbar: '#tableBtn', align: 'center'}
+                    ]
                 ]
             });
 
+            // 监听搜索操作
+            form.on('submit(data-search-btn)', function (data) {
+                //执行重载
+                table.reload('demo', {
+                    where:data.field
+                });
+                return false;
+            });
+
+
+            //下拉框
+            form.on('select(modules)', function (data) {
+                if (data.value==1){
+                    $("#keyword").empty();
+                    $("#keyword").append("<input type=\"text\" name=\"keyword\"  required lay-verify=\"required\" placeholder=\"请输入姓名\"\n" +
+                        "                           autocomplete=\"off\" class=\"layui-input\" style=\"width: 400px\">");
+                }
+                if (data.value==2){
+                    $("#keyword").empty();
+                    var str="<select name='keyword'  style='width: 200px;' class='layui-form-select'>"
+                    $.ajax({
+                        type:"post",
+                        url:"../../afterSell/selectUser.do",
+                        contentType:"application/json",
+                        success:function (data) {
+                            str+="<option value='0'>请选择班次</option>";
+                            for (var i=0;i<data.length;i++){
+                                str+="<option value='"+data[i].username+"'>"+data[i].username+"</option>";
+                            }
+                            str+="</select>";
+                            $("#keyword").append(str);
+                            form.render();
+                        }
+                    });
+                }
+                if (data.value == 3) {
+                    $("#keyword").empty();
+                    $("#keyword").append(" <input type='text'  class='layui-input' id='textTime' placeholder='yyyy'>");
+                    //年选择器
+                    laydate.render({
+                        elem: '#textTime'
+                        ,type: 'year'
+                    });
+                    form.render();
+                }
+                if (data.value == 4) {
+                    $("#keyword").empty();
+                    var str="<select name='keyword'  style='width: 200px;' class='layui-form-select'>"
+                    $.ajax({
+                        type:"post",
+                        url:"../../afterSell/selectUser.do",
+                        contentType:"application/json",
+                        success:function (data) {
+                            str+="<option value='0'>请选择考试科目</option>";
+                            for (var i=0;i<data.length;i++){
+                                str+="<option value='"+data[i].username+"'>"+data[i].username+"</option>";
+                            }
+                            str+="</select>";
+                            $("#keyword").append(str);
+                            form.render();
+                        }
+                    });
+                }
+            });
+
         });
+
     </script>
 
     <script type="text/html" id="tableBtn">
@@ -77,7 +147,7 @@
 
 <body>
 
-    <div id="wrapper">
+<div id="wrapper">
 
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
@@ -97,110 +167,126 @@
                         IN+
                     </div>
                 </li>
-               
+
                 <li class="active">
-                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">管理</span><span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">管理</span><span
+                            class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class="active"><a href="table_data_tables.html">学生信息管理</a></li>
                     </ul>
                 </li>
-               
+
             </ul>
 
         </div>
     </nav>
 
-        <div id="page-wrapper" class="gray-bg">
+    <div id="page-wrapper" class="gray-bg">
         <div class="row border-bottom">
-        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-        </div>
-            <ul class="nav navbar-top-links navbar-right">
-                <li>
-                    <span class="m-r-sm text-muted welcome-message">欢迎来到中升教育管理后台</span>
-                </li>
-              
-
-                <li>
-                    <a href="login.html">
-                        <i class="fa fa-sign-out"></i> 注销
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i>
                     </a>
-                </li>
-            </ul>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message">欢迎来到中升教育管理后台</span>
+                    </li>
+                    <li>
+                        <a href="login.html">
+                            <i class="fa fa-sign-out"></i> 注销
+                        </a>
+                    </li>
+                </ul>
 
-        </nav>
+            </nav>
         </div>
 
-            <div class="row wrapper border-bottom white-bg page-heading">
-                <div class="col-lg-10">
-                    <h2>&nbsp;</h2>
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="index.html">主页</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            <strong>学生基本信息</strong>
-                        </li>
-                    </ol>
-                </div>
-                <div class="col-lg-2">
-
-                </div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>&nbsp;</h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="index.html">主页</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <strong>学生基本信息</strong>
+                    </li>
+                </ol>
             </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
 
 
         <div class="wrapper wrapper-content animated fadeInRight">
 
             <!--搜索框-->
             <div class="row layui-form-item">
-                <form role="search" class="layui-form" action="search_results.html">
-                    <label class="layui-form-label">搜索框</label>
-                    <div class="layui-input-inline">
-                        <input type="text" placeholder="请输入搜索内容" class="layui-input" name="top-search" id="top-search">
+                <form class="layui-form layui-form-pane">
+                    <div class="layui-form-item" id="search">
+                            <div class="layui-input-inline">
+                                <select name="modules"  lay-filter="modules" lay-verify="required" class="layui-form-select">
+                                    <option value="1">按姓名</option>
+                                    <option value="2">按班次</option>
+                                    <option value="3">按考试年份</option>
+                                    <option value="4">按考试科目</option>
+                                </select>
+                            </div>
+                        <div class="layui-inline" id="keyword">
+                            <input type="text" name="keyword" required lay-verify="required" placeholder="请输入关键字"
+                                   autocomplete="off" class="layui-input" style="width: 300px">
+                        </div>
+                        <div class="layui-inline">
+                            <button class="layui-btn layui-btn-primary" lay-submit
+                                    lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
 
             <div class="row">
                 <div class="col-lg-12">
-                <div class="ibox ">
-                    <div class="ibox-title">
-                        <h5>学生基本信息</h5>
-                        <div class="ibox-tools">
-                            <button type="button" id="add" class="layui-btn  layui-btn-warm layui-btn-xs" style="margin-right: 40px;">添加学生信息</button>
+                    <div class="ibox ">
+                        <div class="ibox-title">
+                            <h5>学生基本信息</h5>
+                            <div class="ibox-tools">
+                                <button type="button" id="add" class="layui-btn  layui-btn-warm layui-btn-xs"
+                                        style="margin-right: 40px;">添加学生信息
+                                </button>
+                            </div>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up" style="padding-top: 5px;"></i>
+                                </a>
+                                <a class="close-link" style="padding-top: 5px;">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
                         </div>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up" style="padding-top: 5px;"></i>
-                            </a>
-                            <a class="close-link" style="padding-top: 5px;">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
+                        <div class="ibox-content">
 
-                        <div class="table-responsive">
-                            <table  id="demo" lay-filter="test"></table>
+                            <div class="table-responsive">
+                                <table id="demo" lay-filter="test"></table>
+                            </div>
                         </div>
-
                     </div>
                 </div>
-            </div>
             </div>
         </div>
         <div class="footer">
             <div class="float-right">
-                 <strong>2.9.2 inspinia</strong>
+                <strong>2.9.2 inspinia</strong>
             </div>
             <div>
                 <strong>Copyright</strong> inspinia 2.9.2 &copy; 2014-2018
             </div>
         </div>
 
-        </div>
-        </div>
+    </div>
+</div>
 
 
 </body>
