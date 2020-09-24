@@ -14,6 +14,7 @@ public class PDF2IMAGE {
         pdf2Image("D:\\pdf\\bi.pdf", "D:\\pdf", 300);
     }
 
+
     /***
      * PDF文件转PNG图片，全部页数
      *
