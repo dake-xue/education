@@ -9,7 +9,7 @@ public interface StudentService {
 
     public User selectWho(Integer username,String password);
     public Student selectStudent(Integer uid);
-    public List<Student> selectAllStudent(String modules,String keyword);
+    public List<Student> selectAllStudent(String keyword,Integer modules);
     public Integer addScore(Integer sid,Integer scope);
     List<Student> allStudent();
     int addStudentInfo(Student student);

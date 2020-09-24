@@ -52,24 +52,41 @@
                 , page: true //开启分页
                 , cols: [
                     [//表头
-                        {field: 'sid', title: '学号', width: 110, sort: true, fixed: 'left'}
-                        , {field: 'sname', title: '姓名', width: 102}
-                        , {field: 'sex', title: '性别', width: 97, sort: true}
-                        , {field: 'major', title: '专业', width: 102}
-                        , {
-                        field: 'signupdate', title: '报名日期', width: 120
-                        , templet: '<div>{{ layui.util.toDateString(d.signupdate, "yyyy-MM-dd") }}</div>'
-                    }
-                        , {field: 'paymethod', title: '缴费方式', width: 100}
-                        , {field: 'phone', title: '联系方式', width: 150}
-                        , {field: 'classes', title: '班次', width: 115, sort: true}
-                        , {field: 'intentionmajor', title: '意向专业', width: 100, sort: true}
-                        , {field: 'score', title: '积分', width: 82}
-                        , {field: 'wealth', title: '操作', width: 135, sort: true, toolbar: '#tableBtn', align: 'center'}
-                    ]
+                        {field: 'sid', title: '学号', sort: true, fixed: 'left'}
+                        , {field: 'sname', title: '姓名' ,style:"color:#009688"}
+                        , {field: 'sex', title: '性别', sort: true}
+                        , {field: 'phone', title: '联系方式'}
+                        , {field: 'classes', title: '班次'}
+                        , {field: 'signupdate', title: '考试年份'}
+                        , {field: 'intentionmajor', title: '考试科目'}
+                        , {field: 'score', title: '积分',style:"color:#009688"}
+                        , {field: 'score', title: '费用',templet: '#cf'}
+                     ]
                 ]
             });
-
+            // 监听搜索操作
+            form.on('submit(data-search-btn)', function (data) {
+                //执行重载
+                table.reload('currentTableId', {
+                    where:data.field
+                });
+                return false;
+            });
+            //监听行单击事件
+            table.on('row(currentTableFilter)', function (obj) {
+                var data = obj.data;
+                console.log(data);
+                var index = layer.open({
+                    title: data.title,
+                    type: 2,
+                    content: "/zhongsheng/student/studentDetails?sid="+data.sid,
+                    area: ['100%', '100%'],
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            });
             // 监听搜索操作
             form.on('submit(data-search-btn)', function (data) {
                 //执行重载
@@ -78,26 +95,25 @@
                 });
                 return false;
             });
-
-
             //下拉框
             form.on('select(modules)', function (data) {
                 if (data.value==1){
                     $("#keyword").empty();
-                    $("#keyword").append("<input type=\"text\" name=\"keyword\"  required lay-verify=\"required\" placeholder=\"请输入姓名\"\n" +
-                        "                           autocomplete=\"off\" class=\"layui-input\" style=\"width: 400px\">");
+                    $("#keyword").append("<input type='text' name='keyword' placeholder='请输入姓名' autocomplete='off' class='layui-input' style='width: 200px'>");
                 }
                 if (data.value==2){
                     $("#keyword").empty();
-                    var str="<select name='keyword'  style='width: 200px;' class='layui-form-select'>"
+                    var str="<select  style='width: 200px;' name='keyword' class='layui-form-select'>"
                     $.ajax({
                         type:"post",
-                        url:"../../afterSell/selectUser.do",
-                        contentType:"application/json",
+                        url: '/zhongsheng/table/all',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data:{"tableName":"classes_dic"},
+                        dataType:"json",
                         success:function (data) {
                             str+="<option value='0'>请选择班次</option>";
                             for (var i=0;i<data.length;i++){
-                                str+="<option value='"+data[i].username+"'>"+data[i].username+"</option>";
+                                str+="<option value='"+data[i].name+"'>"+data[i].name+"</option>";
                             }
                             str+="</select>";
                             $("#keyword").append(str);
@@ -107,7 +123,7 @@
                 }
                 if (data.value == 3) {
                     $("#keyword").empty();
-                    $("#keyword").append(" <input type='text'  class='layui-input' id='textTime' placeholder='yyyy'>");
+                    $("#keyword").append(" <input type='text' name='keyword' style='width: 200px;'  class='layui-input' id='textTime' placeholder='yyyy'>");
                     //年选择器
                     laydate.render({
                         elem: '#textTime'
@@ -120,12 +136,14 @@
                     var str="<select name='keyword'  style='width: 200px;' class='layui-form-select'>"
                     $.ajax({
                         type:"post",
-                        url:"../../afterSell/selectUser.do",
-                        contentType:"application/json",
+                        url: '/zhongsheng/table/all',
+                        contentType: 'application/x-www-form-urlencoded',
+                        data:{"tableName":"subject_dic"},
+                        dataType:"json",
                         success:function (data) {
                             str+="<option value='0'>请选择考试科目</option>";
                             for (var i=0;i<data.length;i++){
-                                str+="<option value='"+data[i].username+"'>"+data[i].username+"</option>";
+                                str+="<option value='"+data[i].name+"'>"+data[i].name+"</option>";
                             }
                             str+="</select>";
                             $("#keyword").append(str);
@@ -134,15 +152,16 @@
                     });
                 }
             });
-
         });
 
     </script>
-
-    <script type="text/html" id="tableBtn">
-        <a href="#{{d.sid}}" class="layui-btn layui-btn-xs">详情</a>
+    <script type="text/html" id="cf">
+        {{#  if(d.openMoney == null){ }}
+        <span style="color: #1eacae">已交完</span>
+        {{#  } else { }}
+        <span style="color: #bd2130">未交完</span>
+        {{#  } }}
     </script>
-
 </head>
 
 <body>
@@ -227,7 +246,7 @@
                 <form class="layui-form layui-form-pane">
                     <div class="layui-form-item" id="search">
                             <div class="layui-input-inline">
-                                <select name="modules"  lay-filter="modules" lay-verify="required" class="layui-form-select">
+                                <select name="modules"  lay-filter="modules" class="layui-form-select">
                                     <option value="1">按姓名</option>
                                     <option value="2">按班次</option>
                                     <option value="3">按考试年份</option>
@@ -235,8 +254,7 @@
                                 </select>
                             </div>
                         <div class="layui-inline" id="keyword">
-                            <input type="text" name="keyword" required lay-verify="required" placeholder="请输入关键字"
-                                   autocomplete="off" class="layui-input" style="width: 300px">
+                            <input type="text" name='keyword'  placeholder="请输入姓名" autocomplete="off" class="layui-input" style="width: 300px">
                         </div>
                         <div class="layui-inline">
                             <button class="layui-btn layui-btn-primary" lay-submit
@@ -268,8 +286,8 @@
                         </div>
                         <div class="ibox-content">
 
-                            <div class="table-responsive">
-                                <table id="demo" lay-filter="test"></table>
+                            <div id="tab">
+                                <table id="demo"  class="layui-tab"  lay-filter="currentTableFilter"></table>
                             </div>
                         </div>
                     </div>
@@ -287,7 +305,6 @@
 
     </div>
 </div>
-
 
 </body>
 

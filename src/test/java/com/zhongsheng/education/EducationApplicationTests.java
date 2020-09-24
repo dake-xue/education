@@ -1,6 +1,5 @@
 package com.zhongsheng.education;
 
-import com.zhongsheng.education.entiy.SchoolInfo;
 import com.zhongsheng.education.service.UserService;
 import com.zhongsheng.education.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;

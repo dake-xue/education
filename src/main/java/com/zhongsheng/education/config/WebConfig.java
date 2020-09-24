@@ -21,6 +21,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/student/toAllStudent").setViewName("allStudentInfo");
         //跳转添加学生信息页
         registry.addViewController("/student/toAddStudent").setViewName("addStudent");
+        //跳转学生详情页面
+        registry.addViewController("/student/toStudentDetails").setViewName("studentDetails");
     }
 
     @Autowired

@@ -2,6 +2,7 @@ package com.zhongsheng.education.service.impl;
 
 import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.mapper.StudentMapper;
+import com.zhongsheng.education.service.BillService;
 import com.zhongsheng.education.service.FamilyService;
 import com.zhongsheng.education.service.SchoolService;
 import com.zhongsheng.education.service.StudentService;
@@ -22,7 +23,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private SchoolService schoolService;
-
+    @Autowired
+    private BillService billService;
     @Override
     public User selectWho(Integer username, String password) {
 
@@ -37,13 +39,16 @@ public class StudentServiceImpl implements StudentService {
     */
     @Override
     public Student selectStudent(Integer uid) {
-        return studentMapper.selectStudent(uid);
+        Student student=studentMapper.selectStudent(uid);
+        student.setFamilyInfo(familyService.selectFamilyInfo(uid));
+        student.setSchoolInfo(schoolService.selectSchoolInfo(uid));
+        return student;
     }
 
 
     @Override
-    public List<Student> selectAllStudent(String modules, String keyword) {
-        return studentMapper.selectAllStudent(modules, keyword);
+    public List<Student> selectAllStudent(String keyword,Integer modules) {
+        return studentMapper.selectAllStudent(keyword,modules);
     }
 
 
@@ -52,10 +57,17 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.allStudent();
     }
 
+    //添加学生
     @Override
     public int addStudentInfo(Student student) {
+        //添加联系人
         familyService.addFamilyInfo(student.getFamilyInfo());
         schoolService.addSchoolInfo(student.getSchoolInfo());
+        //生成票据
+
+
+        //插入票据表
+        billService.addBillInfo(student.getBill());
         return studentMapper.addStudentInfo(student);
     }
 

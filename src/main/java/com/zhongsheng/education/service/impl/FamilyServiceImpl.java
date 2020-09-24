@@ -6,14 +6,12 @@ import com.zhongsheng.education.service.FamilyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class FamilyServiceImpl implements FamilyService {
     @Autowired
     FamilyMapper familyMapper;
 
-    public List<FamilyInfo> selectFamilyInfo(Integer sid){
+    public FamilyInfo selectFamilyInfo(Integer sid){
         return familyMapper.selectFamilyInfo(sid);
     }
 
