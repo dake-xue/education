@@ -5,6 +5,15 @@ public class TableDic {
     private String tableName;
     private Integer id;
     private String name;
+    private Integer campus_id;
+
+    public Integer getCampus_id() {
+        return campus_id;
+    }
+
+    public void setCampus_id(Integer campus_id) {
+        this.campus_id = campus_id;
+    }
 
     public String getTableName() {
         return tableName;

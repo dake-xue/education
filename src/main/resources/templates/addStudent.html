@@ -8,150 +8,177 @@
 
     <title>中升学生信息管理后台</title>
 
-	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-	<link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
-	<link th:href="@{/css/animate.css}" rel="stylesheet">
-	<link th:href="@{/css/style.css}" rel="stylesheet">
-	<link th:href="@{/layui/layui.css}" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/layui/layui.css}" rel="stylesheet">
 
-	<!-- Mainly scripts -->
-	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
-	<script th:src="@{/layui/layui.js}"></script>
-	<script th:src="@{/js/popper.min.js}"></script>
-	<script th:src="@{/js/bootstrap.js}"></script>
-	<script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
-	<script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+    <!-- Mainly scripts -->
+    <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
+    <script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+    <script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
 
 
-	<!-- Custom and plugin javascript -->
-	<script th:src="@{/js/inspinia.js}"></script>
-	<script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+    <!-- Custom and plugin javascript -->
+    <script th:src="@{/js/inspinia.js}"></script>
+    <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
 
-	<style>
-		.important:after{
-			content:"*";
-			color:red;
-			position: absolute;
-			top:10px;
-			font-size: 20px;
-			left: 0;
-		}
-		.nobreak{
-			white-space:nowrap!important;
-		}
-		.selectWd{width: 187px;}
-	</style>
+    <style>
+        .important:after {
+            content: "*";
+            color: red;
+            position: absolute;
+            top: 10px;
+            font-size: 20px;
+            left: 0;
+        }
+
+        .nobreak {
+            white-space: nowrap !important;
+        }
+
+        .selectWd {
+            width: 187px;
+        }
+    </style>
     <script>
 
-			//Demo
-		layui.use('form', function(){
-		  var form = layui.form;
-			getClassify("classes_dic","classes");
-			getClassify("campus_dic","campus");
-			getClassify("subject_dic","subject");
-			getClassify("nation_dic","nation");
-			form.verify({
-				chinese: function(value, item){ //value：表单的值、item：表单的DOM对象
-					if(!new RegExp("^[\u4e00-\u9fa5\]+$").test(value)){
-						return '只能是中文';
-					}
+        //Demo
+        layui.use('form', function () {
+            var form = layui.form;
+            getClassify("classes_dic", "classes");
+            getClassify("campus_dic", "campus");
+            getClassify("subject_dic", "subject");
+            //getClassify("nation_dic","nation");
+            form.verify({
+                chinese: function (value, item) { //value：表单的值、item：表单的DOM对象
+                    if (!new RegExp("^[\u4e00-\u9fa5\]+$").test(value)) {
+                        return '只能是中文';
+                    }
 
-				}
-			});
-
-
+                }
+            });
 
 
+            //监听提交
+            form.on('submit(formDemo)', function (data) {
+                var student = data.field;
+                $.ajax({
+                    url: "/zhongsheng/student/addStudent",
+                    type: "POST",
+                    dataType: "text",
+                    data: student,
+                    success: function (data) {
+                        if (data == "1") {
+                            layer.msg('添加成功！', {icon: 6}, {time: 3000});
+                            // 重置清空
+                            $('#form')[0].reset();
+                            form.render();//必须写
+                        } else {
+                            layer.msg('添加失败！', {icon: 5}, {time: 3000});
+                        }
 
-			//监听提交
-		  form.on('submit(formDemo)', function(data){
-			  var student = data.field;
-			  $.ajax({
-				  url:"/zhongsheng/student/addStudent",
-				  type:"POST",
-				  dataType: "text",
-				  data:student,
-				  success: function(data){
-				  	if(data=="1"){
-				  		layer.msg('添加成功！',{icon: 6},{time:3000});
-						// 重置清空
-						$('#form')[0].reset();
-						form.render();//必须写
-				  	}else {
-						layer.msg('添加失败！',{icon: 5},{time:3000});
-					}
+                    }
+                });
+                return false;
+            });
+            // 监听搜索操作
+            form.on('submit(data-search-btn)', function (data) {
+                //执行重载
+                table.reload('demo', {
+                    where: data.field
+                });
+                return false;
+            });
+            //下拉框
+            form.on('select(campus)', function (data) {
+                console.log(data.value);
+                $("#schoolname").empty();
+                var str = "<select name='schoolname' class='layui-form-select'>"
+                $.ajax({
+                    type: "post",
+                    url: '/zhongsheng/table/campusSelectSchool',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: {"campus": data.value},
+                    dataType: "json",
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            str += "<option value='" + data[i].name + "'>" + data[i].name + "</option>";
+                        }
+                        str += "</select>";
+                        $("#schoolname").append(str);
+                        form.render();
+                    }
+                });
+            });
+        });
 
-				  }
-			  });
-		    return false;
-		  });
-		});
 
-		
-		layui.use('laydate', function(){
-		  var laydate = layui.laydate;
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
 
-		  //执行一个laydate实例
-		  laydate.render({
-		    elem: '#giveMoney' //指定元素
-		  });
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#giveMoney' //指定元素
+            });
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#signUp' //指定元素
+            });
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#addMoney' //指定元素
+            });
 
-		  //执行一个laydate实例
-		  laydate.render({
-		    elem: '#signUp' //指定元素
-		  });
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#birthday' //指定元素
+            });
 
-		  //执行一个laydate实例
-		  laydate.render({
-		    elem: '#addMoney' //指定元素
-		  });
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#examinationt' //指定元素
+                , type: 'year'
+            });
 
-		  //执行一个laydate实例
-		  laydate.render({
-		    elem: '#birthday' //指定元素
-		  });
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#admission' //指定元素
+                , type: 'year'
+            });
+        });
 
-			//执行一个laydate实例
-			laydate.render({
-				elem: '#examinationt' //指定元素
-				,type: 'year'
-			});
+        function getClassify(tableName, scId) {
+            $.ajax({
+                type: 'post',
+                url: '/zhongsheng/table/all',
+                contentType: 'application/x-www-form-urlencoded',
+                data: {"tableName": tableName},
+                dataType: "json",
+                success: function (data) {
+                    var str;
+                    for (var i = 0; i < data.length; i++) {
+                        str += "<option value='" + data[i].name + "'>" + data[i].name + "</option>"
+                    }
+                    $("#" + scId + "").html(str);
+                    //重新渲染
+                    layui.form.render("select");
+                }
+            });
 
-			//执行一个laydate实例
-			laydate.render({
-				elem: '#admission' //指定元素
-				,type: 'year'
-			});
-		});
+        }
 
-			function getClassify(tableName,scId){
+    </script>
 
-				$.ajax({
-					type: 'post',
-					url: '/zhongsheng/table/all',
-					contentType: 'application/x-www-form-urlencoded',
-					data:{"tableName":tableName},
-					dataType:"json",
-					success: function (data) {
-						var str;
-						for (var i = 0; i < data.length; i++) {
-							str += "<option value='" + data[i].name + "'>" + data[i].name + "</option>"
-						}
-						$("#"+scId+"").html(str);
-						//重新渲染
-						layui.form.render("select");
-					}
-				});
-
-			}
-
-	</script>
-	
 </head>
 
 <body>
 
-    <div id="wrapper">
+<div id="wrapper">
 
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
@@ -160,7 +187,8 @@
                     <div class="dropdown profile-element">
                         <img alt="image" class="rounded-circle" src="img/profile_small.jpg"/>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="text-muted text-xs block" style="margin-top: 10px;">管理员 <b class="caret"></b></span>
+                            <span class="text-muted text-xs block" style="margin-top: 10px;">管理员 <b
+                                    class="caret"></b></span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a class="dropdown-item" href="login.html">登出</a></li>
@@ -170,410 +198,419 @@
                         IN+
                     </div>
                 </li>
-               
+
                 <li class="active">
-                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">管理</span><span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">管理</span><span
+                            class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class="active"><a href="table_data_tables.html">学生信息管理</a></li>
                     </ul>
                 </li>
-               
+
             </ul>
 
         </div>
     </nav>
 
-        <div id="page-wrapper" class="gray-bg">
+    <div id="page-wrapper" class="gray-bg">
         <div class="row border-bottom">
-        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-        </div>
-            <ul class="nav navbar-top-links navbar-right">
-                <li>
-                    <span class="m-r-sm text-muted welcome-message">欢迎来到中升教育管理后台</span>
-                </li>
-
-            
-                <li>
-                    <a href="login.html">
-                        <i class="fa fa-sign-out"></i> 注销
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i>
                     </a>
-                </li>
-            </ul>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message">欢迎来到中升教育管理后台</span>
+                    </li>
 
-        </nav>
+
+                    <li>
+                        <a href="login.html">
+                            <i class="fa fa-sign-out"></i> 注销
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
         </div>
-            <div class="row wrapper border-bottom white-bg page-heading" style="padding-bottom: 10px;padding-top: 15px;">
-                <div class="col-lg-10">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="index.html">学生基本信息</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            <strong>添加学生信息</strong>
-                        </li>
-                    </ol>
-                </div>
-                <div class="col-lg-2">
-						
-						
-                </div>
+        <div class="row wrapper border-bottom white-bg page-heading" style="padding-bottom: 10px;padding-top: 15px;">
+            <div class="col-lg-10">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="index.html">学生基本信息</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <strong>添加学生信息</strong>
+                    </li>
+                </ol>
             </div>
-            
-            <div class="row wrapper border-bottom white-bg page-heading">
-            	
-            	<form class="layui-form" id="form" style="padding-top: 15px;">
-            		
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label important">姓名</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="sname" required  lay-verify="chinese" placeholder="姓名"
-				      	 autocomplete="off" class="layui-input">
-				    </div>
-				  </div>
-				  
-				<div class="layui-input-inline">
-					<label class="layui-form-label important">性别</label>
-					<div class="layui-input-inline selectWd">
-						<select name="sex" lay-verify="required">
-					        <option value="男">男</option>
-					        <option value="女">女</option>
-					      </select>
-					</div>
-				</div>
+        </div>
 
-				  
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label important">民族</label>
-				    <div class="layui-input-inline selectWd">
-						<select id="nation" name="nation" lay-verify="required">
-						</select>
-				    </div>
-				  </div>
-				  
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label important" style="white-space:nowrap!important;">联系方式</label>
-				    <div class="layui-input-inline">
-				      <input name="phone" class="layui-input" type="text" lay-verify="phone"  placeholder="请输入手机号"
-				      	style="ime-mode:disabled;" maxlength="11"/>
-				    </div>
-				  </div>
-				  
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label important" style="white-space:nowrap!important;">身份证号</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="idcard" required  lay-verify="identity" placeholder="身份证号"
-				      	 autocomplete="off" class="layui-input" maxlength="18">
-				    </div>
-				  </div>
-				  
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label important">生日</label>
-				    <div class="layui-input-inline">
-				      <input type="text" class="layui-input" id="birthday" name="birthday">
-				    </div>
-				  </div>
+        <div class="row wrapper border-bottom white-bg page-heading">
 
-					<div class="layui-input-inline">
-						<label class="layui-form-label important" style="white-space:nowrap!important;">上课校区</label>
-						<div class="layui-input-inline" style="width: 187px;">
-							<select id="campus" name="campus" lay-verify="required">
-							</select>
-						</div>
-					</div>
+            <form class="layui-form" id="form" style="padding-top: 15px;">
+                <font size="4" style="font-weight: bold">基本信息</font>
+                <hr>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important">姓名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="sname" required lay-verify="chinese"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
 
-				   <div class="layui-input-inline">
-				    <label class="layui-form-label important" style="white-space:nowrap!important;">升本专业</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="intentionmajor" required  lay-verify="required" placeholder="升本专业"
-				      	 autocomplete="off" class="layui-input">
-				    </div>
-				  </div>
-				  
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label important" style="white-space:nowrap!important;">专科专业</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="major" required  lay-verify="required" placeholder="专科专业"
-				      	 autocomplete="off" class="layui-input">
-				    </div>
-				  </div>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important">性别</label>
+                    <div class="layui-input-inline selectWd">
+                        <select name="sex" lay-verify="required">
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important" style="white-space:nowrap!important;">联系方式</label>
+                    <div class="layui-input-inline">
+                        <input name="phone" class="layui-input" type="text" lay-verify="phone"
+                               style="ime-mode:disabled;" maxlength="11"/>
+                    </div>
+                </div>
 
-					<div class="layui-input-inline">
-						<label class="layui-form-label important">院系</label>
-						<div class="layui-input-inline">
-							<input type="text" name="department" required  lay-verify="chinese" placeholder="院系"
-								   autocomplete="off" class="layui-input">
-						</div>
-					</div>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important">生日</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="birthday" name="birthday">
+                    </div>
+                </div>
 
-					<div class="layui-input-inline">
-						<label class="layui-form-label important">班级</label>
-						<div class="layui-input-inline">
-							<input type="text" name="" required  lay-verify="required" placeholder="班级"
-								   autocomplete="off" class="layui-input">
-						</div>
-					</div>
 
-					<div class="layui-input-inline">
-						<label class="layui-form-label important" style="white-space:nowrap!important;">考试科目</label>
-						<div class="layui-input-inline layui-form" style="width: 187px;">
-							<select id="subject" name="subject" lay-verify="required">
-							</select>
-						</div>
-					</div>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important" style="white-space:nowrap!important;">身份证号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="idcard" required lay-verify="identity"
+                               autocomplete="off" class="layui-input" maxlength="18">
+                    </div>
+                </div>
 
-					<div class="layui-input-inline">
-						<label class="layui-form-label important">班次</label>
-						<div class="layui-input-inline" style="width: 187px;">
-							<select id="classes" name="classes" lay-verify="required">
-							</select>
-						</div>
-					</div>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important">民族</label>
+                    <div class="layui-input-inline selectWd">
+                        <select id="nation" name="nation" lay-verify="required">
+                        </select>
+                    </div>
+                </div>
+                <hr>
+                <font size="4" style="font-weight: bold">专业信息</font>
+                <hr>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important" style="white-space:nowrap!important;">上课校区</label>
+                    <div class="layui-input-inline selectWd">
+                        <select id="campus" lay-filter="campus" name="campus" lay-verify="required">
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important" style="white-space:nowrap!important;">专科学校</label>
+                    <div class="layui-input-inline selectWd" id="schoolname">
+                        <select placeholder="请先选择校区" lay-verify="required">
+                        </select>
+                    </div>
+                </div>
 
-				  
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label" style="white-space:nowrap!important;">在校职务</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="job" required  lay-verify="" placeholder="在校职务"
-				      	 autocomplete="off" class="layui-input">
-				    </div>
-				  </div>
-				  
-				   <div class="layui-input-inline">
-				    <label class="layui-form-label important" style="white-space:nowrap!important;">专科学校</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="schoolname" required  lay-verify="required" placeholder="专科学校"
-				      	 autocomplete="off" class="layui-input">
-				    </div>
-				  </div>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important" style="white-space:nowrap!important;">升本专业</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="intentionmajor" required lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
 
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label important">公共课</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="publiccours" required  lay-verify="required" placeholder="公共课"
-				      	 autocomplete="off" class="layui-input">
-				    </div>
-				  </div>
-				  
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label important">专业课</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="majorcours" required  lay-verify="required" placeholder="专业课"
-				      	 autocomplete="off" class="layui-input">
-				    </div>
-				  </div>
-				  
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label important" style="white-space:nowrap!important;">校区经理</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="campusmanager" required  lay-verify="required" placeholder="校区经理"
-				      	 autocomplete="off" class="layui-input">
-				    </div>
-				  </div>
-				  
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label" style="white-space:nowrap!important;">校园伙伴</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="campusagent" required  lay-verify="" placeholder="校园伙伴"
-				      	 autocomplete="off" class="layui-input">
-				    </div>
-				  </div>
-				  
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label important" style="white-space:nowrap!important;">报名日期</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="signupdate" class="layui-input" id="signUp">
-				    </div>
-				  </div>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important" style="white-space:nowrap!important;">专科专业</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="major" required lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important" style="white-space:nowrap!important;">考试科目</label>
+                    <div class="layui-input-inline selectWd">
+                        <select id="subject" name="subject" lay-verify="required">
+                        </select>
+                    </div>
+                </div>
 
-					<div class="layui-input-inline important">
-						<label class="layui-form-label" style="white-space:nowrap!important;">考试年份</label>
-						<div class="layui-input-inline">
-							<input type="text" name="examinationtime" class="layui-input" id="examinationt">
-						</div>
-					</div>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important">班次</label>
+                    <div class="layui-input-inline selectWd">
+                        <select id="classes" name="classes" lay-verify="required">
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important">院系</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="department" required lay-verify="chinese"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
 
-					<div class="layui-input-inline important">
-						<label class="layui-form-label" style="white-space:nowrap!important;">入学年份</label>
-						<div class="layui-input-inline">
-							<input type="text" name="admissiontime" class="layui-input" id="admission">
-						</div>
-					</div>
-				  
-				  <div class="layui-input-inline important">
-				    <label class="layui-form-label" style="white-space:nowrap!important;">补费日期</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="addmoneydate" class="layui-input" id="addMoney">
-				    </div>
-				  </div>
-				  
-				  <div class="layui-input-inline important">
-				    <label class="layui-form-label" style="white-space:nowrap!important;">缴费金额</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="money" required  lay-verify="required" placeholder="缴费金额"
-				      	 autocomplete="off" class="layui-input">
-				    </div>
-				  </div>
-				  
-				  <div class="layui-input-inline important">
-				    <label class="layui-form-label" style="white-space:nowrap!important;">缴费方式</label>
-				    <div class="layui-input-inline">
-				      <input type="text" name="paymethod" required  lay-verify="required" placeholder="缴费方式"
-				      	 autocomplete="off" class="layui-input">
-				    </div>
-				  </div>
-				  
-				  <div class="layui-input-inline important">
-				    <label class="layui-form-label nobreak">线上上课</label>
-				    <div class="layui-input-inline selectWd">
-						<select name="onlinenumber" lay-verify="required">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-						</select>
-				    </div>
-				  </div>
-				  
-				  <div class="layui-input-inline important">
-				    <label class="layui-form-label nobreak">线下上课</label>
-				    <div class="layui-input-inline selectWd">
-						<select name="offlinenumber" lay-verify="required">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-						</select>
-					</div>
-				  </div>
-				  
-				  <div class="layui-input-inline">
-				    <label class="layui-form-label " style="white-space:nowrap!important;">收件地址</label>
-				    <div class="layui-input-inline">
-				      <input  name="homeaddress"  class="layui-input" type="text"  placeholder="收件地址"/>
-				    </div>
-				  </div>
-				  <div class="layui-form-item">
-				    <label class="layui-form-label important" style="white-space:nowrap!important;width: 140px;">家属联系方式</label>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important">班级</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="" required lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
 
-					  <div class="layui-input-inline">
-						  <select name="familyInfo.relation" lay-verify="required">
-							  <option value="父亲">父亲</option>
-							  <option value="母亲">母亲</option>
-						  </select>
-					  </div>
 
-						<div class="layui-input-inline">
-						  <input type="text" name="familyInfo.fname" required  lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input">
-						</div>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important">公共课</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="publiccours" required lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
 
-						<div class="layui-input-inline">
-						  <input type="text" name="familyInfo.fphone" required  lay-verify="phone" placeholder="电话" autocomplete="off" class="layui-input">
-						</div>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important">专业课</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="majorcours" required lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
 
-				  </div>
-				  
-				  <div class="layui-form-item">
-				    <label class="layui-form-label important" style="white-space:nowrap!important;width: 140px;">校园联系方式</label>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important" style="white-space:nowrap!important;">校区经理</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="campusmanager" required lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
 
-					  <div class="layui-input-inline">
-						  <div class="layui-input-inline" style="width: 187px;">
-							  <select name="schoolInfo.screlation" lay-verify="required">
-								  <option value="导员">导员</option>
-								  <option value="舍友">舍友</option>
-							  </select>
-						  </div>
-					  </div>
 
-					  <div class="layui-input-inline">
-				      <input type="text" name="schoolInfo.scname" required  lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input">
-					  </div>
+                <div class="layui-input-inline important">
+                    <label class="layui-form-label" style="white-space:nowrap!important;">考试年份</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="examinationtime" class="layui-input" id="examinationt">
+                    </div>
+                </div>
 
-				    <div class="layui-input-inline">
-				      <input type="text" name="schoolInfo.scphone" required  lay-verify="phone" placeholder="电话" autocomplete="off" class="layui-input">
-				    </div>
+                <div class="layui-input-inline important">
+                    <label class="layui-form-label" style="white-space:nowrap!important;">入学年份</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="admissiontime" class="layui-input" id="admission">
+                    </div>
+                </div>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label" style="white-space:nowrap!important;">在校职务</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="job" required lay-verify=""
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label" style="white-space:nowrap!important;">校园伙伴</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="campusagent" required lay-verify=""
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <hr>
+                <font size="4" style="font-weight: bold">缴费信息</font>
+                <hr>
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important" style="white-space:nowrap!important;">报名日期</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="signupdate" class="layui-input" id="signUp">
+                    </div>
+                </div>
+                <div class="layui-input-inline important">
+                    <label class="layui-form-label" style="white-space:nowrap!important;">缴费方式</label>
+                    <div class="layui-input-inline selectWd">
+                        <select id="cindustry" name="paymethod" class="layui-form-select">
+                            <option value="现金">现金</option>
+                            <option value="网银">网银</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-input-inline important">
+                    <label class="layui-form-label" style="white-space:nowrap!important;">学费</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="money" required lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-input-inline important">
+                    <label class="layui-form-label" style="white-space:nowrap!important;">缴费金额</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="bill.paymentAmount" required lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-input-inline important">
+                    <label class="layui-form-label" style="white-space:nowrap!important;">补费日期</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="addmoneydate" class="layui-input" id="addMoney">
+                    </div>
+                </div>
 
-				  </div>
-				  
-				  
-				  
-				  <div class="layui-form-item layui-form-text">
-				    <label class="layui-form-label">备注</label>
-				    <div class="layui-input-block">
-				      <textarea name="remarks" placeholder="请输入内容" class="layui-textarea"></textarea>
-				    </div>
-				  </div>
-				  <div class="layui-form-item">
-				    <div class="layui-input-block">
-				      <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
-				      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-				    </div>
-				  </div>
-				</form>
-            	
-            </div>
-            
+
+                <div class="layui-input-inline important">
+                    <label class="layui-form-label nobreak">线上上课</label>
+                    <div class="layui-input-inline selectWd">
+                        <select name="onlinenumber" lay-verify="required">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-input-inline important">
+                    <label class="layui-form-label nobreak">线下上课</label>
+                    <div class="layui-input-inline selectWd">
+                        <select name="offlinenumber" lay-verify="required">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select>
+                    </div>
+                </div>
+                <hr>
+                <font size="4" style="font-weight: bold">附加信息</font>
+                <hr>
+                <div class="layui-form-item">
+                    <label class="layui-form-label important"
+                           style="white-space:nowrap!important;width: 140px;">家属联系方式</label>
+
+                    <div class="layui-input-inline">
+                        <select name="familyInfo.relation" lay-verify="required">
+                            <option value="父亲">父亲</option>
+                            <option value="母亲">母亲</option>
+                        </select>
+                    </div>
+
+                    <div class="layui-input-inline">
+                        <input type="text" name="familyInfo.fname" required lay-verify="required" placeholder="姓名"
+                               autocomplete="off" class="layui-input">
+                    </div>
+
+                    <div class="layui-input-inline">
+                        <input type="text" name="familyInfo.fphone" required lay-verify="phone" placeholder="电话"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                    <label class="layui-form-label " style="white-space:nowrap!important;">收件地址</label>
+                    <div class="layui-input-inline">
+                        <input name="homeaddress" class="layui-input" type="text"/>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label important"
+                           style="white-space:nowrap!important;width: 140px;">校园联系方式</label>
+
+                    <div class="layui-input-inline">
+                        <div class="layui-input-inline" style="width: 187px;">
+                            <select name="schoolInfo.screlation" lay-verify="required">
+                                <option value="导员">导员</option>
+                                <option value="舍友">舍友</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-input-inline">
+                        <input type="text" name="schoolInfo.scname" required lay-verify="required" placeholder="姓名"
+                               autocomplete="off" class="layui-input">
+                    </div>
+
+                    <div class="layui-input-inline">
+                        <input type="text" name="schoolInfo.scphone" required lay-verify="phone" placeholder="电话"
+                               autocomplete="off" class="layui-input">
+                    </div>
+
+                </div>
+
+
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block">
+                        <textarea name="remarks" placeholder="请输入内容" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
         <div class="footer">
             <div style="text-align: center;">
                 <strong>Copyright</strong> inspinia 2.9.2 &copy; 2014-2018
             </div>
         </div>
 
-        </div>
-        </div>
+    </div>
+</div>
 
 
+<!-- Mainly scripts -->
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-    <!-- Mainly scripts -->
-    <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<!-- Custom and plugin javascript -->
+<script src="js/inspinia.js"></script>
+<script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- Custom and plugin javascript -->
-    <script src="js/inspinia.js"></script>
-    <script src="js/plugins/pace/pace.min.js"></script>
+<!-- Page-Level Scripts -->
+<script>
+    $(document).ready(function () {
+        $('.dataTables-example').DataTable({
+            pageLength: 25,
+            responsive: true,
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                {extend: 'copy'},
+                {extend: 'csv'},
+                {extend: 'excel', title: 'ExampleFile'},
+                {extend: 'pdf', title: 'ExampleFile'},
 
-    <!-- Page-Level Scripts -->
-    <script>
-        $(document).ready(function(){
-            $('.dataTables-example').DataTable({
-                pageLength: 25,
-                responsive: true,
-                dom: '<"html5buttons"B>lTfgitp',
-                buttons: [
-                    { extend: 'copy'},
-                    {extend: 'csv'},
-                    {extend: 'excel', title: 'ExampleFile'},
-                    {extend: 'pdf', title: 'ExampleFile'},
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
 
-                    {extend: 'print',
-                     customize: function (win){
-                            $(win.document.body).addClass('white-bg');
-                            $(win.document.body).css('font-size', '10px');
-
-                            $(win.document.body).find('table')
-                                    .addClass('compact')
-                                    .css('font-size', 'inherit');
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
                     }
-                    }
-                ]
-
-            });
+                }
+            ]
 
         });
 
-    </script>
+    });
+
+</script>
 
 </body>
 

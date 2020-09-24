@@ -23,5 +23,9 @@ public interface TableDicMapper {
     @Insert("insert into ${tableName} (name) values (#{name})")
     Integer add(TableDic tableDic);
 
+    @Select("select * from campus_dic where name=#{campus}")
+    TableDic selectCampusId(String campus);
 
+    @Select("select * from training_school_dic where campus_id=#{id}")
+    List<TableDic> campusSelectSchool(Integer id);
 }

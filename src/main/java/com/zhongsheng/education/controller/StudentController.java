@@ -1,8 +1,6 @@
 package com.zhongsheng.education.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.zhongsheng.education.entiy.FamilyInfo;
-import com.zhongsheng.education.entiy.SchoolInfo;
 import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.service.FamilyService;
 import com.zhongsheng.education.service.SchoolService;
@@ -10,7 +8,6 @@ import com.zhongsheng.education.service.StudentService;
 import com.zhongsheng.education.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,14 +46,10 @@ public class StudentController {
     }
     //学生详情页面
     @RequestMapping("/studentDetails")
-    public String studentDetails(Integer sid, Model model) {
+    @ResponseBody
+    public String studentDetails(Integer sid) {
         Student student = studentService.selectStudent(sid);
-        List<FamilyInfo> familyInfoList = familyService.selectFamilyInfo(sid);
-        List<SchoolInfo> schoolInfoList =schoolService.selectInfoInfo(sid);
-        model.addAttribute("student",student);
-        model.addAttribute("family",familyInfoList);
-        model.addAttribute("school",schoolInfoList);
-        return "";
+        return JSON.toJSONString(student);
     };
 
     /**

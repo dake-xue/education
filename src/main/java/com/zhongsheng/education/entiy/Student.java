@@ -75,7 +75,16 @@ public class Student {
     private FamilyInfo familyInfo;
     //学校联系方式
     private SchoolInfo schoolInfo;
+    //票据
+    private Bill bill;
 
+    public Bill getBill() {
+        return bill;
+    }
+
+    public void setBill(Bill bill) {
+        this.bill = bill;
+    }
 
     public FamilyInfo getFamilyInfo() {
         return familyInfo;

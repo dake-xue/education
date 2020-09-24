@@ -33,4 +33,12 @@ public class TableDicServiceImpl implements TableDicService {
     public Integer add(TableDic tableDic) {
         return tableDicMapper.add(tableDic);
     }
+
+    public TableDic  selectCampusId(String campus){
+        return tableDicMapper.selectCampusId(campus);
+    };
+
+    public List<TableDic> campusSelectSchool(Integer id){
+        return tableDicMapper.campusSelectSchool(id);
+    };
 }

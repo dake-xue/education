@@ -52,24 +52,41 @@
                 , page: true //开启分页
                 , cols: [
                     [//表头
-                        {field: 'sid', title: '学号', width: 110, sort: true, fixed: 'left'}
-                        , {field: 'sname', title: '姓名', width: 102}
-                        , {field: 'sex', title: '性别', width: 97, sort: true}
-                        , {field: 'major', title: '专业', width: 102}
-                        , {
-                        field: 'signupdate', title: '报名日期', width: 120
-                        , templet: '<div>{{ layui.util.toDateString(d.signupdate, "yyyy-MM-dd") }}</div>'
-                    }
-                        , {field: 'paymethod', title: '缴费方式', width: 100}
-                        , {field: 'phone', title: '联系方式', width: 150}
-                        , {field: 'classes', title: '班次', width: 115, sort: true}
-                        , {field: 'intentionmajor', title: '意向专业', width: 100, sort: true}
-                        , {field: 'score', title: '积分', width: 82}
-                        , {field: 'wealth', title: '操作', width: 135, sort: true, toolbar: '#tableBtn', align: 'center'}
-                    ]
+                        {field: 'sid', title: '学号', sort: true, fixed: 'left'}
+                        , {field: 'sname', title: '姓名' ,style:"color:#009688"}
+                        , {field: 'sex', title: '性别', sort: true}
+                        , {field: 'phone', title: '联系方式'}
+                        , {field: 'classes', title: '班次'}
+                        , {field: 'signupdate', title: '考试年份'}
+                        , {field: 'intentionmajor', title: '考试科目'}
+                        , {field: 'score', title: '积分',style:"color:#009688"}
+                        , {field: 'score', title: '费用',templet: '#cf'}
+                     ]
                 ]
             });
-
+            // 监听搜索操作
+            form.on('submit(data-search-btn)', function (data) {
+                //执行重载
+                table.reload('currentTableId', {
+                    where:data.field
+                });
+                return false;
+            });
+            //监听行单击事件
+            table.on('row(currentTableFilter)', function (obj) {
+                var data = obj.data;
+                console.log(data);
+                var index = layer.open({
+                    title: data.title,
+                    type: 2,
+                    content: "/zhongsheng/student/studentDetails?sid="+data.sid,
+                    area: ['100%', '100%'],
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            });
             // 监听搜索操作
             form.on('submit(data-search-btn)', function (data) {
                 //执行重载
@@ -78,8 +95,6 @@
                 });
                 return false;
             });
-
-
             //下拉框
             form.on('select(modules)', function (data) {
                 if (data.value==1){
@@ -140,11 +155,13 @@
         });
 
     </script>
-
-    <script type="text/html" id="tableBtn">
-        <a href="#{{d.sid}}" class="layui-btn layui-btn-xs">详情</a>
+    <script type="text/html" id="cf">
+        {{#  if(d.openMoney == null){ }}
+        <span style="color: #1eacae">已交完</span>
+        {{#  } else { }}
+        <span style="color: #bd2130">未交完</span>
+        {{#  } }}
     </script>
-
 </head>
 
 <body>
@@ -269,8 +286,8 @@
                         </div>
                         <div class="ibox-content">
 
-                            <div class="table-responsive">
-                                <table id="demo" lay-filter="test"></table>
+                            <div id="tab">
+                                <table id="demo"  class="layui-tab"  lay-filter="currentTableFilter"></table>
                             </div>
                         </div>
                     </div>

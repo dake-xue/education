@@ -15,4 +15,8 @@ public interface TableDicService{
     Integer update(TableDic tableDic);
 
     Integer add(TableDic tableDic);
+    TableDic selectCampusId(String campus);
+    List<TableDic> campusSelectSchool(Integer id);
+
+
 }

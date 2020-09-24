@@ -23,4 +23,13 @@ public class TableDicController {
         List<TableDic> tableDicList = tableDicService.searchAll(tableDic);
         return JSON.toJSONString(tableDicList);
     }
+
+    //根据校区查询学校
+    @RequestMapping("/campusSelectSchool")
+    public String campusSelectSchool(String campus){
+        System.out.println("campus--------------"+campus);
+        TableDic tableDic=tableDicService.selectCampusId(campus);
+        List<TableDic> tableDicList=tableDicService.campusSelectSchool(tableDic.getId());
+        return JSON.toJSONString(tableDicList);
+    }
 }
