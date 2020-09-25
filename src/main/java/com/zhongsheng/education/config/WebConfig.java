@@ -46,7 +46,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginHandIterceptor()).addPathPatterns("/**")
                 .excludePathPatterns("/static/**","/user/**",
                         "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg",
-                        "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/**/*.svg");
+                        "/**/*.jpeg", "/**/*.gif", "/**/fonts/*");
     }
 
 
