@@ -19,8 +19,8 @@ public class BillServiceImpl implements BillService {
     }
 
     //查询总金额
-    public Integer selectJine(Integer sid){
-        List<Bill> bills = billMapper.selectBill(sid);
+    public Integer selectJine(String snum){
+        List<Bill> bills = billMapper.selectBill(snum);
         Integer m = 0;
         for (int i = 0; i < bills.size(); i++) {
             m += bills.get(i).getPaymentAmount();
@@ -29,8 +29,8 @@ public class BillServiceImpl implements BillService {
         return m;
     };
 
-    public List<Bill> selectBill(Integer sid){
-        return billMapper.selectBill(sid);
+    public List<Bill> selectBill(String snum){
+        return billMapper.selectBill(snum);
     };
 
 }

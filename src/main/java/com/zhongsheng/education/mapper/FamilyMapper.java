@@ -11,6 +11,6 @@ public interface FamilyMapper {
     @Insert("insert into familyinfo(fname,relation,fphone,snum) values(#{fname},#{relation},#{fphone},#{snum})")
     public int addFamilyInfo(FamilyInfo familyinfo);
 
-    @Select("select * from familyinfo where sfid=#{snum}")
+    @Select("select * from familyinfo where snum=#{snum}")
     public FamilyInfo selectFamilyInfo(String snum);
 }

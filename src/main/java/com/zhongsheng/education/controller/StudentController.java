@@ -11,6 +11,7 @@ import com.zhongsheng.education.service.*;
 import com.zhongsheng.education.util.DataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -57,10 +58,10 @@ public class StudentController {
     }
     //学生详情页面
     @RequestMapping("/studentDetails")
-    @ResponseBody
-    public String studentDetails(String snum) {
+    public String studentDetails(String snum , Model model) {
         Student student = studentService.selectStudent(snum);
-        return JSON.toJSONString(student);
+        model.addAttribute("student",student);
+        return "studentDetails";
     }
 
     ;
@@ -95,7 +96,7 @@ public class StudentController {
         String year = new SimpleDateFormat("yy", Locale.CHINESE).format(new Date());
         String num="0001";
         Integer in=studentService.selectXuHao(student.getCampusid());
-        Integer n=0;
+        Integer n=1;
         if (in!=null && !" ".equals(in)){
              n=in+1;
              num=String.format("%04d",n);

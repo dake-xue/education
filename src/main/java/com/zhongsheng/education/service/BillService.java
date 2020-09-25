@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface BillService {
     int addBillInfo(Bill bill);
-    Integer selectJine(Integer sid);
-    List<Bill> selectBill(Integer sid);
+    Integer selectJine(String sid);
+    List<Bill> selectBill(String snum);
 }

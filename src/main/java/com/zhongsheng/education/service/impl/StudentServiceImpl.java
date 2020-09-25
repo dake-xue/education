@@ -45,7 +45,7 @@ public class StudentServiceImpl implements StudentService {
         student.setFamilyInfo(familyService.selectFamilyInfo(student.getSnum()));
         student.setSchoolInfo(schoolService.selectSchoolInfo(student.getSnum()));
         //票据
-        student.setBillList(billService.selectBill(student.getSid()));
+        student.setBillList(billService.selectBill(student.getSnum()));
 
         return student;
     }
