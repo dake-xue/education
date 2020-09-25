@@ -53,14 +53,26 @@
             getClassify("classes_dic", "classes");
             getClassify("campus_dic", "campus");
             getClassify("subject_dic", "subject");
-            //getClassify("nation_dic","nation");
+            getClassify("nation_dic","nation");
             form.verify({
                 chinese: function (value, item) { //value：表单的值、item：表单的DOM对象
                     if (!new RegExp("^[\u4e00-\u9fa5\]+$").test(value)) {
+
                         return '只能是中文';
                     }
-
+                },
+                double: function(value){
+                    if(/^\d+$/.test(value)==false && /^\d+\.\d+$/.test(value)==false)
+                    {
+                        return '你输入的不是数字';
+                    }else if(!value.replace(/[^\d]|^[0]/g,'')){
+                        return '不能以0开头';
+                    }
                 }
+                ,lgh: [
+                    /^[\S]{2,5}$/
+                    ,'姓名不合法'
+                ]
             });
 
 
@@ -184,15 +196,12 @@
         <div class="sidebar-collapse">
             <ul class="nav metismenu" id="side-menu">
                 <li class="nav-header">
-                    <div class="dropdown profile-element">
-                        <img alt="image" class="rounded-circle" src="img/profile_small.jpg"/>
+                    <div class="dropdown profile-element jz">
+                        <img alt="image" class="rounded-circle" th:src="@{/img/touxiang.png}" height="60px"/>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="text-muted text-xs block" style="margin-top: 10px;">管理员 <b
+                            <span th:text="${session.user.name}" class="text-muted text-xs block" style="margin-top: 10px;"><b
                                     class="caret"></b></span>
                         </a>
-                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a class="dropdown-item" href="login.html">登出</a></li>
-                        </ul>
                     </div>
                     <div class="logo-element">
                         IN+
@@ -200,10 +209,11 @@
                 </li>
 
                 <li class="active">
-                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">管理</span><span
+                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class="active"><a href="table_data_tables.html">学生信息管理</a></li>
+                        <li class=""><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
+                        <li  class="active"><a th:href="@{/student/toAddStudent}">添加学生信息</a></li>
                     </ul>
                 </li>
 
@@ -226,7 +236,7 @@
 
 
                     <li>
-                        <a href="login.html">
+                        <a th:href="@{/user/loginOut}">
                             <i class="fa fa-sign-out"></i> 注销
                         </a>
                     </li>
@@ -255,7 +265,7 @@
                 <div class="layui-input-inline">
                     <label class="layui-form-label important">姓名</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="sname" required lay-verify="chinese"
+                        <input type="text" name="sname" required lay-verify="chinese|lgh"
                                autocomplete="off" class="layui-input">
                     </div>
                 </div>
@@ -438,14 +448,14 @@
                 <div class="layui-input-inline important">
                     <label class="layui-form-label" style="white-space:nowrap!important;">学费</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="money" required lay-verify="required"
+                        <input type="text" name="money" required lay-verify="double"
                                autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-input-inline important">
                     <label class="layui-form-label" style="white-space:nowrap!important;">缴费金额</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="bill.paymentAmount" required lay-verify="required"
+                        <input type="text" name="bill.paymentAmount" required lay-verify="double"
                                autocomplete="off" class="layui-input">
                     </div>
                 </div>
@@ -509,11 +519,11 @@
 
                     <div class="layui-input-inline">
                         <input type="text" name="familyInfo.fphone" required lay-verify="phone" placeholder="电话"
-                               autocomplete="off" class="layui-input">
+                               autocomplete="off" class="layui-input" maxlength="11">
                     </div>
                     <label class="layui-form-label " style="white-space:nowrap!important;">收件地址</label>
                     <div class="layui-input-inline">
-                        <input name="homeaddress" class="layui-input" type="text"/>
+                        <input name="homeaddress" class="layui-input" type="text" lay-verify="chinese"/>
                     </div>
                 </div>
 
@@ -537,7 +547,7 @@
 
                     <div class="layui-input-inline">
                         <input type="text" name="schoolInfo.scphone" required lay-verify="phone" placeholder="电话"
-                               autocomplete="off" class="layui-input">
+                               autocomplete="off" class="layui-input" maxlength="11">
                     </div>
 
                 </div>

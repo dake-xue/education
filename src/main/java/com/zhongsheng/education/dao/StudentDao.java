@@ -2,7 +2,7 @@ package com.zhongsheng.education.dao;
 
 public class StudentDao {
 
-    public String selectAllStudent(String keyword, Integer modules) {
+    public String selectAllStudent(String keyword, Integer modules,Integer page,Integer limit) {
         StringBuffer sql = new StringBuffer("select * from student where 1=1 ");
         //姓名
         if (modules!=null && modules.equals(1) && !"".equals(keyword) && keyword!="") {
@@ -20,6 +20,8 @@ public class StudentDao {
         else if (modules!=null && modules.equals(4) && !"".equals(keyword) && keyword!="") {
             sql.append(" and subject ='" + keyword + " '");
         }
+
+
         return sql.toString();
     }
 }

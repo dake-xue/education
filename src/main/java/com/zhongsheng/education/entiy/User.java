@@ -1,10 +1,15 @@
 package com.zhongsheng.education.entiy;
 
 public class User {
+
     private int uid;
+    private String name;
     private int username;
     private String password;
     private int whoid;
+    private int status;
+
+
 
     public int getUid() {
         return uid;
@@ -38,13 +43,31 @@ public class User {
         this.whoid = whoid;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
-        return "user{" +
+        return "User{" +
                 "uid=" + uid +
+                ", name='" + name + '\'' +
                 ", username=" + username +
                 ", password='" + password + '\'' +
                 ", whoid=" + whoid +
+                ", status=" + status +
                 '}';
     }
 }

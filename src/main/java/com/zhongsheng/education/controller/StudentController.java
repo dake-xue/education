@@ -1,6 +1,9 @@
 package com.zhongsheng.education.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zhongsheng.education.entiy.FamilyInfo;
 import com.zhongsheng.education.entiy.SchoolInfo;
 import com.zhongsheng.education.entiy.Student;
@@ -8,11 +11,13 @@ import com.zhongsheng.education.service.FamilyService;
 import com.zhongsheng.education.service.SchoolService;
 import com.zhongsheng.education.service.StudentService;
 import com.zhongsheng.education.service.UserService;
+import com.zhongsheng.education.util.DataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -37,26 +42,28 @@ public class StudentController {
 
     @GetMapping("/allStudentInfo")
     @ResponseBody
-    public String allStudentInfo(String modules, String keyword)throws Exception{
-        List<Student> studentList = studentService.selectAllStudent(modules,keyword);
+    public String allStudentInfo(Integer modules, String keyword,Integer page,Integer limit)throws Exception{
+        List<Student> studentList = studentService.selectAllStudent(keyword,modules,page,limit);
+        /*PageInfo<Student> list = new PageInfo(studentList);
         Map< String,Object> map = new HashMap();
+        //状态码 0成功  1失败
         map.put("code", 0);
+        //信息
         map.put("msg", "");
-        map.put("count",1000);
+        //分页总条数
+        map.put("count",list.getTotal());
+        //数据
         map.put("data",studentList);
-        String studentinfo =  JSON.toJSONString(map);
-        return  studentinfo;
+        String studentinfo = DataUtil.layuiData(studentList);
+        System.out.println(studentinfo);*/
+        return  DataUtil.layuiData(studentList);
     }
     //学生详情页面
     @RequestMapping("/studentDetails")
-    public String studentDetails(Integer sid, Model model) {
+    public String studentDetails(Integer sid,Model model) {
         Student student = studentService.selectStudent(sid);
-        List<FamilyInfo> familyInfoList = familyService.selectFamilyInfo(sid);
-        List<SchoolInfo> schoolInfoList =schoolService.selectInfoInfo(sid);
         model.addAttribute("student",student);
-        model.addAttribute("family",familyInfoList);
-        model.addAttribute("school",schoolInfoList);
-        return "";
+        return "studentDetails";
     };
 
     /**
@@ -82,7 +89,6 @@ public class StudentController {
     @ResponseBody
     public String addStudent(Student student) throws Exception {
         student.setSid(2233333);
-        System.out.println(student);
         int i = studentService.addStudentInfo(student);
 
         return i+"";

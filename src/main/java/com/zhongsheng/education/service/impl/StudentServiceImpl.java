@@ -1,5 +1,6 @@
 package com.zhongsheng.education.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.mapper.StudentMapper;
 import com.zhongsheng.education.service.BillService;
@@ -25,11 +26,7 @@ public class StudentServiceImpl implements StudentService {
     private SchoolService schoolService;
     @Autowired
     private BillService billService;
-    @Override
-    public User selectWho(Integer username, String password) {
 
-        return studentMapper.selectWho(username, password);
-    }
 
 
     /**
@@ -47,8 +44,9 @@ public class StudentServiceImpl implements StudentService {
 
 
     @Override
-    public List<Student> selectAllStudent(String keyword,Integer modules) {
-        return studentMapper.selectAllStudent(keyword,modules);
+    public List<Student> selectAllStudent(String keyword,Integer modules,Integer page,Integer limit) {
+        PageHelper.startPage(page,limit);
+        return studentMapper.selectAllStudent(keyword,modules,page,limit);
     }
 
 
@@ -61,6 +59,9 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public int addStudentInfo(Student student) {
         //添加联系人
+        student.getFamilyInfo().setSfid(student.getSid());
+        student.getSchoolInfo().setSsid(student.getSid());
+        int i = studentMapper.addStudentInfo(student);
         familyService.addFamilyInfo(student.getFamilyInfo());
         schoolService.addSchoolInfo(student.getSchoolInfo());
         //生成票据
@@ -68,8 +69,9 @@ public class StudentServiceImpl implements StudentService {
 
         //插入票据表
         billService.addBillInfo(student.getBill());
-        return studentMapper.addStudentInfo(student);
+        return i;
     }
+
 
 
     public Integer addScore(Integer sid, Integer scope) {
