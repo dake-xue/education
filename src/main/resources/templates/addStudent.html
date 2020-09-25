@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
 
     <meta charset="utf-8">
@@ -44,8 +45,6 @@
             width: 187px;
         }
     </style>
-
-
     <script>
 
         //Demo
@@ -54,14 +53,25 @@
             getClassify("classes_dic", "classes");
             //getClassify("campus_dic", "campus");
             getClassify("subject_dic", "subject");
-            //getClassify("nation_dic","nation");
+            getClassify("nation_dic","nation");
             form.verify({
                 chinese: function (value, item) { //value：表单的值、item：表单的DOM对象
                     if (!new RegExp("^[\u4e00-\u9fa5\]+$").test(value)) {
                         return '只能是中文';
                     }
-
+                },
+                double: function(value){
+                    if(/^\d+$/.test(value)==false && /^\d+\.\d+$/.test(value)==false)
+                    {
+                        return '你输入的不是数字';
+                    }else if(!value.replace(/[^\d]|^[0]/g,'')){
+                        return '不能以0开头';
+                    }
                 }
+                ,lgh: [
+                    /^[\S]{2,5}$/
+                    ,'姓名不合法'
+                ]
             });
 
 
@@ -152,7 +162,6 @@
                     }
                 });
             });
-
         });
 
 
@@ -182,6 +191,7 @@
                 elem: '#examinationt' //指定元素
                 , type: 'year'
             });
+
             //执行一个laydate实例
             laydate.render({
                 elem: '#admission' //指定元素
@@ -206,11 +216,17 @@
                     layui.form.render("select");
                 }
             });
+
         }
+
     </script>
+
 </head>
+
 <body>
+
 <div id="wrapper">
+
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <ul class="nav metismenu" id="side-menu">
@@ -229,6 +245,7 @@
                         IN+
                     </div>
                 </li>
+
                 <li class="active">
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">管理</span><span
                             class="fa arrow"></span></a>
@@ -236,9 +253,12 @@
                         <li class="active"><a href="table_data_tables.html">学生信息管理</a></li>
                     </ul>
                 </li>
+
             </ul>
+
         </div>
     </nav>
+
     <div id="page-wrapper" class="gray-bg">
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -250,12 +270,15 @@
                     <li>
                         <span class="m-r-sm text-muted welcome-message">欢迎来到中升教育管理后台</span>
                     </li>
+
+
                     <li>
                         <a href="login.html">
                             <i class="fa fa-sign-out"></i> 注销
                         </a>
                     </li>
                 </ul>
+
             </nav>
         </div>
         <div class="row wrapper border-bottom white-bg page-heading" style="padding-bottom: 10px;padding-top: 15px;">
@@ -270,10 +293,10 @@
                 </ol>
             </div>
         </div>
+
         <div class="row wrapper border-bottom white-bg page-heading">
 
             <form class="layui-form" id="form" style="padding-top: 15px;">
-
                 <font size="4" style="font-weight: bold">基本信息</font>
                 <hr>
                 <div class="layui-input-inline">
@@ -327,8 +350,6 @@
                 <hr>
                 <font size="4" style="font-weight: bold">专业信息</font>
                 <hr>
-
-
                 <div class="layui-input-inline">
                     <label class="layui-form-label important" style="white-space:nowrap!important;">省份</label>
                     <div class="layui-input-inline selectWd">
@@ -473,14 +494,14 @@
                 <div class="layui-input-inline important">
                     <label class="layui-form-label" style="white-space:nowrap!important;">学费</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="money" id="money" required lay-verify="required"
+                        <input type="text" name="money" required lay-verify="double"
                                autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-input-inline important">
                     <label class="layui-form-label" id="money1" style="white-space:nowrap!important;">缴费金额</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="bill.paymentAmount" required lay-verify="required"
+                        <input type="text" name="bill.paymentAmount" required lay-verify="double"
                                autocomplete="off" class="layui-input">
                     </div>
                 </div>

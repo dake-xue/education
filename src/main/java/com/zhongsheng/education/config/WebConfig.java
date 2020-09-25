@@ -2,9 +2,11 @@ package com.zhongsheng.education.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -21,13 +23,39 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/student/toAllStudent").setViewName("allStudentInfo");
         //跳转添加学生信息页
         registry.addViewController("/student/toAddStudent").setViewName("addStudent");
+        //跳转登录页
+        registry.addViewController("/user/toLogin").setViewName("index");
+        //跳转所有用户页面
+        registry.addViewController("/user/toAllUser").setViewName("allUser");
         //跳转学生详情页面
-        registry.addViewController("/student/toStudentDetails").setViewName("studentDetails");
+        //registry.addViewController("/student/toStudentDetails").setViewName("studentDetails");
     }
+
+    /**
+     * @创建人 xueke
+     * @参数
+     * @返回值
+     * @创建时间 2020/9/24
+     * @描述 添加拦截器
+    */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        //添加拦截器，registry.addInterceptor(new LoginHandlerInterceptor())
+        //处理拦截那些东西.addPathPatterns("/**")
+        //排除那些请求 excludePatterns()
+        registry.addInterceptor(new LoginHandIterceptor()).addPathPatterns("/**")
+                .excludePathPatterns("/static/**","/user/**",
+                        "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg",
+                        "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/**/*.svg");
+    }
+
+
+
+
+
 
     @Autowired
     private RequestMappingHandlerAdapter handlerAdapter;
-
 
     /**
      * 此方法解决前台提交的日期参数绑定不正确问题,将自己实现的StringToDateConverter交给spring,让其知道如何进行处理

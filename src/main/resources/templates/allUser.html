@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>中升学生信息管理后台</title>
+    <title>用户信息</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
     <link th:href="@{/css/animate.css}" rel="stylesheet">
@@ -20,20 +20,9 @@
     <script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
     <script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
 
-
     <!-- Custom and plugin javascript -->
     <script th:src="@{/js/inspinia.js}"></script>
     <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
-    <script type="text/javascript">
-        $(function () {
-
-        });
-        function param(key) {
-            var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
-            var result = window.location.search.substr(1).match(reg);
-            return result ? decodeURIComponent(result[2]) : null;
-        }
-    </script>
     <script>
         layui.use(['form', 'table','laydate'], function () {
             var $ = layui.jquery,
@@ -44,21 +33,18 @@
             table.render({
                 elem: '#demo'
                 , height: 312
-                , url: '/zhongsheng/student/allStudentInfo' //数据接口
+                , url: '/zhongsheng/user/allUser' //数据接口
                 , page: true //开启分页
                 ,limit: 6//每页多少条数据
                 ,limits:[6,12,18]//每页条数的选择项
                 , cols: [
                     [//表头
-                        {field: 'sid', title: '学号', sort: true, fixed: 'left'}
-                        , {field: 'sname', title: '姓名' ,style:"color:#009688"}
-                        , {field: 'sex', title: '性别', sort: true}
-                        , {field: 'phone', title: '联系方式'}
-                        , {field: 'classes', title: '班次'}
-                        , {field: 'examinationtime', title: '考试年份'}
-                        , {field: 'subject', title: '考试科目'}
-                        , {field: 'score', title: '积分',style:"color:#009688"}
-                        , {field: 'score', title: '费用',templet: '#cf'}
+                        {field: 'uid', title: 'id', sort: true, fixed: 'left'}
+                        , {field: 'name', title: '姓名' ,style:"color:#009688"}
+                        , {field: 'username', title: '用户名', sort: true}
+                        , {field: 'whoid', title: '权限',templet: '#qx'}
+                        , {field: 'status', title: '状态',templet: '#zt'}
+                        , {field: 'classes', title: '操作',templet: '#dg'}
                      ]
                 ]
             });
@@ -70,21 +56,7 @@
                 });
                 return false;
             });
-            //监听行单击事件
-            table.on('row(currentTableFilter)', function (obj) {
-                var data = obj.data;
-                console.log(data);
-                var index = layer.open({
-                    title: data.title,
-                    type: 2,
-                    content: "/zhongsheng/student/studentDetails?snum="+data.snum,
-                    area: ['100%', '100%'],
-                });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
-                return false;
-            });
+           
             // 监听搜索操作
             form.on('submit(data-search-btn)', function (data) {
                 //执行重载
@@ -93,78 +65,41 @@
                 });
                 return false;
             });
-            //下拉框
-            form.on('select(modules)', function (data) {
-                if (data.value==1){
-                    $("#keyword").empty();
-                    $("#keyword").append("<input type='text' name='keyword' placeholder='请输入姓名' autocomplete='off' class='layui-input' style='width: 200px'>");
-                }
-                if (data.value==2){
-                    $("#keyword").empty();
-                    var str="<select  style='width: 200px;' name='keyword' class='layui-form-select'>"
-                    $.ajax({
-                        type:"post",
-                        url: '/zhongsheng/table/all',
-                        contentType: 'application/x-www-form-urlencoded',
-                        data:{"tableName":"classes_dic"},
-                        dataType:"json",
-                        success:function (data) {
-                            str+="<option value='0'>请选择班次</option>";
-                            for (var i=0;i<data.length;i++){
-                                str+="<option value='"+data[i].name+"'>"+data[i].name+"</option>";
-                            }
-                            str+="</select>";
-                            $("#keyword").append(str);
-                            form.render();
-                        }
-                    });
-                }
-                if (data.value == 3) {
-                    $("#keyword").empty();
-                    $("#keyword").append(" <input type='text' name='keyword' style='width: 200px;'  class='layui-input' id='textTime' placeholder='yyyy'>");
-                    //年选择器
-                    laydate.render({
-                        elem: '#textTime'
-                        ,type: 'year'
-                    });
-                    form.render();
-                }
-                if (data.value == 4) {
-                    $("#keyword").empty();
-                    var str="<select name='keyword'  style='width: 200px;' class='layui-form-select'>"
-                    $.ajax({
-                        type:"post",
-                        url: '/zhongsheng/table/all',
-                        contentType: 'application/x-www-form-urlencoded',
-                        data:{"tableName":"subject_dic"},
-                        dataType:"json",
-                        success:function (data) {
-                            str+="<option value='0'>请选择考试科目</option>";
-                            for (var i=0;i<data.length;i++){
-                                str+="<option value='"+data[i].name+"'>"+data[i].name+"</option>";
-                            }
-                            str+="</select>";
-                            $("#keyword").append(str);
-                            form.render();
-                        }
-                    });
-                }
-            });
+          
         });
 
+
+        function openModak(){
+            $("[name='testname']").val("xxxxxxxxxxxxxxx");//向模态框中赋值
+            layui.use(['layer'],function () {
+                var layer = layui.layer,$=layui.$;
+                layer.open({
+                    type:1,//类型
+                    area:['500px','350px'],//定义宽和高
+                    title:'添加用户',//题目
+                    shadeClose:false,//点击遮罩层关闭
+                    content: $('#motaikunag')//打开的内容
+                });
+            })
+        }
     </script>
-    <script type="text/html" id="cf">
-        {{#  if(d.money == d.jiaofeijine){ }}
-        <span style="color: #35bdae">已交完</span>
+
+    <script type="text/html" id="qx">
+        {{#  if(d.whoid == 1){ }}
+        <span style="font-weight: bold;">管理员</span>
         {{#  } else { }}
-        <a href="../../contract/openPaper.do?sid={{d.sid}}" class="layui-table-link" style="color:#c23450;">待补款[+]</a>
+        <span style="font-weight: bold;">学生</span>
         {{#  } }}
     </script>
-    <script type="text/html" id="time">
-        {{layui.util.toDateString(d.signedTime,'yyyy')}}
+    <script type="text/html" id="zt">
+        {{#  if(d.status == 0){ }}
+        <span style="color: #15bc0c;font-weight: bold;">正常</span>
+        {{#  } else { }}
+        <span style="color: #e10d21;font-weight: bold;">禁用</span>
+        {{#  } }}
     </script>
-    <script type="text/html" id="jifen">
-        <a href="zhongsheng/student/addScore?sid={{d.sid}}" class="layui-table-link" style="color:#c2a664;">{{d.score}}  [ + ] </a>
+    <script type="text/html" id="dg">
+        <a class="layui-btn layui-btn-sm layui-btn-danger" style="color: white">禁用</a>
     </script>
 </head>
 
@@ -185,7 +120,7 @@
                     </div>
                 </li>
 
-                <li class="active">
+                <li class="">
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -194,13 +129,12 @@
                     </ul>
                 </li>
 
-                <li class="">
+                <li class="active">
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">用户管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li  class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
-                        <li  class=""><a th:href="@{/}">添加用户</a></li>
-                        <li  class=""><a th:href="@{/}">禁用用户</a></li>
+                        <li class="active"><a th:href="@{/user/toAllUser}">用户信息</a></li>
+                        <li  class=""><a onclick="openModak();">添加用户</a></li>
                     </ul>
                 </li>
 
@@ -254,14 +188,6 @@
             <div class="row layui-form-item">
                 <form class="layui-form layui-form-pane">
                     <div class="layui-form-item" id="search">
-                            <div class="layui-input-inline">
-                                <select name="modules"  lay-filter="modules" class="layui-form-select">
-                                    <option value="1">按姓名</option>
-                                    <option value="2">按班次</option>
-                                    <option value="3">按考试年份</option>
-                                    <option value="4">按考试科目</option>
-                                </select>
-                            </div>
                         <div class="layui-inline" id="keyword">
                             <input type="text" name='keyword'  placeholder="请输入姓名" autocomplete="off" class="layui-input" style="width: 300px">
                         </div>
@@ -278,7 +204,7 @@
                 <div class="col-lg-12">
                     <div class="ibox ">
                         <div class="ibox-title">
-                            <h5>学生基本信息</h5>
+                            <h5>用户信息</h5>
                             <div class="ibox-tools">
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up" style="padding-top: 5px;"></i>
@@ -313,3 +239,49 @@
 </body>
 
 </html>
+
+
+<!--模仿bootstrap的模态框-->
+<div id="motaikunag" style="display: none;text-align: center;">
+    <form class="layui-form" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-inline">
+                    <input name="name" class="layui-input" type="text" placeholder="姓名" lay-verify=""/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input name="userName" class="layui-input" type="text" placeholder="用户名" lay-verify=""/>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-input-inline important">
+            <label class="layui-form-label nobreak">权限</label>
+            <div class="layui-input-inline selectWd">
+                <select name="onlinenumber" lay-verify="required">
+                    <option value="1">管理员</option>
+                    <option value="2">用户</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-inline" style="margin-top: 10%;">
+
+            <div class="layui-input-inline">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+
+        </div>
+
+        <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+    </form>
+</div>
+
