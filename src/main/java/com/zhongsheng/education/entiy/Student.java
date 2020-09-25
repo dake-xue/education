@@ -1,10 +1,14 @@
 package com.zhongsheng.education.entiy;
 
 import java.util.Date;
+import java.util.List;
 
 public class Student {
     //学生id
     private int sid;
+    private Integer area;
+    //校区id
+    private Integer campusid;
     //校区
     private String campus;
 
@@ -15,7 +19,7 @@ public class Student {
 
     //性别
     private String sex;
-    //年级
+    //班级
     private String grade;
     //专业
     private String major;
@@ -24,8 +28,9 @@ public class Student {
     //班次
     private String classes;
 
-    //缴费金额
+    //学费
     private int money;
+    private int jiaofeijine;
     //考试年份
     private String examinationtime;
     //入学年份
@@ -75,8 +80,47 @@ public class Student {
     private FamilyInfo familyInfo;
     //学校联系方式
     private SchoolInfo schoolInfo;
-    //票据
+    //票据(查询时用)
+    private List<Bill> billList;
+    //票据（添加时用）
     private Bill bill;
+
+    //序号
+    private Integer number;
+    //学号
+    private String snum;
+
+    public String getSnum() {
+        return snum;
+    }
+
+    public void setSnum(String snum) {
+        this.snum = snum;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public Integer getArea() {
+        return area;
+    }
+
+    public void setArea(Integer area) {
+        this.area = area;
+    }
+
+    public List<Bill> getBillList() {
+        return billList;
+    }
+
+    public void setBillList(List<Bill> billList) {
+        this.billList = billList;
+    }
 
     public Bill getBill() {
         return bill;
@@ -88,6 +132,14 @@ public class Student {
 
     public FamilyInfo getFamilyInfo() {
         return familyInfo;
+    }
+
+    public int getJiaofeijine() {
+        return jiaofeijine;
+    }
+
+    public void setJiaofeijine(int jiaofeijine) {
+        this.jiaofeijine = jiaofeijine;
     }
 
     public void setFamilyInfo(FamilyInfo familyInfo) {
@@ -108,6 +160,14 @@ public class Student {
 
     public void setSid(int sid) {
         this.sid = sid;
+    }
+
+    public Integer getCampusid() {
+        return campusid;
+    }
+
+    public void setCampusid(Integer campusid) {
+        this.campusid = campusid;
     }
 
     public String getCampus() {
@@ -181,8 +241,6 @@ public class Student {
     public void setMoney(int money) {
         this.money = money;
     }
-
-
 
     public Date getSignupdate() {
         return signupdate;
@@ -271,7 +329,6 @@ public class Student {
     public void setJob(String job) {
         this.job = job;
     }
-
 
     public String getHomeaddress() {
         return homeaddress;

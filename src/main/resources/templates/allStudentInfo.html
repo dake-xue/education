@@ -52,15 +52,15 @@
                 , page: true //开启分页
                 , cols: [
                     [//表头
-                        {field: 'sid', title: '学号', sort: true, fixed: 'left'}
+                        {field: 'snum', title: '学号', sort: true, fixed: 'left'}
                         , {field: 'sname', title: '姓名' ,style:"color:#009688"}
                         , {field: 'sex', title: '性别', sort: true}
                         , {field: 'phone', title: '联系方式'}
                         , {field: 'classes', title: '班次'}
-                        , {field: 'signupdate', title: '考试年份'}
+                        , {field: 'signupdate', title: '考试年份', templet: '#time'}
                         , {field: 'intentionmajor', title: '考试科目'}
-                        , {field: 'score', title: '积分',style:"color:#009688"}
-                        , {field: 'score', title: '费用',templet: '#cf'}
+                        , {field: 'score', title: '积分',templet: '#jifen'}
+                        , {field: 'money', title: '费用',templet: '#cf'}
                      ]
                 ]
             });
@@ -79,7 +79,7 @@
                 var index = layer.open({
                     title: data.title,
                     type: 2,
-                    content: "/zhongsheng/student/studentDetails?sid="+data.sid,
+                    content: "/zhongsheng/student/studentDetails?snum="+data.snum,
                     area: ['100%', '100%'],
                 });
                 $(window).on("resize", function () {
@@ -156,11 +156,17 @@
 
     </script>
     <script type="text/html" id="cf">
-        {{#  if(d.openMoney == null){ }}
-        <span style="color: #1eacae">已交完</span>
+        {{#  if(d.money == d.jiaofeijine){ }}
+        <span style="color: #35bdae">已交完</span>
         {{#  } else { }}
-        <span style="color: #bd2130">未交完</span>
+        <a href="../../contract/openPaper.do?sid={{d.sid}}" class="layui-table-link" style="color:#c23450;">待补款[+]</a>
         {{#  } }}
+    </script>
+    <script type="text/html" id="time">
+        {{layui.util.toDateString(d.signedTime,'yyyy')}}
+    </script>
+    <script type="text/html" id="jifen">
+        <a href="zhongsheng/student/addScore?sid={{d.sid}}" class="layui-table-link" style="color:#c2a664;">{{d.score}}  [ + ] </a>
     </script>
 </head>
 

@@ -34,7 +34,7 @@ public class UserController {
             return teacherName;
             //2==学生
         } else if (user.getWhoid() == 2) {
-            Student student = studentService.selectStudent(user.getUid());
+            Student student = studentService.selectStudentID(user.getUid());
             return user.getUid()+"";
         }
         return "error";

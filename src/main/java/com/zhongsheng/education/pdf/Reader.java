@@ -5,6 +5,7 @@ import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
+import com.zhongsheng.education.entiy.Student;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,7 +17,8 @@ import java.util.Map.Entry;
 
 public class Reader {
 
-    public static void main(String[] args) {
+    public static String addBill(Student student) {
+        String fi=null;
         // 获得当前时间
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat format1 = new SimpleDateFormat("yyyyMMddHH");
@@ -31,35 +33,41 @@ public class Reader {
         sr.toString();
         //1 准备要填充的数据
         Map paraMap = new HashMap();
-        paraMap.put("Text1", "易烊千玺");
-        paraMap.put("Text2", "男");
-        paraMap.put("Text3", "河南省贸易职业技术学院");
-        paraMap.put("Text4", "院系");
-        paraMap.put("Text5", "班级");
-        paraMap.put("Text6", "2020");
-        paraMap.put("Text7", "2021");
-        paraMap.put("Text8", "1");
-        paraMap.put("Text9", "4222222222222222");
-        paraMap.put("Text10", "3000");
+        paraMap.put("Text1", student.getSname());
+        paraMap.put("Text2", student.getSex());
+        paraMap.put("Text3", student.getSchoolname());
+        paraMap.put("Text4", student.getDepartment());
+        paraMap.put("Text5", student.getGrade());
+        paraMap.put("Text6", student.getAdmissiontime());
+        paraMap.put("Text7", student.getExaminationtime());
+        paraMap.put("Text8", student.getClasses());
+        paraMap.put("Text9", student.getIdcard());
+        paraMap.put("Text10",student.getBill().getPaymentAmount());
         paraMap.put("Text11", "叁仟圆");
-        paraMap.put("Text12", "那部分v和技术v安康均可点击支付");
+        paraMap.put("Text12", student.getRemarks());
         paraMap.put("Text13", formatDate);
         paraMap.put("Text14", sr);
-        paraMap.put("Text15", "15333333333");
-        paraMap.put("Text16", "英语");
-        paraMap.put("Text17", "英语");
-        paraMap.put("Text18", "英语");
-        paraMap.put("Text19", "龙子湖");
-        paraMap.put("Text20", "12345678909");
+        paraMap.put("Text15", student.getPhone());
+        paraMap.put("Text16", student.getMajor());
+        paraMap.put("Text17", student.getIntentionmajor());
+        paraMap.put("Text18", student.getSubject());
+        paraMap.put("Text19", student.getCampus());
+        paraMap.put("Text20", student.getFamilyInfo().getFphone());
         paraMap.put("Text21", "码");
         paraMap.put("Text22", "胖虎");
 
+        //组合文件名
+        StringBuffer stringBuffer=new StringBuffer();
+        stringBuffer.append(student.getSname());
+        stringBuffer.append(random);
+        String r= stringBuffer.toString();
         try {
 
 //2 读入pdf表单
             PdfReader reader = new PdfReader("D:\\workspace\\education\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\electronicBills.pdf");
 //3 根据表单生成一个新的pdf
-            File file= new File("D:\\pdf\\bi.pdf");
+            File file= new File("D:\\pdf\\"+r+".pdf");
+            fi="D:\\pdf\\"+r+".pdf";
             if(file.exists()){
                 file.delete();
                 file.createNewFile();
@@ -97,11 +105,9 @@ public class Reader {
             }
 
             ps.setFormFlattening(true); // 这句不能少
-
             ps.close();
 
             reader.close();
-
         } catch (IOException e) {
 
 // TODO 自动生成的 catch 块
@@ -117,7 +123,7 @@ public class Reader {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+return fi;
     }
 
 }

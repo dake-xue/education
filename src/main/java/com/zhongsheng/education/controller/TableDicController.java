@@ -5,6 +5,7 @@ import com.zhongsheng.education.entiy.TableDic;
 import com.zhongsheng.education.service.TableDicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,10 +27,11 @@ public class TableDicController {
 
     //根据校区查询学校
     @RequestMapping("/campusSelectSchool")
-    public String campusSelectSchool(String campus){
+    @ResponseBody
+    public List<TableDic> campusSelectSchool(String campus){
         System.out.println("campus--------------"+campus);
         TableDic tableDic=tableDicService.selectCampusId(campus);
         List<TableDic> tableDicList=tableDicService.campusSelectSchool(tableDic.getId());
-        return JSON.toJSONString(tableDicList);
+        return tableDicList;
     }
 }
