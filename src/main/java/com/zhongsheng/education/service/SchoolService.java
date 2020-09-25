@@ -4,7 +4,7 @@ import com.zhongsheng.education.entiy.SchoolInfo;
 
 public interface SchoolService {
 
-    public SchoolInfo selectSchoolInfo(Integer sid);
+    public SchoolInfo selectSchoolInfo(String snum);
 
     int addSchoolInfo(SchoolInfo schoolInfo);
 }

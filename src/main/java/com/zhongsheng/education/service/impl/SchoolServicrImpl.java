@@ -12,8 +12,8 @@ public class SchoolServicrImpl implements SchoolService {
     @Autowired
     SchoolMapper schoolMapper;
 
-    public SchoolInfo selectSchoolInfo(Integer sid){
-        return    schoolMapper.selectSchoolInfo(sid);
+    public SchoolInfo selectSchoolInfo(String snum){
+        return    schoolMapper.selectSchoolInfo(snum);
     }
 
     @Override

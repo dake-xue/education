@@ -6,6 +6,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.zhongsheng.education.entiy.Student;
+import com.zhongsheng.education.util.UrlUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -64,7 +65,7 @@ public class Reader {
         try {
 
 //2 读入pdf表单
-            PdfReader reader = new PdfReader("D:\\workspace\\education\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\electronicBills.pdf");
+            PdfReader reader = new PdfReader(UrlUtil.getUrl()+"\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\electronicBills.pdf");
 //3 根据表单生成一个新的pdf
             File file= new File("D:\\pdf\\"+r+".pdf");
             fi="D:\\pdf\\"+r+".pdf";

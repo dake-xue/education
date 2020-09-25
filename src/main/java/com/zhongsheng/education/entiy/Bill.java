@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Bill implements Serializable {
 
     private int bid;
-    private int bsid;
+    private String snum;
     private int paymentAmount;
     private String image;
 
@@ -17,12 +17,12 @@ public class Bill implements Serializable {
         this.bid = bid;
     }
 
-    public int getBsid() {
-        return bsid;
+    public String getSnum() {
+        return snum;
     }
 
-    public void setBsid(int bsid) {
-        this.bsid = bsid;
+    public void setSnum(String snum) {
+        this.snum = snum;
     }
 
     public int getPaymentAmount() {
@@ -39,5 +39,15 @@ public class Bill implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    @Override
+    public String toString() {
+        return "Bill{" +
+                "bid=" + bid +
+                ", snum='" + snum + '\'' +
+                ", paymentAmount=" + paymentAmount +
+                ", image='" + image + '\'' +
+                '}';
     }
 }

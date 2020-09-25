@@ -5,24 +5,15 @@ public class SchoolInfo {
     private String scname;
     private String screlation;
     private String scphone;
-    private int ssid;
+    private String snum;
 
-    public SchoolInfo() {
+
+    public String getSnum() {
+        return snum;
     }
 
-    public SchoolInfo(String scname, String screlation, String scphone, int ssid) {
-        this.scname = scname;
-        this.screlation = screlation;
-        this.scphone = scphone;
-        this.ssid = ssid;
-    }
-
-    public int getSsid() {
-        return ssid;
-    }
-
-    public void setSsid(int ssid) {
-        this.ssid = ssid;
+    public void setSnum(String snum) {
+        this.snum = snum;
     }
 
     public int getScid() {
@@ -59,11 +50,12 @@ public class SchoolInfo {
 
     @Override
     public String toString() {
-        return "schoolinfo{" +
+        return "SchoolInfo{" +
                 "scid=" + scid +
                 ", scname='" + scname + '\'' +
                 ", screlation='" + screlation + '\'' +
-                ", scphone=" + scphone +
+                ", scphone='" + scphone + '\'' +
+                ", snum='" + snum + '\'' +
                 '}';
     }
 }

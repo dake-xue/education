@@ -8,9 +8,9 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface FamilyMapper {
 
-    @Insert("insert into familyinfo(fname,relation,fphone,sfid) values(#{fname},#{relation},#{fphone},#{sfid})")
+    @Insert("insert into familyinfo(fname,relation,fphone,snum) values(#{fname},#{relation},#{fphone},#{snum})")
     public int addFamilyInfo(FamilyInfo familyinfo);
 
-    @Select("select * from familyinfo where sfid=#{sid}")
-    public FamilyInfo selectFamilyInfo(Integer sid);
+    @Select("select * from familyinfo where sfid=#{snum}")
+    public FamilyInfo selectFamilyInfo(String snum);
 }

@@ -9,24 +9,14 @@ public class FamilyInfo implements Serializable {
     private String fname;
     private String relation;
     private String fphone;
-    private int sfid;
+    private String snum;
 
-    public FamilyInfo() {
+    public String getSnum() {
+        return snum;
     }
 
-    public FamilyInfo(String fname, String relation, String fphone, int sfid) {
-        this.fname = fname;
-        this.relation = relation;
-        this.fphone = fphone;
-        this.sfid = sfid;
-    }
-
-    public int getSfid() {
-        return sfid;
-    }
-
-    public void setSfid(int sfid) {
-        this.sfid = sfid;
+    public void setSnum(String snum) {
+        this.snum = snum;
     }
 
     public int getFid() {
@@ -61,14 +51,14 @@ public class FamilyInfo implements Serializable {
         this.fphone = fphone;
     }
 
-
     @Override
     public String toString() {
-        return "familyinfo{" +
+        return "FamilyInfo{" +
                 "fid=" + fid +
                 ", fname='" + fname + '\'' +
                 ", relation='" + relation + '\'' +
-                ", fphone=" + fphone +
+                ", fphone='" + fphone + '\'' +
+                ", snum='" + snum + '\'' +
                 '}';
     }
 }

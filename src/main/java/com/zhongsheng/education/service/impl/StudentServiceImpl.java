@@ -1,11 +1,15 @@
 package com.zhongsheng.education.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.mapper.StudentMapper;
+import com.zhongsheng.education.pdf.PDF2IMAGE;
+import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.BillService;
 import com.zhongsheng.education.service.FamilyService;
 import com.zhongsheng.education.service.SchoolService;
 import com.zhongsheng.education.service.StudentService;
+import com.zhongsheng.education.util.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,13 +42,19 @@ public class StudentServiceImpl implements StudentService {
         //学生
         Student student = studentMapper.selectStudent(snum);
         //家庭和学校
-        student.setFamilyInfo(familyService.selectFamilyInfo(student.getSid()));
-        student.setSchoolInfo(schoolService.selectSchoolInfo(student.getSid()));
+        student.setFamilyInfo(familyService.selectFamilyInfo(student.getSnum()));
+        student.setSchoolInfo(schoolService.selectSchoolInfo(student.getSnum()));
         //票据
         student.setBillList(billService.selectBill(student.getSid()));
 
         return student;
     }
+
+    @Override
+    public Student selectStudentID(Integer id) {
+        return studentMapper.selectStudentID(id);
+    }
+
 
 
     @Override
@@ -54,25 +64,25 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-    @Override
-    public List<Student> allStudent() {
-        return studentMapper.allStudent();
-    }
-
     //添加学生
     @Override
     public int addStudentInfo(Student student) {
+        int i = studentMapper.addStudentInfo(student);
+        System.out.println(student.getSnum()+"***************");
+        student.getSchoolInfo().setSnum(student.getSnum());
+        student.getFamilyInfo().setSnum(student.getSnum());
         //添加联系人
         familyService.addFamilyInfo(student.getFamilyInfo());
         schoolService.addSchoolInfo(student.getSchoolInfo());
         //生成票据
         String s = Reader.addBill(student);
         //生成图片
-        String ima = PDF2IMAGE.pdf2Image(s, "D:\\workspace\\education\\src\\main\\resources\\static\\pdfToImage", 300);
+        String ima = PDF2IMAGE.pdf2Image(s, UrlUtil.getUrl()+"\\src\\main\\resources\\static\\pdfToImage", 300);
         student.getBill().setImage(ima);
+        student.getBill().setSnum(student.getSnum());
         //插入票据表
         billService.addBillInfo(student.getBill());
-        return studentMapper.addStudentInfo(student);
+        return i;
     }
 
 

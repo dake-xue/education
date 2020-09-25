@@ -15,8 +15,7 @@ public class BillServiceImpl implements BillService {
 
 
     @Override
-    public int addBillInfo(Bill bill) {
-        return billMapper.addBillInfo(bill);
+    public int addBillInfo(Bill bill) { return billMapper.addBillInfo(bill);
     }
 
     //查询总金额

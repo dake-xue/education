@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface BillMapper {
 
-    @Insert("insert into bill(paymentAmount,bsid,image) values(#{paymentAmount},#{bsid},#{image})")
+    @Insert("insert into bill(paymentAmount,snum,image) values(#{paymentAmount},#{snum},#{image})")
     public int addBillInfo(Bill bill);
 
     @Select("select * from bill where bsid=#{sid}")

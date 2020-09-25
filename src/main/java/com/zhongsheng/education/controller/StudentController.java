@@ -1,20 +1,22 @@
 package com.zhongsheng.education.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.zhongsheng.education.entiy.Area;
+import com.zhongsheng.education.entiy.CampusDic;
 import com.zhongsheng.education.entiy.Student;
-import com.zhongsheng.education.service.FamilyService;
-import com.zhongsheng.education.service.SchoolService;
-import com.zhongsheng.education.service.StudentService;
-import com.zhongsheng.education.service.UserService;
+import com.zhongsheng.education.entiy.TableDic;
+import com.zhongsheng.education.pdf.PDF2IMAGE;
+import com.zhongsheng.education.pdf.Reader;
+import com.zhongsheng.education.service.*;
+import com.zhongsheng.education.util.DataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RequestMapping("/student")
 @Controller
@@ -31,6 +33,7 @@ public class StudentController {
 
     @Autowired
     private SchoolService schoolService;
+
     @Autowired
     private BillService billService;
 

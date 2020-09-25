@@ -10,11 +10,6 @@ import java.io.IOException;
 
 public class PDF2IMAGE {
 
-    public static void main(String[] args) {
-        pdf2Image("D:\\pdf\\bi.pdf", "D:\\pdf", 300);
-    }
-
-
     /***
      * PDF文件转PNG图片，全部页数
      *
@@ -23,7 +18,7 @@ public class PDF2IMAGE {
      * @param dpi dpi越大转换后越清晰，相对转换速度越慢
      * @return
      */
-    public static String pdf2Image(String PdfFilePath, String dstImgFolder, int dpi) {
+    public static String pdf2Image(String PdfFilePath, String dstImgFolder, int dpi){
         File file = new File(PdfFilePath);
         PDDocument pdDocument;
         StringBuffer imgFilePath = null;

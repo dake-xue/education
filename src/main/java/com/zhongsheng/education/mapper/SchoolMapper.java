@@ -8,9 +8,9 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface SchoolMapper {
 
-    @Select("select * from schoolinfo where ssid=#{sid}")
-    public SchoolInfo selectSchoolInfo(Integer sid);
+    @Select("select * from schoolinfo where ssid=#{snum}")
+    public SchoolInfo selectSchoolInfo(String snum);
 
-    @Insert("insert into schoolinfo(scname,screlation,scphone,ssid) values(#{scname},#{screlation},#{scphone},#{ssid})")
+    @Insert("insert into schoolinfo(scname,screlation,scphone,snum) values(#{scname},#{screlation},#{scphone},#{snum})")
     int addSchoolInfo(SchoolInfo schoolInfo);
 }

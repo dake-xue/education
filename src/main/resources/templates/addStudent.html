@@ -231,10 +231,10 @@
         <div class="sidebar-collapse">
             <ul class="nav metismenu" id="side-menu">
                 <li class="nav-header">
-                    <div class="dropdown profile-element">
-                        <img alt="image" class="rounded-circle" src="img/profile_small.jpg"/>
+                    <div class="dropdown profile-element jz">
+                        <img alt="image" class="rounded-circle" th:src="@{/img/touxiang.png}" height="60px"/>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="text-muted text-xs block" style="margin-top: 10px;">管理员 <b
+                            <span th:text="${session.user.name}" class="text-muted text-xs block" style="margin-top: 10px;"><b
                                     class="caret"></b></span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
@@ -302,7 +302,7 @@
                 <div class="layui-input-inline">
                     <label class="layui-form-label important">姓名</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="sname" required lay-verify="chinese"
+                        <input type="text" name="sname" required lay-verify="chinese|lgh"
                                autocomplete="off" class="layui-input">
                     </div>
                 </div>

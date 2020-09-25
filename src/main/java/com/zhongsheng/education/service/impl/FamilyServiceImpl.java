@@ -11,8 +11,9 @@ public class FamilyServiceImpl implements FamilyService {
     @Autowired
     FamilyMapper familyMapper;
 
-    public FamilyInfo selectFamilyInfo(Integer sid){
-        return familyMapper.selectFamilyInfo(sid);
+    @Override
+    public FamilyInfo selectFamilyInfo(String snum) {
+        return familyMapper.selectFamilyInfo(snum);
     }
 
     @Override
