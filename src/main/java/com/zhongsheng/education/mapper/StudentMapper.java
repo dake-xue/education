@@ -12,6 +12,8 @@ import java.util.List;
 @Mapper
 public interface StudentMapper {
 
+    @Select("select * from student where phone=#{phone}")
+    public Student selectStudentByIphone(String phone);
 
     @Select("select * from student where snum=#{snum}")
     public Student selectStudent(String snum);

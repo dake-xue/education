@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DataUtil {
+public class MyUtil {
 
     public static String layuiData(List list){
         PageInfo<Student> pageInfo = new PageInfo(list);
@@ -23,5 +23,9 @@ public class DataUtil {
         map.put("data",list);
 
         return JSON.toJSONString(map);
+    }
+
+    public static  String getPassWord(String str){
+        return  str.substring(str.length() - 6);
     }
 }

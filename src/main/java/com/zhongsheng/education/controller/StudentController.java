@@ -8,13 +8,14 @@ import com.zhongsheng.education.entiy.TableDic;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
-import com.zhongsheng.education.util.DataUtil;
+import com.zhongsheng.education.util.MyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -54,7 +55,7 @@ public class StudentController {
         map.put("data",studentList);
         String studentinfo = DataUtil.layuiData(studentList);
         System.out.println(studentinfo);*/
-        return  DataUtil.layuiData(studentList);
+        return  MyUtil.layuiData(studentList);
     }
     //学生详情页面
     @RequestMapping("/studentDetails")
@@ -63,8 +64,20 @@ public class StudentController {
         model.addAttribute("student",student);
         return "studentDetails";
     }
-
-    ;
+    /**
+     * @创建人 xueke
+     * @参数 
+     * @返回值
+     * @创建时间 2020/9/27
+     * @描述 学生登陆后查看自己信息的方法
+    */
+    @RequestMapping("/stuToStudentDetails")
+    public String stuToStuDetails(String phone , Model model){
+        Student student = studentService.selectStudentByIphone(phone);
+        System.out.println("**********************"+student);
+        model.addAttribute("student",student);
+        return "studentDetails";
+    }
 
     /**
      * @创建人 xueke

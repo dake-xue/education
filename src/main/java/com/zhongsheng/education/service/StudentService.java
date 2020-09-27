@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface StudentService {
 
+    Student selectStudentByIphone(String phone);
     public Student selectStudent(String snum);
     public Student selectStudentID(Integer id);
-
     public List<Student> selectAllStudent(String keyword,Integer modules,Integer page,Integer limit);
     public Integer addScore(Integer sid,Integer scope);
     int addStudentInfo(Student student);

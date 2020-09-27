@@ -30,7 +30,23 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private BillService billService;
 
-
+    /**
+     * @创建人 xueke
+     * @参数
+     * @返回值
+     * @创建时间 2020/9/27
+     * @描述 学生登陆后调用的方法（查看自己的详细信息）
+    */
+    @Override
+    public Student selectStudentByIphone(String phone) {
+        Student student = studentMapper.selectStudentByIphone(phone);
+        //家庭和学校
+        student.setFamilyInfo(familyService.selectFamilyInfo(student.getSnum()));
+        student.setSchoolInfo(schoolService.selectSchoolInfo(student.getSnum()));
+        //票据
+        student.setBillList(billService.selectBill(student.getSnum()));
+        return student;
+    }
 
     /**
      * @创建人 xueke
@@ -41,6 +57,7 @@ public class StudentServiceImpl implements StudentService {
     public Student selectStudent(String snum) {
         //学生
         Student student = studentMapper.selectStudent(snum);
+
         //家庭和学校
         student.setFamilyInfo(familyService.selectFamilyInfo(student.getSnum()));
         student.setSchoolInfo(schoolService.selectSchoolInfo(student.getSnum()));
