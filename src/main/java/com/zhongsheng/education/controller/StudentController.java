@@ -1,6 +1,5 @@
 package com.zhongsheng.education.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.zhongsheng.education.entiy.Area;
 import com.zhongsheng.education.entiy.CampusDic;
 import com.zhongsheng.education.entiy.Student;
@@ -9,6 +8,7 @@ import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
 import com.zhongsheng.education.util.DataUtil;
+import com.zhongsheng.education.util.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 @RequestMapping("/student")
 @Controller
@@ -40,20 +42,12 @@ public class StudentController {
 
     @GetMapping("/allStudentInfo")
     @ResponseBody
-    public String allStudentInfo(Integer modules, String keyword,Integer page,Integer limit)throws Exception{
+    public String allStudentInfo(Student student,Integer modules, String keyword,Integer page,Integer limit)throws Exception{
         List<Student> studentList = studentService.selectAllStudent(keyword,modules,page,limit);
-        /*PageInfo<Student> list = new PageInfo(studentList);
-        Map< String,Object> map = new HashMap();
-        //状态码 0成功  1失败
-        map.put("code", 0);
-        //信息
-        map.put("msg", "");
-        //分页总条数
-        map.put("count",list.getTotal());
-        //数据
-        map.put("data",studentList);
-        String studentinfo = DataUtil.layuiData(studentList);
-        System.out.println(studentinfo);*/
+        //查询已交学费
+        for (Student s:studentList){
+            s.setJiaofeijine(studentService.selectJiaoFeiJinE(s.getSnum()));
+        }
         return  DataUtil.layuiData(studentList);
     }
     //学生详情页面
@@ -66,6 +60,7 @@ public class StudentController {
 
     ;
 
+
     /**
      * @创建人 xueke
      * @参数 
@@ -75,8 +70,8 @@ public class StudentController {
     */
     //给学生添加积分
     @RequestMapping("/addScore")
-    public Integer addScore(Integer sid, Integer scope) throws Exception {
-        Integer student = studentService.addScore(sid, scope);
+    public Integer addScore(String snum, Integer scope) throws Exception {
+        Integer student = studentService.addScore(snum, scope);
         if (student==1){
             return 1;
         }else{
@@ -117,13 +112,21 @@ public class StudentController {
         return i+"";
     }
 
+
+    //获取补款学生信息
+    @RequestMapping("/selectOneStudent")
+    public String selectOneStudent(String snum,Model model){
+        Student student = studentService.selectStudent(snum);
+        model.addAttribute("student",student);
+        return "addMone";
+    };
     //补款
     @RequestMapping("/addBill")
     public String addBill(Student student) {
         //生成票据
         String s = Reader.addBill(student);
         //生成图片
-        String ima = PDF2IMAGE.pdf2Image(s, "D:\\workspace\\education\\src\\main\\resources\\static\\pdfToImage", 300);
+        String ima = PDF2IMAGE.pdf2Image(s, UrlUtil.getUrl()+"\\src\\main\\resources\\static\\pdfToImage", 300);
         student.getBill().setImage(ima);
         //插入票据表
         billService.addBillInfo(student.getBill());
@@ -131,26 +134,32 @@ public class StudentController {
         return "";
     }
 
-    //查询省区校
+    //查询省
     @RequestMapping("/selectArea")
     @ResponseBody
     public List<Area> selectArea() {
         List<Area> areaList = studentService.selectArea();
         return areaList;
     }
-
+    //查询区
     @RequestMapping("/selectQu")
     @ResponseBody
     public List<TableDic> selectArea(Integer id) {
         List<TableDic> areaList = studentService.selectQu(id);
         return areaList;
     }
-
+    //查询校
     @RequestMapping("/selectSchool")
     @ResponseBody
     public List<TableDic> selectSchool(Integer campus) {
         List<TableDic> areaList = studentService.selectSchool(campus);
         return areaList;
     }
+
+    //积分兑换
+    public Integer changeScore(String snum,Integer score){
+      Integer i=studentService.changeScore(snum,score);
+      return i;
+    };
 
 }

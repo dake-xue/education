@@ -57,7 +57,7 @@
                         , {field: 'classes', title: '班次'}
                         , {field: 'examinationtime', title: '考试年份'}
                         , {field: 'subject', title: '考试科目'}
-                        , {field: 'score', title: '积分',style:"color:#009688"}
+                        , {field: 'score', title: '积分',templet:"#jifen"}
                         , {field: 'score', title: '费用',templet: '#cf'}
                      ]
                 ]
@@ -90,6 +90,22 @@
                 //执行重载
                 table.reload('demo', {
                     where:data.field
+                });
+                return false;
+            });
+            // 监听添加操作
+            $("body").on("click",'.data-add-btn', function () {
+                var index = layer.open({
+                    title: '学生补款',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['60%', '60%'],
+                    content: 'projectPage/contract/addMyContract.html',
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
                 });
                 return false;
             });
@@ -153,23 +169,24 @@
         });
 
     </script>
-    <script type="text/html" id="cf">
-        {{#  if(d.money == d.jiaofeijine){ }}
-        <span style="color: #35bdae">已交完</span>
-        {{#  } else { }}
-        <a href="../../contract/openPaper.do?sid={{d.sid}}" class="layui-table-link" style="color:#c23450;">待补款[+]</a>
-        {{#  } }}
-    </script>
-    <script type="text/html" id="time">
-        {{layui.util.toDateString(d.signedTime,'yyyy')}}
-    </script>
-    <script type="text/html" id="jifen">
-        <a href="zhongsheng/student/addScore?sid={{d.sid}}" class="layui-table-link" style="color:#c2a664;">{{d.score}}  [ + ] </a>
-    </script>
-</head>
 
+</head>
 <body>
 
+
+<script type="text/html" id="cf">
+    {{#  if(d.money >= d.jiaofeijine){ }}
+<a href="/zhongsheng/student/selectOneStudent?snum={{d.snum}}" class="layui-table-link" style="color:#c23450;">待补款[+]</a>
+   {{#  } else { }}
+    <span style="color: #35bdae">已交完</span>
+    {{#  } }}
+</script>
+<script type="text/html" id="time">
+    {{layui.util.toDateString(d.signedTime,'yyyy')}}
+</script>
+<script type="text/html" id="jifen">
+    <a href="/zhongsheng/student/addScore?snum={{d.snum}}" class="layui-table-link" style="color:#c2a664;">   {{d.score}}  [ + ]  </a>
+</script>
 <div id="wrapper">
 
     <nav class="navbar-default navbar-static-side" role="navigation">

@@ -50,10 +50,16 @@ public class StudentServiceImpl implements StudentService {
         return student;
     }
 
-    @Override
-    public Student selectStudentID(Integer id) {
-        return studentMapper.selectStudentID(id);
-    }
+
+    public Integer selectJiaoFeiJinE(String snum) {
+     List<Bill> billList=   studentMapper.selectJiaoFeiJinE(snum);
+     Integer num=0;
+        for (int i = 0; i < billList.size(); i++) {
+            num+=billList.get(i).getPaymentAmount();
+        }
+        System.out.println(num+"=nnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+        return num;
+    };
 
 
 
@@ -86,8 +92,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-    public Integer addScore(Integer sid, Integer scope) {
-        return studentMapper.addScore(sid, scope);
+    public Integer addScore(String snum, Integer scope) {
+        return studentMapper.addScore(snum, scope);
     }
 
     public List<Area> selectArea() {
@@ -125,4 +131,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     ;
+
+    public Integer changeScore(String snum,Integer score){
+       return studentMapper.changeScore(snum,score);
+    };
 }

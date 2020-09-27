@@ -7,10 +7,9 @@ import java.util.List;
 public interface StudentService {
 
     public Student selectStudent(String snum);
-    public Student selectStudentID(Integer id);
-
+    Integer selectJiaoFeiJinE(String snum);
     public List<Student> selectAllStudent(String keyword,Integer modules,Integer page,Integer limit);
-    public Integer addScore(Integer sid,Integer scope);
+    public Integer addScore(String snum,Integer scope);
     int addStudentInfo(Student student);
     List<Area> selectArea();
     List<TableDic> selectQu(Integer id);
@@ -18,4 +17,5 @@ public interface StudentService {
     String selectNumber(Integer id);
     CampusDic selectCNumber(Integer ca);
     Integer selectXuHao(Integer id);
+    public Integer changeScore(String snum,Integer score);
 }
