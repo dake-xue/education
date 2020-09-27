@@ -1,10 +1,7 @@
 package com.zhongsheng.education.mapper;
 
 import com.zhongsheng.education.dao.StudentDao;
-import com.zhongsheng.education.entiy.Area;
-import com.zhongsheng.education.entiy.CampusDic;
-import com.zhongsheng.education.entiy.Student;
-import com.zhongsheng.education.entiy.TableDic;
+import com.zhongsheng.education.entiy.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -24,8 +21,6 @@ public interface StudentMapper {
     @SelectProvider(type = StudentDao.class, method = "selectAllStudent")
     public List<Student> selectAllStudent(String keyword, Integer modules, Integer page, Integer limit);
 
-    @Select("select * from student")
-    public List<Student> allStudent();
 
     @Update("update student set score=score+#{scope} where snum=#{snum}")
     public Integer addScore(String snum, Integer scope);

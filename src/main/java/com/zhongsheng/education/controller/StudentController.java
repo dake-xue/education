@@ -7,7 +7,8 @@ import com.zhongsheng.education.entiy.TableDic;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
-import com.zhongsheng.education.util.DataUtil;
+import com.zhongsheng.education.util.MyUtil;
+import com.zhongsheng.education.util.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,7 +48,7 @@ public class StudentController {
         for (Student s:studentList){
             s.setJiaofeijine(studentService.selectJiaoFeiJinE(s.getSnum()));
         }
-        return  DataUtil.layuiData(studentList);
+        return  MyUtil.layuiData(studentList);
     }
     //学生详情页面
     @RequestMapping("/studentDetails")
@@ -80,8 +81,10 @@ public class StudentController {
     */
     //给学生添加积分
     @RequestMapping("/addScore")
-    public Integer addScore(String snum, Integer scope) throws Exception {
-        Integer student = studentService.addScore(snum, scope);
+    @ResponseBody
+    public Integer addScore(String snum, Integer score) throws Exception {
+        System.out.println(snum+"============"+score);
+        Integer student = studentService.addScore(snum, score);
         if (student==1){
             return 1;
         }else{
@@ -123,25 +126,28 @@ public class StudentController {
     }
 
 
-    //获取补款学生信息
-    @RequestMapping("/selectOneStudent")
-    public String selectOneStudent(String snum,Model model){
-        Student student = studentService.selectStudent(snum);
-        model.addAttribute("student",student);
-        return "addMone";
-    };
     //补款
     @RequestMapping("/addBill")
-    public String addBill(Student student) {
-        //生成票据
-        String s = Reader.addBill(student);
-        //生成图片
-        String ima = PDF2IMAGE.pdf2Image(s, UrlUtil.getUrl()+"\\src\\main\\resources\\static\\pdfToImage", 300);
-        student.getBill().setImage(ima);
-        //插入票据表
-        billService.addBillInfo(student.getBill());
+    @ResponseBody
+    public Integer addBill(String snum,Integer paymentAmount,String remarks) {
+System.out.println(snum+paymentAmount+remarks);
+        Student student1 = studentService.selectStudentOne(snum);
+        System.out.println(student1);
+        System.out.println("=============="+student1.getBill());
 
-        return "";
+            student1.getBill().setSnum(snum);
+            student1.getBill().setPaymentAmount(paymentAmount);
+            student1.setRemarks(remarks);
+
+            //生成票据
+            String s = Reader.addBill(student1);
+            //生成图片
+            String ima = PDF2IMAGE.pdf2Image(s, UrlUtil.getUrl()+"\\src\\main\\resources\\static\\pdfToImage", 300);
+            student1.getBill().setImage(ima);
+            //插入票据表
+
+         Integer i=billService.addBillInfo(student1.getBill());
+           return i;
     }
 
     //查询省区校

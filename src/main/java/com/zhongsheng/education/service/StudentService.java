@@ -8,8 +8,8 @@ public interface StudentService {
 
     Student selectStudentByIphone(String phone);
     public Student selectStudent(String snum);
+    public Student selectStudentOne(String snum);
     Integer selectJiaoFeiJinE(String snum);
-    public Student selectStudentID(Integer id);
     public List<Student> selectAllStudent(String keyword,Integer modules,Integer page,Integer limit);
     public Integer addScore(String snum,Integer scope);
     int addStudentInfo(Student student);

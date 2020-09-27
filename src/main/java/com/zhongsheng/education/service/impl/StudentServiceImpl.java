@@ -67,6 +67,14 @@ public class StudentServiceImpl implements StudentService {
         return student;
     }
 
+    public Student selectStudentOne(String snum) {
+        //学生
+        Student student = studentMapper.selectStudent(snum);
+        //家庭
+        student.setFamilyInfo(familyService.selectFamilyInfo(student.getSnum()));
+        student.setBill(billService.selectBill1(student.getSnum()));
+        return student;
+    }
 
     public Integer selectJiaoFeiJinE(String snum) {
      List<Bill> billList=   studentMapper.selectJiaoFeiJinE(snum);
