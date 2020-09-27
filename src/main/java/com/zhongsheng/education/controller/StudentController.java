@@ -8,7 +8,6 @@ import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
 import com.zhongsheng.education.util.DataUtil;
-import com.zhongsheng.education.util.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,7 +41,7 @@ public class StudentController {
 
     @GetMapping("/allStudentInfo")
     @ResponseBody
-    public String allStudentInfo(Student student,Integer modules, String keyword,Integer page,Integer limit)throws Exception{
+    public String allStudentInfo(Integer modules, String keyword,Integer page,Integer limit)throws Exception{
         List<Student> studentList = studentService.selectAllStudent(keyword,modules,page,limit);
         //查询已交学费
         for (Student s:studentList){
@@ -57,9 +56,20 @@ public class StudentController {
         model.addAttribute("student",student);
         return "studentDetails";
     }
-
-    ;
-
+    /**
+     * @创建人 xueke
+     * @参数
+     * @返回值
+     * @创建时间 2020/9/27
+     * @描述 学生登陆后查看自己信息的方法
+    */
+    @RequestMapping("/stuToStudentDetails")
+    public String stuToStuDetails(String phone , Model model){
+        Student student = studentService.selectStudentByIphone(phone);
+        System.out.println("**********************"+student);
+        model.addAttribute("student",student);
+        return "studentDetails";
+    }
 
     /**
      * @创建人 xueke
@@ -134,21 +144,21 @@ public class StudentController {
         return "";
     }
 
-    //查询省
+    //查询省区校
     @RequestMapping("/selectArea")
     @ResponseBody
     public List<Area> selectArea() {
         List<Area> areaList = studentService.selectArea();
         return areaList;
     }
-    //查询区
+
     @RequestMapping("/selectQu")
     @ResponseBody
     public List<TableDic> selectArea(Integer id) {
         List<TableDic> areaList = studentService.selectQu(id);
         return areaList;
     }
-    //查询校
+
     @RequestMapping("/selectSchool")
     @ResponseBody
     public List<TableDic> selectSchool(Integer campus) {

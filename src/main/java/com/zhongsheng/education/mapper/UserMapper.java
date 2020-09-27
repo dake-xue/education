@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Select("select * from user")
+    @Select("select * from user where whoid <> 0")
     List<User> selectAllUser();
 
     //添加用户

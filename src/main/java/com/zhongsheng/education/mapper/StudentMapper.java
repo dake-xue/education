@@ -1,13 +1,19 @@
 package com.zhongsheng.education.mapper;
 
 import com.zhongsheng.education.dao.StudentDao;
-import com.zhongsheng.education.entiy.*;
+import com.zhongsheng.education.entiy.Area;
+import com.zhongsheng.education.entiy.CampusDic;
+import com.zhongsheng.education.entiy.Student;
+import com.zhongsheng.education.entiy.TableDic;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
 public interface StudentMapper {
+
+    @Select("select * from student where phone=#{phone}")
+    public Student selectStudentByIphone(String phone);
 
     @Select("select * from student where snum=#{snum}")
     public Student selectStudent(String snum);
@@ -32,7 +38,6 @@ public interface StudentMapper {
 
     @Select("select * from campus_dic where aid=#{id}")
     public List<TableDic> selectQu(Integer id);
-
     @Select("select * from training_school_dic where campus_id=#{id}")
     public List<TableDic> selectSchool(Integer id);
 

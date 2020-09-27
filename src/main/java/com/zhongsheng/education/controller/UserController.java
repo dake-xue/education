@@ -4,9 +4,10 @@ import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.entiy.User;
 import com.zhongsheng.education.service.StudentService;
 import com.zhongsheng.education.service.UserService;
-import com.zhongsheng.education.util.DataUtil;
+import com.zhongsheng.education.util.MyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -24,8 +25,6 @@ public class UserController {
 
     /**
      * @创建人 xueke
-     * @参数
-     * @返回值
      * @创建时间 2020/9/25
      * @描述 登录
     */
@@ -35,22 +34,20 @@ public class UserController {
         User loginUser = userService.selectWho(user);
         //账号或密码错误
         if (loginUser == null) {
-            return "";
+            return "redirect:/user/toLogin";
             //1==老师
-        } else if (loginUser.getWhoid() == 1) {
+        } else if (loginUser.getWhoid() == 1 || loginUser.getWhoid() == 0) {
             session.setAttribute("user",loginUser);
             return "redirect:/student/toAllStudent";
             //2==学生
         } else if (loginUser.getWhoid() == 2) {
             session.setAttribute("user",loginUser);
-            return user.getUid()+"";
+            return "redirect:/student/stuToStudentDetails?phone="+loginUser.getUsername();
         }
         return "error";
     }
     /**
      * @创建人 xueke
-     * @参数
-     * @返回值
      * @创建时间 2020/9/25
      * @描述 退出登录
     */
@@ -59,12 +56,26 @@ public class UserController {
         session.invalidate();
         return "redirect:/user/toLogin";
     }
-
+    /**
+     * @创建人 xueke
+     * @创建时间 2020/9/27
+     * @描述 展示所有用户信息
+    */
     @RequestMapping("/allUser")
     @ResponseBody
     public String allUser(Integer page,Integer limit){
         List<User> userList =  userService.selectAllUser(page, limit);
-        return DataUtil.layuiData(userList);
+        return MyUtil.layuiData(userList);
+    }
+
+
+    @RequestMapping("/addUser")
+    @ResponseBody
+    public String addUser(User user){
+        user.setPassword(MyUtil.getPassWord(user.getUsername()));
+        int i =  userService.addUser(user);
+        if(i==1){return "yes";}
+        return "no";
     }
 
 }
