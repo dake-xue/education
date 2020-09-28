@@ -66,10 +66,23 @@ public class StudentServiceImpl implements StudentService {
         return student;
     }
 
-    @Override
-    public Student selectStudentID(Integer id) {
-        return studentMapper.selectStudentID(id);
+    public Student selectStudentOne(String snum) {
+        //学生
+        Student student = studentMapper.selectStudent(snum);
+        //家庭
+        student.setFamilyInfo(familyService.selectFamilyInfo(student.getSnum()));
+        return student;
     }
+
+    public Integer selectJiaoFeiJinE(String snum) {
+     List<Bill> billList=   studentMapper.selectJiaoFeiJinE(snum);
+     Integer num=0;
+        for (int i = 0; i < billList.size(); i++) {
+            num+=billList.get(i).getPaymentAmount();
+        }
+        System.out.println(num+"=nnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+        return num;
+    };
 
 
 
@@ -82,7 +95,7 @@ public class StudentServiceImpl implements StudentService {
 
     //添加学生
     @Override
-    public int addStudentInfo(Student student) {
+    public int addStudentInfo(Student student, String name) {
         int i = studentMapper.addStudentInfo(student);
         System.out.println(student.getSnum()+"***************");
         student.getSchoolInfo().setSnum(student.getSnum());
@@ -91,7 +104,7 @@ public class StudentServiceImpl implements StudentService {
         familyService.addFamilyInfo(student.getFamilyInfo());
         schoolService.addSchoolInfo(student.getSchoolInfo());
         //生成票据
-        String s = Reader.addBill(student);
+        String s = Reader.addBill(student,name);
         //生成图片
         String ima = PDF2IMAGE.pdf2Image(s, UrlUtil.getUrl()+"\\src\\main\\resources\\static\\pdfToImage", 300);
         student.getBill().setImage(ima);
@@ -102,8 +115,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-    public Integer addScore(Integer sid, Integer scope) {
-        return studentMapper.addScore(sid, scope);
+    public Integer addScore(String snum, Integer scope) {
+        return studentMapper.addScore(snum, scope);
     }
 
     public List<Area> selectArea() {
@@ -140,6 +153,11 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.selectXuHao(id);
     }
 
+    ;
+
+    public Integer changeScore(String snum,Integer score){
+       return studentMapper.changeScore(snum,score);
+    };
     @Override
     public Integer updateStudent(Student student) {
         schoolService.updateSchool(student.getSchoolInfo());

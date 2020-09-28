@@ -60,8 +60,17 @@
                         , {field: 'classes', title: '班次'}
                         , {field: 'examinationtime', title: '考试年份'}
                         , {field: 'subject', title: '考试科目'}
-                        , {field: 'score', title: '积分',style:"color:#009688"}
-                        , {field: 'score', title: '费用',templet: '#cf'}
+                        , {field: 'score', title: '积分', templet: "#jifen"}
+                        , {field: 'money', title: '费用', templet: '#cf'}
+                        , {field: 'idcard', title: '身份证', hide: true}
+                        , {field: 'schoolname', title: '专科学校', hide: true}
+                        , {field: 'major', title: '专科专业', hide: true}
+                        , {field: 'campus', title: '校区', hide: true}
+                        , {field: 'admissiontime', title: '入学年份', hide: true}
+                        , {field: 'intentionmajor', title: '升本专业', hide: true}
+                        , {field: 'department', title: '院系', hide: true}
+                        , {field: 'fphone', title: '家长联系方式', hide: true}
+                        , {field: 'grade', title: '年级', hide: true}
                         , {field: '', title: '操作',templet: '#et'}
 
                      ]
@@ -79,7 +88,12 @@
             table.on('row(currentTableFilter)', function (obj) {
                 var data = obj.data;
                 console.log(data);
-                window.location.href="/zhongsheng/student/studentDetails?snum="+data.snum;
+                var index = layer.open({
+                    title: data.title,
+                    type: 2,
+                    content: "/zhongsheng/student/studentDetails?snum="+data.snum,
+                    area: ['100%', '100%'],
+                });
                 $(window).on("resize", function () {
                     layer.full(index);
                 });
@@ -109,6 +123,65 @@
                 return false;
             });
 
+            //添加积分监听提交
+            form.on('submit(scoreform)', function (data) {
+                var v = data.field;
+                if (v.score != null && "" != v.score) {
+                    $.ajax({
+                        url: "/zhongsheng/student/addScore",
+                        type: "POST",
+                        dataType: "text",
+                        data: v,
+                        success: function (data) {
+                            if (data == 1) {
+                                layer.msg('添加成功！', {icon: 6}, {time: 3000});
+                                // 重置清空
+                                $('#score1')[0].reset();
+                                form.render();//必须写
+                                window.parent.location.reload();//刷新父页面
+                                parent.layer.close(index);//关闭弹出层
+
+                            } else {
+                                layer.msg('添加失败！', {icon: 5}, {time: 3000});
+                            }
+
+                        }
+                    });
+                } else {
+                    layer.msg('积分不能为空！', {icon: 5}, {time: 1000});
+                }
+                return false;
+            });
+
+            //补款监听提交
+            form.on('submit(formDemo)', function (data) {
+                var student = data.field;
+                if (student.paymentAmount != null && "" != student.paymentAmount) {
+                    $.ajax({
+                        url: "/zhongsheng/student/addBill",
+                        type: "POST",
+                        dataType: "text",
+                        data: student,
+                        success: function (data) {
+                            if (data == 1) {
+                                layer.msg('添加成功！', {icon: 6}, {time: 3000});
+                                // 重置清空
+                                $('#mm')[0].reset();
+                                form.render();//必须写
+                                window.parent.location.reload();//刷新父页面
+                                parent.layer.close(index);//关闭弹出层
+
+                            } else {
+                                layer.msg('添加失败！', {icon: 5}, {time: 3000});
+                            }
+
+                        }
+                    });
+                } else {
+                    layer.msg('金额不能为空！', {icon: 5}, {time: 1000});
+                }
+                return false;
+            });
             // 监听搜索操作
             form.on('submit(data-search-btn)', function (data) {
                 //执行重载
@@ -190,7 +263,70 @@
             })
         }
 
+        //打开补款
+        function openAddMoney(snum, sname, sex, idcard, phone) {
+            $("#snum1").val(snum);
+            $("#sname2").val(sname);
+            $("#sex").val(sex);
+            $("#idcard").val(idcard);
+            $("#phone").val(phone);
+            layui.use(['layer'], function () {
+                var layer = layui.layer, $ = layui.$;
+                layer.open({
+                    type: 1,//类型
+                    area: ['700px', '500px'],//定义宽和高
+                    title: '学生补款',//题目
+                    shadeClose: false,//点击遮罩层关闭
+                    content: $('#mmm')//打开的内容
+                });
+            })
+        }
+
+
+        function openScore(snum, sname) {
+            $("#snum").val(snum);
+            $("#sname").val(sname);
+            layui.use(['layer'], function () {
+                var layer = layui.layer, $ = layui.$;
+                layer.open({
+                    type: 1,//类型
+                    area: ['500px', '350px'],//定义宽和高
+                    title: '添加积分',//题目
+                    shadeClose: false,//点击遮罩层关闭
+                    content: $('#score')//打开的内容
+                });
+            });
+
+            //金额正则表达式
+            $("#ccc").on('blur', function () {
+                var a = /^(0|[1-9][0-9]*)$/;
+                if (a.test($("#ccc").val()) == false) {
+                    layer.msg("请输入纯数字", {icon: 6});
+                }
+            });
+        }
+
+
     </script>
+
+</head>
+<body>
+
+
+<script type="text/html" id="cf">
+    {{#  if(d.money >= d.jiaofeijine){ }}
+    <a onclick='openAddMoney("{{d.snum}}","{{d.sname}}","{{d.sex}}","{{d.idcard}}","{{d.phone}}");'
+       style="color:#c23450;">待补款[+]</a>
+    {{#  } else { }}
+    <span style="color: #35bdae">已交完</span>
+    {{#  } }}
+</script>
+<script type="text/html" id="time">
+    {{layui.util.toDateString(d.signedTime,'yyyy')}}
+</script>
+<script type="text/html" id="jifen">
+    <a onclick='openScore("{{d.snum}}","{{d.sname}}");' style="color:#c2a664;"> {{d.score}} [ + ] </a>
+</script>
     <script type="text/html" id="cf">
         {{#  if(d.money == d.jiaofeijine){ }}
         <span style="color: #35bdae">已交完</span>
@@ -371,7 +507,8 @@
             <div class="layui-inline">
                 <label class="layui-form-label">用户名</label>
                 <div class="layui-input-inline">
-                    <input name="username" class="layui-input" type="text" placeholder="电话号码" maxlength="11" lay-verify="phone"/>
+                    <input name="username" class="layui-input" type="text" placeholder="电话号码" maxlength="11"
+                           lay-verify="phone"/>
                 </div>
             </div>
         </div>
@@ -398,5 +535,81 @@
         </div>
 
         <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+    </form>
+</div>
+
+<!--模仿bootstrap的模态框-->
+<div id="score" style="display: none;text-align: center;">
+    <form class="layui-form" id="score1" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <input type="hidden" name="snum" id="snum">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-inline">
+                    <input id="sname" class="layui-input" type="text" readonly/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">积分</label>
+                <div class="layui-input-inline">
+                    <input name="score" id="ccc" class="layui-input" type="text"/>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="layui-form-inline" style="margin-top: 10%;">
+            <div class="layui-input-inline">
+                <button class="layui-btn" lay-submit lay-filter="scoreform">提交</button>
+            </div>
+        </div>
+
+        <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+    </form>
+</div>
+
+<!--模仿bootstrap的模态框-->
+<div id="mmm" style="display: none;text-align: center;">
+    <form class="layui-form" id="mm" type="hidden">
+        <input type="hidden" id="snum1" name="snum">
+            <div class="layui-inline">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="sname2" disabled class="layui-input"></div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="sex" disabled class="layui-input"></div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">联系电话</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="phone" disabled class="layui-input"></div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">身份证号</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="idcard" disabled class="layui-input"></div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">缴费金额</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="paymentAmount" required lay-verify="required" autocomplete="off"
+                           class="layui-input" style="width: 400px"></div>
+            </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="remarks" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
+            </div>
+        </div>
     </form>
 </div>

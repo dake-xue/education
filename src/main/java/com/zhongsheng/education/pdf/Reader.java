@@ -18,7 +18,7 @@ import java.util.Map.Entry;
 
 public class Reader {
 
-    public static String addBill(Student student) {
+    public static String addBill(Student student, String name) {
         String fi=null;
         // 获得当前时间
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -32,6 +32,10 @@ public class Reader {
         sr.append(formatDate1);
         sr.append(random);
         sr.toString();
+        String m=   String.valueOf(student.getBill().getPaymentAmount());
+        //金额转换中文
+      String result=ConvertUpMoney.toChinese(m);
+                System.out.println(result+"=resultresultresultresultresultresult");
         //1 准备要填充的数据
         Map paraMap = new HashMap();
         paraMap.put("Text1", student.getSname());
@@ -44,7 +48,7 @@ public class Reader {
         paraMap.put("Text8", student.getClasses());
         paraMap.put("Text9", student.getIdcard());
         paraMap.put("Text10",student.getBill().getPaymentAmount());
-        paraMap.put("Text11", "叁仟圆");
+        paraMap.put("Text11", result);
         paraMap.put("Text12", student.getRemarks());
         paraMap.put("Text13", formatDate);
         paraMap.put("Text14", sr);
@@ -55,7 +59,7 @@ public class Reader {
         paraMap.put("Text19", student.getCampus());
         paraMap.put("Text20", student.getFamilyInfo().getFphone());
         paraMap.put("Text21", "码");
-        paraMap.put("Text22", "胖虎");
+        paraMap.put("Text22", name);
 
         //组合文件名
         StringBuffer stringBuffer=new StringBuffer();

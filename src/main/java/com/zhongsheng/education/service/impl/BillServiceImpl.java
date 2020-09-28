@@ -15,7 +15,7 @@ public class BillServiceImpl implements BillService {
 
 
     @Override
-    public int addBillInfo(Bill bill) { return billMapper.addBillInfo(bill);
+    public Integer addBillInfo(Bill bill) { return billMapper.addBillInfo(bill);
     }
 
     //查询总金额
@@ -32,5 +32,7 @@ public class BillServiceImpl implements BillService {
     public List<Bill> selectBill(String snum){
         return billMapper.selectBill(snum);
     };
-
+    public Bill selectBill1(String snum){
+        return billMapper.selectBill1(snum);
+    };
 }
