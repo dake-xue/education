@@ -90,6 +90,7 @@ public class Student {
     //学号
     private String snum;
 
+
     public String getSnum() {
         return snum;
     }

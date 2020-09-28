@@ -1,9 +1,6 @@
 package com.zhongsheng.education.controller;
 
-import com.zhongsheng.education.entiy.Area;
-import com.zhongsheng.education.entiy.CampusDic;
-import com.zhongsheng.education.entiy.Student;
-import com.zhongsheng.education.entiy.TableDic;
+import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -95,9 +93,11 @@ public class StudentController {
     //添加学生
     @RequestMapping("/addStudent")
     @ResponseBody
-    public String addStudent(Student student) throws Exception {
+    public String addStudent(Student student, HttpSession session) throws Exception {
+       User user=(User) session.getAttribute("user");
         //省份
-        String anum = studentService.selectNumber(student.getArea());
+        String str = String.format("%02d", student.getArea());
+        System.out.println(str+"===========================str");
         //校区
         CampusDic cnum=studentService.selectCNumber(student.getCampusid());
         //年份后两位
@@ -111,7 +111,7 @@ public class StudentController {
         }
         //拼接学生id  （省份+校区+年份+序号）
         StringBuffer sr = new StringBuffer();
-        sr.append(anum);
+        sr.append(str);
         sr.append(cnum.getCnum());
         sr.append(year);
         sr.append(num);
@@ -120,7 +120,7 @@ public class StudentController {
         student.setSnum(s);
         student.setNumber(n);
         student.setCampus(cnum.getName());
-        int i = studentService.addStudentInfo(student);
+        int i = studentService.addStudentInfo(student,user.getName());
 
         return i+"";
     }
@@ -129,18 +129,21 @@ public class StudentController {
     //补款
     @RequestMapping("/addBill")
     @ResponseBody
-    public Integer addBill(String snum,Integer paymentAmount,String remarks) {
+    public Integer addBill(String snum,Integer paymentAmount,String remarks,HttpSession session) {
+     User user=(User)session.getAttribute("user");
 System.out.println(snum+paymentAmount+remarks);
         Student student1 = studentService.selectStudentOne(snum);
         System.out.println(student1);
         System.out.println("=============="+student1.getBill());
+Bill bill=new Bill();
+bill.setSnum(snum);
+bill.setPaymentAmount(paymentAmount);
 
-            student1.getBill().setSnum(snum);
-            student1.getBill().setPaymentAmount(paymentAmount);
+            student1.setBill(bill);
             student1.setRemarks(remarks);
 
             //生成票据
-            String s = Reader.addBill(student1);
+            String s = Reader.addBill(student1,user.getName());
             //生成图片
             String ima = PDF2IMAGE.pdf2Image(s, UrlUtil.getUrl()+"\\src\\main\\resources\\static\\pdfToImage", 300);
             student1.getBill().setImage(ima);

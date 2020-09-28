@@ -2,7 +2,6 @@ package com.zhongsheng.education.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
@@ -27,6 +26,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/user/toLogin").setViewName("index");
         //跳转所有用户页面
         registry.addViewController("/user/toAllUser").setViewName("allUser");
+        //跳转积分管理页面
+        registry.addViewController("/ScoreCotroller/toScore").setViewName("allScore");
         //跳转学生详情页面
         //registry.addViewController("/student/toStudentDetails").setViewName("studentDetails");
     }

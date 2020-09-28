@@ -72,7 +72,6 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentMapper.selectStudent(snum);
         //家庭
         student.setFamilyInfo(familyService.selectFamilyInfo(student.getSnum()));
-        student.setBill(billService.selectBill1(student.getSnum()));
         return student;
     }
 
@@ -97,7 +96,7 @@ public class StudentServiceImpl implements StudentService {
 
     //添加学生
     @Override
-    public int addStudentInfo(Student student) {
+    public int addStudentInfo(Student student, String name) {
         int i = studentMapper.addStudentInfo(student);
         System.out.println(student.getSnum()+"***************");
         student.getSchoolInfo().setSnum(student.getSnum());
@@ -106,7 +105,7 @@ public class StudentServiceImpl implements StudentService {
         familyService.addFamilyInfo(student.getFamilyInfo());
         schoolService.addSchoolInfo(student.getSchoolInfo());
         //生成票据
-        String s = Reader.addBill(student);
+        String s = Reader.addBill(student,name);
         //生成图片
         String ima = PDF2IMAGE.pdf2Image(s, UrlUtil.getUrl()+"\\src\\main\\resources\\static\\pdfToImage", 300);
         student.getBill().setImage(ima);

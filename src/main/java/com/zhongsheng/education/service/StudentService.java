@@ -1,6 +1,9 @@
 package com.zhongsheng.education.service;
 
-import com.zhongsheng.education.entiy.*;
+import com.zhongsheng.education.entiy.Area;
+import com.zhongsheng.education.entiy.CampusDic;
+import com.zhongsheng.education.entiy.Student;
+import com.zhongsheng.education.entiy.TableDic;
 
 import java.util.List;
 
@@ -12,7 +15,7 @@ public interface StudentService {
     Integer selectJiaoFeiJinE(String snum);
     public List<Student> selectAllStudent(String keyword,Integer modules,Integer page,Integer limit);
     public Integer addScore(String snum,Integer scope);
-    int addStudentInfo(Student student);
+    int addStudentInfo(Student student, String name);
     List<Area> selectArea();
     List<TableDic> selectQu(Integer id);
     List<TableDic> selectSchool(Integer id);
