@@ -7,6 +7,7 @@ public class Student {
     //学生id
     private int sid;
     private Integer area;
+
     //校区id
     private Integer campusid;
     //校区
@@ -414,6 +415,8 @@ public class Student {
     public String toString() {
         return "Student{" +
                 "sid=" + sid +
+                ", area=" + area +
+                ", campusid=" + campusid +
                 ", campus='" + campus + '\'' +
                 ", schoolname='" + schoolname + '\'' +
                 ", sname='" + sname + '\'' +
@@ -423,6 +426,7 @@ public class Student {
                 ", phone='" + phone + '\'' +
                 ", classes='" + classes + '\'' +
                 ", money=" + money +
+                ", jiaofeijine=" + jiaofeijine +
                 ", examinationtime='" + examinationtime + '\'' +
                 ", admissiontime='" + admissiontime + '\'' +
                 ", signupdate=" + signupdate +
@@ -446,6 +450,10 @@ public class Student {
                 ", department='" + department + '\'' +
                 ", familyInfo=" + familyInfo +
                 ", schoolInfo=" + schoolInfo +
+                ", billList=" + billList +
+                ", bill=" + bill +
+                ", number=" + number +
+                ", snum='" + snum + '\'' +
                 '}';
     }
 }

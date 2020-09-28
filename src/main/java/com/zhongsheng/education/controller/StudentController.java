@@ -166,4 +166,22 @@ public class StudentController {
         return areaList;
     }
 
+    @RequestMapping("/toUpdateStudent")
+    public String toUpdateStudent(String snum , Model model){
+        Student student = studentService.selectStudent(snum);
+        model.addAttribute("student",student);
+        return "updateStudent";
+    }
+
+    @RequestMapping("/updateStudent")
+    @ResponseBody
+    public String updateStudent(Student student){
+        System.out.println("******"+student);
+        int i = studentService.updateStudent(student);
+        if (i==1){
+            return "yes";
+        }
+        return "no";
+    }
+
 }

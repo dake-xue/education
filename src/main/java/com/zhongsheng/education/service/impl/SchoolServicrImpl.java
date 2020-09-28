@@ -21,5 +21,10 @@ public class SchoolServicrImpl implements SchoolService {
         return schoolMapper.addSchoolInfo(schoolInfo);
     }
 
+    @Override
+    public Integer updateSchool(SchoolInfo schoolInfo) {
+        return schoolMapper.updateSchool(schoolInfo);
+    }
+
 
 }

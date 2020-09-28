@@ -62,6 +62,8 @@
                         , {field: 'subject', title: '考试科目'}
                         , {field: 'score', title: '积分',style:"color:#009688"}
                         , {field: 'score', title: '费用',templet: '#cf'}
+                        , {field: '', title: '操作',templet: '#et'}
+
                      ]
                 ]
             });
@@ -77,12 +79,7 @@
             table.on('row(currentTableFilter)', function (obj) {
                 var data = obj.data;
                 console.log(data);
-                var index = layer.open({
-                    title: data.title,
-                    type: 2,
-                    content: "/zhongsheng/student/studentDetails?snum="+data.snum,
-                    area: ['100%', '100%'],
-                });
+                window.location.href="/zhongsheng/student/studentDetails?snum="+data.snum;
                 $(window).on("resize", function () {
                     layer.full(index);
                 });
@@ -192,6 +189,7 @@
                 });
             })
         }
+
     </script>
     <script type="text/html" id="cf">
         {{#  if(d.money == d.jiaofeijine){ }}
@@ -205,6 +203,10 @@
     </script>
     <script type="text/html" id="jifen">
         <a href="zhongsheng/student/addScore?sid={{d.sid}}" class="layui-table-link" style="color:#c2a664;">{{d.score}}  [ + ] </a>
+    </script>
+    <script type="text/html" id="et">
+        <a class="layui-btn layui-btn-sm layui-btn-normal"
+           th:href="@{/student/toUpdateStudent?snum={{d.snum}}}" style="color: white">编辑</a>
     </script>
 </head>
 

@@ -4,6 +4,7 @@ import com.zhongsheng.education.entiy.FamilyInfo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface FamilyMapper {
@@ -13,4 +14,7 @@ public interface FamilyMapper {
 
     @Select("select * from familyinfo where snum=#{snum}")
     public FamilyInfo selectFamilyInfo(String snum);
+
+    @Update("update familyinfo set fname=#{fname},relation=#{relation},fphone=#{fphone} where fid = #{fid}")
+    public Integer updateFamily(FamilyInfo familyInfo);
 }

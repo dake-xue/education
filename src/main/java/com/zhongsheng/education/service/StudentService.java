@@ -18,4 +18,5 @@ public interface StudentService {
     String selectNumber(Integer id);
     CampusDic selectCNumber(Integer ca);
     Integer selectXuHao(Integer id);
+    Integer updateStudent(Student student);
 }
