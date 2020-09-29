@@ -90,6 +90,16 @@ public class Student {
     //学号
     private String snum;
 
+    //未交款
+    private Integer weijiaokuan;
+
+    public Integer getWeijiaokuan() {
+        return weijiaokuan;
+    }
+
+    public void setWeijiaokuan(Integer weijiaokuan) {
+        this.weijiaokuan = weijiaokuan;
+    }
 
     public String getSnum() {
         return snum;

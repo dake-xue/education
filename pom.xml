@@ -82,6 +82,13 @@
             <artifactId>pdfbox</artifactId>
             <version>2.0.4</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13</version>
+            <scope>test</scope>
+        </dependency>
 
         <!--apache lang3-->
         <dependency>

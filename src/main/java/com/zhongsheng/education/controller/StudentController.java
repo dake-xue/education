@@ -45,6 +45,10 @@ public class StudentController {
         //查询已交学费
         for (Student s:studentList){
             s.setJiaofeijine(studentService.selectJiaoFeiJinE(s.getSnum()));
+            Integer i=s.getMoney();
+            Integer q=s.getJiaofeijine();
+            Integer c=i-q;
+            s.setWeijiaokuan(c);
         }
         return  MyUtil.layuiData(studentList);
     }

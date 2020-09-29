@@ -61,15 +61,14 @@
                         , {field: 'classes', title: '班次'}
                         , {field: 'examinationtime', title: '考试年份'}
                         , {field: 'subject', title: '考试科目'}
+                        , {field: 'money', title: '学费',templet:"#mo"}
                         , {field: 'score', title: '积分', templet: "#jifen"}
-                        , {field: 'money', title: '费用', templet: '#cf'}
+                        , {field: 'money', title: '是否交完', templet: '#cf'}
                         , {field: 'idcard', title: '身份证', hide: true}
                         , {field: 'schoolname', title: '专科学校', hide: true}
                         , {field: 'major', title: '专科专业', hide: true}
                         , {field: 'campus', title: '校区', hide: true}
-                        , {field: 'admissiontime', title: '入学年份', hide: true}
-                        , {field: 'intentionmajor', title: '升本专业', hide: true}
-                        , {field: 'department', title: '院系', hide: true}
+                        , {field: 'weijiaokuan', title: '未交款', hide: true}
                         , {field: 'fphone', title: '家长联系方式', hide: true}
                         , {field: 'grade', title: '年级', hide: true}
                     ]
@@ -83,22 +82,6 @@
                 });
                 return false;
             });
-            //监听行单击事件
-            /*  table.on('row(currentTableFilter)', function (obj) {
-                  var data = obj.data;
-                  console.log(data);
-                  var index = layer.open({
-                      title: data.title,
-                      type: 2,
-                      content: "/zhongsheng/student/studentDetails?snum=" + data.snum,
-                      area: ['100%', '100%'],
-                  });
-                  $(window).on("resize", function () {
-                      layer.full(index);
-                  });
-                  return false;
-              });*/
-
             //添加用户监听提交
             form.on('submit(userform)', function (data) {
                 var user = data.field;
@@ -121,33 +104,36 @@
                 });
                 return false;
             });
-
             //添加积分监听提交
             form.on('submit(scoreform)', function (data) {
                 var v = data.field;
-                if (v.score != null && "" != v.score) {
-                    $.ajax({
-                        url: "/zhongsheng/student/addScore",
-                        type: "POST",
-                        dataType: "text",
-                        data: v,
-                        success: function (data) {
-                            if (data == 1) {
-                                layer.msg('添加成功！', {icon: 6}, {time: 3000});
-                                // 重置清空
-                                $('#score1')[0].reset();
-                                form.render();//必须写
-                                window.parent.location.reload();//刷新父页面
-                                parent.layer.close(index);//关闭弹出层
+                var a = /^(0|[1-9][0-9]*)$/;
+                if (a.test(v.score) == false  ) {
+                    layer.msg("请输入纯数字", {icon: 6}, {time: 1000});
+                }else{
+                    if (v.score != null && "" != v.score) {
+                        $.ajax({
+                            url: "/zhongsheng/student/addScore",
+                            type: "POST",
+                            dataType: "text",
+                            data: v,
+                            success: function (data) {
+                                if (data == 1) {
+                                    layer.msg('添加成功！', {icon: 6}, {icon: 1000});
+                                    // 重置清空
+                                    $('#score1')[0].reset();
+                                    form.render();//必须写
+                                    window.parent.location.reload();//刷新父页面
+                                    parent.layer.close(index);//关闭弹出层
 
-                            } else {
-                                layer.msg('添加失败！', {icon: 5}, {time: 3000});
+                                } else {
+                                    layer.msg('添加失败！', {icon: 5}, {icon: 1000});
+                                }
                             }
-
-                        }
-                    });
-                } else {
-                    layer.msg('积分不能为空！', {icon: 5}, {time: 1000});
+                        });
+                    } else {
+                        layer.msg('积分不能为空！', {icon: 5}, {time: 1000});
+                    }
                 }
                 return false;
             });
@@ -296,14 +282,6 @@
                     content: $('#score')//打开的内容
                 });
             });
-
-            //金额正则表达式
-            $("#ccc").on('blur', function () {
-                var a = /^(0|[1-9][0-9]*)$/;
-                if (a.test($("#ccc").val()) == false) {
-                    layer.msg("请输入纯数字", {icon: 6});
-                }
-            });
         }
 
 
@@ -314,12 +292,15 @@
 
 
 <script type="text/html" id="cf">
-    {{#  if(d.money >= d.jiaofeijine){ }}
-    <a onclick='openAddMoney("{{d.snum}}","{{d.sname}}","{{d.sex}}","{{d.idcard}}","{{d.phone}}");'
-       style="color:#c23450;">待补款[+]</a>
-    {{#  } else { }}
+    {{#  if(d.jiaofeijine >= d.money){ }}
     <span style="color: #35bdae">已交完</span>
+    {{#  } else { }}
+    <a onclick='openAddMoney("{{d.snum}}","{{d.sname}}","{{d.sex}}","{{d.idcard}}","{{d.phone}}");'
+       style="color:#c23450;">待补款[{{d.weijiaokuan}}]</a>
     {{#  } }}
+</script>
+<script type="text/html" id="mo">
+    <span>{{d.money}}元</span>
 </script>
 <script type="text/html" id="time">
     {{layui.util.toDateString(d.signedTime,'yyyy')}}

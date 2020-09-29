@@ -17,13 +17,13 @@ public class ScoreServiceImpl implements ScoreService {
         return scoreMapper.selectScore();
     };
 
- public    Integer addScore(Score score){
-    return scoreMapper.addScore(score);
+ public    Integer addScore(String name,Integer score){
+    return scoreMapper.addScore(name,score);
  };
 
-    public Integer deleteScore(Integer id,Integer status){
+    public Integer deleteScore(Integer id){
 
-        return scoreMapper.deleteScore(id,status);
+        return scoreMapper.deleteScore(id);
     };
 
     public Integer updateScore(Integer id,String name,Integer score){

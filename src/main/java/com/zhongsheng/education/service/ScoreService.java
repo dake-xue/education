@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ScoreService {
     List<Score> selectScore();
-   Integer addScore(Score score);
-    public Integer deleteScore(Integer id,Integer status);
+   Integer addScore(String name,Integer score);
+    public Integer deleteScore(Integer id);
     public Integer updateScore(Integer id,String name,Integer score);
 }
