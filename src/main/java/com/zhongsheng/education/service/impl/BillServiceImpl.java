@@ -25,14 +25,13 @@ public class BillServiceImpl implements BillService {
         for (int i = 0; i < bills.size(); i++) {
             m += bills.get(i).getPaymentAmount();
         }
-        System.out.println("---------------------------------------"+m);
         return m;
     };
 
+    @Override
     public List<Bill> selectBill(String snum){
         return billMapper.selectBill(snum);
-    };
-    public Bill selectBill1(String snum){
-        return billMapper.selectBill1(snum);
-    };
+    }
+
+
 }

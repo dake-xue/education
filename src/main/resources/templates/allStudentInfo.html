@@ -24,6 +24,7 @@
     <!-- Custom and plugin javascript -->
     <script th:src="@{/js/inspinia.js}"></script>
     <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+
     <script type="text/javascript">
         $(function () {
             var whoid = $("#whoid").attr("value");
@@ -55,7 +56,7 @@
                     [//表头
                         {field: 'snum', title: '学号', sort: true, fixed: 'left'}
                         , {field: 'sname', title: '姓名' ,style:"color:#009688"}
-                        , {field: 'sex', title: '性别', sort: true}
+                        , {field: 'sex', title: '性别',width:70 , sort: true}
                         , {field: 'phone', title: '联系方式'}
                         , {field: 'classes', title: '班次'}
                         , {field: 'examinationtime', title: '考试年份'}
@@ -84,6 +85,7 @@
                 });
                 return false;
             });
+            /*
             //监听行单击事件
             table.on('row(currentTableFilter)', function (obj) {
                 var data = obj.data;
@@ -98,7 +100,7 @@
                     layer.full(index);
                 });
                 return false;
-            });
+            });*/
 
             //添加用户监听提交
             form.on('submit(userform)', function (data) {
@@ -310,8 +312,6 @@
     </script>
 
 </head>
-<body>
-
 
 <script type="text/html" id="cf">
     {{#  if(d.money >= d.jiaofeijine){ }}
@@ -327,23 +327,16 @@
 <script type="text/html" id="jifen">
     <a onclick='openScore("{{d.snum}}","{{d.sname}}");' style="color:#c2a664;"> {{d.score}} [ + ] </a>
 </script>
-    <script type="text/html" id="cf">
-        {{#  if(d.money == d.jiaofeijine){ }}
-        <span style="color: #35bdae">已交完</span>
-        {{#  } else { }}
-        <a href="../../contract/openPaper.do?sid={{d.sid}}" class="layui-table-link" style="color:#c23450;">待补款[+]</a>
-        {{#  } }}
-    </script>
-    <script type="text/html" id="time">
-        {{layui.util.toDateString(d.signedTime,'yyyy')}}
-    </script>
-    <script type="text/html" id="jifen">
-        <a href="zhongsheng/student/addScore?sid={{d.sid}}" class="layui-table-link" style="color:#c2a664;">{{d.score}}  [ + ] </a>
-    </script>
-    <script type="text/html" id="et">
-        <a class="layui-btn layui-btn-sm layui-btn-normal"
-           th:href="@{/student/toUpdateStudent?snum={{d.snum}}}" style="color: white">编辑</a>
-    </script>
+
+<script type="text/html" id="et">
+    <a class="layui-btn layui-btn-sm layui-btn-warm"
+       th:href="@{/student/toUpdateStudent?snum={{d.snum}}}" style="color: white">编辑</a>
+
+    <a class="layui-btn layui-btn-sm layui-btn-normal"
+       th:href="@{/student/studentDetails?snum={{d.snum}}}" style="">详情</a>
+</script>
+
+
 </head>
 
 <body>
@@ -429,7 +422,7 @@
 
             <!--搜索框-->
             <div class="row layui-form-item">
-                <form class="layui-form layui-form-pane">
+                <form class="layui-form layui-form-pane" style="margin-left: 15px;">
                     <div class="layui-form-item" id="search">
                             <div class="layui-input-inline">
                                 <select name="modules"  lay-filter="modules" class="layui-form-select">

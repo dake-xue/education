@@ -28,4 +28,15 @@ public class MyUtil {
     public static  String getPassWord(String str){
         return  str.substring(str.length() - 6);
     }
+
+    public static String getPngName(String str) {
+        //取得最后一个/的下标
+        int index = str.lastIndexOf("\\");
+        //将字符串转为字符数组
+        char[] ch = str.toCharArray();
+        //根据 copyValueOf(char[] data, int offset, int count) 取得最后一个字符串
+        String lastString = String.copyValueOf(ch, index + 1, ch.length - index - 1);
+
+        return lastString;
+    }
 }

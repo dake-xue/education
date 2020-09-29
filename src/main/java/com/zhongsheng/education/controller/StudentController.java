@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -67,7 +68,7 @@ public class StudentController {
         Student student = studentService.selectStudentByIphone(phone);
         System.out.println("**********************"+student);
         model.addAttribute("student",student);
-        return "studentDetails";
+        return "stuToStudentDetails";
     }
 
     /**
@@ -93,7 +94,8 @@ public class StudentController {
     //添加学生
     @RequestMapping("/addStudent")
     @ResponseBody
-    public String addStudent(Student student) throws Exception {
+    public String addStudent(Student student,HttpSession session) throws Exception {
+        User user=(User) session.getAttribute("user");
         //省份
         String str = String.format("%02d", student.getArea());
         System.out.println(str+"===========================str");
@@ -128,15 +130,15 @@ public class StudentController {
     //补款
     @RequestMapping("/addBill")
     @ResponseBody
-    public Integer addBill(String snum,Integer paymentAmount,String remarks,HttpSession session) {
-     User user=(User)session.getAttribute("user");
-System.out.println(snum+paymentAmount+remarks);
+    public Integer addBill(String snum, Integer paymentAmount, String remarks, HttpSession session) {
+        User user=(User)session.getAttribute("user");
+        System.out.println(snum+paymentAmount+remarks);
         Student student1 = studentService.selectStudentOne(snum);
         System.out.println(student1);
         System.out.println("=============="+student1.getBill());
-Bill bill=new Bill();
-bill.setSnum(snum);
-bill.setPaymentAmount(paymentAmount);
+        Bill bill=new Bill();
+        bill.setSnum(snum);
+        bill.setPaymentAmount(paymentAmount);
 
             student1.setBill(bill);
             student1.setRemarks(remarks);

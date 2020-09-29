@@ -6,6 +6,7 @@ import com.zhongsheng.education.mapper.StudentMapper;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
+import com.zhongsheng.education.util.MyUtil;
 import com.zhongsheng.education.util.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,7 +63,6 @@ public class StudentServiceImpl implements StudentService {
         student.setSchoolInfo(schoolService.selectSchoolInfo(snum));
         //票据
         student.setBillList(billService.selectBill(student.getSnum()));
-
         return student;
     }
 
@@ -80,7 +80,6 @@ public class StudentServiceImpl implements StudentService {
         for (int i = 0; i < billList.size(); i++) {
             num+=billList.get(i).getPaymentAmount();
         }
-        System.out.println(num+"=nnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
         return num;
     };
 
@@ -106,8 +105,8 @@ public class StudentServiceImpl implements StudentService {
         //生成票据
         String s = Reader.addBill(student,name);
         //生成图片
-        String ima = PDF2IMAGE.pdf2Image(s, UrlUtil.getUrl()+"\\src\\main\\resources\\static\\pdfToImage", 300);
-        student.getBill().setImage(ima);
+        String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
+        student.getBill().setImage("\\zhongsheng\\pdfToImage\\"+ MyUtil.getPngName(ima));
         student.getBill().setSnum(student.getSnum());
         //插入票据表
         billService.addBillInfo(student.getBill());

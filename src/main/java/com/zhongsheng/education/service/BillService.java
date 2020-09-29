@@ -6,5 +6,4 @@ import java.util.List;
 public interface BillService {
     Integer addBillInfo(Bill bill);
     List<Bill> selectBill(String snum);
-    Bill selectBill1(String snum);
 }

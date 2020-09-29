@@ -59,7 +59,7 @@
             //民族
             getClassify("nation_dic","nation",$("#nation1").val());
             //学校
-            getClassify("training_school_dic","schoolname",$("#schoolname1").val());
+            //getClassify("training_school_dic","schoolname");
             form.verify({
                 chinese: function (value, item) { //value：表单的值、item：表单的DOM对象
                     if (!new RegExp("^[\u4e00-\u9fa5\]+$").test(value)) {
@@ -147,6 +147,10 @@
                         $("#schoolname").html(str);
                         //重新渲染
                         layui.form.render("select");
+                        var dat = $("#schoolname1").val();
+                        var select = 'dd[ lay-value="' + dat + '"]';
+                        $("#schoolname1").siblings("div.layui-form-select").find('dl').find(select).click();
+
                     }
                 });
             });
