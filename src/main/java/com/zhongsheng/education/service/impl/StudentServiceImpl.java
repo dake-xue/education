@@ -5,10 +5,8 @@ import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.mapper.StudentMapper;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
-import com.zhongsheng.education.service.BillService;
-import com.zhongsheng.education.service.FamilyService;
-import com.zhongsheng.education.service.SchoolService;
-import com.zhongsheng.education.service.StudentService;
+import com.zhongsheng.education.service.*;
+import com.zhongsheng.education.util.MyUtil;
 import com.zhongsheng.education.util.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +27,9 @@ public class StudentServiceImpl implements StudentService {
     private SchoolService schoolService;
     @Autowired
     private BillService billService;
+
+    @Autowired
+    private TableDicService  tableDicService;
 
     /**
      * @创建人 xueke
@@ -57,13 +58,11 @@ public class StudentServiceImpl implements StudentService {
     public Student selectStudent(String snum) {
         //学生
         Student student = studentMapper.selectStudent(snum);
-
         //家庭和学校
-        student.setFamilyInfo(familyService.selectFamilyInfo(student.getSnum()));
-        student.setSchoolInfo(schoolService.selectSchoolInfo(student.getSnum()));
+        student.setFamilyInfo(familyService.selectFamilyInfo(snum));
+        student.setSchoolInfo(schoolService.selectSchoolInfo(snum));
         //票据
         student.setBillList(billService.selectBill(student.getSnum()));
-
         return student;
     }
 
@@ -81,7 +80,6 @@ public class StudentServiceImpl implements StudentService {
         for (int i = 0; i < billList.size(); i++) {
             num+=billList.get(i).getPaymentAmount();
         }
-        System.out.println(num+"=nnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
         return num;
     };
 
@@ -107,8 +105,8 @@ public class StudentServiceImpl implements StudentService {
         //生成票据
         String s = Reader.addBill(student,name);
         //生成图片
-        String ima = PDF2IMAGE.pdf2Image(s, UrlUtil.getUrl()+"\\src\\main\\resources\\static\\pdfToImage", 300);
-        student.getBill().setImage(ima);
+        String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
+        student.getBill().setImage("\\zhongsheng\\pdfToImage\\"+ MyUtil.getPngName(ima));
         student.getBill().setSnum(student.getSnum());
         //插入票据表
         billService.addBillInfo(student.getBill());
@@ -159,4 +157,15 @@ public class StudentServiceImpl implements StudentService {
     public Integer changeScore(String snum,Integer score){
        return studentMapper.changeScore(snum,score);
     };
+    @Override
+    public Integer updateStudent(Student student) {
+        schoolService.updateSchool(student.getSchoolInfo());
+        familyService.updateFamily(student.getFamilyInfo());
+        TableDic tableDic = new TableDic();
+        tableDic.setId(student.getCampusid());
+        tableDic.setTableName("campus_dic");
+        student.setCampus(tableDicService.searchOne(tableDic).getName());
+        return studentMapper.updateStudent(student);
+    }
+
 }

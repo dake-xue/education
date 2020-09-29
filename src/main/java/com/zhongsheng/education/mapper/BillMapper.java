@@ -13,9 +13,8 @@ public interface BillMapper {
     @Insert("insert into bill(paymentAmount,snum,image) values(#{paymentAmount},#{snum},#{image})")
     public Integer addBillInfo(Bill bill);
 
-    @Select("select * from bill where snum=#{snum}")
+    @Select("select * from bill where snum = #{snum}")
     public List<Bill> selectBill(String snum);
-    @Select("select * from bill where snum=#{snum}")
-    public Bill selectBill1(String snum);
+
 
 }

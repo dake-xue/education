@@ -71,7 +71,9 @@
                         , {field: 'weijiaokuan', title: '未交款', hide: true}
                         , {field: 'fphone', title: '家长联系方式', hide: true}
                         , {field: 'grade', title: '年级', hide: true}
-                    ]
+                        , {field: '', title: '操作',templet: '#et'}
+
+                     ]
                 ]
             });
             // 监听搜索操作
@@ -104,6 +106,7 @@
                 });
                 return false;
             });
+
             //添加积分监听提交
             form.on('submit(scoreform)', function (data) {
                 var v = data.field;
@@ -282,14 +285,20 @@
                     content: $('#score')//打开的内容
                 });
             });
+
+            //金额正则表达式
+            $("#ccc").on('blur', function () {
+                var a = /^(0|[1-9][0-9]*)$/;
+                if (a.test($("#ccc").val()) == false) {
+                    layer.msg("请输入纯数字", {icon: 6});
+                }
+            });
         }
 
 
     </script>
 
 </head>
-<body>
-
 
 <script type="text/html" id="cf">
     {{#  if(d.jiaofeijine >= d.money){ }}
@@ -308,6 +317,20 @@
 <script type="text/html" id="jifen">
     <a onclick='openScore("{{d.snum}}","{{d.sname}}");' style="color:#c2a664;"> {{d.score}} [ + ] </a>
 </script>
+
+<script type="text/html" id="et">
+    <a class="layui-btn layui-btn-sm layui-btn-warm"
+       th:href="@{/student/toUpdateStudent?snum={{d.snum}}}" style="color: white">编辑</a>
+
+    <a class="layui-btn layui-btn-sm layui-btn-normal"
+       th:href="@{/student/studentDetails?snum={{d.snum}}}" style="">详情</a>
+</script>
+
+
+</head>
+
+<body>
+
 <div id="wrapper">
 
     <nav class="navbar-default navbar-static-side" role="navigation">

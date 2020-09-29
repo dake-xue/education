@@ -45,6 +45,15 @@ public interface StudentMapper {
     @Select("select number from student where campusid=#{id} order by number desc limit 0,1")
     public Integer selectXuHao(Integer id);
 
+    @Update("update student set campus=#{campus},campusid=#{campusid},schoolname=#{schoolname},sname=#{sname},sex=#{sex},major=#{major},phone=#{phone}" +
+            ",classes=#{classes},money=#{money},signupdate=#{signupdate},addmoneydate=#{addmoneydate},paymethod=#{paymethod}" +
+            ",intentionmajor=#{intentionmajor},publiccours=#{publiccours},majorcours=#{majorcours},campusmanager=#{campusmanager}" +
+            ",campusagent=#{campusagent},onlinenumber=#{onlinenumber},offlinenumber=#{offlinenumber},job=#{job}" +
+            ",homeaddress=#{homeaddress},idcard=#{idcard},birthday=#{birthday},nation=#{nation}" +
+            ",remarks=#{remarks},examinationtime=#{examinationtime},admissiontime=#{admissiontime}" +
+            ",subject=#{subject},department=#{department},grade=#{grade} where snum=#{snum}")
+    public Integer updateStudent(Student student);
+
     @Update("update student set score=score-#{scope} where snum=#{snum}")
     public Integer changeScore(String snum, Integer score);
 }

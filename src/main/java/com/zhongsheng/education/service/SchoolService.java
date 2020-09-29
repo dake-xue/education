@@ -7,4 +7,6 @@ public interface SchoolService {
     public SchoolInfo selectSchoolInfo(String snum);
 
     int addSchoolInfo(SchoolInfo schoolInfo);
+
+    public Integer updateSchool(SchoolInfo schoolInfo);
 }

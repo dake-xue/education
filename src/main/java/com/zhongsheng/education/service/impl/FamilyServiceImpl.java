@@ -22,5 +22,10 @@ public class FamilyServiceImpl implements FamilyService {
         return familyMapper.addFamilyInfo(familyinfo);
     }
 
+    @Override
+    public Integer updateFamily(FamilyInfo familyInfo) {
+        return familyMapper.updateFamily(familyInfo);
+    }
+
 
 }

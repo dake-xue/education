@@ -84,7 +84,7 @@
     <script>
         $(function () {
             var whoid = $("#whoid").attr("value");
-            if(whoid==1){
+            if(whoid==2){
                 $("#userLi").remove();
             }
 
@@ -110,7 +110,8 @@
                         IN+
                     </div>
                 </li>
-                 <li class="active">
+                <span hidden th:value="${session.user.whoid}" id="whoid"></span>
+                 <li class="active" id="userLi">
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">学生信息管理</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class="active"><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
@@ -118,16 +119,6 @@
                     </ul>
                 </li>
 
-                <span hidden th:value="${session.user.whoid}" id="whoid"></span>
-                <li class="" id="userLi" >
-                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">用户管理</span><span
-                            class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li  class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
-                        <li  class=""><a onclick="openModak();">添加用户</a></li>
-                    </ul>
-                </li>
-               
             </ul>
 
         </div>
@@ -141,11 +132,6 @@
         </div>
             <ul class="nav navbar-top-links navbar-right">
                 <li>
-                    <span class="m-r-sm text-muted welcome-message">欢迎来到中升教育管理后台</span>
-                </li>
-
-            
-                <li>
                     <a th:href="@{/user/loginOut}">
                         <i class="fa fa-sign-out"></i> 注销
                     </a>
@@ -157,12 +143,6 @@
             <div class="row wrapper border-bottom white-bg page-heading" style="padding-bottom: 10px;padding-top: 15px;">
                 <div class="col-lg-10">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="index.html">学生基本信息</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            <strong>学生详细信息</strong>
-                        </li>
                     </ol>
                 </div>
                 <div class="col-lg-2">
@@ -221,6 +201,7 @@
                 <ul class="my" style="margin-top: 2%;" th:each="bill, State : ${student.billList}" >
                     <img th:src="${bill.image}" style="width:100%;height:auto;"/>
                 </ul>
+
 
             </div>
             

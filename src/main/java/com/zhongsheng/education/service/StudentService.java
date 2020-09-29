@@ -23,4 +23,5 @@ public interface StudentService {
     CampusDic selectCNumber(Integer ca);
     Integer selectXuHao(Integer id);
     public Integer changeScore(String snum,Integer score);
+    Integer updateStudent(Student student);
 }
