@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 
     <meta charset="utf-8">
@@ -25,76 +25,172 @@
     <script th:src="@{/js/inspinia.js}"></script>
     <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
 
-	<style>
-		.msg{
-			background: #aac581;
-		    color: white;
-		    width: 85px;
-		    text-align: center;
-		    border-radius: 5px;
-		    margin: 4px;
-		    line-height:40px;
-		    margin-left: 8px;
-		    font-weight: bold;
-		}
-		.urgent{
-			background: #ed096a;
-		    color: white;
-		    width: 105px;
-		    text-align: center;
-		    border-radius: 5px;
-		    margin: 3px;
-		    line-height:40px;
-		    margin-left: 8px;
-		    font-weight: bold;
-		}
-        .dzpj{
+    <style>
+        .msg {
+            background: #aac581;
+            color: white;
+            width: 85px;
+            text-align: center;
+            border-radius: 5px;
+            margin: 4px;
+            line-height: 40px;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+
+        .urgent {
+            background: #ed096a;
+            color: white;
+            width: 105px;
+            text-align: center;
+            border-radius: 5px;
+            margin: 3px;
+            line-height: 40px;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+
+        .dzpj {
             background: #FFB800;
             color: white;
             width: 85px;
             text-align: center;
             border-radius: 5px;
-            line-height:40px;
+            line-height: 40px;
             margin-left: 8px;
             font-weight: bold;
         }
-		.wt{
-			font-weight:bold;
-			width: 100px;
-		}
-		.my{
-			width: 100%;
-		}
-		.my li{
-			display: inline-block;
-			width: 48%;
-			border-bottom: 1px solid #e7eaec;
-			margin: 10px;
-			white-space: nowrap;
-		}
-		.top span{
-		     border-top: 0px solid transparent !important;
-		 }
-		 .below span{
-		 	border-bottom: 1px solid #e7eaec;
-		 }
-		 
-	</style>
+
+        .wt {
+            font-weight: bold;
+            width: 100px;
+        }
+
+        .my {
+            width: 100%;
+        }
+
+        .my li {
+            display: inline-block;
+            width: 48%;
+            border-bottom: 1px solid #e7eaec;
+            margin: 10px;
+            white-space: nowrap;
+        }
+
+        .top span {
+            border-top: 0px solid transparent !important;
+        }
+
+        .below span {
+            border-bottom: 1px solid #e7eaec;
+        }
+
+    </style>
 
     <script>
         $(function () {
             var whoid = $("#whoid").attr("value");
-            if(whoid==1){
+            if (whoid == 1) {
                 $("#userLi").remove();
             }
 
         });
     </script>
+    <script>
+        layui.use(['form', 'laydate'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                laydate = layui.laydate;
+
+            //常规用法
+            laydate.render({
+                elem: '#test1',
+                type: 'date'
+            });
+
+            //添加成绩监听提交
+            form.on('submit(formDemo)', function (data) {
+                var performance = data.field;
+                $.ajax({
+                    url: "/zhongsheng/student/addPer",
+                    type: "POST",
+                    dataType: "text",
+                    data: performance,
+                    success: function (data) {
+                        if (data == "yes") {
+                            layer.msg('添加成功！', {icon: 6}, {time: 3000});
+                            // 重置清空
+                            $('#mm')[0].reset();
+                            form.render();//必须写
+                            window.parent.location.reload();//刷新父页面
+                            parent.layer.close(index);//关闭弹出层
+
+                        } else {
+                            layer.msg('添加失败！', {icon: 5}, {time: 3000});
+                        }
+
+                    }
+                });
+                return false;
+            });
+
+//补充成绩监听提交
+            form.on('submit(formDemo1)', function (data) {
+                var performance = data.field;
+                $.ajax({
+                    url: "/zhongsheng/student/addPer",
+                    type: "POST",
+                    dataType: "text",
+                    data: performance,
+                    success: function (data) {
+                        if (data == "yes") {
+                            layer.msg('添加成功！', {icon: 6}, {time: 3000});
+                            // 重置清空
+                            $('#bb')[0].reset();
+                            form.render();//必须写
+                            window.parent.location.reload();//刷新父页面
+                            parent.layer.close(index);//关闭弹出层
+                        } else {
+                            layer.msg('添加失败！', {icon: 5}, {time: 3000});
+                        }
+
+                    }
+                });
+                return false;
+            });
+
+        });
+
+        function updatePer(e) {
+            layer.open({
+                title: '补充成绩',
+                type: 2,
+                skin: "layui-layer-molv",
+                content:"/zhongsheng/student/selectPerOne?id="+e,
+                area: ['40%', '60%'],
+            });
+        }
+        function openAddMoney(snum) {
+            $("#snum").val(snum);
+            layui.use(['layer'], function () {
+                var layer = layui.layer, $ = layui.$;
+                layer.open({
+                    type: 1,//类型
+                    area: ['700px', '450px'],//定义宽和高
+                    title: '添加成绩',//题目
+                    shadeClose: false,//点击遮罩层关闭
+                    content: $('#mmm')//打开的内容
+                });
+            })
+        }
+
+    </script>
 </head>
 
 <body>
 
-    <div id="wrapper">
+<div id="wrapper">
 
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
@@ -103,15 +199,17 @@
                     <div class="dropdown profile-element jz">
                         <img alt="image" class="rounded-circle" th:src="@{/img/touxiang.png}" height="60px"/>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span th:text="${session.user.name}" class="text-muted text-xs block" style="margin-top: 10px;"> <b class="caret"></b></span>
+                            <span th:text="${session.user.name}" class="text-muted text-xs block"
+                                  style="margin-top: 10px;"> <b class="caret"></b></span>
                         </a>
                     </div>
                     <div class="logo-element">
                         IN+
                     </div>
                 </li>
-                 <li class="active">
-                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">学生信息管理</span><span class="fa arrow"></span></a>
+                <li class="active">
+                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">学生信息管理</span><span
+                            class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class="active"><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
                         <li class=""><a th:href="@{/student/toAddStudent}">添加学生信息</a></li>
@@ -119,121 +217,236 @@
                 </li>
 
                 <span hidden th:value="${session.user.whoid}" id="whoid"></span>
-                <li class="" id="userLi" >
+                <li class="" id="userLi">
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">用户管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li  class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
-                        <li  class=""><a onclick="openModak();">添加用户</a></li>
+                        <li class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
+                        <li class=""><a onclick="openModak();">添加用户</a></li>
                     </ul>
                 </li>
-               
+
             </ul>
 
         </div>
     </nav>
 
-        <div id="page-wrapper" class="gray-bg">
+    <div id="page-wrapper" class="gray-bg">
         <div class="row border-bottom">
-        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-        </div>
-            <ul class="nav navbar-top-links navbar-right">
-                <li>
-                    <span class="m-r-sm text-muted welcome-message">欢迎来到中升教育管理后台</span>
-                </li>
-
-            
-                <li>
-                    <a th:href="@{/user/loginOut}">
-                        <i class="fa fa-sign-out"></i> 注销
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i>
                     </a>
-                </li>
-            </ul>
-
-        </nav>
-        </div>
-            <div class="row wrapper border-bottom white-bg page-heading" style="padding-bottom: 10px;padding-top: 15px;">
-                <div class="col-lg-10">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="index.html">学生基本信息</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            <strong>学生详细信息</strong>
-                        </li>
-                    </ol>
                 </div>
-                <div class="col-lg-2">
-						
-						
-                </div>
-            </div>
-            
-            <div class="row wrapper border-bottom white-bg page-heading">
-            	<h3 class="msg">个人信息</h3>
-            	<ul class="my">
-				    <li class="top"><span class="wt">姓名：</span><span th:text="${student.sname}"></span></li>
-				    <li><span class="wt">性别：</span><span th:text="${student.sex}"></span></li>
-				    <li><span class="wt">联系电话：</span><span th:text="${student.phone}"></span></li>
-				    <li><span class="wt">生日：</span><span th:text="${#dates.format(student.birthday, 'yyyy-MM-dd')}"></span></li>
-				    <li><span class="wt">民族：</span><span th:text="${student.nation}"></span></li>
-				    <li><span class="wt">考试年份：</span><span th:text="${student.examinationtime}"></span></li>
-				    <li><span class="wt">在校职务：</span><span th:text="${student.job}"></span></li>
-				    <li><span class="wt">身份证号：</span><span th:text="${student.idcard}"></span></li>
-				    <li><span class="wt">专科院校：</span><span th:text="${student.schoolname}"></span></li>
-				    <li><span class="wt">专科专业：</span><span th:text="${student.major}"></span></li>
-				    <li><span class="wt">考试科目：</span><span th:text="${student.subject}"></span></li>
-				    <li><span class="wt">班次：</span><span th:text="${student.classes}"></span></li>
-				    <li><span class="wt">校区：</span><span th:text="${student.campus}"></span></li>
-				    <li><span class="wt">入学年份：</span><span th:text="${student.admissiontime}"></span></li>
-				    <li><span class="wt">报名日期：</span><span th:text="${#dates.format(student.signupdate, 'yyyy-MM-dd')}"></span></li>
-				    <li><span class="wt">升本专业：</span><span th:text="${student.intentionmajor}"></span></li>
-				    <li><span class="wt">公共课：</span><span th:text="${student.publiccours}"></span></li>
-				    <li><span class="wt">专业课：</span><span th:text="${student.majorcours}"></span></li>
-				    <li><span class="wt">院系：</span><span th:text="${student.department}"></span></li>
-				    <li><span class="wt">校园伙伴：</span><span th:text="${student.campusagent}"></span></li>
-				    <li><span class="wt">校园经理：</span><span th:text="${student.campusmanager}"></span></li>
-				    <li><span class="wt">线上上课轮数：</span><span th:text="${student.onlinenumber}"></span></li>
-				    <li><span class="wt">线下上课轮数：</span><span th:text="${student.offlinenumber}"></span></li>
-				    <li><span class="wt">学费：</span><span th:text="${student.money}"></span></li>
-				    <li><span class="wt">缴费方式：</span><span th:text="${student.paymethod}"></span></li>
-				    <li><span class="wt">补费日期：</span><span th:text="${#dates.format(student.addmoneydate, 'yyyy-MM-dd')}"></span></li>
-				    <li><span class="wt">收件家庭地址：</span><span th:text="${student.homeaddress}"></span></li>
-				    <li><span class="wt">备注：</span><span th:text="${student.remarks}"></span></li>
-				    <li><span class="wt">积分：</span><span th:text="${student.score}"></span></li>
-				</ul>
-				
-				<h3 class="urgent">紧急联系方式</h3>
-				<ul class="table my">
-				      <li><span class="wt">关系：</span><span th:text="${student.familyInfo.relation}"></span></li>
-				      <li><span class="wt">姓名：</span><span th:text="${student.familyInfo.fname}"></span></li>
-				      <li><span class="wt">联系方式：</span><span th:text="${student.familyInfo.fphone}"></span></li>
-		
-				      <li><span class="wt">关系：</span><span th:text="${student.schoolInfo.screlation}"></span></li>
-				      <li><span class="wt">姓名：</span><span th:text="${student.schoolInfo.scname}"></span></li>
-				      <li><span class="wt">联系方式：</span><span th:text="${student.schoolInfo.scphone}"></span></li>
-				    
-				</ul>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message">欢迎来到中升教育管理后台</span>
+                    </li>
 
-                <h3 class="dzpj">电子票据</h3>
-                <ul class="my" style="margin-top: 2%;" th:each="bill, State : ${student.billList}" >
-                    <img th:src="${bill.image}" style="width:100%;height:auto;"/>
+
+                    <li>
+                        <a th:href="@{/user/loginOut}">
+                            <i class="fa fa-sign-out"></i> 注销
+                        </a>
+                    </li>
                 </ul>
 
+            </nav>
+        </div>
+        <div class="row wrapper border-bottom white-bg page-heading" style="padding-bottom: 10px;padding-top: 15px;">
+            <div class="col-lg-10">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="index.html">学生基本信息</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <strong>学生详细信息</strong>
+                    </li>
+                </ol>
             </div>
-            
+            <div class="col-lg-2">
+
+
+            </div>
+        </div>
+
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <br><br>
+            <h3 class="dzpj">成绩</h3>
+            <button type="button" class="layui-btn layui-btn-radius layui-btn-primary" th:value="${student.getSnum()}"
+                    onclick="openAddMoney(this.value)">
+                <i class="layui-icon  layui-icon-add-1">添加成绩</i>
+            </button>
+            <table class="layui-table" lay-skin="line">
+                <tr>
+                    <td>考试测试分数(英/专)</td>
+                    <td>班级</td>
+                    <td>时间</td>
+                    <td>出勤率</td>
+                    <td>老师评语</td>
+                    <td>备注</td>
+                    <td>操作</td>
+                </tr>
+                <tr th:each="li:${performance}" th:if="${li.getLunshu()} != null">
+                    <td>
+                        &nbsp;&nbsp;&nbsp;<span th:text="'英：'+${li.getEnglishone()}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="'专：'+${li.getMajorone()}"></span><br>
+                        &nbsp;&nbsp;&nbsp;<span th:text="'英：'+${li.getEnglishtwo()}" th:if="${li.getEnglishtwo() != null}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="'专：'+${li.getMajortwo()}" th:if="${li.getMajortwo() != null}"></span><br>
+                        &nbsp;&nbsp;&nbsp;<span th:text="'英：'+${li.getEnglishthree()}" th:if="${li.getEnglishthree() != null}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="'专：'+${li.getMajorthree()}" th:if="${li.getMajorthree() != null}"></span>
+                    </td>
+                    <td th:text="${li.getClasses()}"></td>
+                    <td th:text="${#dates.format(li.getPtime(),'yyyy/MM/dd')}"></td>
+                    <td th:text="${li.getAttendance()}"></td>
+                    <td th:text="${li.getComment()}"></td>
+                    <td th:text="${li.getPremark()}"></td>
+                    <td>
+                        <button type="button" class="layui-btn layui-btn-xs layui-btn-radius layui-btn-primary data-add-btn"
+                           th:value="${li.getId()}" onclick="updatePer(this.value)">补充
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <h3 class="msg">个人信息</h3>
+            <ul class="my">
+                <li class="top"><span class="wt">姓名：</span><span th:text="${student.sname}"></span></li>
+                <li><span class="wt">性别：</span><span th:text="${student.sex}"></span></li>
+                <li><span class="wt">联系电话：</span><span th:text="${student.phone}"></span></li>
+                <li><span class="wt">生日：</span><span th:text="${#dates.format(student.birthday, 'yyyy-MM-dd')}"></span>
+                </li>
+                <li><span class="wt">民族：</span><span th:text="${student.nation}"></span></li>
+                <li><span class="wt">考试年份：</span><span th:text="${student.examinationtime}"></span></li>
+                <li><span class="wt">在校职务：</span><span th:text="${student.job}"></span></li>
+                <li><span class="wt">身份证号：</span><span th:text="${student.idcard}"></span></li>
+                <li><span class="wt">专科院校：</span><span th:text="${student.schoolname}"></span></li>
+                <li><span class="wt">专科专业：</span><span th:text="${student.major}"></span></li>
+                <li><span class="wt">考试科目：</span><span th:text="${student.subject}"></span></li>
+                <li><span class="wt">班次：</span><span th:text="${student.classes}"></span></li>
+                <li><span class="wt">校区：</span><span th:text="${student.campus}"></span></li>
+                <li><span class="wt">入学年份：</span><span th:text="${student.admissiontime}"></span></li>
+                <li><span class="wt">报名日期：</span><span
+                        th:text="${#dates.format(student.signupdate, 'yyyy-MM-dd')}"></span></li>
+                <li><span class="wt">升本专业：</span><span th:text="${student.intentionmajor}"></span></li>
+                <li><span class="wt">公共课：</span><span th:text="${student.publiccours}"></span></li>
+                <li><span class="wt">专业课：</span><span th:text="${student.majorcours}"></span></li>
+                <li><span class="wt">院系：</span><span th:text="${student.department}"></span></li>
+                <li><span class="wt">校园伙伴：</span><span th:text="${student.campusagent}"></span></li>
+                <li><span class="wt">校园经理：</span><span th:text="${student.campusmanager}"></span></li>
+                <li><span class="wt">线上上课轮数：</span><span th:text="${student.onlinenumber}"></span></li>
+                <li><span class="wt">线下上课轮数：</span><span th:text="${student.offlinenumber}"></span></li>
+                <li><span class="wt">学费：</span><span th:text="${student.money}"></span></li>
+                <li><span class="wt">缴费方式：</span><span th:text="${student.paymethod}"></span></li>
+                <li><span class="wt">补费日期：</span><span
+                        th:text="${#dates.format(student.addmoneydate, 'yyyy-MM-dd')}"></span></li>
+                <li><span class="wt">收件家庭地址：</span><span th:text="${student.homeaddress}"></span></li>
+                <li><span class="wt">备注：</span><span th:text="${student.remarks}"></span></li>
+                <li><span class="wt">积分：</span><span th:text="${student.score}"></span></li>
+            </ul>
+
+            <h3 class="urgent">紧急联系方式</h3>
+            <ul class="table my">
+                <li><span class="wt">关系：</span><span th:text="${student.familyInfo.relation}"></span></li>
+                <li><span class="wt">姓名：</span><span th:text="${student.familyInfo.fname}"></span></li>
+                <li><span class="wt">联系方式：</span><span th:text="${student.familyInfo.fphone}"></span></li>
+
+                <li><span class="wt">关系：</span><span th:text="${student.schoolInfo.screlation}"></span></li>
+                <li><span class="wt">姓名：</span><span th:text="${student.schoolInfo.scname}"></span></li>
+                <li><span class="wt">联系方式：</span><span th:text="${student.schoolInfo.scphone}"></span></li>
+
+            </ul>
+
+            <h3 class="dzpj">电子票据</h3>
+            <ul class="my" style="margin-top: 2%;" th:each="bill, State : ${student.billList}">
+                <img th:src="${bill.image}" style="width:100%;height:auto;"/>
+            </ul>
+
+
+        </div>
+
         <div class="footer">
             <div style="text-align: center;">
                 <strong>Copyright</strong> inspinia 2.9.2 &copy; 2014-2018
             </div>
         </div>
 
-        </div>
-        </div>
+    </div>
+</div>
 
 
 </body>
 
 </html>
+
+<!--添加成绩-->
+<div id="mmm" style="display: none;text-align: center;">
+    <form class="layui-form" id="mm" type="hidden">
+        <input type="hidden" id="snum" name="snum">
+        <div class="layui-inline">
+            <label class="layui-form-label">英语分</label>
+            <div class="layui-input-inline">
+                <input type="text" name="englishone" class="layui-input" placeholder="测试成绩"  required lay-verify="required"
+                       autocomplete="off" ></div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">专业分</label>
+            <div class="layui-input-inline">
+                <input type="text" name="majorone" class="layui-input" placeholder="测试成绩" required lay-verify="required"
+                       autocomplete="off"></div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">英语分</label>
+            <div class="layui-input-inline">
+                <input type="text" name="englishtwo" placeholder="期中成绩" class="layui-input"></div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">专业分</label>
+            <div class="layui-input-inline">
+                <input type="text" name="majortwo"  placeholder="期中成绩" class="layui-input"></div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">英语分</label>
+            <div class="layui-input-inline">
+                <input type="text" name="englishthree" placeholder="期末成绩" class="layui-input" ></div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">专业分</label>
+            <div class="layui-input-inline">
+                <input type="text" name="majorthree"  placeholder="期末成绩" class="layui-input"></div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">班级</label>
+            <div class="layui-input-inline">
+                <input type="text" name="classes" class="layui-input"></div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">出勤率</label>
+            <div class="layui-input-inline">
+                <input type="text" name="attendance" class="layui-input"></div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">轮数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="lunshu" placeholder="当前为第几轮" required lay-verify="required"
+                       autocomplete="off" class="layui-input"></div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">时间</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="test1" name="ptime" placeholder="yyyy-MM-dd">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">评语</label>
+            <div class="layui-input-inline">
+                <input type="text" name="comment" class="layui-input" style="width: 400px"></div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <input type="text" name="premark" class="layui-input" style="width: 400px"></div>
+        </div>
+<div class="layui-form-item">
+    <div class="layui-input-block">
+        <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
+    </div>
+</div>
+</form>
+</div>

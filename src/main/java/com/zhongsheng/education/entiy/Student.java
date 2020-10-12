@@ -33,9 +33,9 @@ public class Student {
     private int money;
     private int jiaofeijine;
     //考试年份
-    private String examinationtime;
+    private Integer examinationtime;
     //入学年份
-    private String admissiontime;
+    private Integer admissiontime;
 
     //报名日期
     private Date signupdate;
@@ -390,19 +390,19 @@ public class Student {
         this.score = score;
     }
 
-    public String getExaminationtime() {
+    public Integer getExaminationtime() {
         return examinationtime;
     }
 
-    public void setExaminationtime(String examinationtime) {
+    public void setExaminationtime(Integer examinationtime) {
         this.examinationtime = examinationtime;
     }
 
-    public String getAdmissiontime() {
+    public Integer getAdmissiontime() {
         return admissiontime;
     }
 
-    public void setAdmissiontime(String admissiontime) {
+    public void setAdmissiontime(Integer admissiontime) {
         this.admissiontime = admissiontime;
     }
 

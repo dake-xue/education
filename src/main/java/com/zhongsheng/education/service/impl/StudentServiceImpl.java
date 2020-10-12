@@ -7,7 +7,6 @@ import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
 import com.zhongsheng.education.util.MyUtil;
-import com.zhongsheng.education.util.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,6 +65,10 @@ public class StudentServiceImpl implements StudentService {
         return student;
     }
 
+    public  List<Performance> selectPer(String snum){
+        return studentMapper.selectPer(snum);
+    };
+
     public Student selectStudentOne(String snum) {
         //学生
         Student student = studentMapper.selectStudent(snum);
@@ -86,9 +89,9 @@ public class StudentServiceImpl implements StudentService {
 
 
     @Override
-    public List<Student> selectAllStudent(String keyword,Integer modules,Integer page,Integer limit) {
-        PageHelper.startPage(page,limit);
-        return studentMapper.selectAllStudent(keyword,modules,page,limit);
+    public List<Student> selectAllStudent(Integer modules, String keyword,Integer status,Integer page,Integer limit) {
+
+        return studentMapper.selectAllStudent(modules,keyword,status,page,limit);
     }
 
 
@@ -96,7 +99,6 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public int addStudentInfo(Student student, String name) {
         int i = studentMapper.addStudentInfo(student);
-        System.out.println(student.getSnum()+"***************");
         student.getSchoolInfo().setSnum(student.getSnum());
         student.getFamilyInfo().setSnum(student.getSnum());
         //添加联系人
@@ -108,6 +110,7 @@ public class StudentServiceImpl implements StudentService {
         String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
         student.getBill().setImage("\\zhongsheng\\pdfToImage\\"+ MyUtil.getPngName(ima));
         student.getBill().setSnum(student.getSnum());
+        student.getBill().setRemark(student.getRemarks());
         //插入票据表
         billService.addBillInfo(student.getBill());
         return i;
@@ -168,4 +171,15 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.updateStudent(student);
     }
 
+    public Integer addPer(Performance performance){
+        return studentMapper.addPer(performance);
+    }
+
+    public Integer addPerfor(Performance performance){
+        return studentMapper.addPerfor(performance);
+    };
+
+    public Performance selectPerOne(Integer id){
+        return studentMapper.selectPerOne(id);
+    };
 }

@@ -15,11 +15,14 @@ public interface StudentMapper {
     @Select("select * from student where snum=#{snum}")
     public Student selectStudent(String snum);
 
+    @Select("select * from performance  where snum=#{snum}")
+    public  List<Performance> selectPer(String snum);
+
     @Select("select * from bill where snum=#{snum}")
     public  List<Bill> selectJiaoFeiJinE(String snum);
 
     @SelectProvider(type = StudentDao.class, method = "selectAllStudent")
-    public List<Student> selectAllStudent(String keyword, Integer modules, Integer page, Integer limit);
+    public List<Student> selectAllStudent(Integer modules, String keyword,Integer status, Integer page, Integer limit);
 
 
     @Update("update student set score=score+#{scope} where snum=#{snum}")
@@ -56,4 +59,11 @@ public interface StudentMapper {
 
     @Update("update student set score=score-#{scope} where snum=#{snum}")
     public Integer changeScore(String snum, Integer score);
+
+    @Insert("insert into performance(snum,lunshu,classes,englishone,majorone,comment,premark,ptime,attendance) values(#{snum},#{lunshu},#{classes},#{englishone},#{majorone},#{comment},#{premark},#{ptime},#{attendance})")
+    public Integer addPer(Performance performance);
+    @Update("update performance set englishone=#{englishone},majorone=#{majorone},englishtwo=#{englishtwo},majortwo=#{majortwo},englishthree=#{englishthree},majorthree=#{majorthree},comment=#{comment},premark=#{premark},attendance=#{attendance} where id=#{id}")
+    public Integer addPerfor(Performance performance);
+    @Select("select * from performance  where id=#{id}")
+    public Performance selectPerOne(Integer id);
 }
