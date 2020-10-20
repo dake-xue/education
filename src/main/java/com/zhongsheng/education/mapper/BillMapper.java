@@ -1,20 +1,32 @@
 package com.zhongsheng.education.mapper;
 
+import com.zhongsheng.education.dao.BillDao;
 import com.zhongsheng.education.entiy.Bill;
+import com.zhongsheng.education.entiy.Desk;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper
 public interface BillMapper {
 
-    @Insert("insert into bill(paymentAmount,snum,image) values(#{paymentAmount},#{snum},#{image})")
+    @Insert("insert into bill(paymentAmount,snum,image,intotime) values(#{paymentAmount},#{snum},#{image},now())")
     public Integer addBillInfo(Bill bill);
 
     @Select("select * from bill where snum = #{snum}")
     public List<Bill> selectBill(String snum);
 
+    @SelectProvider(type = BillDao.class,method = "peopleCounts")
+    public ArrayList<Desk> peopleCounts(Bill bill);
+    @SelectProvider(type = BillDao.class, method = "moneyCounts")
+    public  ArrayList<Desk> moneyCounts(Bill bill);
 
+    @SelectProvider(type = BillDao.class, method = "people")
+    public Integer people(Bill bill);
+    @SelectProvider(type = BillDao.class, method = "money")
+    public  Integer money(Bill bill);
 }

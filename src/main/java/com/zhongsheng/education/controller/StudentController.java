@@ -31,7 +31,10 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
-
+    @Autowired
+    private HeBeiStudentService heBeiStudentService;
+    @Autowired
+    private ShanXiStudentService shanXiStudentService;
     @Autowired
     private FamilyService familyService;
 
@@ -110,33 +113,95 @@ public class StudentController {
     @RequestMapping("/addStudent")
     @ResponseBody
     public String addStudent(Student student,HttpSession session) throws Exception {
+        int i=0;
         User user=(User) session.getAttribute("user");
-        //省份
-        String str = String.format("%02d", student.getArea());
-        System.out.println(str+"===========================str");
-        //校区
-        CampusDic cnum=studentService.selectCNumber(student.getCampusid());
-        //年份后两位
-        String year = new SimpleDateFormat("yy", Locale.CHINESE).format(new Date());
-        String num="0001";
-        Integer in=studentService.selectXuHao(student.getCampusid());
-        Integer n=1;
-        if (in!=null && !" ".equals(in)){
-             n=in+1;
-             num=String.format("%04d",n);
-        }
-        //拼接学生id  （省份+校区+年份+序号）
-        StringBuffer sr = new StringBuffer();
-        sr.append(str);
-        sr.append(cnum.getCnum());
-        sr.append(year);
-        sr.append(num);
-        String s=sr.toString();
+        //判断是省份  1河北  2河南  3陕西
+        /*if(student.getArea()==1 && !student.getArea().equals("")){
+            //省份
+            String str = String.format("%02d", student.getArea());
+            System.out.println(str+"===========================str");
+            //校区
+            CampusDic cnum=heBeiStudentService.selectCNumber(student.getCampusid());
+            //学校
+            TableDic tableDic=heBeiStudentService.selectSchoolId(student.getSchoolname()) ;
+            //年份后两位
+            String year = new SimpleDateFormat("yy", Locale.CHINESE).format(new Date());
+            String num="0001";
+            Integer in=heBeiStudentService.selectXuHao(student.getCampusid());
+            Integer n=1;
+            if (in!=null && !" ".equals(in)){
+                n=in+1;
+                num=String.format("%04d",n);
+            }
+            //拼接学生id  （省份+校区+年份+序号）
+            StringBuffer sr = new StringBuffer();
+            sr.append(str);
+            sr.append(cnum.getCnum());
+            sr.append(year);
+            sr.append(num);
+            String s=sr.toString();
 
-        student.setSnum(s);
-        student.setNumber(n);
-        student.setCampus(cnum.getName());
-        int i = studentService.addStudentInfo(student,user.getName());
+            student.setSnum(s);
+            student.setNumber(n);
+            student.setCampus(cnum.getName());
+            student.setSchoolid(tableDic.getId());
+            i = heBeiStudentService.addStudentInfo(student,user.getName());
+        }else if(student.getArea()==2 && !student.getArea().equals("")){*/
+            String str = String.format("%02d", student.getArea());
+            System.out.println(str+"===========================str");
+            CampusDic cnum=studentService.selectCNumber(student.getCampusid());
+            TableDic tableDic=studentService.selectSchoolId(student.getSchoolname()) ;
+            String year = new SimpleDateFormat("yy", Locale.CHINESE).format(new Date());
+            String num="0001";
+            Integer in=studentService.selectXuHao(student.getCampusid());
+            Integer n=1;
+            if (in!=null && !" ".equals(in)){
+                n=in+1;
+                num=String.format("%04d",n);
+            }
+            StringBuffer sr = new StringBuffer();
+            sr.append(str);
+            sr.append(cnum.getCnum());
+            sr.append(year);
+            sr.append(num);
+            String s=sr.toString();
+
+            student.setSnum(s);
+            student.setNumber(n);
+            student.setCampus(cnum.getName());
+            student.setSchoolid(tableDic.getId());
+            i = studentService.addStudentInfo(student,user.getName());
+       /*}else if(student.getArea()==3 && !student.getArea().equals("")){
+            String str = String.format("%02d", student.getArea());
+            System.out.println(str+"===========================str");
+
+            CampusDic cnum=shanXiStudentService.selectCNumber(student.getCampusid());
+
+            TableDic tableDic=shanXiStudentService.selectSchoolId(student.getSchoolname()) ;
+
+            String year = new SimpleDateFormat("yy", Locale.CHINESE).format(new Date());
+            String num="0001";
+            Integer in=shanXiStudentService.selectXuHao(student.getCampusid());
+            Integer n=1;
+            if (in!=null && !" ".equals(in)){
+                n=in+1;
+                num=String.format("%04d",n);
+            }
+
+            StringBuffer sr = new StringBuffer();
+            sr.append(str);
+            sr.append(cnum.getCnum());
+            sr.append(year);
+            sr.append(num);
+            String s=sr.toString();
+
+            student.setSnum(s);
+            student.setNumber(n);
+            student.setCampus(cnum.getName());
+            student.setSchoolid(tableDic.getId());
+            i = shanXiStudentService.addStudentInfo(student,user.getName());
+        }*/
+
 
         return i+"";
     }

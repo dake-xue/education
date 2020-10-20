@@ -219,16 +219,28 @@
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class="active"><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
-                        <li class=""><a th:href="@{/student/toAddStudent}">添加学生信息</a></li>
+                        <li class=""><a th:href="@{/student/toAllStudent}">学生信息</a></li>
+                        <li class=""><a th:href="@{/student/toAddStudent}">添加信息</a></li>
                     </ul>
                 </li>
-
-                <li class="active">
+                <span hidden th:value="${session.user.whoid}" id="whoid"></span>
+                <li class="" id="userLi">
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">用户管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class="active"><a th:href="@{/user/toAllUser}">用户信息</a></li>
+                        <li class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
+                        <li class=""><a onclick="openModak();">添加用户</a></li>
+                    </ul>
+                </li>
+                <li class="">
+                    <a th:href="@{/bill/toAllBill}"><i class="fa fa-table"></i> <span class="nav-label">收入统计</span><span
+                            class="fa arrow"></span></a>
+                </li>
+                <li class="active">
+                    <a href=""><i class="fa fa-table"></i> <span class="nav-label">积分管理</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class="active"><a th:href="@{/ScoreCotroller/toScore}">积分信息</a></li>
                         <li class=""><a onclick="openModak();">添加奖品</a></li>
                     </ul>
                 </li>
@@ -264,10 +276,10 @@
                 <h2>&nbsp;</h2>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="index.html">主页</a>
+                        <a href="index.html">积分管理</a>
                     </li>
                     <li class="breadcrumb-item active">
-                        <strong>学生基本信息</strong>
+                        <strong>积分基本信息</strong>
                     </li>
                 </ol>
             </div>

@@ -67,21 +67,26 @@
                 , limit: 6//每页多少条数据
                 , limits: [6, 12, 18]//每页条数的选择项
                 ,cellMinWidth: 80
+                    ,toolbar: '#toolbarDemo'
+                    ,defaultToolbar: ['filter', 'exports', 'print', {
+                        title: '提示',
+                        layEvent: 'LAYTABLE_TIPS',
+                        icon: 'layui-icon-tips'
+                    }]
                 , cols: [
                     [//表头
-                        {field: 'snum', title: '学号', sort: true, width:'10%', fixed: 'left'}
-                        , {field: 'sname', title: '姓名', style: "color:#009688", width:'10%'}
-                        , {field: 'sex', title: '性别', sort: true, width:'10%'}
-                        , {field: 'phone', title: '联系方式', width:'10%'}
+                        {field: 'snum', title: '学号', sort: true, width:'11%', fixed: 'left'}
+                        , {field: 'sname', title: '姓名', style: "color:#009688", width:'8%'}
+                        , {field: 'sex', title: '性别', sort: true, width:'7%'}
+                        , {field: 'phone', title: '联系方式', width:'12%'}
                         , {field: 'classes', title: '班次', width:'10%'}
-                        , {field: 'examinationtime', title: '考试年份', width:'10%'}
-                        , {field: 'subject', title: '考试科目', width:'10%'}
-                        , {field: 'money', title: '学费',templet:"#mo", width:'10%'}
+                        , {field: 'examinationtime', title: '考试年份', width:'9%'}
+                        , {field: 'subject', title: '考试科目', width:'14%'}
+                        , {field: 'money', title: '学费',templet:"#mo", width:'9%'}
                         , {field: 'score', title: '积分', templet: "#jifen", width:'10%'}
-                        , {field: 'money', title: '是否交完', templet: '#cf', width:'10%'}
+                        , {field: 'money', title: '是否交完', templet: '#cf', width:'12%'}
+                        , {field: 'money', title: '操作',templet: '#et', width:'13%'}
                         , {field: 'idcard', title: '身份证', hide: true}
-                        , {field: '', title: '操作',templet: '#et', width:'350px'}
-
                      ]
                 ]
             });
@@ -100,26 +105,31 @@
             $("#on5").click(function () {
                 table.render({
                     elem: '#demo'
-                    , height: 312
                     , url: '/zhongsheng/student/allStudentInfo?status=5' //数据接口
                     , page: true //开启分页
                     , limit: 6//每页多少条数据
                     , limits: [6, 12, 18]//每页条数的选择项
+                    ,cellMinWidth: 80
+                    ,toolbar: '#toolbarDemo'
+                    ,defaultToolbar: ['filter', 'exports', 'print', {
+                        title: '提示',
+                        layEvent: 'LAYTABLE_TIPS',
+                        icon: 'layui-icon-tips'
+                    }]
                     , cols: [
                         [//表头
-                            {field: 'snum', title: '学号', sort: true, width:'10%', fixed: 'left'}
-                            , {field: 'sname', title: '姓名', style: "color:#009688", width:'10%'}
-                            , {field: 'sex', title: '性别', sort: true, width:'10%'}
-                            , {field: 'phone', title: '联系方式', width:'10%'}
+                            {field: 'snum', title: '学号', sort: true, width:'11%', fixed: 'left'}
+                            , {field: 'sname', title: '姓名', style: "color:#009688", width:'8%'}
+                            , {field: 'sex', title: '性别', sort: true, width:'7%'}
+                            , {field: 'phone', title: '联系方式', width:'12%'}
                             , {field: 'classes', title: '班次', width:'10%'}
-                            , {field: 'examinationtime', title: '考试年份', width:'10%'}
-                            , {field: 'subject', title: '考试科目', width:'10%'}
-                            , {field: 'money', title: '学费',templet:"#mo", width:'10%'}
+                            , {field: 'examinationtime', title: '考试年份', width:'9%'}
+                            , {field: 'subject', title: '考试科目', width:'14%'}
+                            , {field: 'money', title: '学费',templet:"#mo", width:'9%'}
                             , {field: 'score', title: '积分', templet: "#jifen", width:'10%'}
-                            , {field: 'money', title: '是否交完', templet: '#cf', width:'10%'}
+                            , {field: 'money', title: '是否交完', templet: '#cf', width:'12%'}
+                            , {field: 'money', title: '操作',templet: '#et', width:'13%'}
                             , {field: 'idcard', title: '身份证', hide: true}
-                            , {field: '', title: '操作',templet: '#et', width:'350px'}
-
                         ]
                     ]
                 });
@@ -139,26 +149,31 @@
             $("#on6").click(function () {
                 table.render({
                     elem: '#demo'
-                    , height: 312
                     , url: '/zhongsheng/student/allStudentInfo?status=6' //数据接口
                     , page: true //开启分页
                     , limit: 6//每页多少条数据
                     , limits: [6, 12, 18]//每页条数的选择项
+                    ,cellMinWidth: 80
+                    ,toolbar: '#toolbarDemo'
+                    ,defaultToolbar: ['filter', 'exports', 'print', {
+                        title: '提示',
+                        layEvent: 'LAYTABLE_TIPS',
+                        icon: 'layui-icon-tips'
+                    }]
                     , cols: [
                         [//表头
-                            {field: 'snum', title: '学号', sort: true, width:'10%', fixed: 'left'}
-                            , {field: 'sname', title: '姓名', style: "color:#009688", width:'10%'}
-                            , {field: 'sex', title: '性别', sort: true, width:'10%'}
-                            , {field: 'phone', title: '联系方式', width:'10%'}
+                            {field: 'snum', title: '学号', sort: true, width:'11%', fixed: 'left'}
+                            , {field: 'sname', title: '姓名', style: "color:#009688", width:'8%'}
+                            , {field: 'sex', title: '性别', sort: true, width:'7%'}
+                            , {field: 'phone', title: '联系方式', width:'12%'}
                             , {field: 'classes', title: '班次', width:'10%'}
-                            , {field: 'examinationtime', title: '考试年份', width:'10%'}
-                            , {field: 'subject', title: '考试科目', width:'10%'}
-                            , {field: 'money', title: '学费',templet:"#mo", width:'10%'}
+                            , {field: 'examinationtime', title: '考试年份', width:'9%'}
+                            , {field: 'subject', title: '考试科目', width:'14%'}
+                            , {field: 'money', title: '学费',templet:"#mo", width:'9%'}
                             , {field: 'score', title: '积分', templet: "#jifen", width:'10%'}
-                            , {field: 'money', title: '是否交完', templet: '#cf', width:'10%'}
+                            , {field: 'money', title: '是否交完', templet: '#cf', width:'12%'}
+                            , {field: 'money', title: '操作',templet: '#et', width:'13%'}
                             , {field: 'idcard', title: '身份证', hide: true}
-                            , {field: '', title: '操作',templet: '#et', width:'350px'}
-
                         ]
                     ]
                 });
@@ -178,32 +193,31 @@
             $("#on7").click(function () {
                 table.render({
                     elem: '#demo'
-                    , height: 312
                     , url: '/zhongsheng/student/allStudentInfo?status=7' //数据接口
                     , page: true //开启分页
                     , limit: 6//每页多少条数据
                     , limits: [6, 12, 18]//每页条数的选择项
+                    ,cellMinWidth: 80
+                    ,toolbar: '#toolbarDemo'
+                    ,defaultToolbar: ['filter', 'exports', 'print', {
+                        title: '提示',
+                        layEvent: 'LAYTABLE_TIPS',
+                        icon: 'layui-icon-tips'
+                    }]
                     , cols: [
                         [//表头
-                            {field: 'snum', title: '学号', sort: true, fixed: 'left'}
-                            , {field: 'sname', title: '姓名', style: "color:#009688"}
-                            , {field: 'sex', title: '性别', sort: true}
-                            , {field: 'phone', title: '联系方式'}
-                            , {field: 'classes', title: '班次'}
-                            , {field: 'examinationtime', title: '考试年份'}
-                            , {field: 'subject', title: '考试科目'}
-                            , {field: 'money', title: '学费',templet:"#mo"}
-                            , {field: 'score', title: '积分', templet: "#jifen"}
-                            , {field: 'money', title: '是否交完', templet: '#cf'}
+                            {field: 'snum', title: '学号', sort: true, width:'11%', fixed: 'left'}
+                            , {field: 'sname', title: '姓名', style: "color:#009688", width:'8%'}
+                            , {field: 'sex', title: '性别', sort: true, width:'7%'}
+                            , {field: 'phone', title: '联系方式', width:'12%'}
+                            , {field: 'classes', title: '班次', width:'10%'}
+                            , {field: 'examinationtime', title: '考试年份', width:'9%'}
+                            , {field: 'subject', title: '考试科目', width:'14%'}
+                            , {field: 'money', title: '学费',templet:"#mo", width:'9%'}
+                            , {field: 'score', title: '积分', templet: "#jifen", width:'10%'}
+                            , {field: 'money', title: '是否交完', templet: '#cf', width:'12%'}
+                            , {field: 'money', title: '操作',templet: '#et', width:'13%'}
                             , {field: 'idcard', title: '身份证', hide: true}
-                            , {field: 'schoolname', title: '专科学校', hide: true}
-                            , {field: 'major', title: '专科专业', hide: true}
-                            , {field: 'campus', title: '校区', hide: true}
-                            , {field: 'weijiaokuan', title: '未交款', hide: true}
-                            , {field: 'fphone', title: '家长联系方式', hide: true}
-                            , {field: 'grade', title: '年级', hide: true}
-                            , {field: '', title: '操作',templet: '#et'}
-
                         ]
                     ]
                 });
@@ -486,8 +500,8 @@
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class="active"><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
-                        <li class=""><a th:href="@{/student/toAddStudent}">添加学生信息</a></li>
+                        <li class="active"><a th:href="@{/student/toAllStudent}">学生信息</a></li>
+                        <li class=""><a th:href="@{/student/toAddStudent}">添加信息</a></li>
                     </ul>
                 </li>
                 <span hidden th:value="${session.user.whoid}" id="whoid"></span>
@@ -499,7 +513,18 @@
                         <li class=""><a onclick="openModak();">添加用户</a></li>
                     </ul>
                 </li>
-
+                <li class="">
+                    <a th:href="@{/bill/toAllBill}"><i class="fa fa-table"></i> <span class="nav-label">收入统计</span><span
+                            class="fa arrow"></span></a>
+                </li>
+                <li class="">
+                    <a href=""><i class="fa fa-table"></i> <span class="nav-label">积分管理</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class=""><a th:href="@{/ScoreCotroller/toScore}">积分信息</a></li>
+                        <li class=""><a onclick="openModak();">添加奖品</a></li>
+                    </ul>
+                </li>
             </ul>
 
         </div>
@@ -546,6 +571,12 @@
 
             <!--搜索框-->
             <div class="row layui-form-item">
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                 <form class="layui-form layui-form-pane">
                     <div class="layui-form-item" id="search">
                         <div class="layui-input-inline">
@@ -581,15 +612,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ibox ">
-                        <div class="ibox-title">
+                        <div class="ibox-title"  id="toolbarDemo">
                             <h5>学生基本信息</h5>
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up" style="padding-top: 5px;"></i>
-                                </a>
-                            </div>
                         </div>
-                        <div class="ibox-content">
+                        <div class="ibox-content" >
                             <div class="layui-card" id="card">
                                 <div class="layui-card-header"><i class="fa fa-bullhorn icon icon-tip"></i>分类</div>
                                 <div class="layui-card-body layui-text">

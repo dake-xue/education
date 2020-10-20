@@ -94,6 +94,16 @@ public class Student {
     //未交款
     private Integer weijiaokuan;
 
+    private Integer schoolid;
+
+    public Integer getSchoolid() {
+        return schoolid;
+    }
+
+    public void setSchoolid(Integer schoolid) {
+        this.schoolid = schoolid;
+    }
+
     public Integer getWeijiaokuan() {
         return weijiaokuan;
     }

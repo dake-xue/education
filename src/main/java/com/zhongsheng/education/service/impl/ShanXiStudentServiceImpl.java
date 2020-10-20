@@ -1,7 +1,7 @@
 package com.zhongsheng.education.service.impl;
 
 import com.zhongsheng.education.entiy.*;
-import com.zhongsheng.education.mapper.StudentMapper;
+import com.zhongsheng.education.mapper.ShanXiStudentMapper;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
@@ -11,12 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 @Transactional
 @Service
-public class StudentServiceImpl implements StudentService {
+public class ShanXiStudentServiceImpl implements ShanXiStudentService {
 
     @Autowired
-    private StudentMapper studentMapper;
+    private ShanXiStudentMapper studentMapper;
 
     @Autowired
     private FamilyService familyService;
@@ -97,7 +98,7 @@ public class StudentServiceImpl implements StudentService {
     //添加学生
     @Override
     public int addStudentInfo(Student student, String name) {
-        int  i = studentMapper.addhebeiStudentInfo(student);
+        int  i = studentMapper.addStudentInfo(student);
         student.getSchoolInfo().setSnum(student.getSnum());
         student.getFamilyInfo().setSnum(student.getSnum());
         //添加联系人
