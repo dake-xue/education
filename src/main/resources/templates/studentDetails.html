@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml"
-      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
 
     <meta charset="utf-8">
@@ -61,7 +60,17 @@
             margin-left: 8px;
             font-weight: bold;
         }
-
+        .cj{
+            background: #0095ffba;
+            color: white;
+            width: 85px;
+            text-align: center;
+            border-radius: 5px;
+            line-height: 40px;
+            margin-left: 8px;
+            font-weight: bold;
+            margin-top: 1%;
+        }
         .wt {
             font-weight: bold;
             width: 100px;
@@ -91,10 +100,6 @@
 
     <script>
         $(function () {
-            var whoid = $("#whoid").attr("value");
-            if (whoid == 1) {
-                $("#userLi").remove();
-            }
 
         });
     </script>
@@ -217,8 +222,6 @@
                     </ul>
                 </li>
 
-                <span hidden th:value="${session.user.whoid}" id="whoid"></span>
-                <li class="" id="userLi">
                 <li class="" id="userLi" shiro:hasPermission=="user:list">
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">用户管理</span><span
                             class="fa arrow"></span></a>
@@ -274,10 +277,11 @@
 
         <div class="row wrapper border-bottom white-bg page-heading">
             <br><br>
-            <h3 class="dzpj">成绩</h3>
+            <h3 class="cj">成绩</h3>
             <button type="button" class="layui-btn layui-btn-radius layui-btn-primary" th:value="${student.getSnum()}"
-                    onclick="openAddMoney(this.value)">
-                <i class="layui-icon  layui-icon-add-1">添加成绩</i>
+                    onclick="openAddMoney(this.value)" style="margin-top: 1%;margin-left: 1%;background-color: #009688;
+                    color: #FFFFFF;text-align: center;height: 40px;">
+                <i class="layui-icon">添加成绩</i>
             </button>
             <table class="layui-table" lay-skin="line">
                 <tr>

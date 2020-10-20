@@ -7,6 +7,7 @@ import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
 import com.zhongsheng.education.util.LayuiData;
+import com.zhongsheng.education.util.MyUtil;
 import com.zhongsheng.education.util.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

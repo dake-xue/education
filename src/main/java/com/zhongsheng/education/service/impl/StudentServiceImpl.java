@@ -137,7 +137,7 @@ public class StudentServiceImpl implements StudentService {
         student.setCampus(cnum.getName());
 
         int i = studentMapper.addStudentInfo(student);
-        int  i = studentMapper.addhebeiStudentInfo(student);
+        studentMapper.addhebeiStudentInfo(student);
         student.getSchoolInfo().setSnum(student.getSnum());
         student.getFamilyInfo().setSnum(student.getSnum());
         //添加联系人
