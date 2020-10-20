@@ -1,9 +1,9 @@
 package com.zhongsheng.education.dao;
 
-public class StudentDao {
+public class ShanXiStudentDao {
 
-    public String selectAllStudent(Integer modules, String keyword,Integer status,Integer page, Integer limit) {
-        StringBuffer sql = new StringBuffer("select * from student where 1=1 and status <> 0");
+    public String selectAllStudent(Integer modules, String keyword,Integer status) {
+        StringBuffer sql = new StringBuffer("select * from shanxistudent where 1=1 ");
         //今天
         if(status!=null && status==5){
             sql.append(" and  TO_DAYS(signupdate) = TO_DAYS(NOW())");
@@ -18,8 +18,6 @@ public class StudentDao {
             sql.append("  AND DATE_FORMAT(signupdate,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m')");
 
         }
-    public String selectAllStudent(String keyword, Integer modules,Integer page,Integer limit) {
-        StringBuffer sql = new StringBuffer("select * from student where 1=1 and status <> 0");
         //姓名
         if (modules != null && modules == 1 && keyword != null && keyword != "") {
             sql.append(" and  sname like '%" + keyword + "%'");

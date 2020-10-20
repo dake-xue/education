@@ -29,15 +29,6 @@
     <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
 
     <style>
-        .important:after {
-            content: "*";
-            color: red;
-            position: absolute;
-            top: 10px;
-            font-size: 20px;
-            left: 0;
-        }
-
         .nobreak {
             white-space: nowrap !important;
         }
@@ -287,8 +278,8 @@
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class=""><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
-                        <li class="active"><a th:href="@{/student/toAddStudent}">添加学生信息</a></li>
+                        <li class=""><a th:href="@{/student/toAllStudent}">学生信息</a></li>
+                        <li class="active"><a th:href="@{/student/toAddStudent}">添加信息</a></li>
                     </ul>
                 </li>
                 <li shiro:hasPermission=="user:list" >
@@ -299,7 +290,18 @@
                         <li  class=""><a onclick="openModak();">添加用户</a></li>
                     </ul>
                 </li>
-
+                <li class="">
+                    <a th:href="@{/bill/toAllBill}"><i class="fa fa-table"></i> <span class="nav-label">收入统计</span><span
+                            class="fa arrow"></span></a>
+                </li>
+                <li class="">
+                    <a href=""><i class="fa fa-table"></i> <span class="nav-label">积分管理</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class=""><a th:href="@{/ScoreCotroller/toScore}">积分信息</a></li>
+                        <li class=""><a onclick="openModak();">添加奖品</a></li>
+                    </ul>
+                </li>
             </ul>
 
         </div>

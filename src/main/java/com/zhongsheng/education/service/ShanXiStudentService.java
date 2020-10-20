@@ -4,15 +4,15 @@ import com.zhongsheng.education.entiy.*;
 
 import java.util.List;
 
-public interface StudentService {
+public interface ShanXiStudentService {
 
     Student selectStudentByIphone(String phone);
     public Student selectStudent(String snum);
     public  List<Performance> selectPer(String snum);
     public Student selectStudentOne(String snum);
     Integer selectJiaoFeiJinE(String snum);
-    public List<Student> selectAllStudent(Integer modules, String keyword,Integer status,Integer page,Integer limit);
-    public Integer addScore(String snum,Integer scope);
+    public List<Student> selectAllStudent(Integer modules, String keyword, Integer status, Integer page, Integer limit);
+    public Integer addScore(String snum, Integer scope);
     int addStudentInfo(Student student, String name);
     List<Area> selectArea();
     List<TableDic> selectQu(Integer id);
@@ -21,10 +21,9 @@ public interface StudentService {
     CampusDic selectCNumber(Integer ca);
     TableDic selectSchoolId(String name);
     Integer selectXuHao(Integer id);
-    public Integer changeScore(String snum,Integer score);
+    public Integer changeScore(String snum, Integer score);
     Integer updateStudent(Student student);
     public Integer addPer(Performance performance);
     public Integer addPerfor(Performance performance);
     public Performance selectPerOne(Integer id);
-    Integer updateStatus(Student student);
 }

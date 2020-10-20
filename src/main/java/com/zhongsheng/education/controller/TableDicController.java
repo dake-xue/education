@@ -65,4 +65,9 @@ public class TableDicController {
         List<TableDic> tableDicList=tableDicService.campusSelectSchool(tableDic.getId());
         return tableDicList;
     }
+
+
+    //添加省份
+    //添加校区
+    //添加学校
 }

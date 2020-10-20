@@ -7,12 +7,12 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 @Mapper
-public interface StudentMapper {
+public interface ShanXiStudentMapper {
 
-    @Select("select * from student where phone=#{phone}")
+    @Select("select * from shanxistudent where phone=#{phone}")
     public Student selectStudentByIphone(String phone);
 
-    @Select("select * from student where snum=#{snum}")
+    @Select("select * from shanxistudent where snum=#{snum}")
     public Student selectStudent(String snum);
 
     @Select("select * from performance  where snum=#{snum}")
@@ -22,21 +22,16 @@ public interface StudentMapper {
     public  List<Bill> selectJiaoFeiJinE(String snum);
 
     @SelectProvider(type = StudentDao.class, method = "selectAllStudent")
-    public List<Student> selectAllStudent(Integer modules, String keyword,Integer status, Integer page, Integer limit);
+    public List<Student> selectAllStudent(Integer modules, String keyword, Integer status, Integer page, Integer limit);
 
 
-    @Update("update student set score=score+#{scope} where snum=#{snum}")
+    @Update("update shanxistudent set score=score+#{scope} where snum=#{snum}")
     public Integer addScore(String snum, Integer scope);
 
     //河北
-    @Insert("insert into hebeistudent(snum,campus,schoolname,sname,sex,major,phone,classes,money,signupdate,addmoneydate,paymethod,intentionmajor,publiccours,majorcours,campusmanager,campusagent,onlinenumber,offlinenumber,job,homeaddress,idcard,birthday,nation,remarks,examinationtime,admissiontime,subject,department,grade,campusid,number,schoolid) values(#{snum},#{campus},#{schoolname},#{sname},#{sex},#{major},#{phone},#{classes},#{money},#{signupdate},#{addmoneydate},#{paymethod},#{intentionmajor},#{publiccours},#{majorcours},#{campusmanager},#{campusagent},#{onlinenumber},#{offlinenumber},#{job},#{homeaddress},#{idcard},#{birthday},#{nation},#{remarks},#{examinationtime},#{admissiontime},#{subject},#{department},#{grade},#{campusid},#{number},#{schoolid})")
-    public Integer addStudentInfo(Student student);
-    //河南
-    @Insert("insert into student(snum,campus,schoolname,sname,sex,major,phone,classes,money,signupdate,addmoneydate,paymethod,intentionmajor,publiccours,majorcours,campusmanager,campusagent,onlinenumber,offlinenumber,job,homeaddress,idcard,birthday,nation,remarks,examinationtime,admissiontime,subject,department,grade,campusid,number,schoolid) values(#{snum},#{campus},#{schoolname},#{sname},#{sex},#{major},#{phone},#{classes},#{money},#{signupdate},#{addmoneydate},#{paymethod},#{intentionmajor},#{publiccours},#{majorcours},#{campusmanager},#{campusagent},#{onlinenumber},#{offlinenumber},#{job},#{homeaddress},#{idcard},#{birthday},#{nation},#{remarks},#{examinationtime},#{admissiontime},#{subject},#{department},#{grade},#{campusid},#{number},#{schoolid})")
-    public Integer addhebeiStudentInfo(Student student);
-    //陕西
     @Insert("insert into shanxistudent(snum,campus,schoolname,sname,sex,major,phone,classes,money,signupdate,addmoneydate,paymethod,intentionmajor,publiccours,majorcours,campusmanager,campusagent,onlinenumber,offlinenumber,job,homeaddress,idcard,birthday,nation,remarks,examinationtime,admissiontime,subject,department,grade,campusid,number,schoolid) values(#{snum},#{campus},#{schoolname},#{sname},#{sex},#{major},#{phone},#{classes},#{money},#{signupdate},#{addmoneydate},#{paymethod},#{intentionmajor},#{publiccours},#{majorcours},#{campusmanager},#{campusagent},#{onlinenumber},#{offlinenumber},#{job},#{homeaddress},#{idcard},#{birthday},#{nation},#{remarks},#{examinationtime},#{admissiontime},#{subject},#{department},#{grade},#{campusid},#{number},#{schoolid})")
-    public Integer addshanxiStudentInfo(Student student);
+    public Integer addStudentInfo(Student student);
+
     @Select("select * from area")
     public List<Area> selectArea();
 
@@ -52,10 +47,10 @@ public interface StudentMapper {
     public CampusDic selectCNumber(Integer ca);
     @Select("select * from training_school_dic where name=#{name}")
     public TableDic selectSchoolId(String name);
-    @Select("select number from student where campusid=#{id} order by number desc limit 0,1")
+    @Select("select number from shanxistudent where campusid=#{id} order by number desc limit 0,1")
     public Integer selectXuHao(Integer id);
 
-    @Update("update student set campus=#{campus},campusid=#{campusid},schoolname=#{schoolname},sname=#{sname},sex=#{sex},major=#{major},phone=#{phone}" +
+    @Update("update shanxistudent set campus=#{campus},campusid=#{campusid},schoolname=#{schoolname},sname=#{sname},sex=#{sex},major=#{major},phone=#{phone}" +
             ",classes=#{classes},money=#{money},signupdate=#{signupdate},addmoneydate=#{addmoneydate},paymethod=#{paymethod}" +
             ",intentionmajor=#{intentionmajor},publiccours=#{publiccours},majorcours=#{majorcours},campusmanager=#{campusmanager}" +
             ",campusagent=#{campusagent},onlinenumber=#{onlinenumber},offlinenumber=#{offlinenumber},job=#{job}" +
@@ -64,7 +59,7 @@ public interface StudentMapper {
             ",subject=#{subject},department=#{department},grade=#{grade} where snum=#{snum}")
     public Integer updateStudent(Student student);
 
-    @Update("update student set score=score-#{scope} where snum=#{snum}")
+    @Update("update shanxistudent set score=score-#{scope} where snum=#{snum}")
     public Integer changeScore(String snum, Integer score);
 
     @Insert("insert into performance(snum,lunshu,classes,englishone,majorone,comment,premark,ptime,attendance) values(#{snum},#{lunshu},#{classes},#{englishone},#{majorone},#{comment},#{premark},#{ptime},#{attendance})")
@@ -73,7 +68,4 @@ public interface StudentMapper {
     public Integer addPerfor(Performance performance);
     @Select("select * from performance  where id=#{id}")
     public Performance selectPerOne(Integer id);
-
-    @Update("update student set status=#{status} where snum=#{snum}")
-    Integer updateStatus(Student student);
 }

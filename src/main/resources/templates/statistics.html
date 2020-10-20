@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收入信息</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/layui/layui.css}" rel="stylesheet">
+
+    <!-- Mainly scripts -->
+    <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
+    <script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+    <script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script th:src="@{/js/inspinia.js}"></script>
+    <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+    <!--echarts-->
+    <script th:src="@{/js/echarts/echarts.js}"></script>
+    <script th:src="@{/js/echarts/echartsTheme.js}"></script>
+    <style>
+        .layui-top-box {
+            padding: 40px 20px 20px 20px;
+            color: #fff
+        }
+
+        .panel {
+            margin-bottom: 17px;
+            background-color: #fff;
+            border: 1px solid transparent;
+            border-radius: 3px;
+            -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+            box-shadow: 0 1px 1px rgba(0, 0, 0, .05)
+        }
+
+        .panel-body {
+            padding: 15px
+        }
+
+        .panel-title {
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 14px;
+            color: inherit
+        }
+
+        .label {
+            display: inline;
+            padding: .2em .6em .3em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: .25em;
+            margin-top: .3em;
+        }
+
+        .main_btn > p {
+            height: 40px;
+        }
+
+        .top-panel > .layui-card-body {
+            height: 60px;
+        }
+
+        .layui-col-md3 {
+            width: 30%;
+        }
+
+        .selectWd {
+            width: 187px;
+        }
+    </style>
+    <script>
+        layui.use(['form', 'table', 'laydate'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                table = layui.table,
+                laydate = layui.laydate;
+            table.render({
+                elem: '#demo'
+                , url: '/zhongsheng/student/allStudentInfo' //数据接口
+                , page: true //开启分页
+                , limit: 6//每页多少条数据
+                , limits: [6, 12, 18]//每页条数的选择项
+                ,cellMinWidth: 80
+                ,toolbar: '#toolbarDemo'
+                ,defaultToolbar: ['filter', 'exports', 'print', {
+                    title: '提示',
+                    layEvent: 'LAYTABLE_TIPS',
+                    icon: 'layui-icon-tips'
+                }]
+                , cols: [
+                    [//表头
+                        {field: 'snum', title: '学号', sort: true, width:'11%', fixed: 'left'}
+                        , {field: 'sname', title: '姓名', style: "color:#009688", width:'8%'}
+                        , {field: 'sex', title: '性别', sort: true, width:'7%'}
+                        , {field: 'phone', title: '联系方式', width:'12%'}
+                        , {field: 'classes', title: '班次', width:'10%'}
+                        , {field: 'examinationtime', title: '考试年份', width:'9%'}
+                        , {field: 'subject', title: '考试科目', width:'14%'}
+                        , {field: 'money', title: '学费',templet:"#mo", width:'9%'}
+                        , {field: 'idcard', title: '身份证', hide: true}
+                    ]
+                ]
+            });
+
+            /**
+             * 报表功能 这儿就是第一次进去的
+             */
+            var echartsRecords = echarts.init(document.getElementById('echarts-records'), 'walden');
+
+            var Arr = new Array();
+            $.ajax({
+                type: "post",
+                url: "/zhongsheng/BillController/billStatistics",
+                contentType: "application/json",
+                success: function (data) {
+                    //今日
+                    $("#peopleCounts").html(data.people+"个人");
+                    $("#moneyCounts").html(data.money+"元");
+                    //折线图
+                    var option = {
+                        title: {
+                            text: '中升教育-收入报表图'
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'cross',
+                                label: {
+                                    backgroundColor: '#6a7985'
+                                }
+                            }
+                        },
+                        legend: {
+                            data: ['学生', '收入']
+                        },
+                        toolbox: {
+                            feature: {
+                                saveAsImage: {}
+                            }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis: [
+                            {
+                                type: 'category',
+                                boundaryGap: false,
+                                data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: 'value'
+                            }
+                        ],
+                        series: [
+                            {
+                                name: '新增学生',
+                                type: 'line',
+                                stack: '总量',
+                                areaStyle: {},
+                                data: data.peopleCount
+                            },
+                            {
+                                name: '新增收入',
+                                type: 'line',
+                                stack: '总量',
+                                areaStyle: {},
+                                data: data.moneyCount
+                            }
+                        ]
+                    }
+                   echartsRecords.setOption(option);
+                }
+            });
+
+//添加用户监听提交
+            form.on('submit(formDemo)', function (data) {
+                console.log(data.field)
+                var bill = data.field;
+                    $.ajax({
+                        type: "POST",
+                        dataType: "text",
+                        data: bill,
+                        url: "/zhongsheng/BillController/billStatistics",
+                        success: function (data) {
+                            var d=eval('(' + data + ')');
+                            console.log(d.people)
+                            console.log(d.money)
+                            //今日
+                            $("#peopleCounts").html(d.people+"个人");
+                            $("#moneyCounts").html(d.money+"元");
+                            var option = {
+                                title: {
+                                    text: '中升教育-收入报表图'
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {
+                                        type: 'cross',
+                                        label: {
+                                            backgroundColor: '#6a7985'
+                                        }
+                                    }
+                                },
+                                legend: {
+                                    data: ['学生', '收入']
+                                },
+                                toolbox: {
+                                    feature: {
+                                        saveAsImage: {}
+                                    }
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
+                                xAxis: [
+                                    {
+                                        type: 'category',
+                                        boundaryGap: false,
+                                        data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+                                    }
+                                ],
+                                yAxis: [
+                                    {
+                                        type: 'value'
+                                    }
+                                ],
+                                series: [
+                                    {
+                                        name: '新增学生',
+                                        type: 'line',
+                                        stack: '总量',
+                                        areaStyle: {},
+                                        data: data.peopleCount
+                                    },
+                                    {
+                                        name: '新增收入',
+                                        type: 'line',
+                                        stack: '总量',
+                                        areaStyle: {},
+                                        data: data.moneyCount
+                                    }
+                                ]
+                            }
+                            echartsRecords.setOption(option,true);
+                        }
+                    });
+                return false;
+            });
+            // echarts 窗口缩放自适应
+            window.onresize = function () {
+                echartsRecords.resize();
+            }
+           //刷新页面
+            $("body").on("click", '.refresh-btn', function () {
+                window.location.reload();
+            });
+            //省份
+            $.ajax({
+                type: 'post',
+                url: '/zhongsheng/student/selectArea',
+                contentType: 'application/json',
+                success: function (data) {
+                    var str = "<option value='0'>请选择省份</option>";
+                    for (var i = 0; i < data.length; i++) {
+                        str += "<option value='" + data[i].aid + "'>" + data[i].aname + "</option>"
+                    }
+                    $("#area").html(str);
+                    //重新渲染
+                    layui.form.render("select");
+                }
+            });
+            form.on('select(area)', function (data) {
+                var parentId = data.value;
+                if (parentId === "" || parentId < 1) {
+                    return;
+                }
+                $.ajax({
+                    type: 'post',
+                    url: '/zhongsheng/student/selectQu',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: {"id": parentId},
+                    dataType: "json",
+                    success: function (data) {
+                        var str = "<option value='0'>请选择校区</option>";
+                        for (var i = 0; i < data.length; i++) {
+                            str += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"
+                        }
+                        $("#campus").html(str);
+                        //重新渲染
+                        layui.form.render("select");
+                    }
+                });
+            });
+            form.on('select(campus)', function (data) {
+                $.ajax({
+                    type: 'post',
+                    url: '/zhongsheng/student/selectSchool',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: {"campus": data.value},
+                    dataType: "json",
+                    success: function (data) {
+                        var str = "<option value='0'>请选择学校</option>";
+                        for (var i = 0; i < data.length; i++) {
+                            str += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"
+                        }
+                        $("#schoolname").html(str);
+                        //重新渲染
+                        layui.form.render("select");
+                    }
+                });
+            });
+
+
+        });
+    </script>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element jz">
+                        <img alt="image" class="rounded-circle" th:src="@{/img/touxiang.png}" height="60px"/>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="text-muted text-xs block" style="margin-top: 10px;"
+                                  id="name" th:text="${session.user.name}"> <b class="caret"></b></span>
+                        </a>
+                    </div>
+                </li>
+
+                <li class="">
+                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">学生信息管理</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class=""><a th:href="@{/student/toAllStudent}">学生信息</a></li>
+                        <li class=""><a th:href="@{/student/toAddStudent}">添加信息</a></li>
+                    </ul>
+                </li>
+
+                <li class="">
+                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">用户管理</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
+                        <li class=""><a onclick="openModak();">添加用户</a></li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <a th:href="@{/bill/toAllBill}"><i class="fa fa-table"></i> <span class="nav-label">统计分析</span><span
+                            class="fa arrow"></span></a>
+                </li>
+                <li class="">
+                    <a href=""><i class="fa fa-table"></i> <span class="nav-label">积分管理</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class=""><a th:href="@{/ScoreCotroller/toScore}">积分信息</a></li>
+                        <li class=""><a onclick="openModak();">添加奖品</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message">欢迎来到中升教育管理后台</span>
+                    </li>
+                    <li>
+                        <a th:href="@{/user/loginOut}">
+                            <i class="fa fa-sign-out"></i> 注销
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>&nbsp;</h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="index.html">收入统计</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <strong>收入基本信息</strong>
+                    </li>
+                </ol>
+            </div>
+
+        </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox ">
+                        <div class="ibox-title">
+                            <h5>收入信息</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up" style="padding-top: 5px;"></i>
+                                </a>
+                                <a class="close-link" style="padding-top: 5px;">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <!--搜索框-->
+                            <div>
+                                <form class="layui-form">
+                                    <div class="layui-input-inline">
+                                        <label class="layui-form-label">省份</label>
+                                        <div class="layui-input-inline selectWd">
+                                            <select id="area" lay-filter="area" name="area">
+                                                <option value="">请选择省份</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <label class="layui-form-label">校区</label>
+                                        <div class="layui-input-inline selectWd">
+                                            <select id="campus" lay-filter="campus" name="campusid" >
+                                                <option value="">请选择校区</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <label class="layui-form-label">学校</label>
+                                        <div class="layui-input-inline selectWd">
+                                            <select id="schoolname" lay-filter="schoolname" name="schoolid" >
+                                                <option value="">请选择学校</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <button class="layui-btn" lay-submit lay-filter="formDemo">搜索</button>
+                                        <button class="layui-btn refresh-btn" type="button">刷新</button>
+                                    </div>
+                                </form>
+                            </div>
+                                <!--<div class="layuimini-container">-->
+                                <div class="layuimini-container">
+                                    <div class="layuimini-main layui-top-box">
+                                        <div class="layui-row layui-col-space10">
+                                            <div class="layui-col-md3">
+                                                <div class="panel layui-bg-cyan">
+                                                    <div class="panel-body">
+                                                        <div class="panel-title">
+                                                            <span class="label pull-right layui-bg-blue">实时</span>
+                                                            <h5>今日报名人数统计</h5>
+                                                        </div>
+                                                        <div class="panel-content">
+                                                            <h1 class="no-margins"><span id="peopleCounts"></span>
+                                                            </h1>
+                                                            <div class="stat-percent font-bold text-gray"><i
+                                                                    class="fa fa-commenting"></i></div>
+                                                            <small>学生人数</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="layui-col-md3">
+                                                <div class="panel layui-bg-orange">
+                                                    <div class="panel-body">
+                                                        <div class="panel-title">
+                                                            <span class="label pull-right layui-bg-green">实时</span>
+                                                            <h5>今日收入统计</h5>
+                                                        </div>
+                                                        <div class="panel-content">
+                                                            <h1 class="no-margins"><span id="moneyCounts"></span>
+                                                            </h1>
+                                                            <div class="stat-percent font-bold text-gray"><i
+                                                                    class="fa fa-commenting"></i></div>
+                                                            <small>收款金额</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            <!--折线图-->
+                                <div class="layui-row layui-col-space15">
+                                    <div class="layui-col-xs12 layui-col-md9">
+                                        <div id="echarts-records" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
+                                    </div>
+                                </div>
+                            <!--表格-->
+                            <div id="tab">
+                                <table id="demo" class="layui-tab" lay-filter="currentTableFilter"></table>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="float-right">
+                    <strong>2.9.2 inspinia</strong>
+                </div>
+                <div>
+                    <strong>Copyright</strong> inspinia 2.9.2 &copy; 2014-2018
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

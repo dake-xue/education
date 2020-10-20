@@ -24,147 +24,177 @@
     <script th:src="@{/js/inspinia.js}"></script>
     <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
     <script>
-        layui.use(['form', 'table','laydate'], function () {
+        layui.use(['form', 'table', 'laydate'], function () {
             var $ = layui.jquery,
                 form = layui.form,
                 table = layui.table,
-                laydate=layui.laydate;
+                laydate = layui.laydate;
             //第一个实例
             table.render({
                 elem: '#demo'
                 , height: 312
                 , url: '/zhongsheng/ScoreCotroller/selectScore' //数据接口
                 , page: true //开启分页
-                ,limit: 6//每页多少条数据
-                ,limits:[6,12,18]//每页条数的选择项
+                , limit: 6//每页多少条数据
+                , limits: [6, 12, 18]//每页条数的选择项
                 , cols: [
                     [//表头
-                        {field: 'id', title: 'id', sort: true, fixed: 'left',hide:true}
-                        , {field: 'name', title: '奖品' }
+                        {field: 'id', title: 'id', sort: true, fixed: 'left', hide: true}
+                        , {field: 'name', title: '奖品'}
                         , {field: 'score', title: '积分', sort: true}
-                        , {field: 'status', title: '操作',templet: '#statusTemp'}
-                        , {field: 'status', title: '操作',templet: '#update'}
-                     ]
+                        , {field: 'status', title: '操作', templet: '#update'}
+                    ]
                 ]
             });
 
             //添加用户监听提交
             form.on('submit(userform)', function (data) {
                 var score = data.field;
-                $.ajax({
-                    url: "/zhongsheng/ScoreCotroller/addScore",
-                    type: "POST",
-                    dataType: "text",
-                    data: score,
-                    success: function (data) {
-                        if (data == "yes") {
-                            layer.msg('添加成功！', {icon: 6}, {time: 3000});
-                            // 重置清空
-                            $('#form1')[0].reset();
-                            form.render();//必须写
-                        } else {
-                            layer.msg('添加失败！', {icon: 5}, {time: 3000});
+                var a = /^(0|[1-9][0-9]*)$/;
+                if (a.test(score.score) == false) {
+                    layer.msg("请输入纯数字", {icon: 6});
+                }else {
+                    $.ajax({
+                        url: "/zhongsheng/ScoreCotroller/addScore",
+                        type: "POST",
+                        dataType: "text",
+                        data: score,
+                        success: function (data) {
+                            if (data == 1) {
+                                layer.msg('添加成功！', {icon: 6}, {icon: 1000});
+                                // 重置清空
+                                $('#form1')[0].reset();
+                                form.render();//必须写
+                                window.parent.location.reload();//刷新父页面
+                                parent.layer.close(index);//关闭弹出层
+                            } else {
+                                layer.msg('添加失败！', {icon: 5}, {icon: 1000});
+                            }
                         }
-                    }
-                });
+                    });
+                }
                 return false;
             });
             //修改监听提交
             form.on('submit(updateform)', function (data) {
                 var score = data.field;
-                $.ajax({
-                    url: "/zhongsheng/ScoreCotroller/updateScore",
-                    type: "POST",
-                    dataType: "text",
-                    data: score,
-                    success: function (data) {
-                        if (data == "yes") {
-                            layer.msg('修改成功！', {icon: 6}, {time: 3000});
-                            // 重置清空
-                            $('#up')[0].reset();
-                            form.render();//必须写
-                        } else {
-                            layer.msg('修改失败！', {icon: 5}, {time: 3000});
+                var a = /^(0|[1-9][0-9]*)$/;
+                if (a.test(score.score) == false) {
+                    layer.msg("请输入纯数字", {icon: 1000});
+                }else {
+                    $.ajax({
+                        url: "/zhongsheng/ScoreCotroller/updateScore",
+                        type: "POST",
+                        dataType: "text",
+                        data: score,
+                        success: function (data) {
+                            if (data == 1) {
+                                layer.msg('修改成功！', {icon: 6}, {icon: 1000});
+                                // 重置清空
+                                $('#up')[0].reset();
+                                form.render();//必须写
+                                window.parent.location.reload();//刷新父页面
+                                parent.layer.close(index);//关闭弹出层
+                            } else {
+                                layer.msg('修改失败！', {icon: 5}, {icon: 1000});
+                            }
                         }
-                    }
-                });
+                    });
+                }
                 return false;
             });
+            //删除监听提交
+            form.on('submit(deleteform)', function (data) {
+                var score = data.field;
+                    $.ajax({
+                        url: "/zhongsheng/ScoreCotroller/deleteScore",
+                        type: "POST",
+                        dataType: "text",
+                        data: score,
+                        success: function (data) {
+                            if (data == 1) {
+                                layer.msg('删除成功！', {icon: 6}, {icon: 1000});
+                                // 重置清空
+                                $('#delete')[0].reset();
+                                form.render();//必须写
+                                window.parent.location.reload();//刷新父页面
+                                parent.layer.close(index);//关闭弹出层
+                            } else {
+                                layer.msg('修改失败！', {icon: 5}, {icon: 1000});
+                            }
+                        }
+                    });
 
-//禁用
-            form.on('switch(status)', function(data){
-// 得到开关的value值，实际是需要修改的ID值。
-                var id = data.value;
-                var status = this.checked ? '1' : '0';
-                $ajax({
-                type: 'POST',
-                    url:'/zhongsheng/ScoreCotroller/updateScore',
-                    data:{"id" :id,"status":status},
-                error: function(data){
-                    console.log(data);
-                    layer.msg('数据异常，操作失败！');
-                },
-                success: function(data){
-                    if(data.result=="SUCCESS"){
-                        setTimeout(function(){
-                            layer.msg('操作成功！');},2000);
-                    }else{
-                        console.log(data);
-                        layer.msg('数据异常，操作失败！');
-                    }},
-                dataType:'JSON'
+                return false;
             });
+            //取消删除
+            form.on('submit(取消)', function () {
+                $('#delete')[0].reset();
+                form.render();//必须写
+                window.parent.location.reload();//刷新父页面
+                parent.layer.close(index);//关闭弹出层
             });
+
         });
 
-        function openModak(){
-            layui.use(['layer'],function () {
-                var layer = layui.layer,$=layui.$;
+        //添加
+        function openModak() {
+            layui.use(['layer'], function () {
+                var layer = layui.layer, $ = layui.$;
                 layer.open({
-                    type:1,//类型
-                    area:['500px','350px'],//定义宽和高
-                    title:'添加奖品',//题目
-                    shadeClose:false,//点击遮罩层关闭
+                    type: 1,//类型
+                    area: ['500px', '350px'],//定义宽和高
+                    title: '添加奖品',//题目
+                    shadeClose: false,//点击遮罩层关闭
                     content: $('#motaikunag')//打开的内容
                 });
             })
         }
 
 
-        function openUpdateScore(id,name,score){
+        //修改
+        function openUpdateScore(id, name, score) {
             $("#id").val(id);
             $("#name1").val(name);
             $("#score").val(score);
-            layui.use(['layer'],function () {
-                var layer = layui.layer,$=layui.$;
+            layui.use(['layer'], function () {
+                var layer = layui.layer, $ = layui.$;
                 layer.open({
-                    type:1,//类型
-                    area:['500px','350px'],//定义宽和高
-                    title:'修改奖品',//题目
-                    shadeClose:false,//点击遮罩层关闭
-                    content: $('#up')//打开的内容
+                    type: 1,//类型
+                    area: ['500px', '350px'],//定义宽和高
+                    title: '修改奖品',//题目
+                    shadeClose: false,//点击遮罩层关闭
+                    content: $('#updateScore')//打开的内容
                 });
             })
+        };
 
-            //金额正则表达式
-            $("#score").on('blur', function () {
-                var a = /^(0|[1-9][0-9]*)$/;
-                if (a.test($("#score").val()) == false) {
-                    layer.msg("请输入纯数字", {icon: 6});
-                }
-            });
-        }
-    </script>
+        //删除
+        function openDeleteScore(id, name) {
+            $("#id1").val(id);
+            $("#name2").val(name)
+            layui.use(['layer'], function () {
+                var layer = layui.layer, $ = layui.$;
+                layer.open({
+                    type: 1,//类型
+                    area: ['260px', '170px'],//定义宽和高
+                    title: '删除奖品',//题目
+                    shadeClose: false,//点击遮罩层关闭
+                    content: $('#deleteScore')//打开的内容
+                });
+            })
+        };
 
-    <script type="text/html" id="statusTemp">
-        {{#  if(d.status==1){ }}
-        <input type="checkbox" name="status" lay-skin="switch" checked   lay-text="开启|关闭"  value= {{ d.id}}  lay-filter="status" >
-        {{#  } else { }}
-        <input type="checkbox" name="status" lay-skin="switch"  lay-text="开启|关闭"  value= {{ d.id} lay-filter="status" >
-        {{#  } }
     </script>
     <script type="text/html" id="update">
-        <a onclick='openUpdateScore("{{d.id}}","{{d.name}}","{{d.score}}");' style="color:#c23450;"><i class="layui-icon">编辑</i></a>
+        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm">
+            <a onclick='openUpdateScore("{{d.id}}","{{d.name}}","{{d.score}}");'><i
+                    class="layui-icon layui-icon-edit">编辑</i></a>
+        </button>
+        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm">
+            <a onclick='openDeleteScore("{{d.id}}","{{d.name}}")'><i
+                    class="layui-icon layui-icon-delete">删除</i></a>
+        </button>
     </script>
 </head>
 
@@ -189,17 +219,29 @@
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class="active"><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
-                        <li  class=""><a th:href="@{/student/toAddStudent}">添加学生信息</a></li>
+                        <li class=""><a th:href="@{/student/toAllStudent}">学生信息</a></li>
+                        <li class=""><a th:href="@{/student/toAddStudent}">添加信息</a></li>
                     </ul>
                 </li>
-
-                <li class="active">
+                <span hidden th:value="${session.user.whoid}" id="whoid"></span>
+                <li class="" id="userLi">
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">用户管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class="active"><a th:href="@{/user/toAllUser}">用户信息</a></li>
-                        <li  class=""><a onclick="openModak();">添加奖品</a></li>
+                        <li class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
+                        <li class=""><a onclick="openModak();">添加用户</a></li>
+                    </ul>
+                </li>
+                <li class="">
+                    <a th:href="@{/bill/toAllBill}"><i class="fa fa-table"></i> <span class="nav-label">收入统计</span><span
+                            class="fa arrow"></span></a>
+                </li>
+                <li class="active">
+                    <a href=""><i class="fa fa-table"></i> <span class="nav-label">积分管理</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class="active"><a th:href="@{/ScoreCotroller/toScore}">积分信息</a></li>
+                        <li class=""><a onclick="openModak();">添加奖品</a></li>
                     </ul>
                 </li>
 
@@ -234,10 +276,10 @@
                 <h2>&nbsp;</h2>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="index.html">主页</a>
+                        <a href="index.html">积分管理</a>
                     </li>
                     <li class="breadcrumb-item active">
-                        <strong>学生基本信息</strong>
+                        <strong>积分基本信息</strong>
                     </li>
                 </ol>
             </div>
@@ -266,7 +308,7 @@
                         <div class="ibox-content">
 
                             <div id="tab">
-                                <table id="demo"  class="layui-tab"  lay-filter="currentTableFilter"></table>
+                                <table id="demo" class="layui-tab" lay-filter="currentTableFilter"></table>
                             </div>
                         </div>
                     </div>
@@ -289,14 +331,14 @@
 
 </html>
 
-<!--模仿bootstrap的模态框-->
+<!--添加积分-->
 <div id="motaikunag" style="display: none;text-align: center;">
     <form class="layui-form" id="form1" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">奖品</label>
                 <div class="layui-input-inline">
-                    <input name="name" class="layui-input" type="text"  lay-verify="required"/>
+                    <input name="name" class="layui-input" type="text" lay-verify="required"/>
                 </div>
             </div>
         </div>
@@ -304,11 +346,10 @@
             <div class="layui-inline">
                 <label class="layui-form-label">积分</label>
                 <div class="layui-input-inline">
-                    <input name="score" class="layui-input" type="text"/>
+                    <input name="score" id="sss" class="layui-input" type="text"/>
                 </div>
             </div>
         </div>
-
 
 
         <div class="layui-form-inline" style="margin-top: 10%;">
@@ -323,9 +364,7 @@
     </form>
 </div>
 
-
-
-<!--模仿bootstrap的模态框-->
+<!--修改积分-->
 <div id="updateScore" style="display: none;text-align: center;">
     <form class="layui-form" id="up" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
         <input type="hidden" id="id" name="id">
@@ -333,7 +372,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">奖品</label>
                 <div class="layui-input-inline">
-                    <input name="name" id="name1" class="layui-input" type="text"  lay-verify="required"/>
+                    <input name="name" id="name1" class="layui-input" type="text" lay-verify="required"/>
                 </div>
             </div>
         </div>
@@ -345,7 +384,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <div class="layui-form-inline" style="margin-top: 10%;">
@@ -360,5 +398,27 @@
     </form>
 </div>
 
+
+<!--修改积分-->
+<div id="deleteScore" style="display: none;text-align: center;">
+    <form class="layui-form" id="delete" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <input type="hidden" id="id1" name="id">
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                确定删除<span id="name2" name="n"></span>?
+            </div>
+        </div>
+
+        <div class="layui-form-inline" style="margin-top: 10%;">
+
+            <div class="layui-input-inline">
+                <button class="layui-btn" lay-submit lay-filter="deleteform">确定</button>
+                <button class="layui-btn" lay-submit lay-filter="quxiao">取消</button>
+            </div>
+
+        </div>
+        <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+    </form>
+</div>
 
 

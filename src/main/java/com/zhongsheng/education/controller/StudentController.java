@@ -1,16 +1,19 @@
 package com.zhongsheng.education.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
-import com.zhongsheng.education.util.MyUtil;
+import com.zhongsheng.education.util.LayuiData;
 import com.zhongsheng.education.util.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -30,7 +33,10 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
-
+    @Autowired
+    private HeBeiStudentService heBeiStudentService;
+    @Autowired
+    private ShanXiStudentService shanXiStudentService;
     @Autowired
     private FamilyService familyService;
 
@@ -42,18 +48,31 @@ public class StudentController {
 
     @GetMapping("/allStudentInfo")
     @ResponseBody
-    public String allStudentInfo(Integer modules, String keyword,Integer page,Integer limit)throws Exception{
-        List<Student> studentList = studentService.selectAllStudent(keyword,modules,page,limit);
+    public LayuiData allStudentInfo(Integer modules, String keyword, Integer status, @RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "3") int limit)throws Exception{
+        System.out.println(page+"-----------------"+limit);
+        Page pagehelper= PageHelper.startPage(page,limit);
+        List<Student> studentList = studentService.selectAllStudent(modules,keyword,status,page,limit);
         //查询已交学费
         for (Student s:studentList){
             s.setJiaofeijine(studentService.selectJiaoFeiJinE(s.getSnum()));
+            Integer i=s.getMoney();
+            Integer q=s.getJiaofeijine();
+            Integer c=i-q;
+            s.setWeijiaokuan(c);
         }
-        return  MyUtil.layuiData(studentList);
+        LayuiData layuiData=new LayuiData();
+        layuiData.setCode(0);
+        layuiData.setMsg("");
+        layuiData.setCount((int)pagehelper.getTotal());
+        layuiData.setData(studentList);
+        return  layuiData;
     }
     //学生详情页面
     @RequestMapping("/studentDetails")
     public String studentDetails(String snum , Model model) {
         Student student = studentService.selectStudent(snum);
+        List<Performance> performance=studentService.selectPer(snum);
+        model.addAttribute("performance",performance);
         model.addAttribute("student",student);
         return "studentDetails";
     }
@@ -116,6 +135,7 @@ public class StudentController {
         Bill bill=new Bill();
         bill.setSnum(snum);
         bill.setPaymentAmount(paymentAmount);
+        bill.setRemark(remarks);
 
             student1.setBill(bill);
             student1.setRemarks(remarks);
@@ -174,6 +194,33 @@ public class StudentController {
             return "yes";
         }
         return "no";
+    }
+
+    //查询成绩
+    @RequestMapping("/selectPerOne")
+    public String selectPerOne(Integer id,Model model){
+        Performance performance=studentService.selectPerOne(id);
+        model.addAttribute("performance",performance);
+        return "updatePer";
+    }
+
+    //添加成绩
+    @RequestMapping("/addPer")
+    @ResponseBody
+    public String addPer(Performance performance){
+        Integer i = studentService.addPer(performance);
+        if (i==1){
+            return "yes";
+        }
+        return "no";
+    }
+
+    //补充成绩
+    @RequestMapping("/addPerfor")
+    @ResponseBody
+    public Integer addPerfor(Performance performance){
+        Integer i = studentService.addPerfor(performance);
+            return i;
     }
 
 }

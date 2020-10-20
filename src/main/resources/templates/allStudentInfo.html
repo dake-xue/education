@@ -25,81 +25,213 @@
     <!-- Custom and plugin javascript -->
     <script th:src="@{/js/inspinia.js}"></script>
     <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
-
     <script type="text/javascript">
         $(function () {
 
         });
+
         function param(key) {
             var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
             var result = window.location.search.substr(1).match(reg);
             return result ? decodeURIComponent(result[2]) : null;
         }
     </script>
+    <style>
+        .layui-card {
+            border: 1px solid #f2f2f2;
+            border-radius: 5px;
+        }
+        #card {
+            position: absolute;
+            width: 200px;
+            height: 350px;
+        }
+        #tab {
+            position: absolute;
+            left: 240px;
+        }
+    </style>
     <script>
-        layui.use(['form', 'table','laydate'], function () {
+        layui.use(['form', 'table', 'laydate'], function () {
             var $ = layui.jquery,
                 form = layui.form,
                 table = layui.table,
-                laydate=layui.laydate;
+                laydate = layui.laydate;
             //第一个实例
             table.render({
                 elem: '#demo'
-                , height: 312
                 , url: '/zhongsheng/student/allStudentInfo' //数据接口
                 , page: true //开启分页
-                ,limit: 6//每页多少条数据
-                ,limits:[6,12,18]//每页条数的选择项
+                , limit: 6//每页多少条数据
+                , limits: [6, 12, 18]//每页条数的选择项
+                ,cellMinWidth: 80
+                    ,toolbar: '#toolbarDemo'
+                    ,defaultToolbar: ['filter', 'exports', 'print', {
+                        title: '提示',
+                        layEvent: 'LAYTABLE_TIPS',
+                        icon: 'layui-icon-tips'
+                    }]
                 , cols: [
                     [//表头
-                        {field: 'snum', title: '学号', sort: true, fixed: 'left'}
-                        , {field: 'sname', title: '姓名' ,style:"color:#009688"}
-                        , {field: 'sex', title: '性别',width:70 , sort: true}
-                        , {field: 'phone', title: '联系方式'}
-                        , {field: 'classes', title: '班次'}
-                        , {field: 'examinationtime', title: '考试年份'}
-                        , {field: 'subject', title: '考试科目'}
-                        , {field: 'score', title: '积分', templet: "#jifen"}
-                        , {field: 'money', title: '费用', templet: '#cf'}
+                        {field: 'snum', title: '学号', sort: true, width:'11%', fixed: 'left'}
+                        , {field: 'sname', title: '姓名', style: "color:#009688", width:'8%'}
+                        , {field: 'sex', title: '性别', sort: true, width:'7%'}
+                        , {field: 'phone', title: '联系方式', width:'12%'}
+                        , {field: 'classes', title: '班次', width:'10%'}
+                        , {field: 'examinationtime', title: '考试年份', width:'9%'}
+                        , {field: 'subject', title: '考试科目', width:'14%'}
+                        , {field: 'money', title: '学费',templet:"#mo", width:'9%'}
+                        , {field: 'score', title: '积分', templet: "#jifen", width:'10%'}
+                        , {field: 'money', title: '是否交完', templet: '#cf', width:'12%'}
+                        , {field: 'money', title: '操作',templet: '#et', width:'13%'}
                         , {field: 'idcard', title: '身份证', hide: true}
-                        , {field: 'schoolname', title: '专科学校', hide: true}
-                        , {field: 'major', title: '专科专业', hide: true}
-                        , {field: 'campus', title: '校区', hide: true}
-                        , {field: 'admissiontime', title: '入学年份', hide: true}
-                        , {field: 'intentionmajor', title: '升本专业', hide: true}
-                        , {field: 'department', title: '院系', hide: true}
-                        , {field: 'fphone', title: '家长联系方式', hide: true}
-                        , {field: 'grade', title: '年级', hide: true}
-                        , {field: '', title: '操作',templet: '#et'}
-
                      ]
                 ]
+            });
+            //今天新增
+            $.ajax({
+                type: "get",
+                dataType: "json",
+                url: "/zhongsheng/student/allStudentInfo?status=5",
+                success: function (data) {
+                    $("#on5").append("<span class='layui-badge'>" + data.count + "</span>")
+                },
+                error: function () {
+                    alert("出错啦");
+                }
+            });
+            $("#on5").click(function () {
+                table.render({
+                    elem: '#demo'
+                    , url: '/zhongsheng/student/allStudentInfo?status=5' //数据接口
+                    , page: true //开启分页
+                    , limit: 6//每页多少条数据
+                    , limits: [6, 12, 18]//每页条数的选择项
+                    ,cellMinWidth: 80
+                    ,toolbar: '#toolbarDemo'
+                    ,defaultToolbar: ['filter', 'exports', 'print', {
+                        title: '提示',
+                        layEvent: 'LAYTABLE_TIPS',
+                        icon: 'layui-icon-tips'
+                    }]
+                    , cols: [
+                        [//表头
+                            {field: 'snum', title: '学号', sort: true, width:'11%', fixed: 'left'}
+                            , {field: 'sname', title: '姓名', style: "color:#009688", width:'8%'}
+                            , {field: 'sex', title: '性别', sort: true, width:'7%'}
+                            , {field: 'phone', title: '联系方式', width:'12%'}
+                            , {field: 'classes', title: '班次', width:'10%'}
+                            , {field: 'examinationtime', title: '考试年份', width:'9%'}
+                            , {field: 'subject', title: '考试科目', width:'14%'}
+                            , {field: 'money', title: '学费',templet:"#mo", width:'9%'}
+                            , {field: 'score', title: '积分', templet: "#jifen", width:'10%'}
+                            , {field: 'money', title: '是否交完', templet: '#cf', width:'12%'}
+                            , {field: 'money', title: '操作',templet: '#et', width:'13%'}
+                            , {field: 'idcard', title: '身份证', hide: true}
+                        ]
+                    ]
+                });
+            });
+            //本周新增
+            $.ajax({
+                type: "get",
+                dataType: "json",
+                url: "/zhongsheng/student/allStudentInfo?status=6",
+                success: function (data) {
+                    $("#on6").append("<span class='layui-badge'>" + data.count + "</span>")
+                },
+                error: function () {
+                    alert("出错啦");
+                }
+            });
+            $("#on6").click(function () {
+                table.render({
+                    elem: '#demo'
+                    , url: '/zhongsheng/student/allStudentInfo?status=6' //数据接口
+                    , page: true //开启分页
+                    , limit: 6//每页多少条数据
+                    , limits: [6, 12, 18]//每页条数的选择项
+                    ,cellMinWidth: 80
+                    ,toolbar: '#toolbarDemo'
+                    ,defaultToolbar: ['filter', 'exports', 'print', {
+                        title: '提示',
+                        layEvent: 'LAYTABLE_TIPS',
+                        icon: 'layui-icon-tips'
+                    }]
+                    , cols: [
+                        [//表头
+                            {field: 'snum', title: '学号', sort: true, width:'11%', fixed: 'left'}
+                            , {field: 'sname', title: '姓名', style: "color:#009688", width:'8%'}
+                            , {field: 'sex', title: '性别', sort: true, width:'7%'}
+                            , {field: 'phone', title: '联系方式', width:'12%'}
+                            , {field: 'classes', title: '班次', width:'10%'}
+                            , {field: 'examinationtime', title: '考试年份', width:'9%'}
+                            , {field: 'subject', title: '考试科目', width:'14%'}
+                            , {field: 'money', title: '学费',templet:"#mo", width:'9%'}
+                            , {field: 'score', title: '积分', templet: "#jifen", width:'10%'}
+                            , {field: 'money', title: '是否交完', templet: '#cf', width:'12%'}
+                            , {field: 'money', title: '操作',templet: '#et', width:'13%'}
+                            , {field: 'idcard', title: '身份证', hide: true}
+                        ]
+                    ]
+                });
+            });
+            //本周新增
+            $.ajax({
+                type: "get",
+                dataType: "json",
+                url: "/zhongsheng/student/allStudentInfo?status=7",
+                success: function (data) {
+                    $("#on7").append("<span class='layui-badge'>" + data.count + "</span>")
+                },
+                error: function () {
+                    alert("出错啦");
+                }
+            });
+            $("#on7").click(function () {
+                table.render({
+                    elem: '#demo'
+                    , url: '/zhongsheng/student/allStudentInfo?status=7' //数据接口
+                    , page: true //开启分页
+                    , limit: 6//每页多少条数据
+                    , limits: [6, 12, 18]//每页条数的选择项
+                    ,cellMinWidth: 80
+                    ,toolbar: '#toolbarDemo'
+                    ,defaultToolbar: ['filter', 'exports', 'print', {
+                        title: '提示',
+                        layEvent: 'LAYTABLE_TIPS',
+                        icon: 'layui-icon-tips'
+                    }]
+                    , cols: [
+                        [//表头
+                            {field: 'snum', title: '学号', sort: true, width:'11%', fixed: 'left'}
+                            , {field: 'sname', title: '姓名', style: "color:#009688", width:'8%'}
+                            , {field: 'sex', title: '性别', sort: true, width:'7%'}
+                            , {field: 'phone', title: '联系方式', width:'12%'}
+                            , {field: 'classes', title: '班次', width:'10%'}
+                            , {field: 'examinationtime', title: '考试年份', width:'9%'}
+                            , {field: 'subject', title: '考试科目', width:'14%'}
+                            , {field: 'money', title: '学费',templet:"#mo", width:'9%'}
+                            , {field: 'score', title: '积分', templet: "#jifen", width:'10%'}
+                            , {field: 'money', title: '是否交完', templet: '#cf', width:'12%'}
+                            , {field: 'money', title: '操作',templet: '#et', width:'13%'}
+                            , {field: 'idcard', title: '身份证', hide: true}
+                        ]
+                    ]
+                });
+            });
+            //刷新页面
+            $("body").on("click", '.refresh-btn', function () {
+                window.location.reload();
             });
             // 监听搜索操作
             form.on('submit(data-search-btn)', function (data) {
                 //执行重载
                 table.reload('currentTableId', {
-                    where:data.field
+                    where: data.field
                 });
                 return false;
             });
-            /*
-            //监听行单击事件
-            table.on('row(currentTableFilter)', function (obj) {
-                var data = obj.data;
-                console.log(data);
-                var index = layer.open({
-                    title: data.title,
-                    type: 2,
-                    content: "/zhongsheng/student/studentDetails?snum="+data.snum,
-                    area: ['100%', '100%'],
-                });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
-                return false;
-            });*/
-
             //添加用户监听提交
             form.on('submit(userform)', function (data) {
                 var user = data.field;
@@ -126,29 +258,33 @@
             //添加积分监听提交
             form.on('submit(scoreform)', function (data) {
                 var v = data.field;
-                if (v.score != null && "" != v.score) {
-                    $.ajax({
-                        url: "/zhongsheng/student/addScore",
-                        type: "POST",
-                        dataType: "text",
-                        data: v,
-                        success: function (data) {
-                            if (data == 1) {
-                                layer.msg('添加成功！', {icon: 6}, {time: 3000});
-                                // 重置清空
-                                $('#score1')[0].reset();
-                                form.render();//必须写
-                                window.parent.location.reload();//刷新父页面
-                                parent.layer.close(index);//关闭弹出层
+                var a = /^(0|[1-9][0-9]*)$/;
+                if (a.test(v.score) == false  ) {
+                    layer.msg("请输入纯数字", {icon: 6}, {time: 1000});
+                }else{
+                    if (v.score != null && "" != v.score) {
+                        $.ajax({
+                            url: "/zhongsheng/student/addScore",
+                            type: "POST",
+                            dataType: "text",
+                            data: v,
+                            success: function (data) {
+                                if (data == 1) {
+                                    layer.msg('添加成功！', {icon: 6}, {icon: 1000});
+                                    // 重置清空
+                                    $('#score1')[0].reset();
+                                    form.render();//必须写
+                                    window.parent.location.reload();//刷新父页面
+                                    parent.layer.close(index);//关闭弹出层
 
-                            } else {
-                                layer.msg('添加失败！', {icon: 5}, {time: 3000});
+                                } else {
+                                    layer.msg('添加失败！', {icon: 5}, {icon: 1000});
+                                }
                             }
-
-                        }
-                    });
-                } else {
-                    layer.msg('积分不能为空！', {icon: 5}, {time: 1000});
+                        });
+                    } else {
+                        layer.msg('积分不能为空！', {icon: 5}, {time: 1000});
+                    }
                 }
                 return false;
             });
@@ -186,31 +322,32 @@
             form.on('submit(data-search-btn)', function (data) {
                 //执行重载
                 table.reload('demo', {
-                    where:data.field
+                    where: data.field
                 });
                 return false;
             });
+
             //下拉框
             form.on('select(modules)', function (data) {
-                if (data.value==1){
+                if (data.value == 1) {
                     $("#keyword").empty();
                     $("#keyword").append("<input type='text' name='keyword' placeholder='请输入姓名' autocomplete='off' class='layui-input' style='width: 200px'>");
                 }
-                if (data.value==2){
+                if (data.value == 2) {
                     $("#keyword").empty();
-                    var str="<select  style='width: 200px;' name='keyword' class='layui-form-select'>"
+                    var str = "<select  style='width: 200px;' name='keyword' class='layui-form-select'>"
                     $.ajax({
-                        type:"post",
+                        type: "post",
                         url: '/zhongsheng/table/all',
                         contentType: 'application/x-www-form-urlencoded',
-                        data:{"tableName":"classes_dic"},
-                        dataType:"json",
-                        success:function (data) {
-                            str+="<option value='0'>请选择班次</option>";
-                            for (var i=0;i<data.length;i++){
-                                str+="<option value='"+data[i].name+"'>"+data[i].name+"</option>";
+                        data: {"tableName": "classes_dic"},
+                        dataType: "json",
+                        success: function (data) {
+                            str += "<option value='0'>请选择班次</option>";
+                            for (var i = 0; i < data.length; i++) {
+                                str += "<option value='" + data[i].name + "'>" + data[i].name + "</option>";
                             }
-                            str+="</select>";
+                            str += "</select>";
                             $("#keyword").append(str);
                             form.render();
                         }
@@ -222,25 +359,25 @@
                     //年选择器
                     laydate.render({
                         elem: '#textTime'
-                        ,type: 'year'
+                        , type: 'year'
                     });
                     form.render();
                 }
                 if (data.value == 4) {
                     $("#keyword").empty();
-                    var str="<select name='keyword'  style='width: 200px;' class='layui-form-select'>"
+                    var str = "<select name='keyword'  style='width: 200px;' class='layui-form-select'>"
                     $.ajax({
-                        type:"post",
+                        type: "post",
                         url: '/zhongsheng/table/all',
                         contentType: 'application/x-www-form-urlencoded',
-                        data:{"tableName":"subject_dic"},
-                        dataType:"json",
-                        success:function (data) {
-                            str+="<option value='0'>请选择考试科目</option>";
-                            for (var i=0;i<data.length;i++){
-                                str+="<option value='"+data[i].name+"'>"+data[i].name+"</option>";
+                        data: {"tableName": "subject_dic"},
+                        dataType: "json",
+                        success: function (data) {
+                            str += "<option value='0'>请选择考试科目</option>";
+                            for (var i = 0; i < data.length; i++) {
+                                str += "<option value='" + data[i].name + "'>" + data[i].name + "</option>";
                             }
-                            str+="</select>";
+                            str += "</select>";
                             $("#keyword").append(str);
                             form.render();
                         }
@@ -250,14 +387,14 @@
         });
 
 
-        function openModak(){
-            layui.use(['layer'],function () {
-                var layer = layui.layer,$=layui.$;
+        function openModak() {
+            layui.use(['layer'], function () {
+                var layer = layui.layer, $ = layui.$;
                 layer.open({
-                    type:1,//类型
-                    area:['500px','350px'],//定义宽和高
-                    title:'添加用户',//题目
-                    shadeClose:false,//点击遮罩层关闭
+                    type: 1,//类型
+                    area: ['500px', '350px'],//定义宽和高
+                    title: '添加用户',//题目
+                    shadeClose: false,//点击遮罩层关闭
                     content: $('#motaikunag')//打开的内容
                 });
             })
@@ -312,12 +449,15 @@
 </head>
 
 <script type="text/html" id="cf">
-    {{#  if(d.money >= d.jiaofeijine){ }}
-    <a onclick='openAddMoney("{{d.snum}}","{{d.sname}}","{{d.sex}}","{{d.idcard}}","{{d.phone}}");'
-       style="color:#c23450;">待补款[+]</a>
-    {{#  } else { }}
+    {{#  if(d.jiaofeijine >= d.money){ }}
     <span style="color: #35bdae">已交完</span>
+    {{#  } else { }}
+    <a onclick='openAddMoney("{{d.snum}}","{{d.sname}}","{{d.sex}}","{{d.idcard}}","{{d.phone}}");'
+       style="color:#c23450;">待补款[{{d.weijiaokuan}}元]</a>
     {{#  } }}
+</script>
+<script type="text/html" id="mo">
+    <span>{{d.money}}元</span>
 </script>
 <script type="text/html" id="time">
     {{layui.util.toDateString(d.signedTime,'yyyy')}}
@@ -358,20 +498,31 @@
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class="active"><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
-                        <li  class=""><a th:href="@{/student/toAddStudent}">添加学生信息</a></li>
+                        <li class="active"><a th:href="@{/student/toAllStudent}">学生信息</a></li>
+                        <li class=""><a th:href="@{/student/toAddStudent}">添加信息</a></li>
                     </ul>
                 </li>
-
-                <li class="" id="userLi" shiro:hasPermission=="user:list">
+                <span hidden th:value="${session.user.whoid}" id="whoid"></span>
+                <li class="" id="userLi">
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">用户管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li  class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
-                        <li  class=""><a onclick="openModak();">添加用户</a></li>
+                        <li class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
+                        <li class=""><a onclick="openModak();">添加用户</a></li>
                     </ul>
                 </li>
-
+                <li class="">
+                    <a th:href="@{/bill/toAllBill}"><i class="fa fa-table"></i> <span class="nav-label">收入统计</span><span
+                            class="fa arrow"></span></a>
+                </li>
+                <li class="">
+                    <a href=""><i class="fa fa-table"></i> <span class="nav-label">积分管理</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class=""><a th:href="@{/ScoreCotroller/toScore}">积分信息</a></li>
+                        <li class=""><a onclick="openModak();">添加奖品</a></li>
+                    </ul>
+                </li>
             </ul>
 
         </div>
@@ -414,28 +565,42 @@
 
             </div>
         </div>
-
-
         <div class="wrapper wrapper-content animated fadeInRight">
 
             <!--搜索框-->
             <div class="row layui-form-item">
-                <form class="layui-form layui-form-pane" style="margin-left: 15px;">
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <form class="layui-form layui-form-pane">
                     <div class="layui-form-item" id="search">
-                            <div class="layui-input-inline">
-                                <select name="modules"  lay-filter="modules" class="layui-form-select">
-                                    <option value="1">按姓名</option>
-                                    <option value="2">按班次</option>
-                                    <option value="3">按考试年份</option>
-                                    <option value="4">按考试科目</option>
-                                </select>
-                            </div>
+                        <div class="layui-input-inline">
+                            <select name="modules" lay-filter="modules" class="layui-form-select">
+                                <option value="1">按姓名</option>
+                                <option value="2">按班次</option>
+                                <option value="3">按考试年份</option>
+                                <option value="4">按考试科目</option>
+                            </select>
+                        </div>
                         <div class="layui-inline" id="keyword">
-                            <input type="text" name='keyword'  placeholder="请输入姓名" autocomplete="off" class="layui-input" style="width: 300px">
+                            <input type="text" name='keyword' placeholder="请输入姓名" autocomplete="off" class="layui-input"
+                                   style="width: 300px">
                         </div>
                         <div class="layui-inline">
                             <button class="layui-btn layui-btn-primary" lay-submit
                                     lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
+                            </button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="button" class="layui-btn refresh-btn">
+                                <i class="layui-icon layui-icon-refresh"></i> 刷新
                             </button>
                         </div>
                     </div>
@@ -445,21 +610,29 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ibox ">
-                        <div class="ibox-title">
+                        <div class="ibox-title"  id="toolbarDemo">
                             <h5>学生基本信息</h5>
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up" style="padding-top: 5px;"></i>
-                                </a>
-                                <a class="close-link" style="padding-top: 5px;">
-                                    <i class="fa fa-times"></i>
-                                </a>
-                            </div>
                         </div>
-                        <div class="ibox-content">
-
+                        <div class="ibox-content" >
+                            <div class="layui-card" id="card">
+                                <div class="layui-card-header"><i class="fa fa-bullhorn icon icon-tip"></i>分类</div>
+                                <div class="layui-card-body layui-text">
+                                    <br>
+                                    <div class="layuimini-notice">
+                                        <div class="layuimini-notice-title"><a href="javascript:;" id="on5">今天新增</a></div>
+                                    </div>
+                                    <br>
+                                    <div class="layuimini-notice">
+                                        <div class="layuimini-notice-title"><a href="javascript:;" id="on6">本周新增</a></div>
+                                    </div>
+                                    <br>
+                                    <div class="layuimini-notice">
+                                        <div class="layuimini-notice-title"><a href="javascript:;" id="on7">本月新增</a></div>
+                                    </div>
+                                </div>
+                            </div>
                             <div id="tab">
-                                <table id="demo"  class="layui-tab"  lay-filter="currentTableFilter"></table>
+                                <table id="demo" class="layui-tab" lay-filter="currentTableFilter"></table>
                             </div>
                         </div>
                     </div>

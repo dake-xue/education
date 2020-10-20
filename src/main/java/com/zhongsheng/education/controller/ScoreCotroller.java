@@ -27,15 +27,17 @@ public class ScoreCotroller {
 
     //添加兑换
     @RequestMapping("/addScore")
-    public Integer addScore(Score score) {
-        Integer i = scoreService.addScore(score);
+    @ResponseBody
+    public Integer addScore(String name,Integer score) {
+        Integer i = scoreService.addScore(name,score);
         return i;
     }
 
     //下架
     @RequestMapping("/deleteScore")
-    public Integer deleteScore(Integer id,Integer status) {
-        Integer integer = scoreService.deleteScore(id,status);
+    @ResponseBody
+    public Integer deleteScore(Integer id) {
+        Integer integer = scoreService.deleteScore(id);
         return integer;
     }
 
@@ -43,6 +45,7 @@ public class ScoreCotroller {
 
     //修改兑换
     @RequestMapping("/updateScore")
+    @ResponseBody
     public Integer updateScore(Integer id, String name, Integer score) {
         Integer integer = scoreService.updateScore(id, name, score);
         return integer;

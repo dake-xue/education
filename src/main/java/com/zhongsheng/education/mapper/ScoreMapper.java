@@ -10,14 +10,14 @@ import java.util.List;
 
 @Mapper
 public interface ScoreMapper {
-    @Select("select * from score")
+    @Select("select * from score where status=1")
     public List<Score> selectScore();
 
-    @Insert("insert into score values(#{name},#{score})")
-    public Integer addScore(Score score);
+    @Insert("insert into score(name,score) values(#{name},#{score})")
+    public Integer addScore(String name,Integer score);
 
-    @Update("update score set status=#{status} where id=#{id}")
-    public Integer deleteScore(Integer id,Integer status);
+    @Update("update score set status=0 where id=#{id}")
+    public Integer deleteScore(Integer id);
 
     @Update("update score set name=#{name},score=#{score} where id=#{id}")
     public Integer updateScore(Integer id, String name, Integer score);
