@@ -1,6 +1,7 @@
 package com.zhongsheng.education.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.zhongsheng.EducationApplication;
 import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.mapper.StudentMapper;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
@@ -8,14 +9,22 @@ import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
 import com.zhongsheng.education.util.MyUtil;
 import com.zhongsheng.education.util.UrlUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
 @Transactional
 @Service
 public class StudentServiceImpl implements StudentService {
+
+    private static final Logger log = LoggerFactory.getLogger(EducationApplication.class);
 
     @Autowired
     private StudentMapper studentMapper;
@@ -27,6 +36,9 @@ public class StudentServiceImpl implements StudentService {
     private SchoolService schoolService;
     @Autowired
     private BillService billService;
+
+    @Autowired
+    private  UserService userService;
 
     @Autowired
     private TableDicService  tableDicService;
@@ -95,8 +107,32 @@ public class StudentServiceImpl implements StudentService {
     //添加学生
     @Override
     public int addStudentInfo(Student student, String name) {
+        //省份
+        String str = String.format("%02d", student.getArea());
+        //校区
+        CampusDic cnum=studentMapper.selectCNumber(student.getCampusid());
+        //年份后两位
+        String year = new SimpleDateFormat("yy", Locale.CHINESE).format(new Date());
+        String num="0001";
+        Integer in=studentMapper.selectXuHao(student.getCampusid());
+        Integer n=1;
+        if (in!=null && !" ".equals(in)){
+            n=in+1;
+            num=String.format("%04d",n);
+        }
+        //拼接学生id  （省份+校区+年份+序号）
+        StringBuffer sr = new StringBuffer();
+        sr.append(str);
+        sr.append(cnum.getCnum());
+        sr.append(year);
+        sr.append(num);
+        String string=sr.toString();
+
+        student.setSnum(string);
+        student.setNumber(n);
+        student.setCampus(cnum.getName());
+
         int i = studentMapper.addStudentInfo(student);
-        System.out.println(student.getSnum()+"***************");
         student.getSchoolInfo().setSnum(student.getSnum());
         student.getFamilyInfo().setSnum(student.getSnum());
         //添加联系人
@@ -110,6 +146,14 @@ public class StudentServiceImpl implements StudentService {
         student.getBill().setSnum(student.getSnum());
         //插入票据表
         billService.addBillInfo(student.getBill());
+        //插入用户表
+        User user = new User();
+        user.setName(student.getSname());
+        user.setUsername(student.getPhone());
+        user.setPassword(student.getPhone().substring(student.getPhone().length() - 6));
+        user.setRoleid(3);
+        userService.addUser(user);
+        log.info("添加用户完成。。。");
         return i;
     }
 
@@ -166,6 +210,11 @@ public class StudentServiceImpl implements StudentService {
         tableDic.setTableName("campus_dic");
         student.setCampus(tableDicService.searchOne(tableDic).getName());
         return studentMapper.updateStudent(student);
+    }
+
+    @Override
+    public Integer updateStatus(Student student) {
+        return studentMapper.updateStatus(student);
     }
 
 }

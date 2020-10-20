@@ -24,4 +24,5 @@ public interface StudentService {
     Integer selectXuHao(Integer id);
     public Integer changeScore(String snum,Integer score);
     Integer updateStudent(Student student);
+    Integer updateStatus(Student student);
 }

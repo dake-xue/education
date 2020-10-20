@@ -42,7 +42,7 @@
                         {field: 'uid', title: 'id', sort: true, fixed: 'left'}
                         , {field: 'name', title: '姓名' ,style:"color:#009688"}
                         , {field: 'username', title: '用户名', sort: true}
-                        , {field: 'whoid', title: '权限',templet: '#qx'}
+                        , {field: 'rolename', title: '角色'}
                         , {field: 'status', title: '状态',templet: '#zt'}
                         , {field: '', title: '操作',templet: '#dg'}
                      ]
@@ -92,7 +92,7 @@
         });
 
 
-        function openModak(){
+        function openModak(id){
             layui.use(['layer'],function () {
                 var layer = layui.layer,$=layui.$;
                 layer.open({
@@ -100,19 +100,46 @@
                     area:['500px','350px'],//定义宽和高
                     title:'添加用户',//题目
                     shadeClose:false,//点击遮罩层关闭
-                    content: $('#motaikunag')//打开的内容
+                    content: $('#'+id)//打开的内容
                 });
             })
         }
+
+        function disable(uid,name,status){
+            layer.open({
+                content: '是否操作：'+name+'用户？'
+                ,btn: ['确认', '取消']
+                ,yes: function(){
+                    //按钮【确认】的回调
+                    $.ajax({
+                        url: "/zhongsheng/user/updStatus",
+                        type: "POST",
+                        data:{"uid":uid,"status":status},
+                        dataType: "text",
+                        success: function (data) {
+                            if (data == "yes") {
+                                $(".layui-laypage-btn")[0].click();
+                                layer.msg('操作成功！', {icon: 6}, {time: 1000});
+                            } else {
+                                layer.msg('操作失败！', {icon: 5}, {time: 1000});
+                            }
+
+                        }
+                    });
+                }
+                ,btn2: function(){
+                    //按钮【取消】的回调
+                    //return false 开启该代码可禁止点击该按钮关闭
+                },cancel: function(){
+                    //右上角关闭回调
+                    //return false 开启该代码可禁止点击该按钮关闭
+                }
+            });
+
+
+        }
     </script>
 
-    <script type="text/html" id="qx">
-        {{#  if(d.whoid == 1){ }}
-        <span style="font-weight: bold;">管理员</span>
-        {{#  } else { }}
-        <span style="font-weight: bold;">学生</span>
-        {{#  } }}
-    </script>
     <script type="text/html" id="zt">
         {{#  if(d.status == 0){ }}
         <span style="color: #15bc0c;font-weight: bold;">正常</span>
@@ -121,7 +148,12 @@
         {{#  } }}
     </script>
     <script type="text/html" id="dg">
-        <a class="layui-btn layui-btn-sm layui-btn-danger" style="color: white">禁用</a>
+        {{#  if(d.status == 0){ }}
+        <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="disable('{{d.uid}}','{{d.name}}',1);" style="color: white">禁用</a>
+        {{#  } else { }}
+        <a class="layui-btn-sm layui-btn layui-btn-normal" onclick="disable('{{d.uid}}','{{d.name}}',0);" style="color: white">解禁</a>
+        {{#  } }}
+        <a class="layui-btn layui-btn-sm" onclick="openModak('role')" style="color: white">赋权</a>
     </script>
 </head>
 
@@ -156,7 +188,7 @@
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class="active"><a th:href="@{/user/toAllUser}">用户信息</a></li>
-                        <li  class=""><a onclick="openModak();">添加用户</a></li>
+                        <li  class=""><a onclick="openModak('add');">添加用户</a></li>
                     </ul>
                 </li>
 
@@ -258,12 +290,58 @@
     </div>
 </div>
 
+<!--模仿bootstrap的模态框-->
+<div id="role" style="display: none;text-align: center;">
+    <form class="layui-form" id="form2" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-inline">
+                    <input name="name" class="layui-input" type="text" placeholder="姓名" lay-verify="required"/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input name="username" class="layui-input" type="text" placeholder="电话号码" maxlength="11" lay-verify="phone"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">权限</label>
+                <div class="layui-input-inline selectWd">
+                    <select name="whoid" lay-verify="required">
+                        <option value="1">管理员</option>
+                        <option value="2">用户</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-inline" style="margin-top: 10%;">
+
+            <div class="layui-input-inline">
+                <button class="layui-btn" lay-submit lay-filter="userform">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+
+        </div>
+
+        <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+    </form>
+</div>
+
 </body>
 
 </html>
 
 <!--模仿bootstrap的模态框-->
-<div id="motaikunag" style="display: none;text-align: center;">
+<div id="add" style="display: none;text-align: center;">
     <form class="layui-form" id="form1" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
 
         <div class="layui-form-item">

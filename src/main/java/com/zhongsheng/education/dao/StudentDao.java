@@ -3,7 +3,7 @@ package com.zhongsheng.education.dao;
 public class StudentDao {
 
     public String selectAllStudent(String keyword, Integer modules,Integer page,Integer limit) {
-        StringBuffer sql = new StringBuffer("select * from student where 1=1 ");
+        StringBuffer sql = new StringBuffer("select * from student where 1=1 and status <> 0");
         //姓名
         if (modules!=null && modules.equals(1) && !"".equals(keyword) && keyword!="") {
             sql.append(" and  sname like '%" + keyword + "%'");

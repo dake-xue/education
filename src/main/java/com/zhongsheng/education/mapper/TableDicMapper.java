@@ -1,10 +1,7 @@
 package com.zhongsheng.education.mapper;
 
 import com.zhongsheng.education.entiy.TableDic;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -21,11 +18,17 @@ public interface TableDicMapper {
     Integer update(TableDic tableDic);
 
     @Insert("insert into ${tableName} (name) values (#{name})")
+    @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     Integer add(TableDic tableDic);
+
+    @Delete("delete from ${tableName} WHERE id = #{id}")
+    Integer delete(TableDic tableDic);
 
     @Select("select * from campus_dic where name=#{campus}")
     TableDic selectCampusId(String campus);
 
     @Select("select * from training_school_dic where campus_id=#{id}")
     List<TableDic> campusSelectSchool(Integer id);
+
+
 }

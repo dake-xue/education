@@ -90,7 +90,16 @@ public class Student {
     private Integer number;
     //学号
     private String snum;
+    //状态
+    private Integer status;
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public String getSnum() {
         return snum;
@@ -455,6 +464,7 @@ public class Student {
                 ", bill=" + bill +
                 ", number=" + number +
                 ", snum='" + snum + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

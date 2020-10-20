@@ -1,6 +1,7 @@
 package com.zhongsheng.education.service;
 
 
+import com.zhongsheng.education.entiy.RoleVo;
 import com.zhongsheng.education.entiy.TableDic;
 
 
@@ -15,8 +16,12 @@ public interface TableDicService{
     Integer update(TableDic tableDic);
 
     Integer add(TableDic tableDic);
+
+    Integer delete(TableDic tableDic);
+
     TableDic selectCampusId(String campus);
+
     List<TableDic> campusSelectSchool(Integer id);
 
-
+    Integer addRole(RoleVo roleVo);
 }

@@ -6,10 +6,27 @@ public class User {
     private String name;
     private String username;
     private String password;
-    private int whoid;
+    private String rolename;
+    private int roleid;
     private int status;
 
+    private String newPassword;
 
+    public int getRoleid() {
+        return roleid;
+    }
+
+    public void setRoleid(int roleid) {
+        this.roleid = roleid;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
 
     public int getUid() {
         return uid;
@@ -35,13 +52,6 @@ public class User {
         this.password = password;
     }
 
-    public int getWhoid() {
-        return whoid;
-    }
-
-    public void setWhoid(int whoid) {
-        this.whoid = whoid;
-    }
 
     public String getName() {
         return name;
@@ -59,15 +69,25 @@ public class User {
         this.status = status;
     }
 
+    public String getRolename() {
+        return rolename;
+    }
+
+    public void setRolename(String rolename) {
+        this.rolename = rolename;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "uid=" + uid +
                 ", name='" + name + '\'' +
-                ", username=" + username +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", whoid=" + whoid +
+                ", rolename='" + rolename + '\'' +
+                ", roleid=" + roleid +
                 ", status=" + status +
+                ", newPassword='" + newPassword + '\'' +
                 '}';
     }
 }

@@ -35,7 +35,6 @@ public class Reader {
         String m=   String.valueOf(student.getBill().getPaymentAmount());
         //金额转换中文
       String result=ConvertUpMoney.toChinese(m);
-                System.out.println(result+"=resultresultresultresultresultresult");
         //1 准备要填充的数据
         Map paraMap = new HashMap();
         paraMap.put("Text1", student.getSname());
@@ -87,10 +86,8 @@ public class Reader {
             s.addSubstitutionFont(bf);
 //6遍历pdf表单表格，同时给表格赋值
             Map fieldMap = s.getFields();
-            System.out.println(fieldMap.toString());
 
             Set set = fieldMap.entrySet();
-            System.out.println(set.toString());
 
             Iterator iterator = set.iterator();
 
@@ -99,7 +96,6 @@ public class Reader {
                 Entry entry = (Entry) iterator.next();
 
                 String key = (String) entry.getKey();
-                System.out.println(key);
                 if (paraMap.get(key) != null) {
 
                     // s.setField(key, ""+paraMap.get(key.toUpperCase()));

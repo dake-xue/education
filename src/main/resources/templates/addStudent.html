@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 
 <head>
 
@@ -255,12 +256,6 @@
             })
         }
 
-        $(function () {
-            var whoid = $("#whoid").attr("value");
-            if(whoid!=0){
-                $("#userLi").remove();
-            }
-        });
     </script>
 
 </head>
@@ -289,16 +284,14 @@
                 </li>
 
                 <li class="active">
-                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">管理</span><span
+                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
                         <li class="active"><a th:href="@{/student/toAddStudent}">添加学生信息</a></li>
                     </ul>
                 </li>
-
-                <span hidden th:value="${session.user.whoid}" id="whoid"></span>
-                <li class="" id="userLi" >
+                <li shiro:hasPermission=="user:list" >
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">用户管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">

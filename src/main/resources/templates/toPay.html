@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>支付页面</title>
+		<!-- Mainly scripts -->
+		<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+		<script th:src="@{/layui/layui.js}"></script>
+
+		<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+		<link th:href="@{/css/style.css}" rel="stylesheet">
+		<link th:href="@{/layui/layui.css}" rel="stylesheet">
+		<style>
+		.new-btn-login {
+			background-color: #02aaf1;
+			color: #FFFFFF;
+			font-weight: bold;
+			border: none;
+			width: 80%;
+			height: 30px;
+			border-radius: 5px;
+			font-size: 16px;
+			text-align: center;
+		}
+
+        .layui-input-inline .layui-input-inline {
+            width: 75%;
+        }
+        .layui-input,.layui-unselect,.layui-select-title {
+            width: 100%;
+        }
+        .layui-input-inline{
+            width: 100%;
+        }
+        .layui-form-label{
+            width: 24%;
+            font-weight: bold;
+        }
+        .moren{
+            border-color:#D2D2D2;
+        }
+        .hong{
+            border-color:#ff0000;
+        }
+        .layui-input-block{
+            margin-left: 21%;
+        }
+        .bod{
+        	height: 100%;
+        }
+        .mydiv{
+        	padding: 0% 5%;
+        	height: 100%;
+        	width: 100%;
+        	margin: 0;
+        	text-align: center;
+        }
+        .layui-form{
+        	margin: 0 auto;
+        }
+        .btom{
+        	text-align: center;
+        	margin-top: 50%;
+        }
+        .form{
+        	padding-top: 3%;
+        }
+        .layui-input{
+            border-bottom: 1px solid;
+		    border-left: 0;
+		    border-right: 0;
+		    border-top: 0;
+		    border-radius: 0;
+		    border-color:#e6e6e6;
+		    
+		}
+		</style>
+		<script  th:src="@{layui/layui.js}"></script>
+
+		
+	</head>
+
+	<body>
+
+		<div class="bod">
+
+			<div class="row white-bg mydiv">
+
+				<form class="layui-form form" th:action="@{/alipay/toPay}">
+					<input  hidden name="sNum" th:value="${sNum}">
+					<h2 style="font-weight: bold">订单信息</h2>
+					<hr>
+					<div class="layui-input-inline">
+						<label class="layui-form-label important">订单号 </label>
+						<div class="layui-input-inline">
+							<input readonly type="text" name="order_number" th:value="${OrderName}"  class="layui-input">
+						</div>
+					</div>
+
+					<div class="layui-input-inline">
+						<label class="layui-form-label important" style="white-space:nowrap!important;">订单名称</label>
+						<div class="layui-input-inline">
+							<input readonly name="goods_name" class="layui-input" th:value="${subject}" type="text" />
+						</div>
+					</div>
+
+					<div class="layui-input-inline">
+						<label class="layui-form-label important" style="white-space:nowrap!important;">付款金额</label>
+						<div class="layui-input-inline">
+							<input readonly type="text" name="price" th:value="${price}" class="layui-input">
+						</div>
+					</div>
+					
+					<div class="layui-input-inline btom">
+						<button class="new-btn-login" lay-submit lay-filter="formDemo">付 款</button>
+					</div>
+				</form>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

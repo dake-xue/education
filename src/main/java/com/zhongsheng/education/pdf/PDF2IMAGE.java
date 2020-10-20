@@ -1,20 +1,23 @@
 package com.zhongsheng.education.pdf;
 
 import com.itextpdf.text.pdf.PdfReader;
+import com.zhongsheng.education.config.ShiroConfig;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class PDF2IMAGE {
-
+    private static final Logger logger = LoggerFactory.getLogger(PDF2IMAGE.class);
     /***
      * PDF文件转PNG图片，全部页数
      *
      * @param PdfFilePath pdf完整路径
-     * @param imgFilePath 图片存放的文件夹
      * @param dpi dpi越大转换后越清晰，相对转换速度越慢
      * @return
      */
@@ -47,9 +50,9 @@ public class PDF2IMAGE {
                     BufferedImage image = renderer.renderImageWithDPI(i, dpi);
                     ImageIO.write(image, "png", dstFile);
                 }
-                System.out.println("PDF文档转PNG图片成功！");
+                logger.info("PDF文档转PNG图片成功！");
             } else {
-                System.out.println("PDF文档转PNG图片失败：" + "创建" + imgFolderPath + "失败");
+                logger.info("PDF文档转PNG图片失败：" + "创建" + imgFolderPath + "失败");
             }
         } catch (IOException e) {
             e.printStackTrace();

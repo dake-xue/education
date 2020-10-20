@@ -29,8 +29,14 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/user/toAllUser").setViewName("allUser");
         //跳转积分管理页面
         registry.addViewController("/ScoreCotroller/toScore").setViewName("allScore");
-        //跳转学生详情页面
-        //registry.addViewController("/student/toStudentDetails").setViewName("studentDetails");
+        //跳转修改密码页面
+        registry.addViewController("/user/toUpdatePass").setViewName("updPass");
+        //跳转没有权限访问页面
+        registry.addViewController("/unauthorized").setViewName("404");
+        //跳转添加学生信息页
+        registry.addViewController("/toAdd").setViewName("newAdd");
+        //跳转角色页面
+        registry.addViewController("/user/toRole").setViewName("allRole");
     }
 
     /**
@@ -40,16 +46,16 @@ public class WebConfig implements WebMvcConfigurer {
      * @创建时间 2020/9/24
      * @描述 添加拦截器
     */
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    //@Override
+    //public void addInterceptors(InterceptorRegistry registry) {
         //添加拦截器，registry.addInterceptor(new LoginHandlerInterceptor())
         //处理拦截那些东西.addPathPatterns("/**")
         //排除那些请求 excludePatterns()
-        registry.addInterceptor(new LoginHandIterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/static/**","/user/**",
-                        "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg",
-                        "/**/*.jpeg", "/**/*.gif", "/**/fonts/*");
-    }
+        //registry.addInterceptor(new LoginHandIterceptor()).addPathPatterns("/**")
+                //.excludePathPatterns("/static/**","/user/**",
+                        //"/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg",
+                        //"/**/*.jpeg", "/**/*.gif", "/**/fonts/*");
+    //}
 
 
 

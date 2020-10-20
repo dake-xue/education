@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+	<title>修改密码</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--图标-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}" />
+	<!--布局框架-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<!--主要样式-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+	<!--layui-->
+	<link rel="stylesheet" type="text/css" th:href="@{/layui/layui.css}" />
+	<!--jq-->
+	<script type="text/javascript" th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/layui/layui.js}"></script>
+	<script>
+		
+		$(function(){
+			
+			$("#sub").click(function(){
+				
+			});
+			
+		});
+
+		layui.use('form', function(){
+			var form = layui.form;
+
+			form.verify({
+				chinese: function (value, item) { //value：表单的值、item：表单的DOM对象
+					if (!new RegExp("^[\u4e00-\u9fa5\]+$").test(value)) {
+						return '只能是中文';
+					}
+				}
+				,pass: [
+					/^[\S]{6,12}$/
+					,'密码最少六位'
+				]
+				,cn:[
+					/^([\w\u4E00-\u9FA5_\-.]+)+$/
+					,'不能包含特殊字符'
+				]
+			});
+
+			//监听提交
+			form.on('submit(from)', function(data){
+				user = data.field;
+				$.ajax({
+					url:'/zhongsheng/user/updPass',
+					type:"POST",
+					dataType: "text",
+					contentType: "application/x-www-form-urlencoded",
+					data:user,
+					success: function(data){
+						if(data=="no"){
+							$("#msg").show();
+						}else {
+							$("#msg").hide();
+							layer.open({
+								content: '密码修改成功'
+								,btn: ['确定', '取消']
+								,icon: 1
+								,yes: function(){
+									//确定的回调
+									window.location.href="zhongsheng/user/toLogin";
+								}
+								,btn2: function(){
+									//取消的回调
+									//return false 开启该代码可禁止点击该按钮关闭
+								}
+
+								,cancel: function(){
+									//右上角关闭回调
+//                return false //开启该代码可禁止点击该按钮关闭
+								}
+							});
+						}
+					}
+				});
+				return false;
+			});
+		});
+
+
+	</script>
+</head>
+
+<body>
+
+<div class="login" style="background:linear-gradient(135deg,#4158d0,#c850c0);">
+	<!--<div class="top">
+		
+	</div>-->
+	
+	<div class="container-login100">
+	
+		<div class="wrap-login100">
+			<div class="login100-pic js-tilt" data-tilt>
+				<img th:src="@{/img/img-01.png}" alt="IMG">&nbsp;&nbsp;&nbsp;
+			</div>
+
+			<form class="login100-form validate-form layui-form" >
+				
+				<span class="login100-form-title">
+					&nbsp;&nbsp;<img th:src="@{/img/logo.png}"  height="60px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</span>
+
+				<div class="wrap-input100 validate-input">
+					<input type="text" name="username" required  
+						lay-verify="required" placeholder="账号" autocomplete="off" class="input100">
+
+
+					<span class="focus-input100"></span>
+					<span class="symbol-input100">
+						<i class="fa fa-envelope" aria-hidden="true"></i>
+					</span>
+				</div>
+
+				<div class="wrap-input100 validate-input">
+					<input type="password" name="password" required  
+						lay-verify="pass" placeholder="旧密码" autocomplete="off" class="input100">
+					<span class="focus-input100"></span>
+					<span class="symbol-input100">
+						<i class="fa fa-lock" aria-hidden="true"></i>
+					</span>
+				</div>
+				<div style="text-align: center;color: red;margin-bottom: 2%;display: none;" id="msg">
+					<i class="layui-icon layui-icon-tips">账号或密码错误！</i>
+				</div>
+				<div class="wrap-input100 validate-input">
+					<input type="password" name="newPassword" required
+						lay-verify="pass|cn" placeholder="新密码" autocomplete="off" class="input100">
+					<span class="focus-input100"></span>
+					<span class="symbol-input100">
+						<i class="fa fa-lock" aria-hidden="true"></i>
+					</span>
+					
+				</div>
+				
+				<div class="container-login100-form-btn">
+					<button class="login100-form-btn" lay-submit lay-filter="from">提交</button>
+				</div>
+
+				<div class="text-center p-t-12">
+					<a class="txt2" th:href="@{/user/toLogin}">
+						立即登录
+					</a>
+				</div>
+
+				<div class="text-center p-t-136">
+					
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

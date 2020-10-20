@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.zhongsheng.education.entiy.Student;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,5 +40,20 @@ public class MyUtil {
         String lastString = String.copyValueOf(ch, index + 1, ch.length - index - 1);
 
         return lastString;
+    }
+
+    public static String getOrderName() {
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String string =  sdf.format(d).toString();
+        //(数据类型)(最小值+Math.random()*(最大值-最小值+1))
+        String str = (int)(0+Math.random()*(10000-0+1))+"";
+        return string+str;
+    }
+
+    public static String getNowDate() {
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(d);
     }
 }

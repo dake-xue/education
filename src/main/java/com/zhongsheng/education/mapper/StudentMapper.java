@@ -56,4 +56,7 @@ public interface StudentMapper {
 
     @Update("update student set score=score-#{scope} where snum=#{snum}")
     public Integer changeScore(String snum, Integer score);
+
+    @Update("update student set status=#{status} where snum=#{snum}")
+    Integer updateStatus(Student student);
 }

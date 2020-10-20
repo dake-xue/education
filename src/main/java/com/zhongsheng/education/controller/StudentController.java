@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -92,38 +93,17 @@ public class StudentController {
     };
 
     //添加学生
-    @RequestMapping("/addStudent")
-    @ResponseBody
-    public String addStudent(Student student,HttpSession session) throws Exception {
-        User user=(User) session.getAttribute("user");
-        //省份
-        String str = String.format("%02d", student.getArea());
-        System.out.println(str+"===========================str");
-        //校区
-        CampusDic cnum=studentService.selectCNumber(student.getCampusid());
-        //年份后两位
-        String year = new SimpleDateFormat("yy", Locale.CHINESE).format(new Date());
-        String num="0001";
-        Integer in=studentService.selectXuHao(student.getCampusid());
-        Integer n=1;
-        if (in!=null && !" ".equals(in)){
-             n=in+1;
-             num=String.format("%04d",n);
+    @RequestMapping(value = "/addStudent",method = RequestMethod.POST )
+    public String addStudent(Student student,Model model) throws Exception {
+        int i = studentService.addStudentInfo(student,student.getCampusmanager());
+        if(i!=0){
+            model.addAttribute("subject",student.getIntentionmajor()+"："+student.getClasses());
+            model.addAttribute("price",student.getMoney());
+            model.addAttribute("OrderName",MyUtil.getOrderName());
+            model.addAttribute("sNum",student.getSnum());
+            return "toPay";
         }
-        //拼接学生id  （省份+校区+年份+序号）
-        StringBuffer sr = new StringBuffer();
-        sr.append(str);
-        sr.append(cnum.getCnum());
-        sr.append(year);
-        sr.append(num);
-        String s=sr.toString();
-
-        student.setSnum(s);
-        student.setNumber(n);
-        student.setCampus(cnum.getName());
-        int i = studentService.addStudentInfo(student,user.getName());
-
-        return i+"";
+        return "error";
     }
 
 
@@ -132,10 +112,7 @@ public class StudentController {
     @ResponseBody
     public Integer addBill(String snum, Integer paymentAmount, String remarks, HttpSession session) {
         User user=(User)session.getAttribute("user");
-        System.out.println(snum+paymentAmount+remarks);
         Student student1 = studentService.selectStudentOne(snum);
-        System.out.println(student1);
-        System.out.println("=============="+student1.getBill());
         Bill bill=new Bill();
         bill.setSnum(snum);
         bill.setPaymentAmount(paymentAmount);
@@ -192,7 +169,6 @@ public class StudentController {
     @RequestMapping("/updateStudent")
     @ResponseBody
     public String updateStudent(Student student){
-        System.out.println("******"+student);
         int i = studentService.updateStudent(student);
         if (i==1){
             return "yes";
