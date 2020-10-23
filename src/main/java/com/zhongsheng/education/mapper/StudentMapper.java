@@ -15,6 +15,9 @@ public interface StudentMapper {
     @Select("select * from student where snum=#{snum}")
     public Student selectStudent(String snum);
 
+    @Select("select * from student where sname=#{sname} and phone=#{phone}")
+    public Student selectStudentBySnameAndIphone(Student student);
+
     @Select("select * from performance  where snum=#{snum}")
     public  List<Performance> selectPer(String snum);
 
@@ -22,21 +25,16 @@ public interface StudentMapper {
     public  List<Bill> selectJiaoFeiJinE(String snum);
 
     @SelectProvider(type = StudentDao.class, method = "selectAllStudent")
-    public List<Student> selectAllStudent(Integer modules, String keyword,Integer status, Integer page, Integer limit);
+    public List<Student> selectAllStudent(SearchVo searchVo, Integer page, Integer limit);
 
 
     @Update("update student set score=score+#{scope} where snum=#{snum}")
     public Integer addScore(String snum, Integer scope);
 
-    //河北
-    @Insert("insert into hebeistudent(snum,campus,schoolname,sname,sex,major,phone,classes,money,signupdate,addmoneydate,paymethod,intentionmajor,publiccours,majorcours,campusmanager,campusagent,onlinenumber,offlinenumber,job,homeaddress,idcard,birthday,nation,remarks,examinationtime,admissiontime,subject,department,grade,campusid,number,schoolid) values(#{snum},#{campus},#{schoolname},#{sname},#{sex},#{major},#{phone},#{classes},#{money},#{signupdate},#{addmoneydate},#{paymethod},#{intentionmajor},#{publiccours},#{majorcours},#{campusmanager},#{campusagent},#{onlinenumber},#{offlinenumber},#{job},#{homeaddress},#{idcard},#{birthday},#{nation},#{remarks},#{examinationtime},#{admissiontime},#{subject},#{department},#{grade},#{campusid},#{number},#{schoolid})")
+
+    @Insert("insert into student(snum,campus,schoolname,sname,sex,major,phone,classes,money,signupdate,addmoneydate,paymethod,intentionmajor,publiccours,majorcours,campusmanager,campusagent,onlinenumber,offlinenumber,job,homeaddress,idcard,birthday,nation,remarks,examinationtime,admissiontime,subject,department,grade,campusid,number,schoolid,area,jiaofeijine) values(#{snum},#{campus},#{schoolname},#{sname},#{sex},#{major},#{phone},#{classes},#{money},#{signupdate},#{addmoneydate},#{paymethod},#{intentionmajor},#{publiccours},#{majorcours},#{campusmanager},#{campusagent},#{onlinenumber},#{offlinenumber},#{job},#{homeaddress},#{idcard},#{birthday},#{nation},#{remarks},#{examinationtime},#{admissiontime},#{subject},#{department},#{grade},#{campusid},#{number},#{schoolid},#{area},#{jiaofeijine})")
     public Integer addStudentInfo(Student student);
-    //河南
-    @Insert("insert into student(snum,campus,schoolname,sname,sex,major,phone,classes,money,signupdate,addmoneydate,paymethod,intentionmajor,publiccours,majorcours,campusmanager,campusagent,onlinenumber,offlinenumber,job,homeaddress,idcard,birthday,nation,remarks,examinationtime,admissiontime,subject,department,grade,campusid,number,schoolid) values(#{snum},#{campus},#{schoolname},#{sname},#{sex},#{major},#{phone},#{classes},#{money},#{signupdate},#{addmoneydate},#{paymethod},#{intentionmajor},#{publiccours},#{majorcours},#{campusmanager},#{campusagent},#{onlinenumber},#{offlinenumber},#{job},#{homeaddress},#{idcard},#{birthday},#{nation},#{remarks},#{examinationtime},#{admissiontime},#{subject},#{department},#{grade},#{campusid},#{number},#{schoolid})")
-    public Integer addhebeiStudentInfo(Student student);
-    //陕西
-    @Insert("insert into shanxistudent(snum,campus,schoolname,sname,sex,major,phone,classes,money,signupdate,addmoneydate,paymethod,intentionmajor,publiccours,majorcours,campusmanager,campusagent,onlinenumber,offlinenumber,job,homeaddress,idcard,birthday,nation,remarks,examinationtime,admissiontime,subject,department,grade,campusid,number,schoolid) values(#{snum},#{campus},#{schoolname},#{sname},#{sex},#{major},#{phone},#{classes},#{money},#{signupdate},#{addmoneydate},#{paymethod},#{intentionmajor},#{publiccours},#{majorcours},#{campusmanager},#{campusagent},#{onlinenumber},#{offlinenumber},#{job},#{homeaddress},#{idcard},#{birthday},#{nation},#{remarks},#{examinationtime},#{admissiontime},#{subject},#{department},#{grade},#{campusid},#{number},#{schoolid})")
-    public Integer addshanxiStudentInfo(Student student);
+
     @Select("select * from area")
     public List<Area> selectArea();
 

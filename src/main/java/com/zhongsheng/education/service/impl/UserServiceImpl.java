@@ -3,6 +3,7 @@ package com.zhongsheng.education.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.zhongsheng.education.entiy.PermissionInfo;
 import com.zhongsheng.education.entiy.User;
+import com.zhongsheng.education.entiy.UserVo;
 import com.zhongsheng.education.mapper.UserMapper;
 import com.zhongsheng.education.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> selectAllUser(Integer page,Integer limit) {
+    public List<UserVo> selectAllUser(Integer page, Integer limit) {
         PageHelper.startPage(page,limit);
         return userMapper.selectAllUser();
     }

@@ -100,70 +100,65 @@ public class StudentServiceImpl implements StudentService {
     };
 
 
-
+    //查询所有学生
     @Override
-    public List<Student> selectAllStudent(Integer modules, String keyword,Integer status,Integer page,Integer limit) {
+    public List<Student> selectAllStudent(SearchVo searchVo,Integer page,Integer limit) {
 
-        return studentMapper.selectAllStudent(modules,keyword,status,page,limit);
+        return studentMapper.selectAllStudent(searchVo,page,limit);
     }
 
 
     //添加学生
     @Override
-    public int addStudentInfo(Student student, String name) {
-        //省份
-        String str = String.format("%02d", student.getArea());
-        //校区
-        CampusDic cnum=studentMapper.selectCNumber(student.getCampusid());
-        //年份后两位
-        String year = new SimpleDateFormat("yy", Locale.CHINESE).format(new Date());
-        String num="0001";
-        Integer in=studentMapper.selectXuHao(student.getCampusid());
-        Integer n=1;
-        if (in!=null && !" ".equals(in)){
-            n=in+1;
-            num=String.format("%04d",n);
+    public Student addStudentInfo(Student student, String name) {
+        Student stu =  studentMapper.selectStudentBySnameAndIphone(student);
+        if(stu==null){
+            //省份
+            String str = String.format("%02d", student.getArea());
+            //校区
+            CampusDic cnum=studentMapper.selectCNumber(student.getCampusid());
+            //年份后两位
+            String year = new SimpleDateFormat("yy", Locale.CHINESE).format(new Date());
+            String num="0001";
+            Integer in=studentMapper.selectXuHao(student.getCampusid());
+            Integer n=1;
+            if (in!=null && !" ".equals(in)){
+                n=in+1;
+                num=String.format("%04d",n);
+            }
+            //拼接学生id  （省份+校区+年份+序号）
+            StringBuffer sr = new StringBuffer();
+            sr.append(str);
+            sr.append(cnum.getCnum());
+            sr.append(year);
+            sr.append(num);
+            String string=sr.toString();
+
+            student.setSnum(string);
+            student.setNumber(n);
+            student.setCampus(cnum.getName());
+
+            int i = studentMapper.addStudentInfo(student);
+            student.getSchoolInfo().setSnum(student.getSnum());
+            student.getFamilyInfo().setSnum(student.getSnum());
+            //添加联系人
+            familyService.addFamilyInfo(student.getFamilyInfo());
+            schoolService.addSchoolInfo(student.getSchoolInfo());
+            //插入用户表
+            User user = new User();
+            user.setName(student.getSname());
+            user.setUsername(student.getPhone());
+            user.setPassword(student.getPhone().substring(student.getPhone().length() - 6));
+            user.setRoleid(3);
+            userService.addUser(user);
+            if(i!=0){
+                log.info("添加用户完成。。。。。。"+i+"******学号："+student.getSnum());
+                return student;
+            }
+
         }
-        //拼接学生id  （省份+校区+年份+序号）
-        StringBuffer sr = new StringBuffer();
-        sr.append(str);
-        sr.append(cnum.getCnum());
-        sr.append(year);
-        sr.append(num);
-        String string=sr.toString();
-
-        student.setSnum(string);
-        student.setNumber(n);
-        student.setCampus(cnum.getName());
-
-        int i = studentMapper.addStudentInfo(student);
-        studentMapper.addhebeiStudentInfo(student);
-        student.getSchoolInfo().setSnum(student.getSnum());
-        student.getFamilyInfo().setSnum(student.getSnum());
-        //添加联系人
-        familyService.addFamilyInfo(student.getFamilyInfo());
-        schoolService.addSchoolInfo(student.getSchoolInfo());
-        //生成票据
-        String s = Reader.addBill(student,name);
-        //生成图片
-        String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
-        student.getBill().setImage("\\zhongsheng\\pdfToImage\\"+ MyUtil.getPngName(ima));
-        student.getBill().setSnum(student.getSnum());
-        student.getBill().setRemark(student.getRemarks());
-        student.getBill().setArea(student.getArea());
-        student.getBill().setCampusid(student.getCampusid());
-        student.getBill().setSchoolid(student.getSchoolid());
-        //插入票据表
-        billService.addBillInfo(student.getBill());
-        //插入用户表
-        User user = new User();
-        user.setName(student.getSname());
-        user.setUsername(student.getPhone());
-        user.setPassword(student.getPhone().substring(student.getPhone().length() - 6));
-        user.setRoleid(3);
-        userService.addUser(user);
-        log.info("添加用户完成。。。");
-        return i;
+        log.info("已存在学号。。。。。。"+stu.getSnum());
+        return stu;
     }
 
 
@@ -238,6 +233,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Integer updateStatus(Student student) {
         return studentMapper.updateStatus(student);
+    }
+
+    @Override
+    public Student selectStudentBySnameAndIphone(Student student) {
+        return studentMapper.selectStudentBySnameAndIphone(student);
     }
 
 }

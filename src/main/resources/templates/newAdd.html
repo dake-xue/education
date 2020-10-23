@@ -4,7 +4,7 @@
 <head>
 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
     <title>报名</title>
 
@@ -229,33 +229,37 @@
             //执行一个laydate实例
             laydate.render({
                 elem: '#giveMoney' //指定元素
+                ,trigger: 'click'
             });
             //执行一个laydate实例
             laydate.render({
                 elem: '#signUp' //指定元素
+                ,trigger: 'click'
             });
             //执行一个laydate实例
             laydate.render({
                 elem: '#addMoney' //指定元素
+                ,trigger: 'click'
             });
 
             //执行一个laydate实例
             laydate.render({
                 elem: '#birthday' //指定元素
+                ,trigger: 'click'
             });
 
             //执行一个laydate实例
             laydate.render({
                 elem: '#examinationt' //指定元素
-                ,
-                type: 'year'
+                ,type: 'year'
+                ,trigger: 'click'
             });
 
             //执行一个laydate实例
             laydate.render({
                 elem: '#admission' //指定元素
-                ,
-                type: 'year'
+                ,type: 'year'
+                ,trigger: 'click'
             });
         });
 
@@ -508,7 +512,7 @@
             <div class="layui-input-inline important">
                 <label class="layui-form-label" id="money1" style="white-space:nowrap!important;">缴费金额</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="bill.paymentAmount" required lay-verify="double" autocomplete="off" class="layui-input">
+                    <input type="text" name="jiaofeijine" required lay-verify="double" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-input-inline important">
@@ -573,7 +577,7 @@
             <div class="layui-input-inline">
                 <label class="layui-form-label important">电话</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="familyInfo.fphone" required lay-verify="phone" placeholder="电话" autocomplete="off" class="layui-input phone" maxlength="11">
+                    <input type="text" name="familyInfo.fphone" lay-verify="phone" placeholder="电话" autocomplete="off" class="layui-input phone" maxlength="11">
                 </div>
             </div>
 
@@ -615,10 +619,10 @@
                 </div>
             </div>
             <div class="layui-form-item" style="padding-top: 4%;">
-                <div class="layui-input-block">
-                    <button class="layui-btn" type="submit">提交</button>
-                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                </div>
+                <button type="submit" class="layui-btn layui-btn-fluid layui-btn-normal"
+                        style="border-radius: 5px;">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary layui-btn-fluid"
+                        style="margin-top: 2%;border-radius: 5px;margin-left: 0;">重置</button>
             </div>
         </form>
 

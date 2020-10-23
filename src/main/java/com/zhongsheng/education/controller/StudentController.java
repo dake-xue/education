@@ -9,6 +9,7 @@ import com.zhongsheng.education.service.*;
 import com.zhongsheng.education.util.LayuiData;
 import com.zhongsheng.education.util.MyUtil;
 import com.zhongsheng.education.util.UrlUtil;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,39 +21,30 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.List;
-import java.util.Locale;
+
 
 @RequestMapping("/student")
 @Controller
 public class StudentController {
 
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private StudentService studentService;
-    @Autowired
-    private HeBeiStudentService heBeiStudentService;
-    @Autowired
-    private ShanXiStudentService shanXiStudentService;
-    @Autowired
-    private FamilyService familyService;
-
-    @Autowired
-    private SchoolService schoolService;
 
     @Autowired
     private BillService billService;
 
     @GetMapping("/allStudentInfo")
     @ResponseBody
-    public LayuiData allStudentInfo(Integer modules, String keyword, Integer status, @RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "3") int limit)throws Exception{
-        System.out.println(page+"-----------------"+limit);
+    public LayuiData allStudentInfo(SearchVo searchVo, @RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "3") int limit)throws Exception{
         Page pagehelper= PageHelper.startPage(page,limit);
-        List<Student> studentList = studentService.selectAllStudent(modules,keyword,status,page,limit);
+        //取出session中的user
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        //把user中的area字段赋给search
+        searchVo.setArea(loginUser.getArea());
+        List<Student> studentList = studentService.selectAllStudent(searchVo,page,limit);
         //查询已交学费
         for (Student s:studentList){
             s.setJiaofeijine(studentService.selectJiaoFeiJinE(s.getSnum()));
@@ -87,7 +79,6 @@ public class StudentController {
     @RequestMapping("/stuToStudentDetails")
     public String stuToStuDetails(String phone , Model model){
         Student student = studentService.selectStudentByIphone(phone);
-        System.out.println("**********************"+student);
         model.addAttribute("student",student);
         return "stuToStudentDetails";
     }
@@ -103,7 +94,6 @@ public class StudentController {
     @RequestMapping("/addScore")
     @ResponseBody
     public Integer addScore(String snum, Integer score) throws Exception {
-        System.out.println(snum+"============"+score);
         Integer student = studentService.addScore(snum, score);
         if (student==1){
             return 1;
@@ -114,14 +104,15 @@ public class StudentController {
 
     //添加学生
     @RequestMapping(value = "/addStudent",method = RequestMethod.POST )
-    public String addStudent(Student student,Model model) throws Exception {
-        int i = studentService.addStudentInfo(student,student.getCampusmanager());
-        if(i!=0){
-            model.addAttribute("subject",student.getIntentionmajor()+"："+student.getClasses());
-            model.addAttribute("price",student.getMoney());
-            model.addAttribute("OrderName",MyUtil.getOrderName());
-            model.addAttribute("sNum",student.getSnum());
-            return "toPay";
+    public String addStudent(Student student, RedirectAttributes attr) throws Exception {
+        Student stu = studentService.addStudentInfo(student,student.getCampusmanager());
+        if(stu!=null){
+            attr.addAttribute("goods_name",stu.getIntentionmajor()+"："+student.getClasses());
+            attr.addAttribute("price",student.getJiaofeijine());
+            attr.addAttribute("order_number",MyUtil.getOrderName());
+            attr.addAttribute("sNum",stu.getSnum());
+            attr.addAttribute("area",stu.getArea());
+            return "redirect:/alipay/toPay";
         }
         return "error";
     }

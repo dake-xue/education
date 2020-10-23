@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RequestMapping("/alipay")
 @RestController
@@ -21,8 +23,16 @@ public class PayController {
     AliPayService aliPayService;
 
     @RequestMapping(value = "/toPay", method = RequestMethod.GET)
-    public String alipay(Order order) throws AlipayApiException {
-        return aliPayService.aliPay(order);
+    public void alipay(Order order, HttpServletResponse response) throws AlipayApiException {
+        logger.info("order:"+order.toString());
+        response.setContentType("text/html;charset=utf-8");
+        try {
+            response.getWriter().write(aliPayService.aliPay(order));
+            response.getWriter().flush();
+            response.getWriter().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @PostMapping("/notify_url")

@@ -1,6 +1,7 @@
 package com.zhongsheng.education.controller;
 
 import com.zhongsheng.education.entiy.User;
+import com.zhongsheng.education.entiy.UserVo;
 import com.zhongsheng.education.service.UserService;
 import com.zhongsheng.education.util.MyUtil;
 import org.apache.shiro.SecurityUtils;
@@ -35,7 +36,7 @@ public class UserController {
         Subject subject = SecurityUtils.getSubject();
         if (subject != null) {
             subject.logout();
-            System.out.println("已退出登录。。。。。。");
+            logger.info("已退出登录。。。。。。");
         }
         return "redirect:/user/toLogin";
     }
@@ -47,7 +48,7 @@ public class UserController {
     @RequestMapping("/allUser")
     @ResponseBody
     public String allUser(Integer page,Integer limit){
-        List<User> userList =  userService.selectAllUser(page, limit);
+        List<UserVo> userList =  userService.selectAllUser(page, limit);
         return MyUtil.layuiData(userList);
     }
 
@@ -87,7 +88,7 @@ public class UserController {
      * @return string
      */
     @PostMapping("/login")
-    public String login(User user, Model model){
+    public String login(User user){
         // 根据用户名和密码创建 Token
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
         // 获取 subject 认证主体
@@ -96,8 +97,12 @@ public class UserController {
             // 开始认证，这一步会跳到我们自定义的 Realm 中
             subject.login(token);
             //根据当前登录账号来获取当前当前账号所拥有权限的菜单列表
-            String username = subject.getPrincipal().toString();
+            //String username = subject.getPrincipal().toString();
+            User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
             logger.info("对用户[" + user.getUsername()+ "]进行登录验证..验证通过......");
+            if(loginUser.getRoleid()==3){
+                return "redirect:/student/stuToStudentDetails?phone="+loginUser.getUsername();
+            }
             return "redirect:/student/toAllStudent";
         }catch(UnknownAccountException uae){
             logger.info("对用户[" + user.getUsername()+ "]进行登录验证..验证未通过,未知账户");

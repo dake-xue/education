@@ -41,14 +41,11 @@
             border: 1px solid #f2f2f2;
             border-radius: 5px;
         }
-        #card {
-            position: absolute;
-            width: 200px;
-            height: 350px;
+        .layui-table-tool{
+            background-color: #ffffff;
         }
-        #tab {
-            position: absolute;
-            left: 240px;
+        .layui-tab, .layui-table-view {
+            margin: 0;
         }
     </style>
     <script>
@@ -73,17 +70,17 @@
                     }]
                 , cols: [
                     [//表头
-                        {field: 'snum', title: '学号', sort: true, width:'11%', fixed: 'left'}
-                        , {field: 'sname', title: '姓名', style: "color:#009688", width:'8%'}
-                        , {field: 'sex', title: '性别', sort: true, width:'7%'}
-                        , {field: 'phone', title: '联系方式', width:'12%'}
-                        , {field: 'classes', title: '班次', width:'10%'}
-                        , {field: 'examinationtime', title: '考试年份', width:'9%'}
-                        , {field: 'subject', title: '考试科目', width:'14%'}
-                        , {field: 'money', title: '学费',templet:"#mo", width:'9%'}
-                        , {field: 'score', title: '积分', templet: "#jifen", width:'10%'}
-                        , {field: 'money', title: '是否交完', templet: '#cf', width:'12%'}
-                        , {field: 'money', title: '操作',templet: '#et', width:'13%'}
+                        {field: 'snum', title: '学号', sort: true, fixed: 'left', width:'10%'}
+                        , {field: 'sname', title: '姓名', style: "color:#009688",width:'8%'}
+                        , {field: 'sex', title: '性别', sort: true, width:'6%'}
+                        , {field: 'phone', title: '联系方式',width:'11%'}
+                        , {field: 'classes', title: '班次', width:'9%'}
+                        , {field: 'examinationtime', title: '考试年份'}
+                        , {field: 'subject', title: '考试科目', width:'13%'}
+                        , {field: 'money', title: '学费',templet:"#mo"}
+                        , {field: 'score', title: '积分', templet: "#jifen"}
+                        , {field: 'money', title: '是否交完', templet: '#cf', width:'10%'}
+                        , {field: 'money', title: '操作',templet: '#et', width:'12%'}
                         , {field: 'idcard', title: '身份证', hide: true}
                      ]
                 ]
@@ -116,17 +113,17 @@
                     }]
                     , cols: [
                         [//表头
-                            {field: 'snum', title: '学号', sort: true, width:'11%', fixed: 'left'}
-                            , {field: 'sname', title: '姓名', style: "color:#009688", width:'8%'}
-                            , {field: 'sex', title: '性别', sort: true, width:'7%'}
-                            , {field: 'phone', title: '联系方式', width:'12%'}
-                            , {field: 'classes', title: '班次', width:'10%'}
-                            , {field: 'examinationtime', title: '考试年份', width:'9%'}
-                            , {field: 'subject', title: '考试科目', width:'14%'}
-                            , {field: 'money', title: '学费',templet:"#mo", width:'9%'}
-                            , {field: 'score', title: '积分', templet: "#jifen", width:'10%'}
-                            , {field: 'money', title: '是否交完', templet: '#cf', width:'12%'}
-                            , {field: 'money', title: '操作',templet: '#et', width:'13%'}
+                            {field: 'snum', title: '学号', sort: true, fixed: 'left', width:'10%'}
+                            , {field: 'sname', title: '姓名', style: "color:#009688",width:'8%'}
+                            , {field: 'sex', title: '性别', sort: true, width:'6%'}
+                            , {field: 'phone', title: '联系方式',width:'11%'}
+                            , {field: 'classes', title: '班次', width:'9%'}
+                            , {field: 'examinationtime', title: '考试年份'}
+                            , {field: 'subject', title: '考试科目', width:'13%'}
+                            , {field: 'money', title: '学费',templet:"#mo"}
+                            , {field: 'score', title: '积分', templet: "#jifen"}
+                            , {field: 'money', title: '是否交完', templet: '#cf', width:'10%'}
+                            , {field: 'money', title: '操作',templet: '#et', width:'12%'}
                             , {field: 'idcard', title: '身份证', hide: true}
                         ]
                     ]
@@ -160,17 +157,17 @@
                     }]
                     , cols: [
                         [//表头
-                            {field: 'snum', title: '学号', sort: true, width:'11%', fixed: 'left'}
-                            , {field: 'sname', title: '姓名', style: "color:#009688", width:'8%'}
-                            , {field: 'sex', title: '性别', sort: true, width:'7%'}
-                            , {field: 'phone', title: '联系方式', width:'12%'}
-                            , {field: 'classes', title: '班次', width:'10%'}
-                            , {field: 'examinationtime', title: '考试年份', width:'9%'}
-                            , {field: 'subject', title: '考试科目', width:'14%'}
-                            , {field: 'money', title: '学费',templet:"#mo", width:'9%'}
-                            , {field: 'score', title: '积分', templet: "#jifen", width:'10%'}
-                            , {field: 'money', title: '是否交完', templet: '#cf', width:'12%'}
-                            , {field: 'money', title: '操作',templet: '#et', width:'13%'}
+                            {field: 'snum', title: '学号', sort: true, fixed: 'left', width:'10%'}
+                            , {field: 'sname', title: '姓名', style: "color:#009688",width:'8%'}
+                            , {field: 'sex', title: '性别', sort: true, width:'6%'}
+                            , {field: 'phone', title: '联系方式',width:'11%'}
+                            , {field: 'classes', title: '班次', width:'9%'}
+                            , {field: 'examinationtime', title: '考试年份'}
+                            , {field: 'subject', title: '考试科目', width:'13%'}
+                            , {field: 'money', title: '学费',templet:"#mo"}
+                            , {field: 'score', title: '积分', templet: "#jifen"}
+                            , {field: 'money', title: '是否交完', templet: '#cf', width:'10%'}
+                            , {field: 'money', title: '操作',templet: '#et', width:'12%'}
                             , {field: 'idcard', title: '身份证', hide: true}
                         ]
                     ]
@@ -204,17 +201,17 @@
                     }]
                     , cols: [
                         [//表头
-                            {field: 'snum', title: '学号', sort: true, width:'11%', fixed: 'left'}
-                            , {field: 'sname', title: '姓名', style: "color:#009688", width:'8%'}
-                            , {field: 'sex', title: '性别', sort: true, width:'7%'}
-                            , {field: 'phone', title: '联系方式', width:'12%'}
-                            , {field: 'classes', title: '班次', width:'10%'}
-                            , {field: 'examinationtime', title: '考试年份', width:'9%'}
-                            , {field: 'subject', title: '考试科目', width:'14%'}
-                            , {field: 'money', title: '学费',templet:"#mo", width:'9%'}
-                            , {field: 'score', title: '积分', templet: "#jifen", width:'10%'}
-                            , {field: 'money', title: '是否交完', templet: '#cf', width:'12%'}
-                            , {field: 'money', title: '操作',templet: '#et', width:'13%'}
+                            {field: 'snum', title: '学号', sort: true, fixed: 'left', width:'10%'}
+                            , {field: 'sname', title: '姓名', style: "color:#009688",width:'8%'}
+                            , {field: 'sex', title: '性别', sort: true, width:'6%'}
+                            , {field: 'phone', title: '联系方式',width:'11%'}
+                            , {field: 'classes', title: '班次', width:'9%'}
+                            , {field: 'examinationtime', title: '考试年份'}
+                            , {field: 'subject', title: '考试科目', width:'13%'}
+                            , {field: 'money', title: '学费',templet:"#mo"}
+                            , {field: 'score', title: '积分', templet: "#jifen"}
+                            , {field: 'money', title: '是否交完', templet: '#cf', width:'10%'}
+                            , {field: 'money', title: '操作',templet: '#et', width:'12%'}
                             , {field: 'idcard', title: '身份证', hide: true}
                         ]
                     ]
@@ -495,15 +492,15 @@
                 </li>
 
                 <li class="active">
-                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">学生信息管理</span><span
+                    <a href="#"><i class="layui-icon layui-icon-user"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class="active"><a th:href="@{/student/toAllStudent}">学生信息</a></li>
                         <li class=""><a th:href="@{/student/toAddStudent}">添加信息</a></li>
                     </ul>
                 </li>
-                <li class="" id="userLi">
-                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">用户管理</span><span
+                <li class="" id="userLi" shiro:hasPermission=="user:list">
+                    <a href="#"><i class="layui-icon layui-icon-username"></i> <span class="nav-label">用户管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
@@ -511,7 +508,7 @@
                     </ul>
                 </li>
                 <li class="">
-                    <a th:href="@{/bill/toAllBill}"><i class="fa fa-table"></i> <span class="nav-label">收入统计</span><span
+                    <a th:href="@{/bill/toAllBill}"><i class="layui-icon layui-icon-chart"></i> <span class="nav-label">收入统计</span><span
                             class="fa arrow"></span></a>
                 </li>
                 <li class="">
@@ -568,12 +565,6 @@
 
             <!--搜索框-->
             <div class="row layui-form-item">
-                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                 <form class="layui-form layui-form-pane">
                     <div class="layui-form-item" id="search">
                         <div class="layui-input-inline">
@@ -592,13 +583,7 @@
                             <button class="layui-btn layui-btn-primary" lay-submit
                                     lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
                             </button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <button type="button" class="layui-btn refresh-btn">
+                            &nbsp;<button type="button" class="layui-btn refresh-btn">
                                 <i class="layui-icon layui-icon-refresh"></i> 刷新
                             </button>
                         </div>
@@ -612,25 +597,28 @@
                         <div class="ibox-title"  id="toolbarDemo">
                             <h5>学生基本信息</h5>
                         </div>
-                        <div class="ibox-content" >
-                            <div class="layui-card" id="card">
-                                <div class="layui-card-header"><i class="fa fa-bullhorn icon icon-tip"></i>分类</div>
-                                <div class="layui-card-body layui-text">
-                                    <br>
-                                    <div class="layuimini-notice">
-                                        <div class="layuimini-notice-title"><a href="javascript:;" id="on5">今天新增</a></div>
-                                    </div>
-                                    <br>
-                                    <div class="layuimini-notice">
-                                        <div class="layuimini-notice-title"><a href="javascript:;" id="on6">本周新增</a></div>
-                                    </div>
-                                    <br>
-                                    <div class="layuimini-notice">
-                                        <div class="layuimini-notice-title"><a href="javascript:;" id="on7">本月新增</a></div>
+                        <div class="layui-form-item" style="background-color: #ffffff;">
+                            <div class="layui-input-inline" style="margin-right:0;width: 10%;" >
+                                <div class="layui-card">
+                                    <div class="layui-card-header"><i class="fa fa-bullhorn icon icon-tip"></i>分类</div>
+                                    <div class="layui-card-body layui-text">
+                                        <br>
+                                        <div class="layuimini-notice">
+                                            <div class="layuimini-notice-title"><a href="javascript:;" id="on5">今天新增</a></div>
+                                        </div>
+                                        <br>
+                                        <div class="layuimini-notice">
+                                            <div class="layuimini-notice-title"><a href="javascript:;" id="on6">本周新增</a></div>
+                                        </div>
+                                        <br>
+                                        <div class="layuimini-notice">
+                                            <div class="layuimini-notice-title"><a href="javascript:;" id="on7">本月新增</a></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div id="tab">
+
+                            <div class="layui-input-inline" style="width: 90%;margin-right:0;">
                                 <table id="demo" class="layui-tab" lay-filter="currentTableFilter"></table>
                             </div>
                         </div>

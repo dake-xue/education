@@ -284,7 +284,7 @@
                 </li>
 
                 <li class="active">
-                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">管理</span><span
+                    <a href="#"><i class="layui-icon layui-icon-user"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
@@ -293,12 +293,17 @@
                 </li>
 
                 <li shiro:hasPermission=="user:list">
-                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">用户管理</span><span
+                    <a href="#"><i class="layui-icon layui-icon-username"></i> <span class="nav-label">用户管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li  class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
                         <li  class=""><a onclick="openModak();">添加用户</a></li>
                     </ul>
+                </li>
+
+                <li class="">
+                    <a th:href="@{/bill/toAllBill}"><i class="layui-icon layui-icon-chart"></i> <span class="nav-label">收入统计</span><span
+                            class="fa arrow"></span></a>
                 </li>
 
             </ul>

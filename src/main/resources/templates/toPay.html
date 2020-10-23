@@ -79,9 +79,7 @@
 		    
 		}
 		</style>
-		<script  th:src="@{layui/layui.js}"></script>
 
-		
 	</head>
 
 	<body>
@@ -92,12 +90,13 @@
 
 				<form class="layui-form form" th:action="@{/alipay/toPay}">
 					<input  hidden name="sNum" th:value="${sNum}">
+					<input  hidden name="area" th:value="${area}">
 					<h2 style="font-weight: bold">订单信息</h2>
 					<hr>
 					<div class="layui-input-inline">
 						<label class="layui-form-label important">订单号 </label>
 						<div class="layui-input-inline">
-							<input readonly type="text" name="order_number" th:value="${OrderName}"  class="layui-input">
+							<input readonly type="text" id="order_number" name="order_number" th:value="${OrderName}"  class="layui-input">
 						</div>
 					</div>
 
@@ -116,7 +115,7 @@
 					</div>
 					
 					<div class="layui-input-inline btom">
-						<button class="new-btn-login" lay-submit lay-filter="formDemo">付 款</button>
+						<button class="new-btn-login" id="sendSmsBtn" lay-submit lay-filter="formDemo">付 款</button>
 					</div>
 				</form>
 
