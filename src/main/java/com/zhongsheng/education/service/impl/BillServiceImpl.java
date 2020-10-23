@@ -1,8 +1,6 @@
 package com.zhongsheng.education.service.impl;
 
-import com.zhongsheng.education.entiy.Bill;
-import com.zhongsheng.education.entiy.Desk;
-import com.zhongsheng.education.entiy.DeskMonth;
+import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.mapper.BillMapper;
 import com.zhongsheng.education.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,11 +150,24 @@ public class BillServiceImpl implements BillService {
         return arr;
     };
 
-    public Integer people(Bill bill){
+    public statistics people(Bill bill){
         return billMapper.people(bill);
     }
 
-    public Integer money(Bill bill){
+/*    public Integer money(Bill bill){
         return billMapper.money(bill);
-    }
+    }*/
+
+   public List<Student> selectStudentInfo(Bill bill){
+        return billMapper.selectStudentInfo(bill);
+   };
+    public Integer selectJiaoFeiJinE(String snum) {
+        List<Order> orderList=   billMapper.selectJiaoFeiJinE(snum);
+        Integer num=0;
+        for (int i = 0; i < orderList.size(); i++) {
+
+            num+=Integer.valueOf(orderList.get(i).getPrice());;
+        }
+        return num;
+    };
 }

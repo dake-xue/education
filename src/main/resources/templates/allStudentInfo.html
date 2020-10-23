@@ -221,14 +221,14 @@
             $("body").on("click", '.refresh-btn', function () {
                 window.location.reload();
             });
-            // 监听搜索操作
+      /*      // 监听搜索操作
             form.on('submit(data-search-btn)', function (data) {
                 //执行重载
                 table.reload('currentTableId', {
                     where: data.field
                 });
                 return false;
-            });
+            });*/
             //添加用户监听提交
             form.on('submit(userform)', function (data) {
                 var user = data.field;
@@ -518,6 +518,10 @@
                         <li class=""><a th:href="@{/ScoreCotroller/toScore}">积分信息</a></li>
                         <li class=""><a onclick="openModak();">添加奖品</a></li>
                     </ul>
+                </li>
+                <li class="">
+                    <a th:href="@{/areaManage}"><i class="fa fa-table"></i> <span class="nav-label">省区校管理</span><span
+                            class="fa arrow"></span></a>
                 </li>
             </ul>
 

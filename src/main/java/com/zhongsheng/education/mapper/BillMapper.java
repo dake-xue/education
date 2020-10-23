@@ -1,8 +1,7 @@
 package com.zhongsheng.education.mapper;
 
 import com.zhongsheng.education.dao.BillDao;
-import com.zhongsheng.education.entiy.Bill;
-import com.zhongsheng.education.entiy.Desk;
+import com.zhongsheng.education.entiy.*;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -26,7 +25,10 @@ public interface BillMapper {
     public  ArrayList<Desk> moneyCounts(Bill bill);
 
     @SelectProvider(type = BillDao.class, method = "people")
-    public Integer people(Bill bill);
-    @SelectProvider(type = BillDao.class, method = "money")
-    public  Integer money(Bill bill);
+    public statistics people(Bill bill);
+
+    @SelectProvider(type = BillDao.class, method = "selectStudentInfo")
+    public  List<Student> selectStudentInfo(Bill bill);
+    @Select("select * from orders where snum=#{snum}")
+    public  List<Order> selectJiaoFeiJinE(String snum);
 }

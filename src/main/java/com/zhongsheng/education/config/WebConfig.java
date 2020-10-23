@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -41,6 +40,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/toAdd").setViewName("newAdd");
         //跳转角色页面
         registry.addViewController("/user/toRole").setViewName("allRole");
+        //跳转角色页面
+        registry.addViewController("/areaManage").setViewName("AreaManage");
     }
 
     /**
