@@ -81,6 +81,13 @@
             width: 187px;
         }
     </style>
+    <script type="text/html" id="cf">
+        {{#  if(d.jiaofeijine >= d.money){ }}
+        <span style="color: #35bdae">已交完</span>
+        {{#  } else { }}
+        <span style="color:#c23450;">{{d.weijiaokuan}}元</span>
+        {{#  } }}
+    </script>
     <script>
         layui.use(['form', 'table', 'laydate'], function () {
             var $ = layui.jquery,
@@ -89,7 +96,7 @@
                 laydate = layui.laydate;
             table.render({
                 elem: '#demo'
-                , url: '/zhongsheng/student/allStudentInfo' //数据接口
+                , url: '/zhongsheng/BillController/StudentInfo' //数据接口
                 , page: true //开启分页
                 , limit: 6//每页多少条数据
                 , limits: [6, 12, 18]//每页条数的选择项
@@ -102,21 +109,28 @@
                 }]
                 , cols: [
                     [//表头
-                        {field: 'snum', title: '学号', sort: true, width:'11%', fixed: 'left'}
-                        , {field: 'sname', title: '姓名', style: "color:#009688", width:'8%'}
-                        , {field: 'sex', title: '性别', sort: true, width:'7%'}
-                        , {field: 'phone', title: '联系方式', width:'12%'}
-                        , {field: 'classes', title: '班次', width:'10%'}
-                        , {field: 'examinationtime', title: '考试年份', width:'9%'}
-                        , {field: 'subject', title: '考试科目', width:'14%'}
-                        , {field: 'money', title: '学费',templet:"#mo", width:'9%'}
-                        , {field: 'idcard', title: '身份证', hide: true}
+                        {field: 'snum', title: '学号', sort: true,  fixed: 'left'}
+                        , {field: 'sname', title: '姓名', style: "color:#009688"}
+                        , {field: 'sex', title: '性别', sort: true}
+                        , {field: 'phone', title: '联系方式'}
+                        , {field: 'classes', title: '班次'}
+                        , {field: 'examinationtime', title: '考试年份'}
+                        , {field: 'subject', title: '考试科目'}
+                        , {field: 'money', title: '学费' }
+                        , {field: 'idcard', title: '身份证'}
+                        , {field: 'weijiaokuan', title: '待补费', templet: '#cf'}
+                        , {field: 'schoolname', title: '学校', sort: true}
+                        , {field: 'major', title: '专业'}
+                        , {field: 'intentionmajor', title: '意向专业'}
+                        , {field: 'campusmanager', title: '校区负责人'}
+                        , {field: 'paymethod', title: '缴费方式'}
+                        , {field: 'publiccours', title: '公共课' }
                     ]
                 ]
             });
 
             /**
-             * 报表功能 这儿就是第一次进去的
+             * 报表功能
              */
             var echartsRecords = echarts.init(document.getElementById('echarts-records'), 'walden');
 
@@ -190,9 +204,12 @@
                 }
             });
 
-//添加用户监听提交
+            //搜索提交
             form.on('submit(formDemo)', function (data) {
-                console.log(data.field)
+                //执行重载
+                table.reload('demo', {
+                    where: data.field
+                });
                 var bill = data.field;
                     $.ajax({
                         type: "POST",
@@ -201,11 +218,10 @@
                         url: "/zhongsheng/BillController/billStatistics",
                         success: function (data) {
                             var d=eval('(' + data + ')');
-                            console.log(d.people)
-                            console.log(d.money)
                             //今日
                             $("#peopleCounts").html(d.people+"个人");
                             $("#moneyCounts").html(d.money+"元");
+
                             var option = {
                                 title: {
                                     text: '中升教育-收入报表图'
@@ -251,18 +267,18 @@
                                         type: 'line',
                                         stack: '总量',
                                         areaStyle: {},
-                                        data: data.peopleCount
+                                        data: d.peopleCount
                                     },
                                     {
                                         name: '新增收入',
                                         type: 'line',
                                         stack: '总量',
                                         areaStyle: {},
-                                        data: data.moneyCount
+                                        data: d.moneyCount
                                     }
                                 ]
                             }
-                            echartsRecords.setOption(option,true);
+                            echartsRecords.setOption(option);
                         }
                     });
                 return false;
@@ -290,6 +306,7 @@
                     layui.form.render("select");
                 }
             });
+            //区
             form.on('select(area)', function (data) {
                 var parentId = data.value;
                 if (parentId === "" || parentId < 1) {
@@ -312,6 +329,7 @@
                     }
                 });
             });
+            //校
             form.on('select(campus)', function (data) {
                 $.ajax({
                     type: 'post',
@@ -381,6 +399,10 @@
                         <li class=""><a th:href="@{/ScoreCotroller/toScore}">积分信息</a></li>
                         <li class=""><a onclick="openModak();">添加奖品</a></li>
                     </ul>
+                </li>
+                <li class="">
+                    <a th:href="@{/areaManage}"><i class="fa fa-table"></i> <span class="nav-label">省区校管理</span><span
+                            class="fa arrow"></span></a>
                 </li>
             </ul>
 
@@ -514,16 +536,17 @@
                                     </div>
 
                                 </div>
+                            <!--表格-->
+                            <div id="tab">
+                                <table id="demo" class="layui-tab" lay-filter="currentTableFilter"></table>
+                            </div>
                             <!--折线图-->
                                 <div class="layui-row layui-col-space15">
                                     <div class="layui-col-xs12 layui-col-md9">
                                         <div id="echarts-records" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
                                     </div>
                                 </div>
-                            <!--表格-->
-                            <div id="tab">
-                                <table id="demo" class="layui-tab" lay-filter="currentTableFilter"></table>
-                            </div>
+
                             </div>
                         </div>
                     </div>

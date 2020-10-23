@@ -6,6 +6,15 @@ public class TableDic {
     private Integer id;
     private String name;
     private Integer campus_id;
+    private Integer count;
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
 
     public Integer getCampus_id() {
         return campus_id;

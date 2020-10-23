@@ -1,6 +1,5 @@
 package com.zhongsheng.education.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.zhongsheng.EducationApplication;
 import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.mapper.StudentMapper;
@@ -8,7 +7,6 @@ import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
 import com.zhongsheng.education.util.MyUtil;
-import com.zhongsheng.education.util.UrlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,12 +135,12 @@ public class StudentServiceImpl implements StudentService {
         student.setCampus(cnum.getName());
 
         int i = studentMapper.addStudentInfo(student);
-        studentMapper.addhebeiStudentInfo(student);
         student.getSchoolInfo().setSnum(student.getSnum());
         student.getFamilyInfo().setSnum(student.getSnum());
         //添加联系人
         familyService.addFamilyInfo(student.getFamilyInfo());
         schoolService.addSchoolInfo(student.getSchoolInfo());
+        log.info("======================="+student.toString());
         //生成票据
         String s = Reader.addBill(student,name);
         //生成图片
@@ -162,7 +160,9 @@ public class StudentServiceImpl implements StudentService {
         user.setPassword(student.getPhone().substring(student.getPhone().length() - 6));
         user.setRoleid(3);
         userService.addUser(user);
+
         log.info("添加用户完成。。。");
+
         return i;
     }
 
