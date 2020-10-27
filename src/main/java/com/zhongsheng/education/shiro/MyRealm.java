@@ -26,7 +26,7 @@ import java.util.Set;
  * @author shengwu ni
  */
 public class MyRealm extends AuthorizingRealm {
-    private static final Logger logger = LoggerFactory.getLogger(ShiroConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(MyRealm.class);
 
     @Resource
     private UserService userService;
@@ -37,12 +37,12 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         logger.info("开始授权。。。");
         // 获取用户名
-        String username = (String) principalCollection.getPrimaryPrincipal();
+        User user = (User) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         // 给该用户设置角色，角色信息存在 user 表中取
-        authorizationInfo.setRoles(userService.getRoles(username));
+        authorizationInfo.setRoles(userService.getRoles(user.getUsername()));
         // 给该用户设置权限，权限信息存在 role 表中取
-        List<PermissionInfo> lists = permissionService.getPermissions(username);
+        List<PermissionInfo> lists = permissionService.getPermissions(user.getUsername());
         //方法3 增强型for循环遍历
         for(PermissionInfo permissionInfo: lists){
             authorizationInfo.addStringPermission(permissionInfo.getSn());
@@ -58,12 +58,12 @@ public class MyRealm extends AuthorizingRealm {
         String username = (String) authenticationToken.getPrincipal();
         // 根据用户名从数据库中查询该用户
         User user = userService.getByUsername(username);
-        System.out.println("shiro中user:"+user);
         if(user != null) {
             // 把当前用户存到 Session 中
             SecurityUtils.getSubject().getSession().setAttribute("user", user);
+            logger.info("shiro中user:"+user);
             // 传入用户名和密码进行身份认证，并返回认证信息
-            AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), "myRealm");
+            AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(user,user.getPassword(), "myRealm");
             return authcInfo;
         } else {
             return null;

@@ -15,6 +15,9 @@ public interface StudentMapper {
     @Select("select * from student where snum=#{snum}")
     public Student selectStudent(String snum);
 
+    @Select("select * from student where sname=#{sname} and phone=#{phone}")
+    public Student selectStudentBySnameAndIphone(Student student);
+
     @Select("select * from performance  where snum=#{snum}")
     public  List<Performance> selectPer(String snum);
 
@@ -22,7 +25,7 @@ public interface StudentMapper {
     public  List<Bill> selectJiaoFeiJinE(String snum);
 
     @SelectProvider(type = StudentDao.class, method = "selectAllStudent")
-    public List<Student> selectAllStudent(Integer modules, String keyword,Integer status, Integer schoolid);
+    public List<Student> selectAllStudent(Integer modules, String keyword,Integer status, Integer schoolid,SearchVo searchVo);
 
 
     @Update("update student set score=score+#{scope} where snum=#{snum}")

@@ -26,4 +26,9 @@ public class OrderServiceImpl implements OrderService {
     public Integer updateStatus(Order order) {
         return orderMapper.updateStatus(order);
     }
+
+    @Override
+    public Order searchOrderBySnum(String snum) {
+        return orderMapper.searchOrderBySnum(snum);
+    }
 }

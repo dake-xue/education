@@ -43,6 +43,7 @@
                         , {field: 'name', title: '姓名' ,style:"color:#009688"}
                         , {field: 'username', title: '用户名', sort: true}
                         , {field: 'rolename', title: '角色'}
+                        , {field: 'aname', title: '地区'}
                         , {field: 'status', title: '状态',templet: '#zt'}
                         , {field: '', title: '操作',templet: '#dg'}
                      ]
@@ -175,7 +176,7 @@
                 </li>
 
                 <li class="">
-                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">学生信息管理</span><span
+                    <a href="#"><i class="layui-icon layui-icon-user"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/student/toAllStudent}">学生信息</a></li>
@@ -184,7 +185,7 @@
                 </li>
 
                 <li class="active">
-                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">用户管理</span><span
+                    <a href="#"><i class="layui-icon layui-icon-username"></i> <span class="nav-label">用户管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class="active"><a th:href="@{/user/toAllUser}">用户信息</a></li>
@@ -192,7 +193,7 @@
                     </ul>
                 </li>
                 <li class="">
-                    <a th:href="@{/bill/toAllBill}"><i class="fa fa-table"></i> <span class="nav-label">统计分析</span><span
+                    <a th:href="@{/bill/toAllBill}"><i class="layui-icon layui-icon-chart"></i> <span class="nav-label">收入统计</span><span
                             class="fa arrow"></span></a>
                 </li>
                 <li class="">
@@ -255,12 +256,6 @@
 
             <!--搜索框-->
             <div class="row layui-form-item">
-                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                 <form class="layui-form layui-form-pane">
                     <div class="layui-form-item" id="search">
                         <div class="layui-inline" id="keyword">

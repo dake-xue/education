@@ -5,9 +5,14 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.alipay.api.request.AlipayTradeWapPayRequest;
+import com.zhongsheng.education.entiy.Bill;
 import com.zhongsheng.education.entiy.Order;
 import com.zhongsheng.education.entiy.Student;
+import com.zhongsheng.education.pdf.PDF2IMAGE;
+import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.AliPayService;
+import com.zhongsheng.education.service.BillService;
 import com.zhongsheng.education.service.OrderService;
 import com.zhongsheng.education.service.StudentService;
 import com.zhongsheng.education.util.MyUtil;
@@ -62,6 +67,24 @@ public class AliPayServiceImpl implements AliPayService {
     @Value("${ali_public_key}")
     private String ali_public_key;
 
+    @Value("${hebei_app_id}")
+    private String hebei_app_id;
+
+    @Value("${hebei_private_key}")
+    private String hebei_private_key;
+
+    @Value("${hebei_ali_public_key}")
+    private String hebei_ali_public_key;
+
+    @Value("${shanxi_app_id}")
+    private String shanxi_app_id;
+
+    @Value("${shanxi_private_key}")
+    private String shanxi_private_key;
+
+    @Value("${shanxi_ali_public_key}")
+    private String shanxi_ali_public_key;
+
     @Value("${sign_type}")
     private String sign_type;
 
@@ -74,11 +97,16 @@ public class AliPayServiceImpl implements AliPayService {
     @Autowired
     private StudentService studentService;
 
+    @Autowired
+    private BillService billService;
+
     //    支付服务
     public String aliPay(Order order)throws AlipayApiException {
-        //插入订单
-        order.setCreate_time(new Date());
-        orderService.addOrder(order);
+        if(orderService.searchByOrderNum(order.getOrder_number())==null){
+            //插入订单
+            order.setCreate_time(new Date());
+            orderService.addOrder(order);
+        }
         // 构建支付数据信息
         Map<String, String> data = new HashMap<>();
         logger.info("order："+order.toString());
@@ -87,25 +115,56 @@ public class AliPayServiceImpl implements AliPayService {
         data.put("timeout_express", time_express); //该笔订单允许的最晚付款时间
         data.put("total_amount", order.getPrice()); //订单总金额，单位为元，精确到小数点后两位，取值范围[0.01,100000000]
         data.put("product_code", product_no); //销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
+        DefaultAlipayClient alipayRsa2Client;
+        //1.河北
+        if(order.getArea()==1){
+            logger.info("河北。。。。。。");
+            //构建客户端
+            alipayRsa2Client = new DefaultAlipayClient(
+                    gatewayUrl,
+                    hebei_app_id,
+                    hebei_private_key,
+                    "json",
+                    charset,
+                    hebei_ali_public_key,
+                    sign_type);
+        }
+        //2.河南
+        else if(order.getArea()==2){
+            logger.info("河南。。。。。。");
+            //构建客户端
+            alipayRsa2Client = new DefaultAlipayClient(
+                    gatewayUrl,
+                    app_id,
+                    private_key,
+                    "json",
+                    charset,
+                    ali_public_key,
+                    sign_type);
+        }
+        //3.陕西
+        else {
+            logger.info("陕西。。。。。。");
+            //构建客户端
+            alipayRsa2Client = new DefaultAlipayClient(
+                    gatewayUrl,
+                    shanxi_app_id,
+                    shanxi_private_key,
+                    "json",
+                    charset,
+                    shanxi_ali_public_key,
+                    sign_type);
+        }
 
-        //构建客户端
-        DefaultAlipayClient alipayRsa2Client = new DefaultAlipayClient(
-                gatewayUrl,
-                app_id,
-                private_key,
-                "json",
-                charset,
-                ali_public_key,
-                sign_type);
+
 //        AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();// APP支付
-        AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();  // 网页支付
-//        AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();  //移动h5
+        //AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();  // 网页支付
+        AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();  //移动h5
         request.setNotifyUrl(notify_url);
         request.setReturnUrl(return_url);
         request.setBizContent(JSON.toJSONString(data));
         logger.info("data："+ JSON.toJSONString(data));
         String response = alipayRsa2Client.pageExecute(request).getBody();
-        logger.info("response："+response);
         return response;
     }
 
@@ -127,7 +186,6 @@ public class AliPayServiceImpl implements AliPayService {
             //valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
             params.put(name, valueStr);
         }
-
         boolean signVerified = AlipaySignature.rsaCheckV1(params,ali_public_key,charset,sign_type); //调用SDK验证签名
         logger.info("验证签名："+signVerified);
         //——请在这里编写您的程序（以下代码仅作参考）——
@@ -166,11 +224,25 @@ public class AliPayServiceImpl implements AliPayService {
                 int n = orderService.updateStatus(order);
                 logger.info("订单表影响行数："+n);
                 //修改学生状态
-                Student student = new Student();
-                student.setSnum(order.getsNum());
+                Student student = studentService.selectStudent(order.getsNum());
                 student.setStatus(1);
                 int i =  studentService.updateStatus(student);
                 logger.info("学生表影响行数："+i);
+                //生成票据
+                logger.info(student.toString());
+                String s = Reader.addBill(student,student.getCampusmanager());
+                //生成图片
+                String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
+                Bill bill = new Bill();
+                bill.setImage("\\zhongsheng\\pdfToImage\\"+MyUtil.getPngName(ima));
+                bill.setSnum(student.getSnum());
+                bill.setRemark(student.getRemarks());
+                bill.setArea(student.getArea());
+                bill.setCampusid(student.getCampusid());
+                bill.setSchoolid(student.getSchoolid());
+                //插入票据表
+                int j =billService.addBillInfo(bill);
+                logger.info("票据表影响行数："+j);
                 //注意：
                 //付款完成后，支付宝系统发送该交易状态通知
             }

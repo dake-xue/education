@@ -9,7 +9,16 @@ public class Order {
     private String sNum;
     private String price;
     private Date create_time;
+    private Integer area;
     private int status;
+
+    public Integer getArea() {
+        return area;
+    }
+
+    public void setArea(Integer area) {
+        this.area = area;
+    }
 
     public int getStatus() {
         return status;
@@ -77,6 +86,7 @@ public class Order {
                 ", sNum='" + sNum + '\'' +
                 ", price='" + price + '\'' +
                 ", create_time=" + create_time +
+                ", area=" + area +
                 ", status=" + status +
                 '}';
     }

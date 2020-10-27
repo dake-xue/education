@@ -88,6 +88,7 @@ public class ShiroConfig {
         List<PermissionInfo> list = permissionService.getAll();
         for (PermissionInfo permission : list) {
             filterChainMap.put(permission.getResource(), "perms["+permission.getSn()+"]");
+            logger.info(permission.getResource()+"****"+"perms["+permission.getSn()+"]");
         }
 
         // 配置 logout 过滤器

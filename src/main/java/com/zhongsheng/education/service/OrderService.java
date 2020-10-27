@@ -7,4 +7,5 @@ public interface OrderService {
     Integer addOrder(Order order);
     Order searchByOrderNum (String order_number);
     Integer updateStatus(Order order);
+    Order searchOrderBySnum (String snum);
 }

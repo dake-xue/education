@@ -2,7 +2,7 @@ package com.zhongsheng.education.dao;
 
 public class StudentDao {
 
-    public String selectAllStudent(Integer modules, String keyword, Integer status, Integer schoolid) {
+    public String selectAllStudent(Integer modules, String keyword, Integer status, Integer schoolid,SearchVo searchVo) {
         StringBuffer sql = new StringBuffer("select * from student where 1=1 and status <> 0");
         //今天
         if (status != null && status == 5) {
@@ -18,7 +18,11 @@ public class StudentDao {
             sql.append("  AND DATE_FORMAT(signupdate,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m')");
 
         }
+        //不同省份
+        if (searchVo.getArea() != null && searchVo.getArea()!=0) {
+            sql.append(" and area = "+searchVo.getArea());
 
+        }
         //姓名
         if (modules != null && modules == 1 && keyword != null && keyword != "") {
             sql.append(" and  sname like '%" + keyword + "%'");

@@ -11,9 +11,9 @@ public interface StudentService {
     public  List<Performance> selectPer(String snum);
     public Student selectStudentOne(String snum);
     Integer selectJiaoFeiJinE(String snum);
-    public List<Student> selectAllStudent(Integer modules, String keyword,Integer status,Integer schoolid);
+    public List<Student> selectAllStudent(Integer modules, String keyword,Integer status,Integer page,Integer limit);
     public Integer addScore(String snum,Integer scope);
-    int addStudentInfo(Student student, String name);
+    Student addStudentInfo(Student student, String name);
     List<Area> selectArea();
     List<TableDic> selectQu(Integer id);
     List<TableDic> selectSchool(Integer id);
@@ -27,4 +27,5 @@ public interface StudentService {
     public Integer addPerfor(Performance performance);
     public Performance selectPerOne(Integer id);
     Integer updateStatus(Student student);
+    public Student selectStudentBySnameAndIphone(Student student);
 }

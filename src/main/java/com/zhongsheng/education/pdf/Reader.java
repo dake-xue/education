@@ -32,7 +32,7 @@ public class Reader {
         sr.append(formatDate1);
         sr.append(random);
         sr.toString();
-        String m=   String.valueOf(student.getBill().getPaymentAmount());
+        String m= String.valueOf(student.getJiaofeijine());
         //金额转换中文
       String result=ConvertUpMoney.toChinese(m);
         //1 准备要填充的数据
@@ -46,7 +46,7 @@ public class Reader {
         paraMap.put("Text7", student.getExaminationtime());
         paraMap.put("Text8", student.getClasses());
         paraMap.put("Text9", student.getIdcard());
-        paraMap.put("Text10",student.getBill().getPaymentAmount());
+        paraMap.put("Text10",student.getJiaofeijine());
         paraMap.put("Text11", result);
         paraMap.put("Text12", student.getRemarks());
         paraMap.put("Text13", formatDate);

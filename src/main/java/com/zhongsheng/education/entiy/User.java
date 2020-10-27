@@ -6,11 +6,20 @@ public class User {
     private String name;
     private String username;
     private String password;
-    private String rolename;
     private int roleid;
+    private int area;
     private int status;
 
     private String newPassword;
+
+
+    public int getArea() {
+        return area;
+    }
+
+    public void setArea(int area) {
+        this.area = area;
+    }
 
     public int getRoleid() {
         return roleid;
@@ -69,13 +78,6 @@ public class User {
         this.status = status;
     }
 
-    public String getRolename() {
-        return rolename;
-    }
-
-    public void setRolename(String rolename) {
-        this.rolename = rolename;
-    }
 
     @Override
     public String toString() {
@@ -84,8 +86,8 @@ public class User {
                 ", name='" + name + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", rolename='" + rolename + '\'' +
                 ", roleid=" + roleid +
+                ", area=" + area +
                 ", status=" + status +
                 ", newPassword='" + newPassword + '\'' +
                 '}';

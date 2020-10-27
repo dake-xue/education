@@ -18,7 +18,6 @@ public class FamilyServiceImpl implements FamilyService {
 
     @Override
     public int addFamilyInfo(FamilyInfo familyinfo) {
-        System.out.println("familyinfo:"+familyinfo);
         return familyMapper.addFamilyInfo(familyinfo);
     }
 

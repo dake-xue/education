@@ -2,6 +2,7 @@ package com.zhongsheng.education.mapper;
 
 import com.zhongsheng.education.entiy.PermissionInfo;
 import com.zhongsheng.education.entiy.User;
+import com.zhongsheng.education.entiy.UserVo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -13,8 +14,8 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Select("select u.uid,u.name,u.username,u.password,u.roleid,u.status,r.name rolename from user u LEFT JOIN role r on u.roleid = r.id")
-    List<User> selectAllUser();
+    @Select("select u.uid,u.name,u.username,u.password,u.roleid,u.status,r.name rolename ,a.aname from user u LEFT JOIN role r on u.roleid = r.id LEFT JOIN area a on a.aid = u.area where u.roleid <> 1")
+    List<UserVo> selectAllUser();
 
     //添加用户
     @Insert("insert into user(name,username,password,roleid) values(#{name},#{username},#{password},#{roleid})")
@@ -40,7 +41,7 @@ public interface UserMapper {
             " where u.username = #{username}")
     HashSet<String> getRoles(String username);
 
-    @Select("select * from user where username=#{username}")
+    @Select("select * from user where username=#{username} and status <> 1")
     User getByUsername(String username);
 
 }
