@@ -25,7 +25,7 @@ public interface StudentMapper {
     public  List<Bill> selectJiaoFeiJinE(String snum);
 
     @SelectProvider(type = StudentDao.class, method = "selectAllStudent")
-    public List<Student> selectAllStudent(Integer modules, String keyword,Integer status, Integer schoolid,SearchVo searchVo);
+    public List<Student> selectAllStudent(Integer schoolid,SearchVo searchVo);
 
 
     @Update("update student set score=score+#{scope} where snum=#{snum}")

@@ -4,12 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
-import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.zhongsheng.education.entiy.Bill;
 import com.zhongsheng.education.entiy.Order;
 import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
+import com.zhongsheng.education.pdf.QrCodeTest;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.AliPayService;
 import com.zhongsheng.education.service.BillService;
@@ -24,8 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -230,7 +228,9 @@ public class AliPayServiceImpl implements AliPayService {
                 logger.info("学生表影响行数："+i);
                 //生成票据
                 logger.info(student.toString());
-                String s = Reader.addBill(student,student.getCampusmanager());
+                //生成二维码
+                String erweima = QrCodeTest.erweima(student.getSnum());
+                String s = Reader.addBill(student,student.getCampusmanager(),erweima);
                 //生成图片
                 String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
                 Bill bill = new Bill();
