@@ -2,6 +2,9 @@ package com.zhongsheng.education.service;
 
 import com.zhongsheng.education.entiy.Area;
 import com.zhongsheng.education.entiy.CampusDic;
+import com.zhongsheng.education.entiy.Student;
+
+import java.util.List;
 
 public interface AreaManageService {
 
@@ -19,4 +22,6 @@ public interface AreaManageService {
     Integer  toUpdateArea(Area area);
      Integer toUpdateCampus(CampusDic campusDic);
     Integer toUpdateSchool(CampusDic campusDic);
+
+    List<Student> selectStudent(Integer schoolid);
 }

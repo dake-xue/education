@@ -2,10 +2,13 @@ package com.zhongsheng.education.service.impl;
 
 import com.zhongsheng.education.entiy.Area;
 import com.zhongsheng.education.entiy.CampusDic;
+import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.mapper.AreaManageMapper;
 import com.zhongsheng.education.service.AreaManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AreaManageServicelmpl implements AreaManageService {
@@ -53,4 +56,8 @@ public class AreaManageServicelmpl implements AreaManageService {
     public Integer toUpdateSchool(CampusDic campusDic){
         return areaManageMapper.toUpdateSchool(campusDic);
     };
+
+  public   List<Student> selectStudent(Integer schoolid){
+      return areaManageMapper.selectStudent(schoolid);
+  };
 }

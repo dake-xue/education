@@ -60,7 +60,7 @@
             //第一个实例
             table.render({
                 elem: '#demo'
-                , url: '/zhongsheng/student/allStudentInfo' //数据接口
+                , url: '/zhongsheng/student/allStudentInfo?schoolid='+$("#schoolid").val() //数据接口
                 , page: true //开启分页
                 , limit: 6//每页多少条数据
                 , limits: [6, 12, 18]//每页条数的选择项
@@ -92,7 +92,7 @@
             $.ajax({
                 type: "get",
                 dataType: "json",
-                url: "/zhongsheng/student/allStudentInfo?status=5",
+                url: "/zhongsheng/student/allStudentInfo?status=5&schoolid="+$('#schoolid').val(),
                 success: function (data) {
                     $("#on5").append("<span class='layui-badge'>" + data.count + "</span>")
                 },
@@ -103,7 +103,7 @@
             $("#on5").click(function () {
                 table.render({
                     elem: '#demo'
-                    , url: '/zhongsheng/student/allStudentInfo?status=5' //数据接口
+                    , url: "/zhongsheng/student/allStudentInfo?status=5&schoolid="+$('#schoolid').val() //数据接口
                     , page: true //开启分页
                     , limit: 6//每页多少条数据
                     , limits: [6, 12, 18]//每页条数的选择项
@@ -136,7 +136,7 @@
             $.ajax({
                 type: "get",
                 dataType: "json",
-                url: "/zhongsheng/student/allStudentInfo?status=6",
+                url: "/zhongsheng/student/allStudentInfo?status=6&schoolid="+$('#schoolid').val(),
                 success: function (data) {
                     $("#on6").append("<span class='layui-badge'>" + data.count + "</span>")
                 },
@@ -147,7 +147,7 @@
             $("#on6").click(function () {
                 table.render({
                     elem: '#demo'
-                    , url: '/zhongsheng/student/allStudentInfo?status=6' //数据接口
+                    , url: "/zhongsheng/student/allStudentInfo?status=6&schoolid="+$('#schoolid').val() //数据接口
                     , page: true //开启分页
                     , limit: 6//每页多少条数据
                     , limits: [6, 12, 18]//每页条数的选择项
@@ -180,7 +180,7 @@
             $.ajax({
                 type: "get",
                 dataType: "json",
-                url: "/zhongsheng/student/allStudentInfo?status=7",
+                url: "/zhongsheng/student/allStudentInfo?status=7&schoolid="+$('#schoolid').val(),
                 success: function (data) {
                     $("#on7").append("<span class='layui-badge'>" + data.count + "</span>")
                 },
@@ -191,7 +191,7 @@
             $("#on7").click(function () {
                 table.render({
                     elem: '#demo'
-                    , url: '/zhongsheng/student/allStudentInfo?status=7' //数据接口
+                    , url: "/zhongsheng/student/allStudentInfo?status=7&schoolid="+$('#schoolid').val() //数据接口
                     , page: true //开启分页
                     , limit: 6//每页多少条数据
                     , limits: [6, 12, 18]//每页条数的选择项
@@ -224,14 +224,6 @@
             $("body").on("click", '.refresh-btn', function () {
                 window.location.reload();
             });
-      /*      // 监听搜索操作
-            form.on('submit(data-search-btn)', function (data) {
-                //执行重载
-                table.reload('currentTableId', {
-                    where: data.field
-                });
-                return false;
-            });*/
             //添加用户监听提交
             form.on('submit(userform)', function (data) {
                 var user = data.field;
@@ -452,8 +444,9 @@
     {{#  if(d.jiaofeijine >= d.money){ }}
     <span style="color: #35bdae">已交完</span>
     {{#  } else { }}
-    <a onclick='openAddMoney("{{d.snum}}","{{d.sname}}","{{d.sex}}","{{d.idcard}}","{{d.phone}}");'
-       style="color:#c23450;">待补款[{{d.weijiaokuan}}元]</a>
+   <!-- <a onclick='openAddMoney("{{d.snum}}","{{d.sname}}","{{d.sex}}","{{d.idcard}}","{{d.phone}}");'
+       style="color:#c23450;">待补款[{{d.weijiaokuan}}元]</a>-->
+    <span style="color:#c23450;">待补款[{{d.weijiaokuan}}元]</span>
     {{#  } }}
 </script>
 <script type="text/html" id="mo">
@@ -569,7 +562,8 @@
             </div>
         </div>
         <div class="wrapper wrapper-content animated fadeInRight">
-
+            <!--学校id-->
+            <input type="hidden" th:value="${schoolid}" id="schoolid">
             <!--搜索框-->
             <div class="row layui-form-item">
                 <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

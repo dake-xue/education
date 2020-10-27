@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zhongsheng.education.entiy.Area;
 import com.zhongsheng.education.entiy.CampusDic;
+import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.entiy.TableDic;
 import com.zhongsheng.education.service.AreaManageService;
 import com.zhongsheng.education.service.StudentService;
@@ -80,7 +81,10 @@ public class AreaManage {
     public LayuiData selectSchool(Integer id,@RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "6") int limit)throws Exception{
         Page pagehelper= PageHelper.startPage(page,limit);
         List<TableDic> tableDicList = studentService.selectSchool(id);
-
+        for (TableDic a:tableDicList){
+            List<Student> t=areaManageService.selectStudent(a.getId());
+            a.setCount(t.size());
+        }
         LayuiData layuiData=new LayuiData();
         layuiData.setCode(0);
         layuiData.setMsg("");
@@ -106,6 +110,12 @@ public class AreaManage {
         }
 
     };
+
+    @RequestMapping("/selectStudent")
+    public String selectStudent(Integer schoolid,Model model) {
+        model.addAttribute("schoolid",schoolid);
+        return "allStudentInfo";
+    }
 
     //添加校区
     @RequestMapping("/addCampus")

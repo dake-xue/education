@@ -18,7 +18,7 @@ import java.util.Map.Entry;
 
 public class Reader {
 
-    public static String addBill(Student student, String name) {
+    public static String addBill(Student student, String name,String erweima) {
         String fi=null;
         // 获得当前时间
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -57,7 +57,7 @@ public class Reader {
         paraMap.put("Text18", student.getSubject());
         paraMap.put("Text19", student.getCampus());
         paraMap.put("Text20", student.getFamilyInfo().getFphone());
-        paraMap.put("Text21", "码");
+        paraMap.put("Text21", erweima);
         paraMap.put("Text22", name);
 
         //组合文件名

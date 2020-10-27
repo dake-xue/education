@@ -2,7 +2,7 @@ package com.zhongsheng.education.dao;
 
 public class StudentDao {
 
-    public String selectAllStudent(Integer modules, String keyword, Integer status, Integer page, Integer limit) {
+    public String selectAllStudent(Integer modules, String keyword, Integer status, Integer schoolid) {
         StringBuffer sql = new StringBuffer("select * from student where 1=1 and status <> 0");
         //今天
         if (status != null && status == 5) {
@@ -34,6 +34,9 @@ public class StudentDao {
             //考试科目
             if (modules != null && modules == 4 && keyword != null && keyword != "") {
                 sql.append(" and subject ='" + keyword + " '");
+            }
+            if (schoolid !=null && !"".equals(schoolid)){
+                sql.append(" and schoolid ='" + schoolid + " '");
             }
 
 
