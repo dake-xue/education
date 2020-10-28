@@ -65,7 +65,6 @@ public class AreaManageServicelmpl implements AreaManageService {
         return areaManageMapper.allArea();
     }
 
-    }
 
     public List<Student> selectStudent(Integer schoolid){
       return areaManageMapper.selectStudent(schoolid);

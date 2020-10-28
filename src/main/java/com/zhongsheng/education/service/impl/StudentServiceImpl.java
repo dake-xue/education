@@ -149,14 +149,15 @@ public class StudentServiceImpl implements StudentService {
             String s = Reader.addBill(student, name, erweima);
             //生成图片
             String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir") + "\\src\\main\\resources\\static\\pdfToImage", 300);
-            student.getBill().setImage("\\zhongsheng\\pdfToImage\\" + MyUtil.getPngName(ima));
-            student.getBill().setSnum(student.getSnum());
-            student.getBill().setRemark(student.getRemarks());
-            student.getBill().setArea(student.getArea());
-            student.getBill().setCampusid(student.getCampusid());
-            student.getBill().setSchoolid(student.getSchoolid());
+            Bill bill = new Bill();
+            bill.setImage("\\zhongsheng\\pdfToImage\\" + MyUtil.getPngName(ima));
+            bill.setSnum(student.getSnum());
+            bill.setRemark(student.getRemarks());
+            bill.setArea(student.getArea());
+            bill.setCampusid(student.getCampusid());
+            bill.setSchoolid(student.getSchoolid());
             //插入票据表
-            billService.addBillInfo(student.getBill());
+            billService.addBillInfo(bill);
             //插入用户表
             User user = new User();
             user.setName(student.getSname());

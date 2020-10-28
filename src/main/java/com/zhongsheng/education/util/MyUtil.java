@@ -2,7 +2,9 @@ package com.zhongsheng.education.util;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
+import com.zhongsheng.education.entiy.Bill;
 import com.zhongsheng.education.entiy.Student;
+import com.zhongsheng.education.entiy.User;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -55,5 +57,14 @@ public class MyUtil {
         Date d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(d);
+    }
+
+    public static void setStaAreaAndComp(User user, Bill bill){
+        if(bill.getArea()==null){
+            bill.setArea(user.getArea());
+        }
+        if(bill.getCampusid()==null){
+            bill.setCampusid(user.getCampus());
+        }
     }
 }

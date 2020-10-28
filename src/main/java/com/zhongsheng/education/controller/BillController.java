@@ -5,9 +5,12 @@ import com.github.pagehelper.PageHelper;
 import com.zhongsheng.education.entiy.Bill;
 import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.entiy.Statistics;
+import com.zhongsheng.education.entiy.User;
 import com.zhongsheng.education.service.BillService;
 import com.zhongsheng.education.service.StudentService;
 import com.zhongsheng.education.util.LayuiData;
+import com.zhongsheng.education.util.MyUtil;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +32,10 @@ public class BillController {
     @RequestMapping(value = "/billStatistics",method = RequestMethod.POST)
     @ResponseBody
     public Statistics BillStatistics(Bill bill){
+        //取出session中的user
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        //area，comp设置默认值
+        MyUtil.setStaAreaAndComp(loginUser,bill);
         Statistics statistics=new Statistics();
         //人数
         statistics.setPeopleCount( billService.peopleCounts(bill));
@@ -43,9 +50,6 @@ public class BillController {
         }else {
             statistics.setMoney(0);
         }
-        if (bill.getArea() !=null){
-            System.out.println("省份"+bill.getArea()+"区"+bill.getCampusid()+"校"+bill.getSchoolid());
-        }
         return statistics;
     }
 
@@ -53,14 +57,18 @@ public class BillController {
     @ResponseBody
     public LayuiData allStudentInfo(Bill bill, @RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "6") int limit)throws Exception{
         Page pagehelper= PageHelper.startPage(page,limit);
+        //取出session中的user
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        //area，comp设置默认值
+        MyUtil.setStaAreaAndComp(loginUser,bill);
         List<Student> studentList = billService.selectStudentInfo(bill);
         //查询已交学费
-        for (Student s:studentList){
-            s.setJiaofeijine(billService.selectJiaoFeiJinE(s.getSnum()));
-            Integer i=s.getMoney();
-            Integer q=s.getJiaofeijine();
+        for(Student stu: studentList){
+            stu.setJiaofeijine(billService.selectJiaoFeiJinE(stu.getSnum()));
+            Integer i=stu.getMoney();
+            Integer q=stu.getJiaofeijine();
             Integer c=i-q;
-            s.setWeijiaokuan(c);
+            stu.setWeijiaokuan(c);
         }
         LayuiData layuiData=new LayuiData();
         layuiData.setCode(0);

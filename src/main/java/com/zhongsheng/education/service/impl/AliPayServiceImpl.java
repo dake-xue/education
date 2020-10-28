@@ -228,8 +228,6 @@ public class AliPayServiceImpl implements AliPayService {
                 logger.info("学生表影响行数："+i);
                 //生成票据
                 logger.info("学生信息："+student.toString());
-                String s = Reader.addBill(student,student.getCampusmanager());
-                logger.info(student.toString());
                 //生成二维码
                 String erweima = QrCodeTest.erweima(student.getSnum());
                 String s = Reader.addBill(student,student.getCampusmanager(),erweima);

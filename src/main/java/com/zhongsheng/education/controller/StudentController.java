@@ -51,7 +51,7 @@ public class StudentController {
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         //把user中的area字段赋给search
         searchVo.setArea(loginUser.getArea());
-        List<Student> studentList = studentService.selectAllStudent(searchVo,page,limit);
+        List<Student> studentList = studentService.selectAllStudent(schoolid,searchVo);
         //查询已交学费
         for (Student s : studentList) {
             s.setJiaofeijine(studentService.selectJiaoFeiJinE(s.getSnum()));

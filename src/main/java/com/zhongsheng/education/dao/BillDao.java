@@ -1,14 +1,18 @@
 package com.zhongsheng.education.dao;
 
+import com.zhongsheng.education.controller.StudentController;
 import com.zhongsheng.education.entiy.Bill;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BillDao {
-
+    Logger logger = LoggerFactory.getLogger(BillDao.class);
     public String peopleCounts(Bill bill) {
-
+        logger.info("BillDao中的bill："+bill);
         StringBuffer sql = new StringBuffer("SELECT COUNT(*) val,DATE_FORMAT(signupdate,'%m') MONTH FROM student where 1=1 and status !=0 ");
         //省
         if (bill.getArea()!= null && bill.getArea() !=0) {
+
             sql.append(" and area = '" + bill.getArea() + " '");
         }
         //区

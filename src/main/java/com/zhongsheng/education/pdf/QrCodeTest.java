@@ -8,7 +8,6 @@ public class QrCodeTest {
         // 存放在二维码中的内容 192.168.1.13
         String text = "https://www.baidu.com/";
         // 嵌入二维码的图片路径
-
         String imgPath = UrlUtil.getUrl()+"\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\nei.png";
         // 生成的二维码的路径及名称
         String destPath = UrlUtil.getUrl()+"\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\erweima.png";;

@@ -298,7 +298,7 @@
                 url: '/zhongsheng/student/selectArea',
                 contentType: 'application/json',
                 success: function (data) {
-                    var str = "<option value='0'>请选择省份</option>";
+                    var str = "<option value=''>请选择省份</option>";
                     for (var i = 0; i < data.length; i++) {
                         str += "<option value='" + data[i].aid + "'>" + data[i].aname + "</option>"
                     }
@@ -320,7 +320,7 @@
                     data: {"id": parentId},
                     dataType: "json",
                     success: function (data) {
-                        var str = "<option value='0'>请选择校区</option>";
+                        var str = "<option value=''>请选择校区</option>";
                         for (var i = 0; i < data.length; i++) {
                             str += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"
                         }
@@ -339,7 +339,7 @@
                     data: {"campus": data.value},
                     dataType: "json",
                     success: function (data) {
-                        var str = "<option value='0'>请选择学校</option>";
+                        var str = "<option value=''>请选择学校</option>";
                         for (var i = 0; i < data.length; i++) {
                             str += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"
                         }
