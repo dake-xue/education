@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" >
 
 <head>
 
@@ -25,6 +26,8 @@
     <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
     <script>
         layui.use(['form', 'table','laydate'], function () {
+            getClassify("role", "roleid");
+            //getData("area");
             var $ = layui.jquery,
                 form = layui.form,
                 table = layui.table,
@@ -49,6 +52,47 @@
                      ]
                 ]
             });
+
+            //省份 省区二级联动
+            $.ajax({
+                type: 'post',
+                url: '/zhongsheng/student/selectArea',
+                contentType: 'application/json',
+                success: function(data) {
+                    var str = "<option value='0'>请选择省份</option>";
+                    for(var i = 0; i < data.length; i++) {
+                        str += "<option value='" + data[i].aid + "'>" + data[i].aname + "</option>"
+                    }
+                    $("#area").html(str);
+                    //重新渲染
+                    layui.form.render("select");
+                }
+            });
+            form.on('select(area)', function(data) {
+                var parentId = data.value;
+                if(parentId === "" || parentId < 1) {
+                    return;
+                }
+                $.ajax({
+                    type: 'post',
+                    url: '/zhongsheng/student/selectQu',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: {
+                        "id": parentId
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        var str;
+                        for(var i = 0; i < data.length; i++) {
+                            str += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"
+                        }
+                        $("#campus").html(str);
+                        //重新渲染
+                        layui.form.render("select");
+                    }
+                });
+            });
+
             // 监听搜索操作
             form.on('submit(data-search-btn)', function (data) {
                 //执行重载
@@ -89,6 +133,8 @@
                 });
                 return false;
             });
+
+
           
         });
 
@@ -102,6 +148,19 @@
                     title:'添加用户',//题目
                     shadeClose:false,//点击遮罩层关闭
                     content: $('#'+id)//打开的内容
+                });
+            })
+        }
+
+        function openModak1() {
+            layui.use(['layer'], function () {
+                var layer = layui.layer, $ = layui.$;
+                layer.open({
+                    type: 1,//类型
+                    area: ['25%','80%'],//定义宽和高
+                    title: '添加用户',//题目
+                    shadeClose: false,//点击遮罩层关闭
+                    content: $('#motaikunag')//打开的内容
                 });
             })
         }
@@ -137,6 +196,45 @@
                 }
             });
 
+
+        }
+
+        function getClassify(tableName, scId) {
+            $.ajax({
+                type: 'post',
+                url: '/zhongsheng/table/all',
+                contentType: 'application/x-www-form-urlencoded',
+                data: {"tableName": tableName},
+                dataType: "json",
+                success: function (data) {
+                    var str;
+                    for (var i = 0; i < data.length; i++) {
+                        str += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"
+                    }
+                    $("#" + scId + "").html(str);
+                    //重新渲染
+                    layui.form.render("select");
+                }
+            });
+
+        }
+
+        function getData(scId) {
+            $.ajax({
+                type: 'post',
+                url: '/zhongsheng/areaManage/all',
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: "json",
+                success: function (data) {
+                    var str;
+                    for (var i = 0; i < data.length; i++) {
+                        str += "<option value='" + data[i].aid + "'>" + data[i].aname + "</option>"
+                    }
+                    $("#" + scId + "").html(str);
+                    //重新渲染
+                    layui.form.render("select");
+                }
+            });
 
         }
     </script>
@@ -175,28 +273,29 @@
                     </div>
                 </li>
 
-                <li class="">
+
+                <li shiro:hasPermission=="stu:add">
                     <a href="#"><i class="layui-icon layui-icon-user"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class=""><a th:href="@{/student/toAllStudent}">学生信息</a></li>
-                        <li  class=""><a th:href="@{/student/toAddStudent}">添加学生</a></li>
+                        <li class="active"><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
+                        <li class=""><a th:href="@{/student/toAddStudent}">添加学生信息</a></li>
                     </ul>
                 </li>
 
-                <li class="active">
+                <li shiro:hasPermission=="user:list" class="active">
                     <a href="#"><i class="layui-icon layui-icon-username"></i> <span class="nav-label">用户管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class="active"><a th:href="@{/user/toAllUser}">用户信息</a></li>
-                        <li  class=""><a onclick="openModak('add');">添加用户</a></li>
+                        <li class=""><a onclick="openModak1();">添加用户</a></li>
                     </ul>
                 </li>
-                <li class="">
+                <li shiro:hasPermission=="money:list">
                     <a th:href="@{/bill/toAllBill}"><i class="layui-icon layui-icon-chart"></i> <span class="nav-label">收入统计</span><span
                             class="fa arrow"></span></a>
                 </li>
-                <li class="">
+                <li shiro:hasPermission=="score:list">
                     <a href=""><i class="fa fa-table"></i> <span class="nav-label">积分管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -204,7 +303,7 @@
                         <li class=""><a onclick="openModak();">添加奖品</a></li>
                     </ul>
                 </li>
-                <li class="">
+                <li shiro:hasPermission=="area:list">
                     <a th:href="@{/areaManage}"><i class="fa fa-table"></i> <span class="nav-label">省区校管理</span><span
                             class="fa arrow"></span></a>
                 </li>
@@ -357,7 +456,7 @@
 </html>
 
 <!--模仿bootstrap的模态框-->
-<div id="add" style="display: none;text-align: center;">
+<div id="motaikunag" style="display: none;text-align: center;">
     <form class="layui-form" id="form1" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
 
         <div class="layui-form-item">
@@ -372,18 +471,38 @@
             <div class="layui-inline">
                 <label class="layui-form-label">用户名</label>
                 <div class="layui-input-inline">
-                    <input name="username" class="layui-input" type="text" placeholder="电话号码" maxlength="11" lay-verify="phone"/>
+                    <input name="username" class="layui-input" type="text" placeholder="电话号码" maxlength="11"
+                           lay-verify="phone"/>
                 </div>
             </div>
         </div>
 
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">权限</label>
+                <label class="layui-form-label">角色</label>
                 <div class="layui-input-inline selectWd">
-                    <select name="whoid" lay-verify="required">
-                        <option value="1">管理员</option>
-                        <option value="2">用户</option>
+                    <select id="roleid" name="roleid" lay-verify="required">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">地区</label>
+                <div class="layui-input-inline selectWd">
+                    <select id="area" lay-filter="area" name="area" lay-verify="required">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">负责校区</label>
+                <div class="layui-input-inline selectWd">
+                    <select id="campus" name="campus" lay-verify="required">
                     </select>
                 </div>
             </div>

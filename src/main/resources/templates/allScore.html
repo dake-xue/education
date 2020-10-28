@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 
 <head>
 
@@ -215,27 +216,29 @@
                     </div>
                 </li>
 
-                <li class="">
+
+                <li shiro:hasPermission=="stu:add">
                     <a href="#"><i class="layui-icon layui-icon-user"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class=""><a th:href="@{/student/toAllStudent}">学生信息</a></li>
-                        <li class=""><a th:href="@{/student/toAddStudent}">添加信息</a></li>
+                        <li class=""><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
+                        <li class=""><a th:href="@{/student/toAddStudent}">添加学生信息</a></li>
                     </ul>
                 </li>
-                <li class="" id="userLi">
+
+                <li shiro:hasPermission=="user:list">
                     <a href="#"><i class="layui-icon layui-icon-username"></i> <span class="nav-label">用户管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
-                        <li class=""><a onclick="openModak();">添加用户</a></li>
+                        <li class=""><a>添加用户</a></li>
                     </ul>
                 </li>
-                <li class="">
+                <li shiro:hasPermission=="money:list">
                     <a th:href="@{/bill/toAllBill}"><i class="layui-icon layui-icon-chart"></i> <span class="nav-label">收入统计</span><span
                             class="fa arrow"></span></a>
                 </li>
-                <li class="active">
+                <li class="active" shiro:hasPermission=="score:list">
                     <a href=""><i class="fa fa-table"></i> <span class="nav-label">积分管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -243,7 +246,7 @@
                         <li class=""><a onclick="openModak();">添加奖品</a></li>
                     </ul>
                 </li>
-                <li class="">
+                <li shiro:hasPermission=="area:list">
                     <a th:href="@{/areaManage}"><i class="fa fa-table"></i> <span class="nav-label">省区校管理</span><span
                             class="fa arrow"></span></a>
                 </li>

@@ -229,12 +229,13 @@ public class AliPayServiceImpl implements AliPayService {
                 int i =  studentService.updateStatus(student);
                 logger.info("学生表影响行数："+i);
                 //生成票据
-                logger.info(student.toString());
+                logger.info("学生信息："+student.toString());
                 String s = Reader.addBill(student,student.getCampusmanager());
                 //生成图片
                 String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
                 Bill bill = new Bill();
                 bill.setImage("\\zhongsheng\\pdfToImage\\"+MyUtil.getPngName(ima));
+                bill.setPaymentAmount(student.getJiaofeijine());
                 bill.setSnum(student.getSnum());
                 bill.setRemark(student.getRemarks());
                 bill.setArea(student.getArea());
@@ -281,10 +282,11 @@ public class AliPayServiceImpl implements AliPayService {
             //商户订单号
             String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
             //支付宝交易号
-            String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
+            //String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
             //付款金额
-            String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"),"UTF-8");
-            return  "trade_no:"+trade_no+"<br/>out_trade_no:"+out_trade_no+"<br/>total_amount:"+total_amount;
+            //String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"),"UTF-8");
+            Order order =  orderService.searchByOrderNum(out_trade_no);
+            return  order.getsNum();
         }else {
             return "验签失败";
         }

@@ -13,7 +13,7 @@ import java.util.Map;
 public class MyUtil {
 
     public static String layuiData(List list){
-        PageInfo<Student> pageInfo = new PageInfo(list);
+        PageInfo<Object> pageInfo = new PageInfo(list);
         Map< String,Object> map = new HashMap();
         //状态码 0成功  1失败
         map.put("code", 0);

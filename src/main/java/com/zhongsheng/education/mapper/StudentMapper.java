@@ -74,4 +74,7 @@ public interface StudentMapper {
 
     @Update("update student set status=#{status} where snum=#{snum}")
     Integer updateStatus(Student student);
+
+    @Select("select * from student where campusmanager=#{name}")
+    List<Student> searchStuByCamp(String name,Integer page, Integer limit);
 }

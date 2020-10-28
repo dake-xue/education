@@ -150,7 +150,7 @@ public class BillServiceImpl implements BillService {
         return arr;
     };
 
-    public statistics people(Bill bill){
+    public Statistics people(Bill bill){
         return billMapper.people(bill);
     }
 
@@ -161,7 +161,9 @@ public class BillServiceImpl implements BillService {
    public List<Student> selectStudentInfo(Bill bill){
         return billMapper.selectStudentInfo(bill);
    };
-    public Integer selectJiaoFeiJinE(String snum) {
+
+
+   public Integer selectJiaoFeiJinE(String snum) {
         List<Order> orderList=   billMapper.selectJiaoFeiJinE(snum);
         Integer num=0;
         for (int i = 0; i < orderList.size(); i++) {

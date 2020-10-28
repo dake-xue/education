@@ -10,6 +10,8 @@ import com.zhongsheng.education.util.LayuiData;
 import com.zhongsheng.education.util.MyUtil;
 import com.zhongsheng.education.util.UrlUtil;
 import org.apache.shiro.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +31,7 @@ import java.util.List;
 @Controller
 public class StudentController {
 
+    Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     @Autowired
     private StudentService studentService;
@@ -46,7 +49,7 @@ public class StudentController {
         searchVo.setArea(loginUser.getArea());
         List<Student> studentList = studentService.selectAllStudent(searchVo,page,limit);
         //查询已交学费
-        for (Student s:studentList){
+        for(Student s:studentList){
             s.setJiaofeijine(studentService.selectJiaoFeiJinE(s.getSnum()));
             Integer i=s.getMoney();
             Integer q=s.getJiaofeijine();
@@ -128,19 +131,17 @@ public class StudentController {
         bill.setSnum(snum);
         bill.setPaymentAmount(paymentAmount);
         bill.setRemark(remarks);
-
-            student1.setBill(bill);
-            student1.setRemarks(remarks);
-
-            //生成票据
-            String s = Reader.addBill(student1,user.getName());
-            //生成图片
-            String ima = PDF2IMAGE.pdf2Image(s, UrlUtil.getUrl()+"\\src\\main\\resources\\static\\pdfToImage", 300);
-            student1.getBill().setImage(ima);
-            //插入票据表
-
-         Integer i=billService.addBillInfo(student1.getBill());
-           return i;
+        student1.setBill(bill);
+        student1.setRemarks(remarks);
+        student1.setJiaofeijine(paymentAmount);
+        //生成票据
+        String s = Reader.addBill(student1,user.getName());
+        //生成图片
+        String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
+        student1.getBill().setImage("\\zhongsheng\\pdfToImage\\"+MyUtil.getPngName(ima));
+        //插入票据表
+        Integer i=billService.addBillInfo(student1.getBill());
+        return i;
     }
 
     //查询省区校
@@ -213,6 +214,21 @@ public class StudentController {
     public Integer addPerfor(Performance performance){
         Integer i = studentService.addPerfor(performance);
             return i;
+    }
+
+    //查询该用户招了多少名学生
+    @RequestMapping("/searchStuByCamp")
+    @ResponseBody
+    public LayuiData searchStuByCamp(String name,Integer page,Integer limit){
+        Page pagehelper= PageHelper.startPage(page,limit);
+        List<Student> list = studentService.searchStuByCamp(name,page,limit);
+        LayuiData layuiData=new LayuiData();
+        layuiData.setCode(0);
+        layuiData.setMsg("");
+        layuiData.setCount((int)pagehelper.getTotal());
+        layuiData.setData(list);
+        return layuiData;
+
     }
 
 }

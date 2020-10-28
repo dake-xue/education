@@ -3,6 +3,8 @@ package com.zhongsheng.education.service;
 import com.zhongsheng.education.entiy.Area;
 import com.zhongsheng.education.entiy.CampusDic;
 
+import java.util.List;
+
 public interface AreaManageService {
 
     Integer addArea(String name);
@@ -14,9 +16,14 @@ public interface AreaManageService {
     Integer selectCnum(Integer id);
 
     Integer addCampus(Integer aid, String num, String name);
+
     Integer  addSchool(Integer id,String name);
 
     Integer  toUpdateArea(Area area);
-     Integer toUpdateCampus(CampusDic campusDic);
+
+    Integer toUpdateCampus(CampusDic campusDic);
+
     Integer toUpdateSchool(CampusDic campusDic);
+
+    List<Area> allArea();
 }

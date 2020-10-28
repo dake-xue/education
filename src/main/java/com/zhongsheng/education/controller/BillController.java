@@ -4,7 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zhongsheng.education.entiy.Bill;
 import com.zhongsheng.education.entiy.Student;
-import com.zhongsheng.education.entiy.statistics;
+import com.zhongsheng.education.entiy.Statistics;
 import com.zhongsheng.education.service.BillService;
 import com.zhongsheng.education.service.StudentService;
 import com.zhongsheng.education.util.LayuiData;
@@ -28,15 +28,13 @@ public class BillController {
     //收入统计
     @RequestMapping(value = "/billStatistics",method = RequestMethod.POST)
     @ResponseBody
-    public statistics BillStatistics(Bill bill){
-
-        statistics statistics=new statistics();
-
+    public Statistics BillStatistics(Bill bill){
+        Statistics statistics=new Statistics();
         //人数
         statistics.setPeopleCount( billService.peopleCounts(bill));
         //钱数
         statistics.setMoneyCount(billService.moneyCounts(bill));
-        statistics s= billService.people(bill);
+        Statistics s= billService.people(bill);
         //今日人数
         statistics.setPeople(s.getPeople());
         //今日钱数
@@ -48,15 +46,12 @@ public class BillController {
         if (bill.getArea() !=null){
             System.out.println("省份"+bill.getArea()+"区"+bill.getCampusid()+"校"+bill.getSchoolid());
         }
-
-        System.out.println(statistics.getMoneyCount()+"======"+statistics.getPeopleCount()+"======"+statistics.getPeople()+"======"+statistics.getMoney());
         return statistics;
     }
 
     @RequestMapping("/StudentInfo")
     @ResponseBody
     public LayuiData allStudentInfo(Bill bill, @RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "6") int limit)throws Exception{
-        System.out.println(page+"-----------------"+limit);
         Page pagehelper= PageHelper.startPage(page,limit);
         List<Student> studentList = billService.selectStudentInfo(bill);
         //查询已交学费

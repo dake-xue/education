@@ -42,6 +42,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/user/toRole").setViewName("allRole");
         //跳转角色页面
         registry.addViewController("/areaManage").setViewName("AreaManage");
+        //
+        registry.addViewController("/marketPage").setViewName("marketPage");
     }
 
     /**

@@ -12,12 +12,10 @@ public class Student {
     private Integer campusid;
     //校区
     private String campus;
-
     //学校名称
     private String schoolname;
     //学生名字
     private String sname;
-
     //性别
     private String sex;
     //班级
@@ -36,7 +34,6 @@ public class Student {
     private Integer examinationtime;
     //入学年份
     private Integer admissiontime;
-
     //报名日期
     private Date signupdate;
     //补费日期
@@ -71,12 +68,10 @@ public class Student {
     private String remarks;
     //积分
     private int score;
-
     //考试科目
     private String subject;
     //院系
     private String department;
-
     //家庭联系方式
     private FamilyInfo familyInfo;
     //学校联系方式
@@ -85,7 +80,6 @@ public class Student {
     private List<Bill> billList;
     //票据（添加时用）
     private Bill bill;
-
     //序号
     private Integer number;
     //学号

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收入信息</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/layui/layui.css}" rel="stylesheet">
+
+    <!-- Mainly scripts -->
+    <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
+    <script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+    <script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script th:src="@{/js/inspinia.js}"></script>
+    <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+    <!--echarts-->
+    <script th:src="@{/js/echarts/echarts.js}"></script>
+    <style>
+        .layui-top-box {
+            padding: 40px 20px 20px 20px;
+            color: #fff
+        }
+
+        .panel {
+            margin-bottom: 17px;
+            background-color: #fff;
+            border: 1px solid transparent;
+            border-radius: 3px;
+            -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+            box-shadow: 0 1px 1px rgba(0, 0, 0, .05)
+        }
+
+        .panel-body {
+            padding: 15px
+        }
+
+        .panel-title {
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 14px;
+            color: inherit
+        }
+
+        .label {
+            display: inline;
+            padding: .2em .6em .3em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: .25em;
+            margin-top: .3em;
+        }
+
+        .main_btn > p {
+            height: 40px;
+        }
+
+        .top-panel > .layui-card-body {
+            height: 60px;
+        }
+
+        .layui-col-md3 {
+            width: 30%;
+        }
+
+        .selectWd {
+            width: 187px;
+        }
+    </style>
+    <script type="text/html" id="cf">
+        {{#  if(d.jiaofeijine >= d.money){ }}
+        <span style="color: #35bdae">已交完</span>
+        {{#  } else { }}
+        <span style="color:#c23450;">{{d.weijiaokuan}}元</span>
+        {{#  } }}
+    </script>
+    <script>
+        layui.use(['form', 'table', 'laydate'], function () {
+            var $ = layui.jquery,
+                table = layui.table;
+
+            var name = $("#name").html();
+            table.render({
+                  elem: '#demo'
+                , url: '/zhongsheng/student/searchStuByCamp?name='+name //数据接口
+                , page: true //开启分页
+                , limit: 5//每页多少条数据
+                , limits: [5, 10, 15]//每页条数的选择项
+                , cellMinWidth: 80
+                , toolbar: '#toolbarDemo'
+                , defaultToolbar: ['filter', 'exports', 'print', {
+                    title: '提示',
+                    layEvent: 'LAYTABLE_TIPS',
+                    icon: 'layui-icon-tips'
+                }]
+                , cols: [
+                    [//表头
+                        {field: 'snum', title: '学号', sort: true, fixed: 'left'}
+                        , {field: 'sname', title: '姓名', style: "color:#009688"}
+                        , {field: 'sex', title: '性别', sort: true}
+                        , {field: 'phone', title: '联系方式'}
+                        , {field: 'classes', title: '班次'}
+                        , {field: 'money', title: '学费'}
+                        , {field: 'schoolname', title: '学校', sort: true}
+                        , {field: 'major', title: '专业'}
+                        , {field: 'intentionmajor', title: '意向专业'}
+                        , {field: 'campusmanager', title: '校区负责人'}
+                        , {field: 'paymethod', title: '缴费方式'}
+                        , {field: 'publiccours', title: '公共课'}
+                        , {field: '', title: '操作',templet: '#et'}
+                    ]
+                ]
+                ,done: function(res, curr, count){
+                    $("#peopleCounts").html(count+"个人");
+                }
+            });
+
+            //刷新页面
+            $("body").on("click", '.refresh-btn', function () {
+                window.location.reload();
+            });
+
+
+            $("#code").click(function(){
+                //获取生成二维码的url
+                var hr = $("#hr").attr('href');
+                //获取该用户的报名url连接
+                var url = $("#add").attr('href');
+                //获取该用户的名字
+                var name = $("#name").html();
+                //添加报名url的参数
+                url = url+"?name="+name;
+                //转码
+                var newUrl =  encodeURI(url);
+                layer.open({
+                    type: 2
+                    ,content: [hr+'?url='+newUrl, 'no']
+                    ,area:  ['200px', '250px']
+                });
+            });
+
+
+        });
+
+    </script>
+
+    <script type="text/html" id="et">
+        <a class="layui-btn layui-btn-sm layui-btn-warm"
+           th:href="@{/student/toUpdateStudent?snum={{d.snum}}}" style="color: white">编辑</a>
+
+        <a class="layui-btn layui-btn-sm layui-btn-normal"
+           th:href="@{/student/studentDetails?snum={{d.snum}}}" style="">详情</a>
+    </script>
+</head>
+
+<body>
+
+<div id="wrapper">
+    <a id="hr" hidden th:href="@{/getCode}"></a>
+    <a id="add" hidden th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #request.getServerPort()  + #request.getContextPath() + '/toAdd'}"></a>
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element jz">
+                        <img alt="image" class="rounded-circle" th:src="@{/img/touxiang.png}" height="60px"/>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="text-muted text-xs block" style="margin-top: 10px;"
+                                  id="name" th:text="${session.user.name}"> <b class="caret"></b></span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message">欢迎来到中升教育管理后台</span>
+                    </li>
+                    <li>
+                        <a th:href="@{/user/loginOut}">
+                            <i class="fa fa-sign-out"></i> 注销
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>&nbsp;</h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="index.html">学生信息</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <strong>我的招生情况</strong>
+                    </li>
+                </ol>
+            </div>
+
+        </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox ">
+                        <div class="ibox-title">
+                            <h5>招生信息</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up" style="padding-top: 5px;"></i>
+                                </a>
+                                <a class="close-link" style="padding-top: 5px;">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+
+                            <!--<div class="layuimini-container">-->
+                            <div class="layuimini-container">
+                                    <div class="layui-row layui-col-space10">
+                                        <div class="layui-col-md5">
+                                            <div class="panel layui-bg-cyan">
+                                                <div class="panel-body">
+                                                    <div class="panel-title">
+                                                        <span class="label pull-right layui-bg-blue">实时</span>
+                                                        <h5>我的招生人数</h5>
+                                                    </div>
+                                                    <div class="panel-content">
+                                                        <h1 class="no-margins"><span id="peopleCounts"></span>
+                                                        </h1>
+                                                        <div class="stat-percent font-bold text-gray"><i
+                                                                class="fa fa-commenting"></i></div>
+                                                        <small>学生人数</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="layui-col-md5">
+                                            <div class="panel layui-bg-cyan">
+                                                <div class="panel-body">
+                                                    <div class="panel-title">
+                                                        <span class="label pull-right layui-bg-blue">&nbsp;</span>
+                                                        <h5>点我生成</h5>
+                                                    </div>
+                                                    <div class="panel-content">
+                                                        <h1 class="no-margins"><a href="#" id="code" style="color:white;">招生二维码</a>
+                                                        </h1>
+                                                        <div class="stat-percent font-bold text-gray"></div>
+                                                        <small>&nbsp;</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <!--表格-->
+                                    <div id="tab">
+                                        <table id="demo" class="layui-tab" lay-filter="currentTableFilter"></table>
+                                    </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="float-right">
+                        <strong>2.9.2 inspinia</strong>
+                    </div>
+                    <div>
+                        <strong>Copyright</strong> inspinia 2.9.2 &copy; 2014-2018
+                    </div>
+                </div>
+
+            </div>
+        </div>
+</body>
+</html>

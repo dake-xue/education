@@ -3,7 +3,7 @@ package com.zhongsheng.education.entiy;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class statistics implements Serializable {
+public class Statistics implements Serializable {
     private ArrayList<String> peopleCount;
     private ArrayList<String> moneyCount;
     private Integer people;

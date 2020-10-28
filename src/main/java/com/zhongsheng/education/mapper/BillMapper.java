@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper
 public interface BillMapper {
 
-    @Insert("insert into bill(paymentAmount,snum,image,intotime) values(#{paymentAmount},#{snum},#{image},now())")
+    @Insert("insert into bill(paymentAmount,snum,image,intotime,area,campusid) values(#{paymentAmount},#{snum},#{image},now(),#{area},#{campusid})")
     public Integer addBillInfo(Bill bill);
 
     @Select("select * from bill where snum = #{snum}")
@@ -21,11 +21,12 @@ public interface BillMapper {
 
     @SelectProvider(type = BillDao.class,method = "peopleCounts")
     public ArrayList<Desk> peopleCounts(Bill bill);
+
     @SelectProvider(type = BillDao.class, method = "moneyCounts")
     public  ArrayList<Desk> moneyCounts(Bill bill);
 
     @SelectProvider(type = BillDao.class, method = "people")
-    public statistics people(Bill bill);
+    public Statistics people(Bill bill);
 
     @SelectProvider(type = BillDao.class, method = "selectStudentInfo")
     public  List<Student> selectStudentInfo(Bill bill);

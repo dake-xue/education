@@ -102,6 +102,8 @@ public class UserController {
             logger.info("对用户[" + user.getUsername()+ "]进行登录验证..验证通过......");
             if(loginUser.getRoleid()==3){
                 return "redirect:/student/stuToStudentDetails?phone="+loginUser.getUsername();
+            }else if(loginUser.getRoleid()==4){
+                return "redirect:/marketPage";
             }
             return "redirect:/student/toAllStudent";
         }catch(UnknownAccountException uae){

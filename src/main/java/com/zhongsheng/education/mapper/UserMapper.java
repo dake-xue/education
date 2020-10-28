@@ -18,7 +18,7 @@ public interface UserMapper {
     List<UserVo> selectAllUser();
 
     //添加用户
-    @Insert("insert into user(name,username,password,roleid) values(#{name},#{username},#{password},#{roleid})")
+    @Insert("insert into user(name,username,password,roleid,area,campus) values(#{name},#{username},#{password},#{roleid},#{area},#{campus})")
     public Integer addUser(User user);
 
     //修改密码

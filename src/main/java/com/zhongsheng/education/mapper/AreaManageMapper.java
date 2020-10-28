@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+
 @Mapper
 public interface AreaManageMapper {
 
@@ -18,6 +20,9 @@ public interface AreaManageMapper {
 
     @Select("select * from area where aname=#{name}")
     public Area selectArea(String name);
+
+    @Select("select * from area")
+    List<Area> allArea();
 
     @Select("SELECT cnum FROM campus_dic WHERE aid=#{id} ORDER BY cnum DESC LIMIT 0,1")
     public Integer selectCnum(Integer id);

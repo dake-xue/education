@@ -95,21 +95,12 @@
                     <div class="dropdown profile-element jz">
                         <img alt="image" class="rounded-circle" th:src="@{/img/touxiang.png}" height="60px"/>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span th:text="${session.user.name}" class="text-muted text-xs block" style="margin-top: 10px;"> <b class="caret"></b></span>
                         </a>
                     </div>
                     <div class="logo-element">
                         IN+
                     </div>
                 </li>
-                 <li class="active" id="userLi" shiro:hasPermission=="user:list">
-                    <a href="#"><i class="layui-icon layui-icon-user"></i> <span class="nav-label">学生信息管理</span><span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li class="active"><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
-                        <li class=""><a th:href="@{/student/toAddStudent}">添加学生信息</a></li>
-                    </ul>
-                </li>
-
             </ul>
 
         </div>

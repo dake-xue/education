@@ -15,11 +15,10 @@ public class QRCodeController {
 
     /**
      *  生成二维码
-     * @param type 二维码的类型，为了演示效果，1跳百度的，2是跳京东
-
+     *
      * */
     @GetMapping(value = "/getCode")
-    public void getCode(int type , HttpServletResponse response) throws IOException {
+    public void getCode(String url , HttpServletResponse response) throws IOException {
         // 设置响应流信息
         response.setContentType("image/jpg");
         response.setHeader("Pragma", "no-cache");
@@ -29,7 +28,7 @@ public class QRCodeController {
         OutputStream stream = response.getOutputStream();
 
         //type是1，生成活动详情、报名的二维码，type是2，生成活动签到的二维码
-        String content = (type == 1 ? "http://mxxbz9pk.xiaomy.net:36569/zhongsheng/toAdd?name=%E5%88%98%E8%83%BD" : "http://www.jd.com");
+        String content = url;
         //获取一个二维码图片
         BitMatrix bitMatrix = QRCodeUtils.createCode(content);
         //以流的形式输出到前端

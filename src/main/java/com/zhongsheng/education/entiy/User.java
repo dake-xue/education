@@ -8,10 +8,18 @@ public class User {
     private String password;
     private int roleid;
     private int area;
+    private int campus;
     private int status;
 
     private String newPassword;
 
+    public int getCampus() {
+        return campus;
+    }
+
+    public void setCampus(int campus) {
+        this.campus = campus;
+    }
 
     public int getArea() {
         return area;
@@ -88,6 +96,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", roleid=" + roleid +
                 ", area=" + area +
+                ", campus=" + campus +
                 ", status=" + status +
                 ", newPassword='" + newPassword + '\'' +
                 '}';

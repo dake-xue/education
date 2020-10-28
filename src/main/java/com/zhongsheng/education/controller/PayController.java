@@ -3,10 +3,13 @@ package com.zhongsheng.education.controller;
 
 import com.alipay.api.AlipayApiException;
 import com.zhongsheng.education.entiy.Order;
+import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.service.AliPayService;
+import com.zhongsheng.education.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,13 +17,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RequestMapping("/alipay")
-@RestController
+@Controller
 public class PayController {
 
     Logger logger = LoggerFactory.getLogger("PayController.class");
 
     @Autowired
     AliPayService aliPayService;
+
+    @Autowired
+    StudentService studentService;
 
     @RequestMapping(value = "/toPay", method = RequestMethod.GET)
     public void alipay(Order order, HttpServletResponse response) throws AlipayApiException {
@@ -36,6 +42,7 @@ public class PayController {
     }
 
     @PostMapping("/notify_url")
+    @ResponseBody
     public String notifyAlipay(HttpServletRequest request) {
         try {
             aliPayService.aliNotify(request);
@@ -49,7 +56,10 @@ public class PayController {
     @GetMapping("/return_url")
     public String returnAlipay(HttpServletRequest request) {
         try {
-            return aliPayService.aliReturn(request);
+           String sNum = aliPayService.aliReturn(request);
+           Student student = studentService.selectStudent(sNum);
+           request.setAttribute("student",student);
+           return "stuToStudentDetails";
         } catch (Exception e) {
             e.printStackTrace();
         }

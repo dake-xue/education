@@ -169,7 +169,6 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.selectArea();
     }
 
-    ;
 
     public List<TableDic> selectQu(Integer id) {
         return studentMapper.selectQu(id);
@@ -181,19 +180,16 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.selectSchool(id);
     }
 
-    ;
 
     public String selectNumber(Integer id) {
         return studentMapper.selectNumber(id);
     }
 
-    ;
 
     public CampusDic selectCNumber(Integer ca) {
         return studentMapper.selectCNumber(ca);
     }
 
-    ;
     public TableDic selectSchoolId(String name){
         return studentMapper.selectSchoolId(name);
     };
@@ -202,7 +198,6 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.selectXuHao(id);
     }
 
-    ;
 
     public Integer changeScore(String snum,Integer score){
        return studentMapper.changeScore(snum,score);
@@ -237,6 +232,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student selectStudentBySnameAndIphone(Student student) {
         return studentMapper.selectStudentBySnameAndIphone(student);
+    }
+
+    @Override
+    public List<Student> searchStuByCamp(String name,Integer page, Integer limit) {
+        return studentMapper.searchStuByCamp(name,page,limit);
     }
 
 }

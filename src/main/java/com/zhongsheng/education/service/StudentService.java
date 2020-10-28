@@ -28,4 +28,5 @@ public interface StudentService {
     public Performance selectPerOne(Integer id);
     Integer updateStatus(Student student);
     public Student selectStudentBySnameAndIphone(Student student);
+    List<Student> searchStuByCamp(String name,Integer page, Integer limit);
 }
