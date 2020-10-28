@@ -9,7 +9,6 @@ import com.zhongsheng.education.entiy.Bill;
 import com.zhongsheng.education.entiy.Order;
 import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
-import com.zhongsheng.education.pdf.QrCodeTest;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.AliPayService;
 import com.zhongsheng.education.service.BillService;

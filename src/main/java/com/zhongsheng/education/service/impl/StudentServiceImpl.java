@@ -4,7 +4,6 @@ import com.zhongsheng.EducationApplication;
 import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.mapper.StudentMapper;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
-import com.zhongsheng.education.pdf.QrCodeTest;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
 import com.zhongsheng.education.util.MyUtil;
@@ -143,10 +142,8 @@ public class StudentServiceImpl implements StudentService {
             familyService.addFamilyInfo(student.getFamilyInfo());
             schoolService.addSchoolInfo(student.getSchoolInfo());
             log.info("=======================" + student.toString());
-            //生成二维码
-            String erweima = QrCodeTest.erweima(string);
             //生成票据
-            String s = Reader.addBill(student, name, erweima);
+            String s = Reader.addBill(student, name);
             //生成图片
             String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir") + "\\src\\main\\resources\\static\\pdfToImage", 300);
             Bill bill = new Bill();
