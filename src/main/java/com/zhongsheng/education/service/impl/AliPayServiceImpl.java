@@ -9,6 +9,7 @@ import com.zhongsheng.education.entiy.Bill;
 import com.zhongsheng.education.entiy.Order;
 import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
+import com.zhongsheng.education.pdf.QrCodeTest;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.AliPayService;
 import com.zhongsheng.education.service.BillService;
@@ -228,8 +229,7 @@ public class AliPayServiceImpl implements AliPayService {
                 //生成票据
                 logger.info("学生信息："+student.toString());
                 //生成二维码
-                String erweima = QrCodeTest.erweima(student.getSnum());
-                String s = Reader.addBill(student,student.getCampusmanager(),erweima);
+                String s = Reader.addBill(student,student.getCampusmanager());
                 //生成图片
                 String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
                 Bill bill = new Bill();

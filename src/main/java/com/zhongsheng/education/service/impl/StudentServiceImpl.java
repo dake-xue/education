@@ -142,7 +142,7 @@ public class StudentServiceImpl implements StudentService {
             familyService.addFamilyInfo(student.getFamilyInfo());
             schoolService.addSchoolInfo(student.getSchoolInfo());
             log.info("=======================" + student.toString());
-            //生成票据
+            /*//生成票据
             String s = Reader.addBill(student, name);
             //生成图片
             String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir") + "\\src\\main\\resources\\static\\pdfToImage", 300);
@@ -154,7 +154,7 @@ public class StudentServiceImpl implements StudentService {
             bill.setCampusid(student.getCampusid());
             bill.setSchoolid(student.getSchoolid());
             //插入票据表
-            billService.addBillInfo(bill);
+            billService.addBillInfo(bill);*/
             //插入用户表
             User user = new User();
             user.setName(student.getSname());

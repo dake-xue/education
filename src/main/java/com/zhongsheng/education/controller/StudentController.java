@@ -10,6 +10,9 @@ import com.zhongsheng.education.service.*;
 import com.zhongsheng.education.util.LayuiData;
 import com.zhongsheng.education.util.MyUtil;
 import com.zhongsheng.education.util.UrlUtil;
+import org.apache.shiro.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -136,11 +139,8 @@ public class StudentController {
         student1.setBill(bill);
         student1.setRemarks(remarks);
         student1.setJiaofeijine(paymentAmount);
-        //生成二维码
-        String erweima = QrCodeTest.erweima(snum);
-
         //生成票据
-        String s = Reader.addBill(student1, user.getName(), erweima);
+        String s = Reader.addBill(student1, user.getName());
         //生成图片
         String ima = PDF2IMAGE.pdf2Image(s, UrlUtil.getUrl() + "\\src\\main\\resources\\static\\pdfToImage", 300);
         student1.getBill().setImage(ima);
