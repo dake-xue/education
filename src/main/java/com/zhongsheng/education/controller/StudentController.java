@@ -4,7 +4,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
-import com.zhongsheng.education.pdf.QrCodeTest;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
 import com.zhongsheng.education.util.LayuiData;
@@ -132,11 +131,8 @@ public class StudentController {
 
         student1.setBill(bill);
         student1.setRemarks(remarks);
-        //生成二维码
-        String erweima = QrCodeTest.erweima(snum);
-
         //生成票据
-        String s = Reader.addBill(student1, user.getName(), erweima);
+        String s = Reader.addBill(student1, user.getName());
         //生成图片
         String ima = PDF2IMAGE.pdf2Image(s, UrlUtil.getUrl() + "\\src\\main\\resources\\static\\pdfToImage", 300);
         student1.getBill().setImage(ima);

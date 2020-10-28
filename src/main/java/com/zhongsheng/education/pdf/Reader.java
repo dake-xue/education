@@ -1,10 +1,9 @@
 package com.zhongsheng.education.pdf;
 
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.AcroFields;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.*;
 import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.util.UrlUtil;
 
@@ -18,7 +17,7 @@ import java.util.Map.Entry;
 
 public class Reader {
 
-    public static String addBill(Student student, String name, String erweima) {
+    public static String addBill(Student student, String name) {
         String fi = null;
         // 获得当前时间
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -57,7 +56,7 @@ public class Reader {
         paraMap.put("Text18", student.getSubject());
         paraMap.put("Text19", student.getCampus());
         paraMap.put("Text20", student.getFamilyInfo().getFphone());
-        paraMap.put("Text21", erweima);
+       // paraMap.put("Text21", erweima);
         paraMap.put("Text22", name);
 
         //组合文件名
@@ -71,9 +70,10 @@ public class Reader {
             if (student.getArea() == 1 && student.getArea()!=null) {
                 //2 读入pdf表单
                 reader = new PdfReader(UrlUtil.getUrl() + "\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\electronicBillsH.pdf");
+
             } else if (student.getArea() == 2 &&  student.getArea()!=null) {
                //2 读入pdf表单
-                reader = new PdfReader(UrlUtil.getUrl() + "\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\electronicBills.pdf");
+               reader = new PdfReader(UrlUtil.getUrl() + "\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\electronicBills.pdf");
             } else if (student.getArea() == 3 &&  student.getArea()!=null) {
                 //2 读入pdf表单
                 reader = new PdfReader(UrlUtil.getUrl() + "\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\electronicBillsS.pdf");
@@ -93,6 +93,29 @@ public class Reader {
 //5给表单添加中文字体 这里采用系统字体。不设置的话，中文可能无法显示
             BaseFont bf = BaseFont.createFont("C:/WINDOWS/Fonts/SIMSUN.TTC,1", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             s.addSubstitutionFont(bf);
+
+//插入二维码
+            // 书签名
+            String fieldName = "Text21";
+            // 通过域名获取所在页和坐标，左下角为起点
+            int pageNo = s.getFieldPositions(fieldName).get(0).page;
+            Rectangle signRect = s.getFieldPositions(fieldName).get(0).position;
+            float x = signRect.getLeft();
+            float y = signRect.getBottom();
+
+            //获取二维码路径
+            String erweima = QrCodeTest.erweima(student.getPhone());
+            // 读图片
+            Image image = Image.getInstance(erweima);
+            // 获取操作的页面
+            PdfContentByte under = ps.getOverContent(pageNo);
+            // 根据域的大小缩放图片
+            image.scaleToFit(signRect.getWidth(), signRect.getHeight());
+            // 添加图片
+            image.setAbsolutePosition(x, y);
+            under.addImage(image);
+
+
 //6遍历pdf表单表格，同时给表格赋值
             Map fieldMap = s.getFields();
 
