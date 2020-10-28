@@ -18,8 +18,8 @@ import java.util.Map.Entry;
 
 public class Reader {
 
-    public static String addBill(Student student, String name) {
-        String fi=null;
+    public static String addBill(Student student, String name, String erweima) {
+        String fi = null;
         // 获得当前时间
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat format1 = new SimpleDateFormat("yyyyMMddHH");
@@ -28,13 +28,13 @@ public class Reader {
         String formatDate1 = format1.format(new Date());
         // 随机生成文件编号
         int random = new Random().nextInt(10000);
-        StringBuffer sr=new StringBuffer();
+        StringBuffer sr = new StringBuffer();
         sr.append(formatDate1);
         sr.append(random);
         sr.toString();
-        String m= String.valueOf(student.getJiaofeijine());
+        String m = String.valueOf(student.getJiaofeijine());
         //金额转换中文
-      String result=ConvertUpMoney.toChinese(m);
+        String result = ConvertUpMoney.toChinese(m);
         //1 准备要填充的数据
         Map paraMap = new HashMap();
         paraMap.put("Text1", student.getSname());
@@ -46,7 +46,7 @@ public class Reader {
         paraMap.put("Text7", student.getExaminationtime());
         paraMap.put("Text8", student.getClasses());
         paraMap.put("Text9", student.getIdcard());
-        paraMap.put("Text10",student.getJiaofeijine());
+        paraMap.put("Text10", student.getJiaofeijine());
         paraMap.put("Text11", result);
         paraMap.put("Text12", student.getRemarks());
         paraMap.put("Text13", formatDate);
@@ -57,29 +57,38 @@ public class Reader {
         paraMap.put("Text18", student.getSubject());
         paraMap.put("Text19", student.getCampus());
         paraMap.put("Text20", student.getFamilyInfo().getFphone());
-        paraMap.put("Text21", "码");
+        paraMap.put("Text21", erweima);
         paraMap.put("Text22", name);
 
         //组合文件名
-        StringBuffer stringBuffer=new StringBuffer();
+        StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(student.getSname());
         stringBuffer.append(random);
-        String r= stringBuffer.toString();
+        String r = stringBuffer.toString();
         try {
-
-//2 读入pdf表单
-            PdfReader reader = new PdfReader(UrlUtil.getUrl()+"\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\electronicBills.pdf");
-//3 根据表单生成一个新的pdf
-            File file= new File("D:\\pdf\\"+r+".pdf");
-            fi="D:\\pdf\\"+r+".pdf";
-            if(file.exists()){
+            PdfReader reader = null;
+            //判断省市区
+            if (student.getArea() == 1 && student.getArea()!=null) {
+                //2 读入pdf表单
+                reader = new PdfReader(UrlUtil.getUrl() + "\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\electronicBillsH.pdf");
+            } else if (student.getArea() == 2 &&  student.getArea()!=null) {
+               //2 读入pdf表单
+                reader = new PdfReader(UrlUtil.getUrl() + "\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\electronicBills.pdf");
+            } else if (student.getArea() == 3 &&  student.getArea()!=null) {
+                //2 读入pdf表单
+                reader = new PdfReader(UrlUtil.getUrl() + "\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\electronicBillsS.pdf");
+            }
+             //3 根据表单生成一个新的pdf
+            File file = new File("D:\\pdf\\" + r + ".pdf");
+            fi = "D:\\pdf\\" + r + ".pdf";
+            if (file.exists()) {
                 file.delete();
                 file.createNewFile();
-            }else{
+            } else {
                 file.createNewFile();
-            };
+            }
             PdfStamper ps = new PdfStamper(reader, new FileOutputStream(file));
- //4 获取pdf表单
+            //4 获取pdf表单
             AcroFields s = ps.getAcroFields();
 //5给表单添加中文字体 这里采用系统字体。不设置的话，中文可能无法显示
             BaseFont bf = BaseFont.createFont("C:/WINDOWS/Fonts/SIMSUN.TTC,1", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
@@ -124,7 +133,7 @@ public class Reader {
         } catch (Exception e) {
             e.printStackTrace();
         }
-return fi;
+        return fi;
     }
 
 }

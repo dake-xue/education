@@ -25,14 +25,15 @@ public interface StudentMapper {
     public  List<Bill> selectJiaoFeiJinE(String snum);
 
     @SelectProvider(type = StudentDao.class, method = "selectAllStudent")
-    public List<Student> selectAllStudent(SearchVo searchVo, Integer page, Integer limit);
+    public List<Student> selectAllStudent(Integer schoolid,SearchVo searchVo);
 
 
     @Update("update student set score=score+#{scope} where snum=#{snum}")
     public Integer addScore(String snum, Integer scope);
 
 
-    @Insert("insert into student(snum,campus,schoolname,sname,sex,major,phone,classes,money,signupdate,addmoneydate,paymethod,intentionmajor,publiccours,majorcours,campusmanager,campusagent,onlinenumber,offlinenumber,job,homeaddress,idcard,birthday,nation,remarks,examinationtime,admissiontime,subject,department,grade,campusid,number,schoolid,area,jiaofeijine) values(#{snum},#{campus},#{schoolname},#{sname},#{sex},#{major},#{phone},#{classes},#{money},#{signupdate},#{addmoneydate},#{paymethod},#{intentionmajor},#{publiccours},#{majorcours},#{campusmanager},#{campusagent},#{onlinenumber},#{offlinenumber},#{job},#{homeaddress},#{idcard},#{birthday},#{nation},#{remarks},#{examinationtime},#{admissiontime},#{subject},#{department},#{grade},#{campusid},#{number},#{schoolid},#{area},#{jiaofeijine})")
+    //河南
+    @Insert("insert into student(snum,campus,schoolname,sname,sex,major,phone,classes,money,signupdate,addmoneydate,paymethod,intentionmajor,publiccours,majorcours,campusmanager,campusagent,onlinenumber,offlinenumber,job,homeaddress,idcard,birthday,nation,remarks,examinationtime,admissiontime,subject,department,grade,campusid,number,schoolid) values(#{snum},#{campus},#{schoolname},#{sname},#{sex},#{major},#{phone},#{classes},#{money},#{signupdate},#{addmoneydate},#{paymethod},#{intentionmajor},#{publiccours},#{majorcours},#{campusmanager},#{campusagent},#{onlinenumber},#{offlinenumber},#{job},#{homeaddress},#{idcard},#{birthday},#{nation},#{remarks},#{examinationtime},#{admissiontime},#{subject},#{department},#{grade},#{campusid},#{number},#{schoolid})")
     public Integer addStudentInfo(Student student);
 
     @Select("select * from area")

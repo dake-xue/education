@@ -61,6 +61,7 @@
                     [//表头
                         {field: 'id', title: '编号', sort: true,fixed: 'left'}
                         , {field: 'name', title: '学校'}
+                        , {field: 'count', title: '人数', templet: "#ccc"}
                         , {field: 'count', title: '操作', templet: "#xxx"}
                     ]
                 ]
@@ -157,6 +158,9 @@
                 });
             })
         }
+    </script>
+    <script type="text/html" id="ccc">
+        <a href="/zhongsheng/areaManage/selectStudent?schoolid={{d.id}}" class="layui-table-link">{{d.count}}个人</a>
     </script>
     <script type="text/html" id="xxx">
         <a onclick='openUpdateArea("{{d.id}}","{{d.name}}");' style="color:#c2a664;">修改</a>

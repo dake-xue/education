@@ -4,6 +4,7 @@ import com.zhongsheng.EducationApplication;
 import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.mapper.StudentMapper;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
+import com.zhongsheng.education.pdf.QrCodeTest;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
 import com.zhongsheng.education.util.MyUtil;
@@ -22,6 +23,7 @@ import java.util.Locale;
 @Service
 public class StudentServiceImpl implements StudentService {
 
+
     private static final Logger log = LoggerFactory.getLogger(EducationApplication.class);
 
     @Autowired
@@ -36,10 +38,10 @@ public class StudentServiceImpl implements StudentService {
     private BillService billService;
 
     @Autowired
-    private  UserService userService;
+    private UserService userService;
 
     @Autowired
-    private TableDicService  tableDicService;
+    private TableDicService tableDicService;
 
     /**
      * @创建人 xueke
@@ -47,7 +49,7 @@ public class StudentServiceImpl implements StudentService {
      * @返回值
      * @创建时间 2020/9/27
      * @描述 学生登陆后调用的方法（查看自己的详细信息）
-    */
+     */
     @Override
     public Student selectStudentByIphone(String phone) {
         Student student = studentMapper.selectStudentByIphone(phone);
@@ -63,7 +65,7 @@ public class StudentServiceImpl implements StudentService {
      * @创建人 xueke
      * @创建时间 2020/9/22
      * @描述 根据id查询学生
-    */
+     */
     @Override
     public Student selectStudent(String snum) {
         //学生
@@ -76,9 +78,9 @@ public class StudentServiceImpl implements StudentService {
         return student;
     }
 
-    public  List<Performance> selectPer(String snum){
+    public List<Performance> selectPer(String snum) {
         return studentMapper.selectPer(snum);
-    };
+    }
 
     public Student selectStudentOne(String snum) {
         //学生
@@ -89,40 +91,38 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public Integer selectJiaoFeiJinE(String snum) {
-     List<Bill> billList=   studentMapper.selectJiaoFeiJinE(snum);
-     Integer num=0;
+        List<Bill> billList = studentMapper.selectJiaoFeiJinE(snum);
+        Integer num = 0;
         for (int i = 0; i < billList.size(); i++) {
-            num+=billList.get(i).getPaymentAmount();
+            num += billList.get(i).getPaymentAmount();
         }
         return num;
-    };
-
-
-    //查询所有学生
-    @Override
-    public List<Student> selectAllStudent(SearchVo searchVo,Integer page,Integer limit) {
-
-        return studentMapper.selectAllStudent(searchVo,page,limit);
     }
 
+
+    @Override
+    public List<Student> selectAllStudent(Integer schoolid, SearchVo searchVo) {
+
+        return studentMapper.selectAllStudent( schoolid, searchVo);
+    }
 
     //添加学生
     @Override
     public Student addStudentInfo(Student student, String name) {
-        Student stu =  studentMapper.selectStudentBySnameAndIphone(student);
-        if(stu==null){
+        Student stu = studentMapper.selectStudentBySnameAndIphone(student);
+        if (stu == null) {
             //省份
             String str = String.format("%02d", student.getArea());
             //校区
-            CampusDic cnum=studentMapper.selectCNumber(student.getCampusid());
+            CampusDic cnum = studentMapper.selectCNumber(student.getCampusid());
             //年份后两位
             String year = new SimpleDateFormat("yy", Locale.CHINESE).format(new Date());
-            String num="0001";
-            Integer in=studentMapper.selectXuHao(student.getCampusid());
-            Integer n=1;
-            if (in!=null && !" ".equals(in)){
-                n=in+1;
-                num=String.format("%04d",n);
+            String num = "0001";
+            Integer in = studentMapper.selectXuHao(student.getCampusid());
+            Integer n = 1;
+            if (in != null && !" ".equals(in)) {
+                n = in + 1;
+                num = String.format("%04d", n);
             }
             //拼接学生id  （省份+校区+年份+序号）
             StringBuffer sr = new StringBuffer();
@@ -130,12 +130,11 @@ public class StudentServiceImpl implements StudentService {
             sr.append(cnum.getCnum());
             sr.append(year);
             sr.append(num);
-            String string=sr.toString();
+            String string = sr.toString();
 
             student.setSnum(string);
             student.setNumber(n);
             student.setCampus(cnum.getName());
-
 
             int i = studentMapper.addStudentInfo(student);
             student.getSchoolInfo().setSnum(student.getSnum());
@@ -143,6 +142,21 @@ public class StudentServiceImpl implements StudentService {
             //添加联系人
             familyService.addFamilyInfo(student.getFamilyInfo());
             schoolService.addSchoolInfo(student.getSchoolInfo());
+            log.info("=======================" + student.toString());
+            //生成二维码
+            String erweima = QrCodeTest.erweima(string);
+            //生成票据
+            String s = Reader.addBill(student, name, erweima);
+            //生成图片
+            String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir") + "\\src\\main\\resources\\static\\pdfToImage", 300);
+            student.getBill().setImage("\\zhongsheng\\pdfToImage\\" + MyUtil.getPngName(ima));
+            student.getBill().setSnum(student.getSnum());
+            student.getBill().setRemark(student.getRemarks());
+            student.getBill().setArea(student.getArea());
+            student.getBill().setCampusid(student.getCampusid());
+            student.getBill().setSchoolid(student.getSchoolid());
+            //插入票据表
+            billService.addBillInfo(student.getBill());
             //插入用户表
             User user = new User();
             user.setName(student.getSname());
@@ -150,16 +164,17 @@ public class StudentServiceImpl implements StudentService {
             user.setPassword(student.getPhone().substring(student.getPhone().length() - 6));
             user.setRoleid(3);
             userService.addUser(user);
-            if(i!=0){
-                log.info("添加用户完成。。。。。。"+i+"******学号："+student.getSnum());
+            if (i != 0) {
+                log.info("添加用户完成。。。。。。" + i + "******学号：" + student.getSnum());
                 return student;
             }
 
         }
+
         log.info("已存在学号。。。。。。"+stu.getSnum());
+
         return stu;
     }
-
 
     public Integer addScore(String snum, Integer scope) {
         return studentMapper.addScore(snum, scope);
@@ -169,6 +184,7 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.selectArea();
     }
 
+    ;
 
     public List<TableDic> selectQu(Integer id) {
         return studentMapper.selectQu(id);
@@ -180,28 +196,31 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.selectSchool(id);
     }
 
+    ;
 
     public String selectNumber(Integer id) {
         return studentMapper.selectNumber(id);
     }
 
+    ;
 
     public CampusDic selectCNumber(Integer ca) {
         return studentMapper.selectCNumber(ca);
     }
 
-    public TableDic selectSchoolId(String name){
+    public TableDic selectSchoolId(String name) {
         return studentMapper.selectSchoolId(name);
-    };
+    }
+
+
 
     public Integer selectXuHao(Integer id) {
         return studentMapper.selectXuHao(id);
     }
+    public Integer changeScore(String snum, Integer score) {
+        return studentMapper.changeScore(snum, score);
+    }
 
-
-    public Integer changeScore(String snum,Integer score){
-       return studentMapper.changeScore(snum,score);
-    };
     @Override
     public Integer updateStudent(Student student) {
         schoolService.updateSchool(student.getSchoolInfo());
@@ -213,17 +232,22 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.updateStudent(student);
     }
 
-    public Integer addPer(Performance performance){
+    public Integer addPer(Performance performance) {
         return studentMapper.addPer(performance);
     }
 
-    public Integer addPerfor(Performance performance){
+    public Integer addPerfor(Performance performance) {
         return studentMapper.addPerfor(performance);
-    };
+    }
 
-    public Performance selectPerOne(Integer id){
+    ;
+
+    public Performance selectPerOne(Integer id) {
         return studentMapper.selectPerOne(id);
-    };
+    }
+
+    ;
+
     @Override
     public Integer updateStatus(Student student) {
         return studentMapper.updateStatus(student);

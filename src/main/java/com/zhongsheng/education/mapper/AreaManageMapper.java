@@ -2,6 +2,7 @@ package com.zhongsheng.education.mapper;
 
 import com.zhongsheng.education.entiy.Area;
 import com.zhongsheng.education.entiy.CampusDic;
+import com.zhongsheng.education.entiy.Student;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -41,4 +42,7 @@ public interface AreaManageMapper {
 
     @Update("update  training_school_dic set name=#{name} where id=#{id} ")
     public Integer toUpdateSchool(CampusDic campusDic);
+
+    @Select("select * from student where schoolid=#{schoolid}")
+    public List<Student> selectStudent(Integer schoolid);
 }

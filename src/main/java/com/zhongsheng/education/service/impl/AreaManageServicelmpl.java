@@ -2,6 +2,7 @@ package com.zhongsheng.education.service.impl;
 
 import com.zhongsheng.education.entiy.Area;
 import com.zhongsheng.education.entiy.CampusDic;
+import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.mapper.AreaManageMapper;
 import com.zhongsheng.education.service.AreaManageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,17 +43,17 @@ public class AreaManageServicelmpl implements AreaManageService {
     @Override
     public Integer  addSchool(Integer id,String name){
         return areaManageMapper.addSchool( id, name);
-    };
+    }
 
     @Override
     public Integer  toUpdateArea(Area area){
         return areaManageMapper.toUpdateArea(area);
-    };
+    }
 
     @Override
     public Integer toUpdateCampus(CampusDic campusDic){
         return areaManageMapper.toUpdateCampus(campusDic);
-    };
+    }
 
     @Override
     public Integer toUpdateSchool(CampusDic campusDic){
@@ -64,4 +65,9 @@ public class AreaManageServicelmpl implements AreaManageService {
         return areaManageMapper.allArea();
     }
 
+    }
+
+    public List<Student> selectStudent(Integer schoolid){
+      return areaManageMapper.selectStudent(schoolid);
+    }
 }
