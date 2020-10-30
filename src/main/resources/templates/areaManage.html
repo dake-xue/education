@@ -44,7 +44,7 @@
     </script>
     <script type="text/html" id="toolbarDemo">
         <div class="layui-btn-container">
-            <button type="button" class="layui-btn data-add-btn" onclick="openAddArea()">
+            <button shiro:hasPermission=="add:area" type="button" class="layui-btn data-add-btn" onclick="openAddArea()">
                 <i class="layui-icon">&#xe608;</i> 新增省份
             </button>
             <button type="button" class="layui-btn refresh-btn">
@@ -63,7 +63,7 @@
             //第一个实例
             table.render({
                 elem: '#demo'
-                , url: '/zhongsheng/areaManage/selectArea' //数据接口
+                , url: '/zhongsheng/areaManage/selectAreaByAid' //数据接口
                 , page: true //开启分页
                 , limit: 6//每页多少条数据
                 , limits: [6, 12, 18]//每页条数的选择项
@@ -149,7 +149,7 @@
                 var layer = layui.layer, $ = layui.$;
                 layer.open({
                     type: 1,//类型
-                    area: ['400px', '350px'],//定义宽和高
+                    area: ['350px', '250px'],//定义宽和高
                     title: '添加省份',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#mmm')//打开的内容
@@ -165,7 +165,7 @@
                 var layer = layui.layer, $ = layui.$;
                 layer.open({
                     type: 1,//类型
-                    area: ['400px', '350px'],//定义宽和高
+                    area: ['350px', '250px'],//定义宽和高
                     title: '修改省份',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#up')//打开的内容
@@ -178,7 +178,6 @@
 <body>
 
 <div id="wrapper">
-
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <ul class="nav metismenu" id="side-menu">
@@ -314,36 +313,32 @@
 
 <!--添加省份-->
 <div id="mmm" style="display: none;text-align: center;">
-    <form class="layui-form" id="mm" type="hidden">
-        <br><br><br><br><br>
-        <div class="layui-inline">
+    <form class="layui-form" id="mm" type="hidden" style="margin-top: 15%;">
+
+        <div class="layui-input-inline">
             <label class="layui-form-label">省份</label>
             <div class="layui-input-inline">
                 <input type="text" name="name" class="layui-input" lay-verify="required" autocomplete="off"></div>
         </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
-            </div>
+        <div class="layui-form-item" style="margin-top: 10%;">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">提交</button>
         </div>
     </form>
 </div>
 
 <!--修改省份-->
 <div id="up" style="display: none;text-align: center;">
-    <form class="layui-form" id="update" type="hidden">
-        <br><br><br><br><br>
+    <form class="layui-form" id="update" type="hidden" style="margin-top: 15%;">
         <input type="hidden" id="aid" name="aid">
-       <div class="layui-inline">
+
+       <div class="layui-input-inline">
             <label class="layui-form-label">省份</label>
             <div class="layui-input-inline">
                 <input type="text" id="aname" name="aname" class="layui-input" lay-verify="required" autocomplete="off">
             </div>
         </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="formDemo2">提交</button>
-            </div>
+        <div class="layui-form-item" style="margin-top: 10%;">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo2">提交</button>
         </div>
     </form>
 </div>

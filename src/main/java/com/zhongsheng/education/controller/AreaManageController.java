@@ -27,19 +27,25 @@ public class AreaManageController {
     StudentService studentService;
 
 
-    //查询省区校
+    /**
+     * @创建人 xueke
+     * @创建时间 2020/10/30
+     * @描述
+    */
     @RequestMapping("/selectAreaByAid")
     @ResponseBody
     public LayuiData selectAreaByAid(@RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "6") int limit)throws Exception{
         Page pagehelper= PageHelper.startPage(page,limit);
         //取出session中的user
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
-        Area area= areaManageService.selectAreaByAid(loginUser.getArea());
-        List <Area> list = new ArrayList<>();
-        list.add(area);
+        List<Area> areaList = areaManageService.selectAreaByAid(loginUser.getArea());
+        for (Area a:areaList){
+            List<TableDic> tableDicList=studentService.selectQu(a.getAid());
+            a.setCount(tableDicList.size());
+        }
         LayuiData layuiData=new LayuiData();
         layuiData.setCount((int)pagehelper.getTotal());
-        layuiData.setData(list);
+        layuiData.setData(areaList);
         return  layuiData;
     }
 

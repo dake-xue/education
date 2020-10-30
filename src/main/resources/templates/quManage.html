@@ -104,7 +104,7 @@
                 return false;
             });
 
-//修改省份监听提交
+            //修改校区监听提交
             form.on('submit(formDemo2)', function (data) {
                 var campusDic = data.field;
                 $.ajax({
@@ -137,7 +137,7 @@
                 var layer = layui.layer, $ = layui.$;
                 layer.open({
                     type: 1,//类型
-                    area: ['400px', '350px'],//定义宽和高
+                    area: ['350px', '250px'],//定义宽和高
                     title: '添加校区',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#mmm')//打开的内容
@@ -152,7 +152,7 @@
                 var layer = layui.layer, $ = layui.$;
                 layer.open({
                     type: 1,//类型
-                    area: ['400px', '350px'],//定义宽和高
+                    area: ['350px', '250px'],//定义宽和高
                     title: '修改校区',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#up')//打开的内容
@@ -321,36 +321,32 @@
 
 <!--添加校区-->
 <div id="mmm" style="display: none;text-align: center;">
-    <form class="layui-form" id="mm" type="hidden">
-        <br><br><br><br><br>
-        <div class="layui-inline">
+    <form class="layui-form" id="mm" style="margin-top: 15%;" type="hidden">
+
+        <div class="layui-input-inline">
             <label class="layui-form-label">校区</label>
             <div class="layui-input-inline">
                 <input type="text" name="name" class="layui-input" lay-verify="required" autocomplete="off"></div>
         </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
-            </div>
+        <div class="layui-form-item" style="margin-top: 10%;">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">提交</button>
         </div>
     </form>
 </div>
 
 <!--修改校区-->
 <div id="up" style="display: none;text-align: center;">
-    <form class="layui-form" id="update" type="hidden">
-        <br><br><br><br><br>
+    <form class="layui-form" style="margin-top: 15%;" id="update" type="hidden">
         <input type="hidden" id="id" name="id">
-        <div class="layui-inline">
+
+        <div class="layui-input-inline">
             <label class="layui-form-label">校区</label>
             <div class="layui-input-inline">
                 <input type="text" id="aname" name="name" class="layui-input" lay-verify="required" autocomplete="off">
             </div>
         </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="formDemo2">提交</button>
-            </div>
+        <div class="layui-form-item" style="margin-top: 10%;">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo2">提交</button>
         </div>
     </form>
 </div>

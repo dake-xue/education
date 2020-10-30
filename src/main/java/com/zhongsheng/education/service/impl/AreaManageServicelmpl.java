@@ -71,7 +71,8 @@ public class AreaManageServicelmpl implements AreaManageService {
     }
 
     @Override
-    public Area selectAreaByAid(Integer aid) {
+    public List<Area> selectAreaByAid(Integer aid) {
+        if(aid==0){}
         return areaManageMapper.selectAreaByAid(aid);
     }
 }

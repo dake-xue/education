@@ -1,12 +1,11 @@
 package com.zhongsheng.education.mapper;
 
+import com.zhongsheng.education.dao.StudentDao;
+import com.zhongsheng.education.dao.TableDao;
 import com.zhongsheng.education.entiy.Area;
 import com.zhongsheng.education.entiy.CampusDic;
 import com.zhongsheng.education.entiy.Student;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -22,8 +21,8 @@ public interface AreaManageMapper {
     @Select("select * from area where aname=#{name}")
     public Area selectArea(String name);
 
-    @Select("select * from area where aid=#{aid}")
-    public Area selectAreaByAid(Integer aid);
+    @SelectProvider(type = TableDao.class, method = "selectAreaByAid")
+    List<Area> selectAreaByAid(Integer aid);
 
     @Select("select * from area")
     List<Area> allArea();

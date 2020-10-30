@@ -31,5 +31,5 @@ public interface AreaManageService {
 
     List<Student> selectStudent(Integer schoolid);
 
-    Area selectAreaByAid(Integer aid);
+    List<Area> selectAreaByAid(Integer aid);
 }
