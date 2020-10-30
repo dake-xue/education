@@ -4,7 +4,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
-import com.zhongsheng.education.pdf.QrCodeTest;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
 import com.zhongsheng.education.util.LayuiData;
@@ -46,11 +45,11 @@ public class StudentController {
     @GetMapping("/allStudentInfo")
     @ResponseBody
     public LayuiData allStudentInfo( @RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "3") int limit, Integer schoolid,SearchVo searchVo) throws Exception {
-        Page pagehelper = PageHelper.startPage(page, limit);
         //取出session中的user
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         //把user中的area字段赋给search
         searchVo.setArea(loginUser.getArea());
+        Page pagehelper = PageHelper.startPage(page, limit);
         List<Student> studentList = studentService.selectAllStudent(schoolid,searchVo);
         //查询已交学费
         for (Student s : studentList) {

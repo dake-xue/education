@@ -69,7 +69,7 @@
         //Demo
         layui.use('form', function() {
             var form = layui.form;
-            getClassify("classes_dic", "classes");
+            //getClassify("classes_dic", "classes");
             //getClassify("campus_dic", "campus");
             getClassify("subject_dic", "subject");
             getClassify("nation_dic", "nation");
@@ -157,6 +157,7 @@
                     layui.form.render("select");
                 }
             });
+            //区
             form.on('select(area)', function(data) {
                 var parentId = data.value;
                 if(parentId === "" || parentId < 1) {
@@ -181,6 +182,7 @@
                     }
                 });
             });
+            //校
             form.on('select(campus)', function(data) {
                 $.ajax({
                     type: 'post',
@@ -196,6 +198,52 @@
                             str += "<option value='" + data[i].name + "'>" + data[i].name + "</option>"
                         }
                         $("#schoolname").html(str);
+                        //重新渲染
+                        layui.form.render("select");
+                    }
+                });
+            });
+            //班次
+            form.on('select(area)', function(data) {
+                var parentId = data.value;
+                if(parentId === "" || parentId < 1) {
+                    return;
+                }
+                $.ajax({
+                    type: 'post',
+                    url: '/zhongsheng/ClassesController/selectClass',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: {
+                        "id": parentId
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        var str;
+                        for(var i = 0; i < data.length; i++) {
+                            str += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"
+                        }
+                        $("#classes").html(str);
+                        //重新渲染
+                        layui.form.render("select");
+                    }
+                });
+            });
+            //学费
+            form.on('select(classes)', function(data) {
+                $.ajax({
+                    type: 'post',
+                    url: '/zhongsheng/ClassesController/selectClassMoney',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: {
+                        "id":data.value
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        var s;
+                        for(var j = 0; j < data.length; j++) {
+                            s += "<option value='" + data[j].id + "'>" + data[j].classmoney + "</option>"
+                        }
+                        $("#classmoney").html(s);
                         //重新渲染
                         layui.form.render("select");
                     }
@@ -414,7 +462,7 @@
             <div class="layui-input-inline">
                 <label class="layui-form-label important">班次</label>
                 <div class="layui-input-inline">
-                    <select id="classes" name="classes" lay-verify="required">
+                    <select id="classes"  lay-filter="classes"  name="classes" lay-verify="required">
                     </select>
                 </div>
             </div>
@@ -506,7 +554,9 @@
             <div class="layui-input-inline important">
                 <label class="layui-form-label" style="white-space:nowrap!important;">学费</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="money" required lay-verify="double" autocomplete="off" class="layui-input">
+                  <select id="classmoney" lay-filter="classmoney" name="money" lay-verify="required">
+                        <option value="">请先选择班次</option>
+                    </select>
                 </div>
             </div>
             <div class="layui-input-inline important">

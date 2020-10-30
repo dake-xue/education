@@ -297,6 +297,14 @@
                     <a th:href="@{/areaManage}"><i class="fa fa-table"></i> <span class="nav-label">省区校管理</span><span
                             class="fa arrow"></span></a>
                 </li>
+                <li shiro:hasPermission=="classmoney:list">
+                    <a href=""><i class="fa fa-table"></i> <span class="nav-label">班次管理</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class=""><a th:href="@{/ClassesController/classes}">班次信息</a></li>
+                        <li class=""><a onclick="openClasses();">添加班次</a></li>
+                    </ul>
+                </li>
             </ul>
 
         </div>
