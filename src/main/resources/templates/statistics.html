@@ -298,6 +298,7 @@
                 url: '/zhongsheng/student/selectArea',
                 contentType: 'application/json',
                 success: function (data) {
+                    var areaId = $("#areaid").val();
                     var str = "<option value=''>请选择省份</option>";
                     for (var i = 0; i < data.length; i++) {
                         str += "<option value='" + data[i].aid + "'>" + data[i].aname + "</option>"
@@ -305,6 +306,9 @@
                     $("#area").html(str);
                     //重新渲染
                     layui.form.render("select");
+                    var select = 'dd[ lay-value="' + areaId + '"]';
+                    $("#area").siblings("div.layui-form-select").find('dl').find(select).click();
+                    $('#area').attr('disabled', 'disabled');
                 }
             });
             //区
@@ -320,6 +324,7 @@
                     data: {"id": parentId},
                     dataType: "json",
                     success: function (data) {
+                        var campusid = $("#campusid").val();
                         var str = "<option value=''>请选择校区</option>";
                         for (var i = 0; i < data.length; i++) {
                             str += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"
@@ -327,6 +332,9 @@
                         $("#campus").html(str);
                         //重新渲染
                         layui.form.render("select");
+                        var select = 'dd[ lay-value="' + campusid + '"]';
+                        $("#campus").siblings("div.layui-form-select").find('dl').find(select).click();
+                        $('#campus').attr('disabled', 'disabled');
                     }
                 });
             });
@@ -361,7 +369,8 @@
 <body>
 
 <div id="wrapper">
-
+    <input hidden id="areaid" th:value="${session.user.area}">
+    <input hidden id="campusid" th:value="${session.user.campus}">
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <ul class="nav metismenu" id="side-menu">

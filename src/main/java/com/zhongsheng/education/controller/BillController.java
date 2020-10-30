@@ -13,6 +13,7 @@ import com.zhongsheng.education.util.MyUtil;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,14 @@ public class BillController {
     BillService billService;
     @Autowired
     StudentService studentService;
+
+    /*@RequestMapping("/toAllBill")
+    public String BillStatistics(Model model){
+        //取出session中的user
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        model.addAttribute("area",loginUser.getArea());
+        return "statistics";
+    }*/
 
     //收入统计
     @RequestMapping(value = "/billStatistics",method = RequestMethod.POST)

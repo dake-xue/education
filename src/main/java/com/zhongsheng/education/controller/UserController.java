@@ -47,8 +47,8 @@ public class UserController {
     */
     @RequestMapping("/allUser")
     @ResponseBody
-    public String allUser(Integer page,Integer limit){
-        List<UserVo> userList =  userService.selectAllUser(page, limit);
+    public String allUser(Integer page,Integer limit,String name){
+        List<UserVo> userList =  userService.selectAllUser(page, limit,name);
         return MyUtil.layuiData(userList);
     }
 

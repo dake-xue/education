@@ -6,7 +6,7 @@ public class QrCodeTest {
 
     public static String erweima(String phone){
         // 存放在二维码中的内容
-        String text = "http://192.168.0.191:8080/zhongsheng/student/stuToStudentDetails?phone="+phone;
+        String text = "http://mxxbz9pk.xiaomy.net:36569/zhongsheng/student/stuToStudentDetails?phone="+phone;
         // 嵌入二维码的图片路径
         String imgPath = UrlUtil.getUrl()+"\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\nei.png";
         // 生成的二维码的路径及名称
