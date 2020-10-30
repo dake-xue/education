@@ -139,6 +139,9 @@ public class StudentController {
         student1.setBill(bill);
         student1.setRemarks(remarks);
         student1.setJiaofeijine(paymentAmount);
+        //生成二维码
+        String erweima = QrCodeTest.erweima(snum);
+
         //生成票据
         String s = Reader.addBill(student1, user.getName());
         //生成图片

@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface UserService {
    User selectWho(User user);
-   List<UserVo> selectAllUser(Integer page, Integer limit);
+   List<UserVo> selectAllUser(Integer page, Integer limit,String name);
    public Integer addUser(User user);
    public User selectUserId(Integer whoid);
    Integer updatePass(User user);

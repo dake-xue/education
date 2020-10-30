@@ -25,9 +25,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserVo> selectAllUser(Integer page, Integer limit) {
+    public List<UserVo> selectAllUser(Integer page, Integer limit,String name) {
         PageHelper.startPage(page,limit);
-        return userMapper.selectAllUser();
+        return userMapper.selectAllUser(name);
     }
 
 

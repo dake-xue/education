@@ -201,6 +201,8 @@ public class AliPayServiceImpl implements AliPayService {
             String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"), "UTF-8");
             //交易状态
             String trade_status = new String(request.getParameter("trade_status").getBytes("ISO-8859-1"), "UTF-8");
+            //付款金额
+            String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"),"UTF-8");
             logger.info("交易状态："+trade_status);
             if (trade_status.equals("TRADE_FINISHED")) {
                 //判断该笔订单是否在商户网站中已经做过处理
@@ -234,7 +236,7 @@ public class AliPayServiceImpl implements AliPayService {
                 String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
                 Bill bill = new Bill();
                 bill.setImage("\\zhongsheng\\pdfToImage\\"+MyUtil.getPngName(ima));
-                bill.setPaymentAmount(student.getJiaofeijine());
+                bill.setPaymentAmount(Integer.parseInt(total_amount.substring(0,total_amount.length()-3)));
                 bill.setSnum(student.getSnum());
                 bill.setRemark(student.getRemarks());
                 bill.setArea(student.getArea());

@@ -36,7 +36,7 @@
             table.render({
                 elem: '#demo'
                 , height: 312
-                , url: '/zhongsheng/user/allUser' //数据接口
+                , url: '/zhongsheng/user/allUser'//数据接口
                 , page: true //开启分页
                 ,limit: 6//每页多少条数据
                 ,limits:[6,12,18]//每页条数的选择项
@@ -47,6 +47,7 @@
                         , {field: 'username', title: '用户名', sort: true}
                         , {field: 'rolename', title: '角色'}
                         , {field: 'aname', title: '地区'}
+                        , {field: 'cname', title: '校区'}
                         , {field: 'status', title: '状态',templet: '#zt'}
                         , {field: '', title: '操作',templet: '#dg'}
                      ]
@@ -96,7 +97,7 @@
             // 监听搜索操作
             form.on('submit(data-search-btn)', function (data) {
                 //执行重载
-                table.reload('currentTableId', {
+                table.reload('demo', {
                     where:data.field
                 });
                 return false;
@@ -124,16 +125,6 @@
                 });
                 return false;
             });
-           
-            // 监听搜索操作
-            form.on('submit(data-search-btn)', function (data) {
-                //执行重载
-                table.reload('demo', {
-                    where:data.field
-                });
-                return false;
-            });
-
 
           
         });
@@ -252,7 +243,6 @@
         {{#  } else { }}
         <a class="layui-btn-sm layui-btn layui-btn-normal" onclick="disable('{{d.uid}}','{{d.name}}',0);" style="color: white">解禁</a>
         {{#  } }}
-        <a class="layui-btn layui-btn-sm" onclick="openModak('role')" style="color: white">赋权</a>
     </script>
 </head>
 
@@ -354,14 +344,14 @@
         <div class="wrapper wrapper-content animated fadeInRight">
 
             <!--搜索框-->
-            <div class="row layui-form-item">
+            <div class="row layui-form-item" style="margin-left: 0%;">
                 <form class="layui-form layui-form-pane">
                     <div class="layui-form-item" id="search">
                         <div class="layui-inline" id="keyword">
-                            <input type="text" name='keyword'  placeholder="请输入姓名" autocomplete="off" class="layui-input" style="width: 300px">
+                            <input type="text" name='name'  placeholder="请输入姓名" autocomplete="off" class="layui-input" style="width: 300px">
                         </div>
                         <div class="layui-inline">
-                            <button class="layui-btn layui-btn-primary" lay-submit
+                            <button class="layui-btn layui-btn-normal" lay-submit
                                     lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
                             </button>
                         </div>

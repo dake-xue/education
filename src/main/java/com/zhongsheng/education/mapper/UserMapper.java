@@ -14,8 +14,8 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Select("select u.uid,u.name,u.username,u.password,u.roleid,u.status,r.name rolename ,a.aname from user u LEFT JOIN role r on u.roleid = r.id LEFT JOIN area a on a.aid = u.area where u.roleid <> 1")
-    List<UserVo> selectAllUser();
+    @Select("select u.uid,u.name,u.username,u.password,u.roleid,u.status,r.name rolename ,a.aname ,c.name cname from user u LEFT JOIN role r on u.roleid = r.id LEFT JOIN area a on a.aid = u.area LEFT JOIN campus_dic c on u.campus = c.id where u.roleid <> 1 and u.name like '%${name}%'")
+    List<UserVo> selectAllUser(String name);
 
     //添加用户
     @Insert("insert into user(name,username,password,roleid,area,campus) values(#{name},#{username},#{password},#{roleid},#{area},#{campus})")

@@ -8,9 +8,18 @@ public class UserVo {
     private String password;
     private String rolename;
     private String aname;
+    private String cname;
     private int roleid;
     private int area;
     private int status;
+
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
+    }
 
     public int getUid() {
         return uid;
@@ -93,6 +102,7 @@ public class UserVo {
                 ", password='" + password + '\'' +
                 ", rolename='" + rolename + '\'' +
                 ", aname='" + aname + '\'' +
+                ", cname='" + cname + '\'' +
                 ", roleid=" + roleid +
                 ", area=" + area +
                 ", status=" + status +
