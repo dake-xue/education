@@ -181,6 +181,25 @@
                         layui.form.render("select");
                     }
                 });
+//班次
+                $.ajax({
+                    type: 'post',
+                    url: '/zhongsheng/ClassesController/selectClass',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: {
+                        "id": parentId
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        var str;
+                        for(var i = 0; i < data.length; i++) {
+                            str += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"
+                        }
+                        $("#classes").html(str);
+                        //重新渲染
+                        layui.form.render("select");
+                    }
+                });
             });
             //校
             form.on('select(campus)', function(data) {
@@ -203,33 +222,9 @@
                     }
                 });
             });
-            //班次
-            form.on('select(area)', function(data) {
-                var parentId = data.value;
-                if(parentId === "" || parentId < 1) {
-                    return;
-                }
-                $.ajax({
-                    type: 'post',
-                    url: '/zhongsheng/ClassesController/selectClass',
-                    contentType: 'application/x-www-form-urlencoded',
-                    data: {
-                        "id": parentId
-                    },
-                    dataType: "json",
-                    success: function(data) {
-                        var str;
-                        for(var i = 0; i < data.length; i++) {
-                            str += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"
-                        }
-                        $("#classes").html(str);
-                        //重新渲染
-                        layui.form.render("select");
-                    }
-                });
-            });
+
             //学费
-            form.on('select(classes)', function(data) {
+           form.on('select(classes)', function(data) {
                 $.ajax({
                     type: 'post',
                     url: '/zhongsheng/ClassesController/selectClassMoney',
