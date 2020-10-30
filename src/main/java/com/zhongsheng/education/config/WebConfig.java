@@ -44,6 +44,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/areaManage").setViewName("AreaManage");
         //
         registry.addViewController("/marketPage").setViewName("marketPage");
+
     }
 
     /**
