@@ -37,7 +37,6 @@ public class ClassesController {
     @RequestMapping("/selectClasses")
     @ResponseBody
     public LayuiData selectClasses(@RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "3") int limit,Integer area) {
-        System.out.println("area-----------------------------"+area);
         Page pagehelper = PageHelper.startPage(page, limit);
         List<Classes> classesList = classesService.selectClasses(area);
 

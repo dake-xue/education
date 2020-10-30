@@ -30,4 +30,6 @@ public interface AreaManageService {
     List<Area> allArea();
 
     List<Student> selectStudent(Integer schoolid);
+
+    Area selectAreaByAid(Integer aid);
 }

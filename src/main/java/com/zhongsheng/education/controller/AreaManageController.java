@@ -3,13 +3,11 @@ package com.zhongsheng.education.controller;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.zhongsheng.education.entiy.Area;
-import com.zhongsheng.education.entiy.CampusDic;
-import com.zhongsheng.education.entiy.Student;
-import com.zhongsheng.education.entiy.TableDic;
+import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.service.AreaManageService;
 import com.zhongsheng.education.service.StudentService;
 import com.zhongsheng.education.util.LayuiData;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/areaManage")
@@ -29,10 +28,28 @@ public class AreaManageController {
 
 
     //查询省区校
+    @RequestMapping("/selectAreaByAid")
+    @ResponseBody
+    public LayuiData selectAreaByAid(@RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "6") int limit)throws Exception{
+        Page pagehelper= PageHelper.startPage(page,limit);
+        //取出session中的user
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        Area area= areaManageService.selectAreaByAid(loginUser.getArea());
+        List <Area> list = new ArrayList<>();
+        list.add(area);
+        LayuiData layuiData=new LayuiData();
+        layuiData.setCount((int)pagehelper.getTotal());
+        layuiData.setData(list);
+        return  layuiData;
+    }
+
+    //查询省区校
     @RequestMapping("/selectArea")
     @ResponseBody
     public LayuiData selectArea(@RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "6") int limit)throws Exception{
         Page pagehelper= PageHelper.startPage(page,limit);
+        //取出session中的user
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         List<Area> areaList = studentService.selectArea();
         for (Area a:areaList){
             List<TableDic> tableDicList=studentService.selectQu(a.getAid());
@@ -44,7 +61,6 @@ public class AreaManageController {
         layuiData.setMsg("");
         layuiData.setCount((int)pagehelper.getTotal());
         layuiData.setData(areaList);
-        System.out.println(areaList);
         return  layuiData;
     }
 
@@ -68,7 +84,6 @@ public class AreaManageController {
         layuiData.setMsg("");
         layuiData.setCount((int)pagehelper.getTotal());
         layuiData.setData(areaList);
-        System.out.println(areaList);
         return  layuiData;
     }
     @RequestMapping("/selectXiao")

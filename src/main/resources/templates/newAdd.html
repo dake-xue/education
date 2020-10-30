@@ -239,6 +239,8 @@
                             s += "<option value='" + data[j].id + "'>" + data[j].classmoney + "</option>"
                         }
                         $("#classmoney").html(s);
+                        s+="<option value='200'>定金（200）</option>";
+                        $("#jiaofeijine").html(s);
                         //重新渲染
                         layui.form.render("select");
                     }
@@ -557,7 +559,9 @@
             <div class="layui-input-inline important">
                 <label class="layui-form-label" id="money1" style="white-space:nowrap!important;">缴费金额</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="jiaofeijine" required lay-verify="double" autocomplete="off" class="layui-input">
+                    <select id="jiaofeijine" lay-filter="jiaofeijine" name="jiaofeijine" lay-verify="required">
+
+                    </select>
                 </div>
             </div>
             <div class="layui-input-inline important">

@@ -22,6 +22,9 @@ public interface AreaManageMapper {
     @Select("select * from area where aname=#{name}")
     public Area selectArea(String name);
 
+    @Select("select * from area where aid=#{aid}")
+    public Area selectAreaByAid(Integer aid);
+
     @Select("select * from area")
     List<Area> allArea();
 

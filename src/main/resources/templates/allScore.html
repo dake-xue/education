@@ -188,14 +188,12 @@
 
     </script>
     <script type="text/html" id="update">
-        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm">
-            <a onclick='openUpdateScore("{{d.id}}","{{d.name}}","{{d.score}}");'><i
-                    class="layui-icon layui-icon-edit">编辑</i></a>
-        </button>
-        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm">
-            <a onclick='openDeleteScore("{{d.id}}","{{d.name}}")'><i
-                    class="layui-icon layui-icon-delete">删除</i></a>
-        </button>
+        <a class="layui-btn layui-btn-normal layui-btn-sm" style="color: white"
+           onclick='openUpdateScore("{{d.id}}","{{d.name}}","{{d.score}}");'>
+            编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-sm" style="color: white"
+           onclick='openDeleteScore("{{d.id}}","{{d.name}}")'>
+            删除</a>
     </script>
 </head>
 
