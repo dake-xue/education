@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
+import com.zhongsheng.education.pdf.QrCodeTest;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
 import com.zhongsheng.education.util.LayuiData;

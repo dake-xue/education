@@ -60,7 +60,8 @@
             margin-left: 8px;
             font-weight: bold;
         }
-        .cj{
+
+        .cj {
             background: #0095ffba;
             color: white;
             width: 85px;
@@ -71,6 +72,7 @@
             font-weight: bold;
             margin-top: 1%;
         }
+
         .wt {
             font-weight: bold;
             width: 100px;
@@ -105,8 +107,7 @@
 
             //常规用法
             laydate.render({
-                elem: '#test1',
-                type: 'date'
+                elem: '#test1'
             });
 
             //添加成绩监听提交
@@ -167,10 +168,11 @@
                 title: '补充成绩',
                 type: 2,
                 skin: "layui-layer-molv",
-                content:"/zhongsheng/student/selectPerOne?id="+e,
+                content: "/zhongsheng/student/selectPerOne?id=" + e,
                 area: ['40%', '60%'],
             });
         }
+
         function openAddMoney(snum) {
             $("#snum").val(snum);
             layui.use(['layer'], function () {
@@ -294,7 +296,8 @@
 
         <div class="row wrapper border-bottom white-bg page-heading">
             <h3 class="cj">成绩</h3>
-            <button shiro:hasPermission=="stu:addScore" type="button" class="layui-btn layui-btn-radius layui-btn-primary" th:value="${student.getSnum()}"
+            <button shiro:hasPermission=="stu:addScore" type="button"
+                    class="layui-btn layui-btn-radius layui-btn-primary" th:value="${student.getSnum()}"
                     onclick="openAddMoney(this.value)" style="margin-top: 1%;margin-left: 1%;background-color: #009688;
                     color: #FFFFFF;text-align: center;height: 40px;">
                 <i class="layui-icon">添加成绩</i>
@@ -311,9 +314,14 @@
                 </tr>
                 <tr th:each="li:${performance}" th:if="${li.getLunshu()} != null">
                     <td>
-                        &nbsp;&nbsp;&nbsp;<span th:text="'英：'+${li.getEnglishone()}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="'专：'+${li.getMajorone()}"></span><br>
-                        &nbsp;&nbsp;&nbsp;<span th:text="'英：'+${li.getEnglishtwo()}" th:if="${li.getEnglishtwo() != null}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="'专：'+${li.getMajortwo()}" th:if="${li.getMajortwo() != null}"></span><br>
-                        &nbsp;&nbsp;&nbsp;<span th:text="'英：'+${li.getEnglishthree()}" th:if="${li.getEnglishthree() != null}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="'专：'+${li.getMajorthree()}" th:if="${li.getMajorthree() != null}"></span>
+                        &nbsp;&nbsp;&nbsp;<span th:text="'英：'+${li.getEnglishone()}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            th:text="'专：'+${li.getMajorone()}"></span><br>
+                        &nbsp;&nbsp;&nbsp;<span th:text="'英：'+${li.getEnglishtwo()}"
+                                                th:if="${li.getEnglishtwo() != null}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            th:text="'专：'+${li.getMajortwo()}" th:if="${li.getMajortwo() != null}"></span><br>
+                        &nbsp;&nbsp;&nbsp;<span th:text="'英：'+${li.getEnglishthree()}"
+                                                th:if="${li.getEnglishthree() != null}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            th:text="'专：'+${li.getMajorthree()}" th:if="${li.getMajorthree() != null}"></span>
                     </td>
                     <td th:text="${li.getClasses()}"></td>
                     <td th:text="${#dates.format(li.getPtime(),'yyyy/MM/dd')}"></td>
@@ -321,8 +329,9 @@
                     <td th:text="${li.getComment()}"></td>
                     <td th:text="${li.getPremark()}"></td>
                     <td>
-                        <button type="button" class="layui-btn layui-btn-xs layui-btn-radius layui-btn-primary data-add-btn"
-                           th:value="${li.getId()}" onclick="updatePer(this.value)">补充
+                        <button type="button"
+                                class="layui-btn layui-btn-xs layui-btn-radius layui-btn-primary data-add-btn"
+                                th:value="${li.getId()}" onclick="updatePer(this.value)">补充
                         </button>
                     </td>
                 </tr>
@@ -372,7 +381,6 @@
                 <li><span class="wt">关系：</span><span th:text="${student.schoolInfo.screlation}"></span></li>
                 <li><span class="wt">姓名：</span><span th:text="${student.schoolInfo.scname}"></span></li>
                 <li><span class="wt">联系方式：</span><span th:text="${student.schoolInfo.scphone}"></span></li>
-
             </ul>
 
             <h3 class="dzpj">电子票据</h3>
@@ -404,8 +412,9 @@
         <div class="layui-inline">
             <label class="layui-form-label">英语分</label>
             <div class="layui-input-inline">
-                <input type="text" name="englishone" class="layui-input" placeholder="测试成绩"  required lay-verify="required"
-                       autocomplete="off" ></div>
+                <input type="text" name="englishone" class="layui-input" placeholder="测试成绩" required
+                       lay-verify="required"
+                       autocomplete="off"></div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">专业分</label>
@@ -421,17 +430,17 @@
         <div class="layui-inline">
             <label class="layui-form-label">专业分</label>
             <div class="layui-input-inline">
-                <input type="text" name="majortwo"  placeholder="期中成绩" class="layui-input"></div>
+                <input type="text" name="majortwo" placeholder="期中成绩" class="layui-input"></div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">英语分</label>
             <div class="layui-input-inline">
-                <input type="text" name="englishthree" placeholder="期末成绩" class="layui-input" ></div>
+                <input type="text" name="englishthree" placeholder="期末成绩" class="layui-input"></div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">专业分</label>
             <div class="layui-input-inline">
-                <input type="text" name="majorthree"  placeholder="期末成绩" class="layui-input"></div>
+                <input type="text" name="majorthree" placeholder="期末成绩" class="layui-input"></div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">班级</label>
@@ -465,10 +474,10 @@
             <div class="layui-input-block">
                 <input type="text" name="premark" class="layui-input" style="width: 400px"></div>
         </div>
-<div class="layui-form-item">
-    <div class="layui-input-block">
-        <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
-    </div>
-</div>
-</form>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
+            </div>
+        </div>
+    </form>
 </div>
