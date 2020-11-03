@@ -86,6 +86,7 @@
                         , {field: 'money', title: '操作',templet: '#et', width:'12%'}
                         , {field: 'idcard', title: '身份证', hide: true}
                      ]
+
                 ]
             });
 
@@ -136,9 +137,6 @@
                 url: "/zhongsheng/student/allStudentInfo?status=5&schoolid="+$('#schoolid').val(),
                 success: function (data) {
                     $("#on5").append("<span class='layui-badge'>" + data.count + "</span>")
-                },
-                error: function () {
-                    alert("出错啦");
                 }
             });
             $("#on5").click(function () {
@@ -180,9 +178,6 @@
                 url: "/zhongsheng/student/allStudentInfo?status=6&schoolid="+$('#schoolid').val(),
                 success: function (data) {
                     $("#on6").append("<span class='layui-badge'>" + data.count + "</span>")
-                },
-                error: function () {
-                    alert("出错啦");
                 }
             });
             $("#on6").click(function () {
@@ -224,9 +219,6 @@
                 url: "/zhongsheng/student/allStudentInfo?status=7&schoolid="+$('#schoolid').val(),
                 success: function (data) {
                     $("#on7").append("<span class='layui-badge'>" + data.count + "</span>")
-                },
-                error: function () {
-                    alert("出错啦");
                 }
             });
             $("#on7").click(function () {
@@ -434,7 +426,7 @@
         }
 
         //打开补款
-        function openAddMoney(snum, sname, sex, idcard, phone) {
+        /*function openAddMoney(snum, sname, sex, idcard, phone) {
             $("#snum1").val(snum);
             $("#sname2").val(sname);
             $("#sex").val(sex);
@@ -450,7 +442,7 @@
                     content: $('#mmm')//打开的内容
                 });
             })
-        }
+        }*/
 
 
         function openScore(snum, sname) {
@@ -827,7 +819,8 @@
     </form>
 </div>
 
-<!--模仿bootstrap的模态框-->
+<!--待补款-->
+<!--
 <div id="mmm" style="display: none;text-align: center;">
     <form class="layui-form" id="mm" type="hidden">
         <input type="hidden" id="snum1" name="snum">
@@ -869,4 +862,4 @@
             </div>
         </div>
     </form>
-</div>
+</div>-->
