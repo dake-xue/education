@@ -1,6 +1,5 @@
 package com.zhongsheng.education.mapper;
 
-import com.zhongsheng.education.entiy.PermissionInfo;
 import com.zhongsheng.education.entiy.User;
 import com.zhongsheng.education.entiy.UserVo;
 import org.apache.ibatis.annotations.Insert;
@@ -43,5 +42,10 @@ public interface UserMapper {
 
     @Select("select * from user where username=#{username} and status <> 1")
     User getByUsername(String username);
+
+    //查询当前登录人
+    @Select("SELECT u.uid uid,u.name name ,u.username username,u.password password,r.name rolename ,a.aname ,c.name cname FROM USER u LEFT JOIN role r ON u.roleid = r.id LEFT JOIN AREA a ON a.aid = u.area LEFT JOIN campus_dic c ON u.campus = c.id WHERE u.uid =#{uid}")
+    UserVo userDetails(Integer uid);
+
 
 }

@@ -424,6 +424,11 @@
                         <li class=""><a onclick="openClasses();">添加班次</a></li>
                     </ul>
                 </li>
+                <li shiro:hasPermission=="userdetails:list">
+                    <a th:href="@{/user/userDetails}"><i class="fa fa-table"></i> <span
+                            class="nav-label">个人信息</span><span
+                            class="fa arrow"></span></a>
+                </li>
             </ul>
 
         </div>

@@ -1,6 +1,5 @@
 package com.zhongsheng.education.service;
 
-import com.zhongsheng.education.entiy.PermissionInfo;
 import com.zhongsheng.education.entiy.User;
 import com.zhongsheng.education.entiy.UserVo;
 
@@ -17,4 +16,5 @@ public interface UserService {
    Set<String> getRoles(String username);
    User getByUsername(String username);
    Integer updateUserStatus(User user);
+    UserVo userDetails(Integer uid);
 }

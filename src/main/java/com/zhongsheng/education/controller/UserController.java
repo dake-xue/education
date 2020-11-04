@@ -12,9 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -30,9 +31,9 @@ public class UserController {
      * @创建人 xueke
      * @创建时间 2020/9/25
      * @描述 退出登录
-    */
+     */
     @RequestMapping("/loginOut")
-    public String loginOut(){
+    public String loginOut() {
         Subject subject = SecurityUtils.getSubject();
         if (subject != null) {
             subject.logout();
@@ -40,15 +41,16 @@ public class UserController {
         }
         return "redirect:/user/toLogin";
     }
+
     /**
      * @创建人 xueke
      * @创建时间 2020/9/27
      * @描述 展示所有用户信息
-    */
+     */
     @RequestMapping("/allUser")
     @ResponseBody
-    public String allUser(Integer page,Integer limit,String name){
-        List<UserVo> userList =  userService.selectAllUser(page, limit,name);
+    public String allUser(Integer page, Integer limit, String name) {
+        List<UserVo> userList = userService.selectAllUser(page, limit, name);
         return MyUtil.layuiData(userList);
     }
 
@@ -56,26 +58,39 @@ public class UserController {
      * @创建人 xueke
      * @创建时间 2020/9/29
      * @描述 添加用户
-    */
+     */
     @RequestMapping("/addUser")
     @ResponseBody
-    public String addUser(User user){
+    public String addUser(User user) {
         user.setPassword(MyUtil.getPassWord(user.getUsername()));
-        int i =  userService.addUser(user);
-        if(i==1){return "yes";}
+        int i = userService.addUser(user);
+        if (i == 1) {
+            return "yes";
+        }
         return "no";
+    }
+
+
+    //查询当前登录人
+    @RequestMapping("/userDetails")
+    public String userDetails(Model model) {
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        UserVo userVo=userService.userDetails(loginUser.getUid());
+        System.out.println("user--------------"+userVo);
+        model.addAttribute("userVo",userVo);
+        return "userDetails";
     }
 
     /**
      * @创建人 xueke
      * @创建时间 2020/9/29
      * @描述 修改密码
-    */
+     */
     @RequestMapping("/updPass")
     @ResponseBody
-    public String updatePass(User user){
-        int i =  userService.updatePass(user);
-        if(i==0){
+    public String updatePass(User user) {
+        int i = userService.updatePass(user);
+        if (i == 0) {
             return "no";
         }
         return "yes";
@@ -83,12 +98,13 @@ public class UserController {
 
     /**
      * 用户登录接口
+     *
      * @param user user
      * @param
      * @return string
      */
     @PostMapping("/login")
-    public String login(User user){
+    public String login(User user) {
         // 根据用户名和密码创建 Token
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
         // 获取 subject 认证主体
@@ -99,39 +115,38 @@ public class UserController {
             //根据当前登录账号来获取当前当前账号所拥有权限的菜单列表
             //String username = subject.getPrincipal().toString();
             User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
-            logger.info("对用户[" + user.getUsername()+ "]进行登录验证..验证通过......");
-            if(loginUser.getRoleid()==3){
-                return "redirect:/student/stuToStudentDetails?phone="+loginUser.getUsername();
-            }else if(loginUser.getRoleid()==4){
+            logger.info("对用户[" + user.getUsername() + "]进行登录验证..验证通过......");
+            if (loginUser.getRoleid() == 3) {
+                return "redirect:/student/stuToStudentDetails?phone=" + loginUser.getUsername();
+            } else if (loginUser.getRoleid() == 4) {
                 return "redirect:/marketPage";
             }
             return "redirect:/student/toAllStudent";
-        }catch(UnknownAccountException uae){
-            logger.info("对用户[" + user.getUsername()+ "]进行登录验证..验证未通过,未知账户");
+        } catch (UnknownAccountException uae) {
+            logger.info("对用户[" + user.getUsername() + "]进行登录验证..验证未通过,未知账户");
             return "redirect:/user/toLogin";//返回登录页面
-        }catch(IncorrectCredentialsException ice){
+        } catch (IncorrectCredentialsException ice) {
             logger.info("对用户[" + user.getUsername() + "]进行登录验证..验证未通过,密码不正确");
             return "redirect:/user/toLogin";//返回登录页面
-        }catch(LockedAccountException lae){
+        } catch (LockedAccountException lae) {
             logger.info("对用户[" + user.getUsername() + "]进行登录验证..验证未通过,账户已锁定");
             return "redirect:/user/toLogin";//返回登录页面
-        }catch(ExcessiveAttemptsException eae){
+        } catch (ExcessiveAttemptsException eae) {
             logger.info("对用户[" + user.getUsername() + "]进行登录验证..验证未通过,错误次数过多");
             return "redirect:/user/toLogin";//返回登录页面
-        }catch(AuthenticationException ae){
+        } catch (AuthenticationException ae) {
             //通过处理Shiro的运行时AuthenticationException就可以控制用户登录失败或密码错误时的情景
             logger.info("对用户[" + user.getUsername() + "]进行登录验证..验证未通过,堆栈轨迹如下");
             ae.printStackTrace();
             return "redirect:/user/toLogin";//返回登录页面
         }
-        }
-
+    }
 
     @RequestMapping("/updStatus")
     @ResponseBody
-    public String updateStatus(User user){
-        int i =  userService.updateUserStatus(user);
-        if(i==0){
+    public String updateStatus(User user) {
+        int i = userService.updateUserStatus(user);
+        if (i == 0) {
             return "no";
         }
         return "yes";
