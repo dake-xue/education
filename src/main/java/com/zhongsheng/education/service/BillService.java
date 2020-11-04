@@ -13,6 +13,6 @@ public interface BillService {
     ArrayList<String> peopleCounts(Bill bill);
     ArrayList<String> moneyCounts(Bill bill);
     List<Student> selectStudentInfo(Bill bill);
-    Integer selectJiaoFeiJinE(String snum);
+    String selectJiaoFeiJinE(String snum);
     Statistics people(Bill bill);
 }

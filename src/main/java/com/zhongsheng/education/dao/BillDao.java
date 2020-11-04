@@ -63,7 +63,7 @@ public class BillDao {
 
     //今日新增学生
     public String people(Bill bill) {
-        StringBuffer sql = new StringBuffer("SELECT COUNT(*) as people,SUM(b.paymentAmount) as money FROM student s,bill b WHERE 1=1 AND s.snum=b.snum AND s.status !=0 ");
+        StringBuffer sql = new StringBuffer("SELECT COUNT(*) as people,SUM(b.paymentAmount) as money FROM student s LEFT JOIN bill b on 1=1 AND s.snum=b.snum AND s.status !=0 ");
 
             sql.append(" and  TO_DAYS(s.signupdate) = TO_DAYS(NOW())");
         //省

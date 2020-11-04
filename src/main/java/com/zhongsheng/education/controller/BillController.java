@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -57,7 +58,7 @@ public class BillController {
         if (s.getMoney()!=null){
             statistics.setMoney(s.getMoney());
         }else {
-            statistics.setMoney(0);
+            statistics.setMoney("0.00");
         }
         return statistics;
     }
@@ -72,12 +73,13 @@ public class BillController {
         MyUtil.setStaAreaAndComp(loginUser,bill);
         List<Student> studentList = billService.selectStudentInfo(bill);
         //查询已交学费
+
         for(Student stu: studentList){
             stu.setJiaofeijine(billService.selectJiaoFeiJinE(stu.getSnum()));
-            Integer i=stu.getMoney();
-            Integer q=stu.getJiaofeijine();
-            Integer c=i-q;
-            stu.setWeijiaokuan(c);
+            BigDecimal money = new BigDecimal(stu.getMoney());
+            BigDecimal jfje = new BigDecimal(stu.getJiaofeijine());
+            BigDecimal wjje = money.subtract(jfje);
+            stu.setWeijiaokuan(wjje.toString());
         }
         LayuiData layuiData=new LayuiData();
         layuiData.setCode(0);

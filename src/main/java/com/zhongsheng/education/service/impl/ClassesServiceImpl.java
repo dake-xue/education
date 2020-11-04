@@ -13,28 +13,29 @@ public class ClassesServiceImpl implements ClassesService {
     @Autowired
     ClassesMapper classesMapper;
 
+    @Override
     public List<Classes> selectClasses(Integer area) {
         return classesMapper.selectClasses(area);
     }
 
+    @Override
+    public List<Classes> selectClassMoney(String name) {
+        return classesMapper.selectClassMoney(name);
+    }
+    @Override
     public Integer addScore(Integer aid, String name, Integer classmoney) {
 
         return classesMapper.addScore(aid, name, classmoney);
     }
-
+    @Override
     public Integer deleteScore(Integer id) {
         return classesMapper.deleteScore(id);
     }
-
+    @Override
     public Integer updateScore(Integer id, String name, Integer classmoney) {
         return classesMapper.updateScore(id, name, classmoney);
     }
-  public   List<Classes> selectClassMoney(Integer id){
-        return classesMapper.selectClassMoney(id);
-  };
-
-
-};
+}
 
 
 

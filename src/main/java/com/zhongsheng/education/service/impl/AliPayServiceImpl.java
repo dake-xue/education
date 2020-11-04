@@ -235,7 +235,7 @@ public class AliPayServiceImpl implements AliPayService {
                 String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
                 Bill bill = new Bill();
                 bill.setImage("\\zhongsheng\\pdfToImage\\"+MyUtil.getPngName(ima));
-                bill.setPaymentAmount(Integer.parseInt(total_amount.substring(0,total_amount.length()-3)));
+                bill.setPaymentAmount(total_amount);
                 bill.setSnum(student.getSnum());
                 bill.setRemark(student.getRemarks());
                 bill.setArea(student.getArea());

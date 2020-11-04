@@ -6,7 +6,7 @@ public class Classes implements Serializable {
     private Integer id;
     private Integer aid;
     private String name;
-    private Integer classmoney;
+    private String classmoney;
 
     public Integer getId() {
         return id;
@@ -32,11 +32,11 @@ public class Classes implements Serializable {
         this.name = name;
     }
 
-    public Integer getClassmoney() {
+    public String getClassmoney() {
         return classmoney;
     }
 
-    public void setClassmoney(Integer classmoney) {
+    public void setClassmoney(String classmoney) {
         this.classmoney = classmoney;
     }
 }

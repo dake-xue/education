@@ -193,7 +193,7 @@
                     success: function(data) {
                         var str;
                         for(var i = 0; i < data.length; i++) {
-                            str += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"
+                            str += "<option value='" + data[i].name + "'>" + data[i].name + "</option>"
                         }
                         $("#classes").html(str);
                         //重新渲染
@@ -230,13 +230,13 @@
                     url: '/zhongsheng/ClassesController/selectClassMoney',
                     contentType: 'application/x-www-form-urlencoded',
                     data: {
-                        "id":data.value
+                        "name":data.value
                     },
                     dataType: "json",
                     success: function(data) {
                         var s;
                         for(var j = 0; j < data.length; j++) {
-                            s += "<option value='" + data[j].id + "'>" + data[j].classmoney + "</option>"
+                            s += "<option value='" + data[j].classmoney + "'>" + data[j].classmoney + "</option>"
                         }
                         $("#classmoney").html(s);
                         s+="<option value='200'>定金（200）</option>";
@@ -363,10 +363,13 @@
 
 <div id="wrapper">
 
-    <div class="row wrapper border-bottom white-bg page-heading" style="    padding: 0% 5%;">
 
+    <div class="row wrapper border-bottom white-bg page-heading" style="    padding: 0% 5%;">
+        <img th:src="@{/img/logo.png}" alt="IMG" style="height: 60px;margin: 5% auto;">
         <form class="layui-form" id="form"
              method="post" th:action="@{/student/addStudent}" style="padding-top: 15px;">
+            <h2 style="font-weight: bold;text-align: center">报名信息填写</h2>
+            <hr>
             <h3 style="font-weight: bold">基本信息</h3>
             <hr>
             <div class="layui-input-inline">
@@ -543,8 +546,8 @@
                 <label class="layui-form-label" style="white-space:nowrap!important;">缴费方式</label>
                 <div class="layui-input-inline">
                     <select id="cindustry" name="paymethod" class="layui-form-select">
+                        <option value="网上支付">网上支付</option>
                         <option value="现金">现金</option>
-                        <option value="网银">网银</option>
                     </select>
                 </div>
             </div>

@@ -28,8 +28,8 @@ public class Student {
     private String classes;
 
     //学费
-    private int money;
-    private int jiaofeijine;
+    private String money;
+    private String  jiaofeijine;
     //考试年份
     private Integer examinationtime;
     //入学年份
@@ -95,7 +95,7 @@ public class Student {
         this.status = status;
     }
     //未交款
-    private Integer weijiaokuan;
+    private String weijiaokuan;
 
     private Integer schoolid;
 
@@ -107,11 +107,11 @@ public class Student {
         this.schoolid = schoolid;
     }
 
-    public Integer getWeijiaokuan() {
+    public String getWeijiaokuan() {
         return weijiaokuan;
     }
 
-    public void setWeijiaokuan(Integer weijiaokuan) {
+    public void setWeijiaokuan(String weijiaokuan) {
         this.weijiaokuan = weijiaokuan;
     }
 
@@ -159,11 +159,11 @@ public class Student {
         return familyInfo;
     }
 
-    public int getJiaofeijine() {
+    public String getJiaofeijine() {
         return jiaofeijine;
     }
 
-    public void setJiaofeijine(int jiaofeijine) {
+    public void setJiaofeijine(String jiaofeijine) {
         this.jiaofeijine = jiaofeijine;
     }
 
@@ -259,11 +259,11 @@ public class Student {
         this.classes = classes;
     }
 
-    public int getMoney() {
+    public String getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(String money) {
         this.money = money;
     }
 

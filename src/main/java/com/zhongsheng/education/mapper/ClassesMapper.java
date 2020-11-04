@@ -19,6 +19,6 @@ public interface ClassesMapper {
     @Update("update  classes_dic set name=#{name},classmoney=#{classmoney}  where id=#{id}")
     public Integer updateScore(Integer id, String name, Integer classmoney);
 
-    @Select("select * from classes_dic where id=#{id}")
-    public List<Classes> selectClassMoney(Integer id);
+    @Select("select * from classes_dic where name=#{name}")
+    public List<Classes> selectClassMoney(String name);
 }

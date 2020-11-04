@@ -10,7 +10,7 @@ public interface StudentService {
     public Student selectStudent(String snum);
     public  List<Performance> selectPer(String snum);
     public Student selectStudentOne(String snum);
-    Integer selectJiaoFeiJinE(String snum);
+    String selectJiaoFeiJinE(String snum);
     public List<Student> selectAllStudent(Integer schoolid,SearchVo searchVo);
     public Integer addScore(String snum,Integer scope);
     Student addStudentInfo(Student student, String name);

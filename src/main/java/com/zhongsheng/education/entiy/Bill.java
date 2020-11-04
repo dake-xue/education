@@ -7,7 +7,7 @@ public class Bill implements Serializable {
 
     private int bid;
     private String snum;
-    private int paymentAmount;
+    private String paymentAmount;
     private String image;
     private String remark;
     private Date intotime;
@@ -71,11 +71,11 @@ public class Bill implements Serializable {
         this.snum = snum;
     }
 
-    public int getPaymentAmount() {
+    public String getPaymentAmount() {
         return paymentAmount;
     }
 
-    public void setPaymentAmount(int paymentAmount) {
+    public void setPaymentAmount(String paymentAmount) {
         this.paymentAmount = paymentAmount;
     }
 

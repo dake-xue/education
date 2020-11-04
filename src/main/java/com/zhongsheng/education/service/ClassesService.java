@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ClassesService {
     List<Classes> selectClasses(Integer area);
-    List<Classes> selectClassMoney(Integer id);
+    List<Classes> selectClassMoney(String name);
     Integer addScore(Integer aid, String name, Integer classmoney);
 
     Integer deleteScore(Integer id);

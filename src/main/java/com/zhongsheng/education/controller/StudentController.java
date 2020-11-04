@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RequestMapping("/student")
@@ -53,12 +54,12 @@ public class StudentController {
         Page pagehelper = PageHelper.startPage(page, limit);
         List<Student> studentList = studentService.selectAllStudent(schoolid,searchVo);
         //查询已交学费
-        for (Student s : studentList) {
-            s.setJiaofeijine(studentService.selectJiaoFeiJinE(s.getSnum()));
-            Integer i = s.getMoney();
-            Integer q = s.getJiaofeijine();
-            Integer c = i - q;
-            s.setWeijiaokuan(c);
+        for (Student stu : studentList) {
+            stu.setJiaofeijine(billService.selectJiaoFeiJinE(stu.getSnum()));
+            BigDecimal money = new BigDecimal(stu.getMoney());
+            BigDecimal jfje = new BigDecimal(stu.getJiaofeijine());
+            BigDecimal wjje = money.subtract(jfje);
+            stu.setWeijiaokuan(wjje.toString());
         }
         LayuiData layuiData = new LayuiData();
         layuiData.setCode(0);
@@ -129,7 +130,7 @@ public class StudentController {
     //补款
     @RequestMapping("/addBill")
     @ResponseBody
-    public Integer addBill(String snum, Integer paymentAmount, String remarks, HttpSession session) {
+    public Integer addBill(String snum, String paymentAmount, String remarks, HttpSession session) {
         User user=(User)session.getAttribute("user");
         Student student1 = studentService.selectStudentOne(snum);
         Bill bill=new Bill();

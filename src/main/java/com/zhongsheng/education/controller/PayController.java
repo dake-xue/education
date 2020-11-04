@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @RequestMapping("/alipay")
 @Controller
@@ -42,15 +43,22 @@ public class PayController {
     }
 
     @PostMapping("/notify_url")
-    @ResponseBody
-    public String notifyAlipay(HttpServletRequest request) {
+    public void notifyAlipay(HttpServletRequest request,HttpServletResponse response) {
+        PrintWriter writer = null;
         try {
-            aliPayService.aliNotify(request);
+            String str=  aliPayService.aliNotify(request);
+            logger.info("异步回调："+str);
+            writer = response.getWriter();
+            writer.write(str); //一定要打印success
+            writer.flush();
         } catch (Exception e) {
             e.printStackTrace();
+        }finally {
+            if (writer != null) {
+                writer.close();
+            }
         }
         logger.info("----notify-----");
-        return "支付异步通知接口";
     }
 
     @GetMapping("/return_url")

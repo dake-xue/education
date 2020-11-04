@@ -35,7 +35,7 @@ public class MyRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        logger.info("开始授权。。。");
+        //logger.info("开始授权。。。");
         // 获取用户名
         User user = (User) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
@@ -47,13 +47,13 @@ public class MyRealm extends AuthorizingRealm {
         for(PermissionInfo permissionInfo: lists){
             authorizationInfo.addStringPermission(permissionInfo.getSn());
         }
-        logger.info("授权详情："+authorizationInfo.getStringPermissions().toString());
+        //logger.info("授权详情："+authorizationInfo.getStringPermissions().toString());
         return authorizationInfo;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        logger.info("获取user。。。");
+        //logger.info("获取user。。。");
         // 根据 Token 获取用户名
         String username = (String) authenticationToken.getPrincipal();
         // 根据用户名从数据库中查询该用户

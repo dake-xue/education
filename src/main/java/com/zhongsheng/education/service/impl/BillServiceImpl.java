@@ -6,6 +6,7 @@ import com.zhongsheng.education.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,13 +21,13 @@ public class BillServiceImpl implements BillService {
     }
 
     //查询总金额
-    public Integer selectJine(String snum){
+    public String selectJiaoFeiJinE(String snum){
         List<Bill> bills = billMapper.selectBill(snum);
-        Integer m = 0;
+        BigDecimal bigDecimal = new BigDecimal("0");
         for (int i = 0; i < bills.size(); i++) {
-            m += bills.get(i).getPaymentAmount();
+            bigDecimal.add(new BigDecimal(bills.get(i).getPaymentAmount()));
         }
-        return m;
+        return bigDecimal.toString();
     };
 
     @Override
@@ -163,13 +164,4 @@ public class BillServiceImpl implements BillService {
    };
 
 
-   public Integer selectJiaoFeiJinE(String snum) {
-        List<Order> orderList=   billMapper.selectJiaoFeiJinE(snum);
-        Integer num=0;
-        for (int i = 0; i < orderList.size(); i++) {
-
-            num+=Integer.valueOf(orderList.get(i).getPrice());;
-        }
-        return num;
-    };
 }

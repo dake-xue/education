@@ -29,7 +29,6 @@ public class ClassesController {
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         Integer area=loginUser.getArea();
         model.addAttribute("aid",area);
-        System.out.println("area============"+area);
         return "allClasses";
     }
 
@@ -87,9 +86,8 @@ public class ClassesController {
 
     @RequestMapping("/selectClassMoney")
     @ResponseBody
-    public List<Classes> selectClassMoney(Integer id) {
-        List<Classes> classesList = classesService.selectClassMoney(id);
-
+    public List<Classes> selectClassMoney(String name) {
+        List<Classes> classesList = classesService.selectClassMoney(name);
         return classesList;
     }
 }

@@ -7,7 +7,7 @@ public class Statistics implements Serializable {
     private ArrayList<String> peopleCount;
     private ArrayList<String> moneyCount;
     private Integer people;
-    private Integer money;
+    private String money;
 
     public Integer getPeople() {
         return people;
@@ -17,11 +17,11 @@ public class Statistics implements Serializable {
         this.people = people;
     }
 
-    public Integer getMoney() {
+    public String getMoney() {
         return money;
     }
 
-    public void setMoney(Integer money) {
+    public void setMoney(String money) {
         this.money = money;
     }
 

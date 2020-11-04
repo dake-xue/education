@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -89,13 +90,13 @@ public class StudentServiceImpl implements StudentService {
         return student;
     }
 
-    public Integer selectJiaoFeiJinE(String snum) {
+    public String selectJiaoFeiJinE(String snum) {
         List<Bill> billList = studentMapper.selectJiaoFeiJinE(snum);
-        Integer num = 0;
+        BigDecimal bigDecimal = new BigDecimal("0");
         for (int i = 0; i < billList.size(); i++) {
-            num += billList.get(i).getPaymentAmount();
+            bigDecimal.add(new BigDecimal(billList.get(i).getPaymentAmount()));
         }
-        return num;
+        return bigDecimal.toString();
     }
 
 
