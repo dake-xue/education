@@ -3,8 +3,8 @@ package com.zhongsheng.education.controller;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zhongsheng.education.entiy.Bill;
-import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.entiy.Statistics;
+import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.entiy.User;
 import com.zhongsheng.education.service.BillService;
 import com.zhongsheng.education.service.StudentService;
@@ -13,7 +13,6 @@ import com.zhongsheng.education.util.MyUtil;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,25 +37,27 @@ public class BillController {
     }*/
 
     //收入统计
-    @RequestMapping(value = "/billStatistics",method = RequestMethod.POST)
+    @RequestMapping(value = "/billStatistics", method = RequestMethod.POST)
     @ResponseBody
-    public Statistics BillStatistics(Bill bill){
+    public Statistics BillStatistics(Bill bill) {
         //取出session中的user
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         //area，comp设置默认值
-        MyUtil.setStaAreaAndComp(loginUser,bill);
-        Statistics statistics=new Statistics();
+        MyUtil.setStaAreaAndComp(loginUser, bill);
+        Statistics statistics = new Statistics();
         //人数
-        statistics.setPeopleCount( billService.peopleCounts(bill));
+        statistics.setPeopleCount(billService.peopleCounts(bill));
         //钱数
         statistics.setMoneyCount(billService.moneyCounts(bill));
-        Statistics s= billService.people(bill);
+
         //今日人数
+        Statistics s = billService.people(bill);
         statistics.setPeople(s.getPeople());
         //今日钱数
-        if (s.getMoney()!=null){
-            statistics.setMoney(s.getMoney());
-        }else {
+        Statistics m = billService.money(bill);
+        if (null != m ) {
+            statistics.setMoney(m.getMoney());
+        } else {
             statistics.setMoney(0);
         }
         return statistics;
@@ -64,26 +65,26 @@ public class BillController {
 
     @RequestMapping("/StudentInfo")
     @ResponseBody
-    public LayuiData allStudentInfo(Bill bill, @RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "6") int limit)throws Exception{
-        Page pagehelper= PageHelper.startPage(page,limit);
+    public LayuiData allStudentInfo(Bill bill, @RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "6") int limit) throws Exception {
+        Page pagehelper = PageHelper.startPage(page, limit);
         //取出session中的user
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         //area，comp设置默认值
-        MyUtil.setStaAreaAndComp(loginUser,bill);
+        MyUtil.setStaAreaAndComp(loginUser, bill);
         List<Student> studentList = billService.selectStudentInfo(bill);
         //查询已交学费
-        for(Student stu: studentList){
+        for (Student stu : studentList) {
             stu.setJiaofeijine(billService.selectJiaoFeiJinE(stu.getSnum()));
-            Integer i=stu.getMoney();
-            Integer q=stu.getJiaofeijine();
-            Integer c=i-q;
+            Integer i = stu.getMoney();
+            Integer q = stu.getJiaofeijine();
+            Integer c = i - q;
             stu.setWeijiaokuan(c);
         }
-        LayuiData layuiData=new LayuiData();
+        LayuiData layuiData = new LayuiData();
         layuiData.setCode(0);
         layuiData.setMsg("");
-        layuiData.setCount((int)pagehelper.getTotal());
+        layuiData.setCount((int) pagehelper.getTotal());
         layuiData.setData(studentList);
-        return  layuiData;
+        return layuiData;
     }
 }

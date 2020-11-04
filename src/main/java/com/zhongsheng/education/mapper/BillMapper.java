@@ -27,6 +27,8 @@ public interface BillMapper {
 
     @SelectProvider(type = BillDao.class, method = "people")
     public Statistics people(Bill bill);
+    @SelectProvider(type = BillDao.class, method = "money")
+    public Statistics money(Bill bill);
 
     @SelectProvider(type = BillDao.class, method = "selectStudentInfo")
     public  List<Student> selectStudentInfo(Bill bill);
