@@ -3,8 +3,8 @@ package com.zhongsheng.education.controller;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zhongsheng.education.entiy.Bill;
-import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.entiy.Statistics;
+import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.entiy.User;
 import com.zhongsheng.education.service.BillService;
 import com.zhongsheng.education.service.StudentService;
@@ -13,7 +13,6 @@ import com.zhongsheng.education.util.MyUtil;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,13 +52,15 @@ public class BillController {
         statistics.setMoneyCount(billService.moneyCounts(bill));
         Statistics s= billService.people(bill);
         //今日人数
+        Statistics s = billService.people(bill);
         statistics.setPeople(s.getPeople());
         //今日钱数
-        if (s.getMoney()!=null){
-            statistics.setMoney(s.getMoney());
-        }else {
-            statistics.setMoney("0.00");
-        }
+        Statistics m = billService.money(bill);
+        if (null != m ) {
+            statistics.setMoney(m.getMoney());
+        } else {
+            statistics.setMoney(0);
+
         return statistics;
     }
 

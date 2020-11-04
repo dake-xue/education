@@ -15,4 +15,5 @@ public interface BillService {
     List<Student> selectStudentInfo(Bill bill);
     String selectJiaoFeiJinE(String snum);
     Statistics people(Bill bill);
+    Statistics money(Bill bill);
 }

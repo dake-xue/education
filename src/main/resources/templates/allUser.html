@@ -46,8 +46,8 @@
                         , {field: 'name', title: '姓名' ,style:"color:#009688"}
                         , {field: 'username', title: '用户名', sort: true}
                         , {field: 'rolename', title: '角色'}
-                        , {field: 'aname', title: '地区'}
-                        , {field: 'cname', title: '校区'}
+                        , {field: 'aname', title: '省份'}
+                        , {field: 'cname', title: '区'}
                         , {field: 'status', title: '状态',templet: '#zt'}
                         , {field: '', title: '操作',templet: '#dg'}
                      ]
@@ -268,8 +268,8 @@
                     <a href="#"><i class="layui-icon layui-icon-user"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class="active"><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
-                        <li class=""><a th:href="@{/student/toAddStudent}">添加学生信息</a></li>
+                        <li class="active"><a th:href="@{/student/toAllStudent}">学生信息</a></li>
+                        <li class=""><a th:href="@{/student/toAddStudent}">添加学生</a></li>
                     </ul>
                 </li>
 

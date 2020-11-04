@@ -155,9 +155,9 @@ public class BillServiceImpl implements BillService {
         return billMapper.people(bill);
     }
 
-/*    public Integer money(Bill bill){
+    public Statistics money(Bill bill){
         return billMapper.money(bill);
-    }*/
+    }
 
    public List<Student> selectStudentInfo(Bill bill){
         return billMapper.selectStudentInfo(bill);
