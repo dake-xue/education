@@ -77,11 +77,13 @@ public class StudentServiceImpl implements StudentService {
         student.setBillList(billService.selectBill(student.getSnum()));
         return student;
     }
-
+    
+    @Override
     public List<Performance> selectPer(String snum) {
         return studentMapper.selectPer(snum);
     }
-
+    
+    @Override
     public Student selectStudentOne(String snum) {
         //学生
         Student student = studentMapper.selectStudent(snum);
@@ -89,7 +91,7 @@ public class StudentServiceImpl implements StudentService {
         student.setFamilyInfo(familyService.selectFamilyInfo(student.getSnum()));
         return student;
     }
-
+    @Override
     public String selectJiaoFeiJinE(String snum) {
         List<Bill> billList = studentMapper.selectJiaoFeiJinE(snum);
         BigDecimal bigDecimal = new BigDecimal("0");
@@ -99,11 +101,22 @@ public class StudentServiceImpl implements StudentService {
         return bigDecimal.toString();
     }
 
-
+    /**
+     * @创建人 xueke
+     * @创建时间 查询所有学生信息
+     * @描述
+    */
     @Override
     public List<Student> selectAllStudent(Integer schoolid, SearchVo searchVo) {
-
-        return studentMapper.selectAllStudent( schoolid, searchVo);
+        List<Student> studentList =  studentMapper.selectAllStudent( schoolid, searchVo);
+        //设置学生需要补款的金额
+        for (Student stu : studentList) {
+            BigDecimal money = new BigDecimal(stu.getMoney());
+            BigDecimal jfje = new BigDecimal(stu.getJiaofeijine());
+            BigDecimal wjje = money.subtract(jfje);
+            stu.setWeijiaokuan(wjje.toString());
+        }
+        return studentList;
     }
 
     //添加学生
@@ -135,6 +148,13 @@ public class StudentServiceImpl implements StudentService {
             student.setSnum(string);
             student.setNumber(n);
             student.setCampus(cnum.getName());
+
+            //获取学校id
+            TableDic tableDic = new TableDic();
+            tableDic.setTableName("training_school_dic");
+            tableDic.setName(student.getSchoolname());
+            TableDic table = tableDicService.searchOneByName(tableDic);
+            student.setSchoolid(table.getId());
 
             int i = studentMapper.addStudentInfo(student);
             student.getSchoolInfo().setSnum(student.getSnum());
@@ -174,48 +194,48 @@ public class StudentServiceImpl implements StudentService {
 
         return stu;
     }
-
+   
+    @Override
     public Integer addScore(String snum, Integer scope) {
         return studentMapper.addScore(snum, scope);
     }
-
+    
+    @Override
     public List<Area> selectArea() {
         return studentMapper.selectArea();
     }
-
-    ;
-
+    
+    @Override
     public List<TableDic> selectQu(Integer id) {
         return studentMapper.selectQu(id);
     }
-
-    ;
-
+   
+    @Override
     public List<TableDic> selectSchool(Integer id) {
         return studentMapper.selectSchool(id);
     }
-
-    ;
-
+   
+    @Override
     public String selectNumber(Integer id) {
         return studentMapper.selectNumber(id);
     }
-
-    ;
-
+    
+    @Override
     public CampusDic selectCNumber(Integer ca) {
         return studentMapper.selectCNumber(ca);
     }
-
+   
+    @Override
     public TableDic selectSchoolId(String name) {
         return studentMapper.selectSchoolId(name);
     }
-
-
-
+    
+    @Override
     public Integer selectXuHao(Integer id) {
         return studentMapper.selectXuHao(id);
     }
+    
+    @Override
     public Integer changeScore(String snum, Integer score) {
         return studentMapper.changeScore(snum, score);
     }
@@ -230,22 +250,20 @@ public class StudentServiceImpl implements StudentService {
         student.setCampus(tableDicService.searchOne(tableDic).getName());
         return studentMapper.updateStudent(student);
     }
-
+    @Override
     public Integer addPer(Performance performance) {
         return studentMapper.addPer(performance);
     }
-
+    
+    @Override
     public Integer addPerfor(Performance performance) {
         return studentMapper.addPerfor(performance);
     }
-
-    ;
-
+   
+    @Override
     public Performance selectPerOne(Integer id) {
         return studentMapper.selectPerOne(id);
     }
-
-    ;
 
     @Override
     public Integer updateStatus(Student student) {

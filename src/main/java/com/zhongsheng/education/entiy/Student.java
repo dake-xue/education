@@ -7,7 +7,6 @@ public class Student {
     //学生id
     private int sid;
     private Integer area;
-
     //校区id
     private Integer campusid;
     //校区

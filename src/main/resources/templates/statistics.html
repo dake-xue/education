@@ -308,7 +308,10 @@
                     layui.form.render("select");
                     var select = 'dd[ lay-value="' + areaId + '"]';
                     $("#area").siblings("div.layui-form-select").find('dl').find(select).click();
-                    $('#area').attr('disabled', 'disabled');
+                    if(areaId!=0){
+                        $('#area').attr('disabled', 'disabled');
+                    }
+
                 }
             });
             //区
@@ -334,7 +337,10 @@
                         layui.form.render("select");
                         var select = 'dd[ lay-value="' + campusid + '"]';
                         $("#campus").siblings("div.layui-form-select").find('dl').find(select).click();
-                        $('#campus').attr('disabled', 'disabled');
+                        if(campusid!=0){
+                            $('#campus').attr('disabled', 'disabled');
+                        }
+
                     }
                 });
             });

@@ -15,11 +15,10 @@ public class BillServiceImpl implements BillService {
     @Autowired
     BillMapper billMapper;
 
-
     @Override
     public Integer addBillInfo(Bill bill) { return billMapper.addBillInfo(bill);
     }
-
+    @Override
     //查询总金额
     public String selectJiaoFeiJinE(String snum){
         List<Bill> bills = billMapper.selectBill(snum);
@@ -34,7 +33,7 @@ public class BillServiceImpl implements BillService {
     public List<Bill> selectBill(String snum){
         return billMapper.selectBill(snum);
     }
-
+    @Override
     public ArrayList<String> peopleCounts(Bill bill){
         DeskMonth dm=new DeskMonth();
         ArrayList<Desk> d = billMapper.peopleCounts(bill);
@@ -91,8 +90,8 @@ public class BillServiceImpl implements BillService {
         arr.add(10,dm.getEleven());
         arr.add(11,dm.getTwelve());
         return arr;
-    };
-
+    }
+    @Override
     public  ArrayList<String> moneyCounts(Bill bill){
         DeskMonth dm=new DeskMonth();
         ArrayList<Desk> d = billMapper.moneyCounts(bill);
@@ -150,18 +149,36 @@ public class BillServiceImpl implements BillService {
         arr.add(11,dm.getTwelve());
         return arr;
     };
-
+    @Override
     public Statistics people(Bill bill){
         return billMapper.people(bill);
     }
 
-    public Statistics money(Bill bill){
-        return billMapper.money(bill);
+    @Override
+    public String money(Bill bill){
+        String money = billMapper.money(bill);
+        if(money!=null){
+            return billMapper.money(bill);
+        }
+        return "0.00";
     }
-
-   public List<Student> selectStudentInfo(Bill bill){
-        return billMapper.selectStudentInfo(bill);
-   };
+    /**
+     * @创建人 xueke
+     * @创建时间 2020/11/4
+     * @描述
+    */
+    @Override
+    public List<Student> selectStudentInfo(Bill bill){
+        List<Student> studentList =  billMapper.selectStudentInfo(bill);
+        //设置学生需要补款的金额
+        for (Student stu : studentList) {
+            BigDecimal money = new BigDecimal(stu.getMoney());
+            BigDecimal jfje = new BigDecimal(stu.getJiaofeijine());
+            BigDecimal wjje = money.subtract(jfje);
+            stu.setWeijiaokuan(wjje.toString());
+        }
+        return studentList;
+   }
 
 
 }

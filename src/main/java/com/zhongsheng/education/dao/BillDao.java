@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 public class BillDao {
     Logger logger = LoggerFactory.getLogger(BillDao.class);
     public String peopleCounts(Bill bill) {
-        logger.info("BillDao中的bill："+bill);
         StringBuffer sql = new StringBuffer("SELECT COUNT(*) val,DATE_FORMAT(signupdate,'%m') MONTH FROM student where 1=1 and status !=0 ");
         //省
         if (bill.getArea()!= null && bill.getArea() !=0) {
@@ -82,7 +81,7 @@ public class BillDao {
     }
     //今日收入
    public String money(Bill bill) {
-        StringBuffer sql = new StringBuffer("select sum(paymentAmount) as money from bill where 1=1 ");
+        StringBuffer sql = new StringBuffer("select sum(paymentAmount) from bill where 1=1 ");
             sql.append(" and  TO_DAYS(intotime) = TO_DAYS(NOW())");
         //省
         if (bill.getArea()!= null && bill.getArea() !=0) {

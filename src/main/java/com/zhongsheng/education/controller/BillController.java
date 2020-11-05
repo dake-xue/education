@@ -38,55 +38,47 @@ public class BillController {
     }*/
 
     //收入统计
-    @RequestMapping(value = "/billStatistics",method = RequestMethod.POST)
+    @RequestMapping(value = "/billStatistics", method = RequestMethod.POST)
     @ResponseBody
-    public Statistics BillStatistics(Bill bill){
+    public Statistics BillStatistics(Bill bill) {
         //取出session中的user
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         //area，comp设置默认值
-        MyUtil.setStaAreaAndComp(loginUser,bill);
-        Statistics statistics=new Statistics();
+        MyUtil.setStaAreaAndComp(loginUser, bill);
+        Statistics statistics = new Statistics();
         //人数
-        statistics.setPeopleCount( billService.peopleCounts(bill));
+        statistics.setPeopleCount(billService.peopleCounts(bill));
         //钱数
         statistics.setMoneyCount(billService.moneyCounts(bill));
-        Statistics s= billService.people(bill);
         //今日人数
         Statistics s = billService.people(bill);
         statistics.setPeople(s.getPeople());
         //今日钱数
-        Statistics m = billService.money(bill);
-        if (null != m ) {
-            statistics.setMoney(m.getMoney());
-        } else {
-            statistics.setMoney(0);
-
+        String sumMoney = billService.money(bill);
+        statistics.setMoney(sumMoney);
         return statistics;
     }
 
+
+
     @RequestMapping("/StudentInfo")
     @ResponseBody
-    public LayuiData allStudentInfo(Bill bill, @RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "6") int limit)throws Exception{
-        Page pagehelper= PageHelper.startPage(page,limit);
-        //取出session中的user
-        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
-        //area，comp设置默认值
-        MyUtil.setStaAreaAndComp(loginUser,bill);
-        List<Student> studentList = billService.selectStudentInfo(bill);
-        //查询已交学费
-
-        for(Student stu: studentList){
-            stu.setJiaofeijine(billService.selectJiaoFeiJinE(stu.getSnum()));
-            BigDecimal money = new BigDecimal(stu.getMoney());
-            BigDecimal jfje = new BigDecimal(stu.getJiaofeijine());
-            BigDecimal wjje = money.subtract(jfje);
-            stu.setWeijiaokuan(wjje.toString());
+    public LayuiData allStudentInfo (Bill bill, @RequestParam(value = "page", required = true, defaultValue = "1") int page,
+        @RequestParam(value = "limit", required = true, defaultValue = "6") int limit)throws Exception {
+            Page pagehelper = PageHelper.startPage(page, limit);
+            //取出session中的user
+            User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+            //area，comp设置默认值
+            MyUtil.setStaAreaAndComp(loginUser, bill);
+            //查询所有学生信息
+            List<Student> studentList = billService.selectStudentInfo(bill);
+            LayuiData layuiData = new LayuiData();
+            layuiData.setCode(0);
+            layuiData.setMsg("");
+            layuiData.setCount((int) pagehelper.getTotal());
+            layuiData.setData(studentList);
+            return layuiData;
         }
-        LayuiData layuiData=new LayuiData();
-        layuiData.setCode(0);
-        layuiData.setMsg("");
-        layuiData.setCount((int)pagehelper.getTotal());
-        layuiData.setData(studentList);
-        return  layuiData;
-    }
+
+
 }

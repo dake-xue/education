@@ -24,4 +24,6 @@ public interface TableDicService{
     List<TableDic> campusSelectSchool(Integer id);
 
     Integer addRole(RoleVo roleVo);
+
+    TableDic searchOneByName(TableDic tableDic);
 }

@@ -76,4 +76,9 @@ public class TableDicServiceImpl implements TableDicService {
         return permissionMapper.addRoleAndPermission(tableDic.getId(),permissionInfo.getId());
     }
 
+    @Override
+    public TableDic searchOneByName(TableDic tableDic) {
+        return tableDicMapper.searchOneByName(tableDic);
+    }
+
 }

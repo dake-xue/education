@@ -53,14 +53,6 @@ public class StudentController {
         searchVo.setArea(loginUser.getArea());
         Page pagehelper = PageHelper.startPage(page, limit);
         List<Student> studentList = studentService.selectAllStudent(schoolid,searchVo);
-        //查询已交学费
-        for (Student stu : studentList) {
-            stu.setJiaofeijine(billService.selectJiaoFeiJinE(stu.getSnum()));
-            BigDecimal money = new BigDecimal(stu.getMoney());
-            BigDecimal jfje = new BigDecimal(stu.getJiaofeijine());
-            BigDecimal wjje = money.subtract(jfje);
-            stu.setWeijiaokuan(wjje.toString());
-        }
         LayuiData layuiData = new LayuiData();
         layuiData.setCode(0);
         layuiData.setMsg("");
@@ -111,7 +103,11 @@ public class StudentController {
         }
     };
 
-    //添加学生
+    /**
+     * @创建人 xueke
+     * @创建时间 添加学生
+     * @描述
+    */
    @RequestMapping(value = "/addStudent",method = RequestMethod.POST )
     public String addStudent(Student student, RedirectAttributes attr) throws Exception {
         Student stu = studentService.addStudentInfo(student,student.getCampusmanager());

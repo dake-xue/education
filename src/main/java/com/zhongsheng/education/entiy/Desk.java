@@ -21,4 +21,12 @@ public class Desk implements Serializable {
     public void setVal(String val) {
         this.val = val;
     }
+
+    @Override
+    public String toString() {
+        return "Desk{" +
+                "month='" + month + '\'' +
+                ", val='" + val + '\'' +
+                '}';
+    }
 }
