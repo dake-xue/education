@@ -1,7 +1,6 @@
 package com.zhongsheng.education.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.zhongsheng.education.entiy.PermissionInfo;
 import com.zhongsheng.education.entiy.User;
 import com.zhongsheng.education.entiy.UserVo;
 import com.zhongsheng.education.mapper.UserMapper;
@@ -76,4 +75,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.updateUserStatus(user);
     }
 
+    public UserVo userDetails(Integer uid){
+        return userMapper.userDetails(uid);
+    };
 }
