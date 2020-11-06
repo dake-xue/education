@@ -243,18 +243,6 @@
 
         }
 
-        function openModak() {
-            layui.use(['layer'], function () {
-                var layer = layui.layer, $ = layui.$;
-                layer.open({
-                    type: 1,//类型
-                    area: ['25%','70%'],//定义宽和高
-                    title: '添加用户',//题目
-                    shadeClose: false,//点击遮罩层关闭
-                    content: $('#motaikunag')//打开的内容
-                });
-            })
-        }
 
     </script>
 
@@ -287,8 +275,8 @@
                     <a href="#"><i class="layui-icon layui-icon-user"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class="active"><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
-                        <li class=""><a th:href="@{/student/toAddStudent}">添加学生信息</a></li>
+                        <li class="active"><a th:href="@{/student/toAllStudent}">学生信息</a></li>
+                        <li class=""><a th:href="@{/student/toAddStudent}">添加学生</a></li>
                     </ul>
                 </li>
 
@@ -297,7 +285,7 @@
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
-                        <li class=""><a onclick="openModak();">添加用户</a></li>
+                        <li class=""><a onclick="openModak1();">添加用户</a></li>
                     </ul>
                 </li>
                 <li shiro:hasPermission=="money:list">
@@ -706,50 +694,3 @@
 </body>
 
 </html>
-
-
-<!--模仿bootstrap的模态框-->
-<div id="motaikunag" style="display: none;text-align: center;">
-    <form class="layui-form" id="form1" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
-
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">姓名</label>
-                <div class="layui-input-inline">
-                    <input name="name" class="layui-input" type="text" placeholder="姓名" lay-verify="required"/>
-                </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">用户名</label>
-                <div class="layui-input-inline">
-                    <input name="username" class="layui-input" type="text" placeholder="电话号码" maxlength="11" lay-verify="phone"/>
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">权限</label>
-                <div class="layui-input-inline selectWd">
-                    <select name="whoid" lay-verify="required">
-                        <option value="1">管理员</option>
-                        <option value="2">用户</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-form-inline" style="margin-top: 10%;">
-
-            <div class="layui-input-inline">
-                <button class="layui-btn" lay-submit lay-filter="userform">提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-            </div>
-
-        </div>
-
-        <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
-    </form>
-</div>

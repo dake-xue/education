@@ -152,4 +152,14 @@ public class UserController {
         return "yes";
     }
 
+    //判断当前注册用户是否存在
+    @RequestMapping("/selectUsername")
+    @ResponseBody
+    public String selectUsername(String username){
+        Integer i = userService.selectUsername(username);
+        if (i>=1){
+            return "yes";
+        }
+        return "no";
+    }
 }
