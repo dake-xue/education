@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
 import java.util.List;
 
 @RequestMapping("/student")
@@ -121,6 +120,14 @@ public class StudentController {
         }
         return "error";
     }
+
+    @RequestMapping("/addStudentTwo")
+    @ResponseBody
+    public String addStudentTwo(Student student) throws Exception {
+        Student stu = studentService.addStudentTwo(student);
+        return "";
+    }
+
 
 
     //补款
@@ -236,5 +243,6 @@ public class StudentController {
         return layuiData;
 
     }
+
 
 }

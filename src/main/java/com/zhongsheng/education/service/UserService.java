@@ -17,4 +17,5 @@ public interface UserService {
    User getByUsername(String username);
    Integer updateUserStatus(User user);
     UserVo userDetails(Integer uid);
+   Integer selectUsername(String username);
 }

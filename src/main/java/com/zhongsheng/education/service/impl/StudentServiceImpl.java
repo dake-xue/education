@@ -163,8 +163,71 @@ public class StudentServiceImpl implements StudentService {
             familyService.addFamilyInfo(student.getFamilyInfo());
             schoolService.addSchoolInfo(student.getSchoolInfo());
             log.info("=======================" + student.toString());
-            /*//生成票据
-            String s = Reader.addBill(student, name);
+            //插入用户表
+            User user = new User();
+            user.setName(student.getSname());
+            user.setUsername(student.getPhone());
+            user.setPassword(student.getPhone().substring(student.getPhone().length() - 6));
+            user.setRoleid(3);
+            userService.addUser(user);
+            if (i != 0) {
+                log.info("添加用户完成。。。。。。" + i + "******学号：" + student.getSnum());
+                return student;
+            }
+
+        }
+
+        log.info("已存在学号。。。。。。"+stu.getSnum());
+
+        return stu;
+    }
+
+    //添加学生
+    @Override
+    public Student addStudentTwo(Student student) {
+        Student stu = studentMapper.selectStudentBySnameAndIphone(student);
+        if (stu == null) {
+            //省份
+            String str = String.format("%02d", student.getArea());
+            //校区
+            CampusDic cnum = studentMapper.selectCNumber(student.getCampusid());
+            //年份后两位
+            String year = new SimpleDateFormat("yy", Locale.CHINESE).format(new Date());
+            String num = "0001";
+            Integer in = studentMapper.selectXuHao(student.getCampusid());
+            Integer n = 1;
+            if (in != null && !" ".equals(in)) {
+                n = in + 1;
+                num = String.format("%04d", n);
+            }
+            //拼接学生id  （省份+校区+年份+序号）
+            StringBuffer sr = new StringBuffer();
+            sr.append(str);
+            sr.append(cnum.getCnum());
+            sr.append(year);
+            sr.append(num);
+            String string = sr.toString();
+
+            student.setSnum(string);
+            student.setNumber(n);
+            student.setCampus(cnum.getName());
+
+            //获取学校id
+            TableDic tableDic = new TableDic();
+            tableDic.setTableName("training_school_dic");
+            tableDic.setName(student.getSchoolname());
+            TableDic table = tableDicService.searchOneByName(tableDic);
+            student.setSchoolid(table.getId());
+
+            int i = studentMapper.addStudentInfo(student);
+            student.getSchoolInfo().setSnum(student.getSnum());
+            student.getFamilyInfo().setSnum(student.getSnum());
+            //添加联系人
+            familyService.addFamilyInfo(student.getFamilyInfo());
+            schoolService.addSchoolInfo(student.getSchoolInfo());
+            log.info("=======================" + student.toString());
+            //生成票据
+            String s = Reader.addBill(student, student.getCampusmanager());
             //生成图片
             String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir") + "\\src\\main\\resources\\static\\pdfToImage", 300);
             Bill bill = new Bill();
@@ -175,7 +238,7 @@ public class StudentServiceImpl implements StudentService {
             bill.setCampusid(student.getCampusid());
             bill.setSchoolid(student.getSchoolid());
             //插入票据表
-            billService.addBillInfo(bill);*/
+            billService.addBillInfo(bill);
             //插入用户表
             User user = new User();
             user.setName(student.getSname());
@@ -279,5 +342,7 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> searchStuByCamp(String name,Integer page, Integer limit) {
         return studentMapper.searchStuByCamp(name,page,limit);
     }
+
+
 
 }

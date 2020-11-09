@@ -219,8 +219,8 @@
                     <a href="#"><i class="layui-icon layui-icon-user"></i> <span class="nav-label">学生信息管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class=""><a th:href="@{/student/toAllStudent}">学生基本信息</a></li>
-                        <li class=""><a th:href="@{/student/toAddStudent}">添加学生信息</a></li>
+                        <li class=""><a th:href="@{/student/toAllStudent}">学生信息</a></li>
+                        <li class=""><a th:href="@{/student/toAddStudent}">添加学生</a></li>
                     </ul>
                 </li>
 
@@ -229,7 +229,7 @@
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
-                        <li class=""><a>添加用户</a></li>
+                        <li class=""><a onclick="openModak1();">添加用户</a></li>
                     </ul>
                 </li>
                 <li shiro:hasPermission=="money:list">

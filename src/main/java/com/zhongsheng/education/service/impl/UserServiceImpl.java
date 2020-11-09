@@ -78,4 +78,7 @@ public class UserServiceImpl implements UserService {
     public UserVo userDetails(Integer uid){
         return userMapper.userDetails(uid);
     };
+    public  Integer selectUsername(String username){
+        return userMapper.selectUsername(username);
+    };
 }

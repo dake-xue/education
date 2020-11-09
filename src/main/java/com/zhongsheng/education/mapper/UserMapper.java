@@ -47,5 +47,6 @@ public interface UserMapper {
     @Select("SELECT u.uid uid,u.name name ,u.username username,u.password password,r.name rolename ,a.aname ,c.name cname FROM USER u LEFT JOIN role r ON u.roleid = r.id LEFT JOIN AREA a ON a.aid = u.area LEFT JOIN campus_dic c ON u.campus = c.id WHERE u.uid =#{uid}")
     UserVo userDetails(Integer uid);
 
-
+    @Select("select count(*) from user where username=#{username}")
+    public  Integer selectUsername(String username);
 }

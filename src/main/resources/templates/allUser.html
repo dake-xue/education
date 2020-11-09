@@ -117,6 +117,8 @@
                             // 重置清空
                             $('#form1')[0].reset();
                             form.render();//必须写
+                            window.parent.location.reload();//刷新父页面
+                            parent.layer.close(index);//关闭弹出层
                         } else {
                             layer.msg('添加失败！', {icon: 5}, {time: 3000});
                         }
@@ -126,22 +128,22 @@
                 return false;
             });
 
-          
-        });
-
-
-        function openModak(id){
-            layui.use(['layer'],function () {
-                var layer = layui.layer,$=layui.$;
-                layer.open({
-                    type:1,//类型
-                    area:['500px','350px'],//定义宽和高
-                    title:'添加用户',//题目
-                    shadeClose:false,//点击遮罩层关闭
-                    content: $('#'+id)//打开的内容
+            //判断手机号是否存在
+            $("#username").keyup(function (e) {
+                $.ajax({
+                    type: 'post',
+                    url: '/zhongsheng/user/selectUsername?username=' + $("#username").val(),
+                    contentType: 'application/json',
+                    success: function (data) {
+                        if (data=="yes"){
+                            layer.msg('该手机号已存在！请确认是否输入正确', {icon: 6}, {time: 1000});
+                            // 重置清空
+                            $('#username').val("");
+                        }
+                    }
                 });
-            })
-        }
+            });
+        });
 
         function openModak1() {
             layui.use(['layer'], function () {
@@ -409,8 +411,8 @@
 </div>
 
 <!--模仿bootstrap的模态框-->
-<div id="role" style="display: none;text-align: center;">
-    <form class="layui-form" id="form2" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+<!--<div id="role" style="display: none;text-align: center;">
+    <form class="layui-form" id="form2" style="margin-top: 20px;"> &lt;!&ndash; 提示：如果你不想用form，你可以换成div等任何一个普通元素 &ndash;&gt;
 
         <div class="layui-form-item">
             <div class="layui-inline">
@@ -450,9 +452,9 @@
 
         </div>
 
-        <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+        &lt;!&ndash; 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 &ndash;&gt;
     </form>
-</div>
+</div>-->
 
 </body>
 
@@ -474,7 +476,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">用户名</label>
                 <div class="layui-input-inline">
-                    <input name="username" class="layui-input" type="text" placeholder="电话号码" maxlength="11"
+                    <input name="username" id="username" class="layui-input" type="text" placeholder="电话号码" maxlength="11"
                            lay-verify="phone"/>
                 </div>
             </div>
