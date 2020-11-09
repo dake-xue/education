@@ -76,7 +76,6 @@ public class UserController {
     public String userDetails(Model model) {
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         UserVo userVo=userService.userDetails(loginUser.getUid());
-        System.out.println("user--------------"+userVo);
         model.addAttribute("userVo",userVo);
         return "userDetails";
     }
