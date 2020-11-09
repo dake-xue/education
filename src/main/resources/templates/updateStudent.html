@@ -155,6 +155,26 @@
                     }
                 });
             });
+
+            //根据身份证信息写入出生年月
+            $("#ic").blur(function(){
+                var reg=/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/;
+                var re = new RegExp(reg);
+                if($.trim($("#ic").val()) != ""&&re.test($("#ic").val())) {
+                    $("#ic").removeClass("hong")
+                    $("#ic").addClass('moren');
+                    var date = "";
+                    if($("#ic").val().length == 15) {
+                        date =  '19'+$("#ic").val().substr(6,2)+'-'+$("#ic").val().substr(8,2)+'-'+$("#ic").val().substr(10,2);
+                    } else if ($("#ic").val().length == 18) {
+                        date =  $("#ic").val().substr(6,4)+'-'+$("#ic").val().substr(10,2)+'-'+$("#ic").val().substr(12,2);
+                    }
+                    $("#birthday").val(date);
+                }else {
+                    $("#ic").addClass('hong');
+                    layer.msg("身份证号格式有误！", {icon:2,time:1200, shift: 6});//一个叉
+                }
+            });
         });
 
 
@@ -164,31 +184,37 @@
             //执行一个laydate实例
             laydate.render({
                 elem: '#giveMoney' //指定元素
+                ,trigger: 'click'
             });
             //执行一个laydate实例
             laydate.render({
                 elem: '#signUp' //指定元素
+                ,trigger: 'click'
             });
             //执行一个laydate实例
             laydate.render({
                 elem: '#addMoney' //指定元素
+                ,trigger: 'click'
             });
 
             //执行一个laydate实例
             laydate.render({
                 elem: '#birthday' //指定元素
+                ,trigger: 'click'
             });
 
             //执行一个laydate实例
             laydate.render({
                 elem: '#examinationt' //指定元素
                 , type: 'year'
+                ,trigger: 'click'
             });
 
             //执行一个laydate实例
             laydate.render({
                 elem: '#admission' //指定元素
                 , type: 'year'
+                ,trigger: 'click'
             });
         });
 
@@ -392,7 +418,7 @@
                     <label class="layui-form-label important">生日</label>
                     <div class="layui-input-inline">
                         <input type="text" class="layui-input" id="birthday"
-                               name="birthday" th:value="${#dates.format(student.birthday, 'yyyy-MM-dd')}">
+                               onblur=""   name="birthday" th:value="${#dates.format(student.birthday, 'yyyy-MM-dd')}">
                     </div>
                 </div>
 
@@ -400,7 +426,7 @@
                 <div class="layui-input-inline">
                     <label class="layui-form-label important" style="white-space:nowrap!important;">身份证号</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="idcard" required lay-verify="identity"
+                        <input type="text" id="ic" name="idcard" required lay-verify="identity"
                                autocomplete="off" class="layui-input" maxlength="18"
                                th:value="${student.idcard}" >
                     </div>
