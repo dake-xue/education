@@ -33,7 +33,7 @@
             position: absolute;
             top: 10px;
             font-size: 20px;
-            left: 0;
+            left: 6px;
         }
 
         .nobreak {
@@ -61,6 +61,24 @@
         }
         .layui-input-block{
             margin-left: 21%;
+        }
+        input:focus{
+            !important;border-color: #66afe9;box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+        }
+        form{
+            !important;
+            background-color: rgb(255, 255, 255);
+            border-color: rgba(255, 255, 255, 0);
+            border-width: 0px;
+            font-size: 12px;
+            padding-top: 15px;
+        }
+        .son{
+            box-shadow: 0px 0px 12px #13151530;
+            margin: 5% 5%;
+        }
+        h3{
+            text-align: center;
         }
     </style>
     <script src="layui/layui.js"></script>
@@ -356,19 +374,19 @@
         }
 
     </script>
-
 </head>
 
-<body>
 
-<div id="wrapper">
+<body style="background-color: #e6e6e670;">
 
+<div id="wrapper" class="main" style="background-color: #e6e6e670;">
 
-    <div class="row wrapper border-bottom white-bg page-heading" style="    padding: 0% 5%;">
-        <img th:src="@{/img/logo.png}" alt="IMG" style="height: 60px;margin: 5% auto;">
-        <form class="layui-form" id="form"
-             method="post" th:action="@{/student/addStudent}" style="padding-top: 15px;">
-            <h2 style="font-weight: bold;text-align: center">报名信息填写</h2>
+    <div class="son">
+        <div style="background-color: white;">
+            <img th:src="@{/img/t1.png}" alt="IMG" style="width: 100%;margin: 5% auto;">
+        </div>
+
+        <form class="layui-form" id="form" method="post" th:action="@{/student/addStudent}">
             <hr>
             <h3 style="font-weight: bold">基本信息</h3>
             <hr>
@@ -398,8 +416,7 @@
             <div class="layui-input-inline">
                 <label class="layui-form-label important" style="white-space:nowrap!important;">身份证号</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="idcard" id="ic" required lay-verify="identity"
-                           onblur="" autocomplete="off" class="layui-input" maxlength="18">
+                    <input type="text" name="idcard" id="ic" required lay-verify="identity" onblur="" autocomplete="off" class="layui-input" maxlength="18">
                 </div>
             </div>
 
@@ -462,7 +479,7 @@
             <div class="layui-input-inline">
                 <label class="layui-form-label important">班次</label>
                 <div class="layui-input-inline">
-                    <select id="classes"  lay-filter="classes"  name="classes" lay-verify="required">
+                    <select id="classes" lay-filter="classes" name="classes" lay-verify="required">
                     </select>
                 </div>
             </div>
@@ -524,13 +541,13 @@
             <div class="layui-input-inline">
                 <label class="layui-form-label" style="white-space:nowrap!important;">在校职务</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="job"  autocomplete="off" class="layui-input">
+                    <input type="text" name="job" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-input-inline">
                 <label class="layui-form-label" style="white-space:nowrap!important;">校园伙伴</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="campusagent"  autocomplete="off" class="layui-input">
+                    <input type="text" name="campusagent" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <hr>
@@ -554,7 +571,7 @@
             <div class="layui-input-inline important">
                 <label class="layui-form-label" style="white-space:nowrap!important;">学费</label>
                 <div class="layui-input-inline">
-                  <select id="classmoney" lay-filter="classmoney" name="money" lay-verify="required">
+                    <select id="classmoney" lay-filter="classmoney" name="money" lay-verify="required">
                         <option value="">请先选择班次</option>
                     </select>
                 </div>
@@ -636,26 +653,26 @@
             <div class="layui-input-inline">
                 <label class="layui-form-label important" style="white-space:nowrap!important;">校园</label>
                 <div class="layui-input-inline">
-                        <select name="schoolInfo.screlation" lay-verify="required">
-                            <option value="导员">导员</option>
-                            <option value="舍友">舍友</option>
-                        </select>
+                    <select name="schoolInfo.screlation" lay-verify="required">
+                        <option value="导员">导员</option>
+                        <option value="舍友">舍友</option>
+                    </select>
                 </div>
             </div>
 
+            <div class="layui-input-inline">
+                <label class="layui-form-label important">姓名</label>
                 <div class="layui-input-inline">
-                    <label class="layui-form-label important">姓名</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="schoolInfo.scname" required lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input">
-                    </div>
+                    <input type="text" name="schoolInfo.scname" required lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input">
                 </div>
+            </div>
 
+            <div class="layui-input-inline">
+                <label class="layui-form-label important">电话</label>
                 <div class="layui-input-inline">
-                    <label class="layui-form-label important">电话</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="schoolInfo.scphone" required lay-verify="phone" placeholder="电话" autocomplete="off" class="layui-input phone" maxlength="11">
-                    </div>
+                    <input type="text" name="schoolInfo.scphone" required lay-verify="phone" placeholder="电话" autocomplete="off" class="layui-input phone" maxlength="11">
                 </div>
+            </div>
 
             <div class="layui-input-inline">
                 <label class="layui-form-label " style="white-space:nowrap!important;">收件地址</label>
@@ -670,18 +687,22 @@
                     <textarea name="remarks" placeholder="请输入内容" class="layui-textarea"></textarea>
                 </div>
             </div>
-            <div class="layui-form-item" style="padding-top: 4%;">
-                <button type="submit" class="layui-btn layui-btn-fluid layui-btn-normal"
-                        style="border-radius: 5px;">提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary layui-btn-fluid"
-                        style="margin-top: 2%;border-radius: 5px;margin-left: 0;">重置</button>
+            <div class="layui-form-item" style="padding-bottom: 3%;padding-top: 4%;text-align: center;margin-bottom: 0;">
+                <button type="submit" class="layui-btn layui-btn-fluid layui-btn-normal" style="border-radius: 5px;width: 80%;">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary layui-btn-fluid" style="margin-top: 2%;border-radius: 5px;margin-left: 0;width: 80%;">重置</button>
             </div>
         </form>
 
+        <div class="">
+            <div>
+                <strong>Copyright</strong> inspinia 2.9.2 &copy; 2014-2018
+            </div>
+        </div>
     </div>
 
+
 </div>
-</div>
+
 
 </body>
 

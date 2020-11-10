@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 //HandlerInterceptor接口
 public class LoginHandIterceptor implements HandlerInterceptor {
-    /*@Override
+    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //获取是否存在用户
         User user = (User) request.getSession().getAttribute("user");
@@ -19,7 +19,7 @@ public class LoginHandIterceptor implements HandlerInterceptor {
             //已登录
             return true;
         }
-    }*/
+    }
 
 
 }

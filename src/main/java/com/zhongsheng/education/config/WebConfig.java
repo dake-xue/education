@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -41,7 +42,7 @@ public class WebConfig implements WebMvcConfigurer {
         //跳转角色页面
         registry.addViewController("/user/toRole").setViewName("allRole");
         //跳转校区页面
-        registry.addViewController("/areaManage").setViewName("AreaManage");
+        registry.addViewController("/areaManage").setViewName("areaManage");
         //
         registry.addViewController("/marketPage").setViewName("marketPage");
 
@@ -54,16 +55,19 @@ public class WebConfig implements WebMvcConfigurer {
      * @创建时间 2020/9/24
      * @描述 添加拦截器
     */
-    //@Override
-    //public void addInterceptors(InterceptorRegistry registry) {
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
         //添加拦截器，registry.addInterceptor(new LoginHandlerInterceptor())
         //处理拦截那些东西.addPathPatterns("/**")
-        //排除那些请求 excludePatterns()
-        //registry.addInterceptor(new LoginHandIterceptor()).addPathPatterns("/**")
-                //.excludePathPatterns("/static/**","/user/**",
-                        //"/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg",
-                        //"/**/*.jpeg", "/**/*.gif", "/**/fonts/*");
-    //}
+        //排除那些请求
+        //excludePatterns()
+        registry.addInterceptor(new LoginHandIterceptor()).addPathPatterns("/**")
+                .excludePathPatterns("/static/**","/user/**",
+                        "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg",
+                        "/**/*.jpeg", "/**/*.gif", "/**/fonts/*","/alipay/**","/toAdd/**",
+                        "/table/**","/student/select*","/ClassesController/select*",
+                        "/student/add*");
+    }
 
 
 
