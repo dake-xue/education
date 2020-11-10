@@ -94,12 +94,12 @@
             form.on('submit(formDemo)', function (data) {
                 var student = data.field;
                 $.ajax({
-                    url: "/zhongsheng/student/addStudent",
+                    url: "/zhongsheng/student/addStudentTwo",
                     type: "POST",
                     dataType: "text",
                     data: student,
                     success: function (data) {
-                        if (data == "1") {
+                        if (data == "yes") {
                             layer.msg('添加成功！', {icon: 6}, {time: 3000});
                             // 重置清空
                             $('#form')[0].reset();
@@ -223,6 +223,26 @@
                         layui.form.render("select");
                     }
                 });
+            });
+
+            //根据身份证信息写入出生年月
+            $("#ic").blur(function(){
+                var reg=/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/;
+                var re = new RegExp(reg);
+                if($.trim($("#ic").val()) != ""&&re.test($("#ic").val())) {
+                    $("#ic").removeClass("hong")
+                    $("#ic").addClass('moren');
+                    var date = "";
+                    if($("#ic").val().length == 15) {
+                        date =  '19'+$("#ic").val().substr(6,2)+'-'+$("#ic").val().substr(8,2)+'-'+$("#ic").val().substr(10,2);
+                    } else if ($("#ic").val().length == 18) {
+                        date =  $("#ic").val().substr(6,4)+'-'+$("#ic").val().substr(10,2)+'-'+$("#ic").val().substr(12,2);
+                    }
+                    $("#birthday").val(date);
+                }else {
+                    $("#ic").addClass('hong');
+                    layer.msg("身份证号格式有误！", {icon:2,time:1200, shift: 6});//一个叉
+                }
             });
         });
 
@@ -435,20 +455,17 @@
                                style="ime-mode:disabled;" maxlength="11"/>
                     </div>
                 </div>
-
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important" style="white-space:nowrap!important;">身份证号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="idcard" id="ic" required lay-verify="identity"
+                               onblur="" autocomplete="off" class="layui-input" maxlength="18">
+                    </div>
+                </div>
                 <div class="layui-input-inline">
                     <label class="layui-form-label important">生日</label>
                     <div class="layui-input-inline">
                         <input type="text" class="layui-input" id="birthday" name="birthday">
-                    </div>
-                </div>
-
-
-                <div class="layui-input-inline">
-                    <label class="layui-form-label important" style="white-space:nowrap!important;">身份证号</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="idcard" required lay-verify="identity"
-                               autocomplete="off" class="layui-input" maxlength="18">
                     </div>
                 </div>
 
