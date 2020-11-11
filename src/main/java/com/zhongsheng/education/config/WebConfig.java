@@ -66,7 +66,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg",
                         "/**/*.jpeg", "/**/*.gif", "/**/fonts/*","/alipay/**","/toAdd/**",
                         "/table/**","/student/select*","/ClassesController/select*",
-                        "/student/add*");
+                        "/student/add*","/student/stuToStudentDetails");
     }
 
 
@@ -89,9 +89,15 @@ public class WebConfig implements WebMvcConfigurer {
         }
     }
 
-    //添加虚拟路径映射
+    //根据系统环境添加虚拟路径映射
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/pdfToImage/**").addResourceLocations("file:"+System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage\\");
+        boolean isWin = System.getProperty("os.name").toLowerCase().contains("win");
+        if(isWin){
+            registry.addResourceHandler("/pdfToImage/**").addResourceLocations("file:"+System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage\\");
+        }else {
+            registry.addResourceHandler("/pdfToImage/**").addResourceLocations("file:/usr/img/");
+        }
+
     }
 }

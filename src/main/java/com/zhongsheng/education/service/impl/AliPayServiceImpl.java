@@ -88,6 +88,9 @@ public class AliPayServiceImpl implements AliPayService {
     @Value("${charset}")
     private String charset;
 
+    @Value("${BILL_path}")
+    private String BILL_path;
+
     @Autowired
     private OrderService orderService;
 
@@ -216,7 +219,6 @@ public class AliPayServiceImpl implements AliPayService {
                 //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
                 //如果有做过处理，不执行商户的业务程序
                 logger.info("用户付款成功。。。执行：TRADE_SUCCESS。。。");
-                logger.info("开始修改订单状态，修改学生状态。。。");
                 //修改订单状态
                 Order order =  orderService.searchByOrderNum(out_trade_no);
                 order.setStatus(1);
@@ -228,13 +230,20 @@ public class AliPayServiceImpl implements AliPayService {
                 int i =  studentService.updateStatus(student);
                 logger.info("学生表影响行数："+i);
                 //生成票据
-                logger.info("学生信息："+student.toString());
-                //生成二维码
                 String s = Reader.addBill(student,student.getCampusmanager());
-                //生成图片
-                String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
+
                 Bill bill = new Bill();
-                bill.setImage("\\zhongsheng\\pdfToImage\\"+MyUtil.getPngName(ima));
+                boolean isWin = System.getProperty("os.name").toLowerCase().contains("win");
+                String ima = "";
+                //根据系统判断
+                if (isWin){
+                    ima =  PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
+                    bill.setImage("\\zhongsheng\\pdfToImage\\"+MyUtil.getPngName(ima));
+                }else {
+                    ima = PDF2IMAGE.pdf2Image(s, "/usr/img", 300);
+                    bill.setImage("\\zhongsheng\\pdfToImage\\"+MyUtil.linuxGetPngName(ima));
+                }
+                logger.info("ima："+ima);
                 bill.setPaymentAmount(total_amount);
                 bill.setSnum(student.getSnum());
                 bill.setRemark(student.getRemarks());

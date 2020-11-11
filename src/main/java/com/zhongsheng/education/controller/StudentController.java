@@ -245,4 +245,11 @@ public class StudentController {
     }
 
 
+    @RequestMapping("/select")
+    @ResponseBody
+    public String selectUrl(Integer campus) {
+        return "地址是："+UrlUtil.getUrl();
+    }
+
+
 }

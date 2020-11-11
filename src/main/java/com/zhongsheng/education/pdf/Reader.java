@@ -4,8 +4,16 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.*;
+import com.zhongsheng.education.entiy.Pdf;
 import com.zhongsheng.education.entiy.Student;
+import com.zhongsheng.education.service.impl.AliPayServiceImpl;
 import com.zhongsheng.education.util.UrlUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
+import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,7 +25,10 @@ import java.util.Map.Entry;
 
 public class Reader {
 
+    private static final boolean isWin = System.getProperty("os.name").toLowerCase().contains("win");
+
     public static String addBill(Student student, String name) {
+        Logger logger = LoggerFactory.getLogger(Reader.class);
         String fi = null;
         // 获得当前时间
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -64,24 +75,30 @@ public class Reader {
         stringBuffer.append(student.getSname());
         stringBuffer.append(random);
         String r = stringBuffer.toString();
+        PdfReader reader = null;
+        logger.info(student.toString());
         try {
-            PdfReader reader = null;
             //判断省市区
             if (student.getArea() == 1 && student.getArea()!=null) {
                 //2 读入pdf表单
-                reader = new PdfReader(UrlUtil.getUrl() + "\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\electronicBillsH.pdf");
-
+                ClassPathResource classPathResource = new ClassPathResource("/static/pdf/electronicBillsH.pdf");
+                byte[]  keywordsData = FileCopyUtils.copyToByteArray(classPathResource.getInputStream());
+                reader = new PdfReader(keywordsData);
             } else if (student.getArea() == 2 &&  student.getArea()!=null) {
-               //2 读入pdf表单
-               reader = new PdfReader(UrlUtil.getUrl() + "\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\electronicBills.pdf");
+                //2 读入pdf表单
+                ClassPathResource classPathResource = new ClassPathResource("/static/pdf/electronicBills.pdf");
+                byte[]  keywordsData = FileCopyUtils.copyToByteArray(classPathResource.getInputStream());
+                reader = new PdfReader(keywordsData);
             } else if (student.getArea() == 3 &&  student.getArea()!=null) {
                 //2 读入pdf表单
-                reader = new PdfReader(UrlUtil.getUrl() + "\\src\\main\\java\\com\\zhongsheng\\education\\pdf\\electronicBillsS.pdf");
+                ClassPathResource classPathResource = new ClassPathResource("/static/pdf/electronicBillsS.pdf");
+                byte[]  keywordsData = FileCopyUtils.copyToByteArray(classPathResource.getInputStream());
+                reader = new PdfReader(keywordsData);
             }
              //3 根据表单生成一个新的pdf
-            File file = new File("D:\\pdf\\" + r + ".pdf");
-            fi = "D:\\pdf\\" + r + ".pdf";
-            if (file.exists()) {
+            File file = new File(Pdf.PDF_path+ r + ".pdf");
+            fi = Pdf.PDF_path + r + ".pdf";
+            if(file.exists()) {
                 file.delete();
                 file.createNewFile();
             } else {
@@ -90,11 +107,17 @@ public class Reader {
             PdfStamper ps = new PdfStamper(reader, new FileOutputStream(file));
             //4 获取pdf表单
             AcroFields s = ps.getAcroFields();
-//5给表单添加中文字体 这里采用系统字体。不设置的话，中文可能无法显示
-            BaseFont bf = BaseFont.createFont("C:/WINDOWS/Fonts/SIMSUN.TTC,1", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            //5给表单添加中文字体 这里采用系统字体。不设置的话，中文可能无法显示
+            BaseFont bf = null;
+                if(isWin){
+                    bf =  BaseFont.createFont("C:/WINDOWS/Fonts/SIMSUN.TTC,1", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                }else {
+                    bf =  BaseFont.createFont("/usr/share/fonts/chinese/simsun.ttc,1", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                }
+
             s.addSubstitutionFont(bf);
 
-//插入二维码
+            //插入二维码
             // 书签名
             String fieldName = "Text21";
             // 通过域名获取所在页和坐标，左下角为起点
@@ -139,20 +162,11 @@ public class Reader {
 
             ps.setFormFlattening(true); // 这句不能少
             ps.close();
-
             reader.close();
         } catch (IOException e) {
-
-// TODO 自动生成的 catch 块
-
             e.printStackTrace();
-
         } catch (DocumentException e) {
-
-// TODO 自动生成的 catch 块
-
             e.printStackTrace();
-
         } catch (Exception e) {
             e.printStackTrace();
         }

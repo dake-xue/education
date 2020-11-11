@@ -227,7 +227,12 @@ public class StudentServiceImpl implements StudentService {
             schoolService.addSchoolInfo(student.getSchoolInfo());
             log.info("=======================" + student.toString());
             //生成票据
-            String s = Reader.addBill(student, student.getCampusmanager());
+            String s = null;
+            try {
+                s = Reader.addBill(student, student.getCampusmanager());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             //生成图片
             String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir") + "\\src\\main\\resources\\static\\pdfToImage", 300);
             Bill bill = new Bill();
