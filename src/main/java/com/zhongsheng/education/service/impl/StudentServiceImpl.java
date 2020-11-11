@@ -219,7 +219,7 @@ public class StudentServiceImpl implements StudentService {
             TableDic table = tableDicService.searchOneByName(tableDic);
             student.setSchoolid(table.getId());
 
-            int i = studentMapper.addStudentInfo(student);
+            int i = studentMapper.addStudentTwo(student);
             student.getSchoolInfo().setSnum(student.getSnum());
             student.getFamilyInfo().setSnum(student.getSnum());
             //添加联系人

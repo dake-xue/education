@@ -125,7 +125,10 @@ public class StudentController {
     @ResponseBody
     public String addStudentTwo(Student student) throws Exception {
         Student stu = studentService.addStudentTwo(student);
-        return "";
+        if (stu!=null){
+            return "yes";
+        }
+        return "no";
     }
 
 
