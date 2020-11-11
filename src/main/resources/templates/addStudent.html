@@ -106,16 +106,23 @@
                     type: "POST",
                     dataType: "text",
                     data: student,
-                    success: function (data) {
-                        if (data == "yes") {
+                    beforeSend : function(){
+                        loading("提交中...");
+                    },
+                    success: function(data) {
+                        layer.closeAll();
+                        if(data == "yes") {
                             layer.msg('添加成功！', {icon: 6}, {time: 3000});
                             // 重置清空
                             $('#form')[0].reset();
-                            form.render();//必须写
+                            form.render(); //必须写
                         } else {
                             layer.msg('添加失败！', {icon: 5}, {time: 3000});
                         }
 
+                    }, error:function() {
+                        layer.closeAll();
+                        layer.msg('网络开小差了，请稍后重试...', {icon: 5}, {time: 3000});
                     }
                 });
                 return false;
@@ -261,31 +268,37 @@
             //执行一个laydate实例
             laydate.render({
                 elem: '#giveMoney' //指定元素
+                ,trigger: 'click'
             });
             //执行一个laydate实例
             laydate.render({
                 elem: '#signUp' //指定元素
+                ,trigger: 'click'
             });
             //执行一个laydate实例
             laydate.render({
                 elem: '#addMoney' //指定元素
+                ,trigger: 'click'
             });
 
             //执行一个laydate实例
             laydate.render({
                 elem: '#birthday' //指定元素
+                ,trigger: 'click'
             });
 
             //执行一个laydate实例
             laydate.render({
                 elem: '#examinationt' //指定元素
                 , type: 'year'
+                ,trigger: 'click'
             });
 
             //执行一个laydate实例
             laydate.render({
                 elem: '#admission' //指定元素
                 , type: 'year'
+                ,trigger: 'click'
             });
         });
 
@@ -308,6 +321,14 @@
             });
 
         }
+
+        function loading(msg) {
+            layer.msg(msg, {
+                icon: 16,
+                shade: [0.6, '#000005'],//遮罩的颜色与透明度
+                time: false  //取消自动关闭
+            })
+        };
 
         function openModak(){
             layui.use(['layer'],function () {
@@ -599,14 +620,14 @@
                 <div class="layui-input-inline">
                     <label class="layui-form-label" style="white-space:nowrap!important;">在校职务</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="job" required lay-verify=""
+                        <input type="text" name="job" lay-verify=""
                                autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-input-inline">
                     <label class="layui-form-label" style="white-space:nowrap!important;">校园伙伴</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="campusagent" required lay-verify=""
+                        <input type="text" name="campusagent" lay-verify=""
                                autocomplete="off" class="layui-input">
                     </div>
                 </div>
@@ -766,18 +787,6 @@
 
     </div>
 </div>
-
-
-<!-- Mainly scripts -->
-<script src="js/jquery-3.1.1.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-<!-- Custom and plugin javascript -->
-<script src="js/inspinia.js"></script>
-<script src="js/plugins/pace/pace.min.js"></script>
 
 </body>
 

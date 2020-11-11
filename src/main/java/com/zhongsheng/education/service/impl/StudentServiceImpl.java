@@ -183,9 +183,7 @@ public class StudentServiceImpl implements StudentService {
 
     //添加学生
     @Override
-    public Student addStudentTwo(Student student) {
-        Student stu = studentMapper.selectStudentBySnameAndIphone(student);
-        if (stu == null) {
+    public Integer addStudentTwo(Student student) {
             //省份
             String str = String.format("%02d", student.getArea());
             //校区
@@ -224,7 +222,6 @@ public class StudentServiceImpl implements StudentService {
             //添加联系人
             familyService.addFamilyInfo(student.getFamilyInfo());
             schoolService.addSchoolInfo(student.getSchoolInfo());
-            log.info("=======================" + student.toString());
             //生成票据
             String s = null;
             try {
@@ -235,12 +232,14 @@ public class StudentServiceImpl implements StudentService {
             //生成图片
             String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir") + "\\src\\main\\resources\\static\\pdfToImage", 300);
             Bill bill = new Bill();
-            bill.setImage("\\zhongsheng\\pdfToImage\\" + MyUtil.getPngName(ima));
+            bill.setImage("\\zhongsheng\\pdfToImage\\" + MyUtil.linuxGetPngName(ima));
             bill.setSnum(student.getSnum());
             bill.setRemark(student.getRemarks());
             bill.setArea(student.getArea());
             bill.setCampusid(student.getCampusid());
             bill.setSchoolid(student.getSchoolid());
+            bill.setPaymentAmount(student.getJiaofeijine());
+            bill.setIntotime(student.getSignupdate());
             //插入票据表
             billService.addBillInfo(bill);
             //插入用户表
@@ -250,16 +249,8 @@ public class StudentServiceImpl implements StudentService {
             user.setPassword(student.getPhone().substring(student.getPhone().length() - 6));
             user.setRoleid(3);
             userService.addUser(user);
-            if (i != 0) {
-                log.info("添加用户完成。。。。。。" + i + "******学号：" + student.getSnum());
-                return student;
-            }
 
-        }
-
-        log.info("已存在学号。。。。。。"+stu.getSnum());
-
-        return stu;
+        return i;
     }
    
     @Override

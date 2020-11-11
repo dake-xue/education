@@ -14,7 +14,7 @@ public interface StudentService {
     public List<Student> selectAllStudent(Integer schoolid,SearchVo searchVo);
     public Integer addScore(String snum,Integer scope);
     Student addStudentInfo(Student student, String name);
-    Student addStudentTwo(Student student);
+    Integer addStudentTwo(Student student);
     List<Area> selectArea();
     List<TableDic> selectQu(Integer id);
     List<TableDic> selectSchool(Integer id);

@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper
 public interface BillMapper {
 
-    @Insert("insert into bill(paymentAmount,snum,image,intotime,area,campusid) values(#{paymentAmount},#{snum},#{image},now(),#{area},#{campusid})")
+    @Insert("insert into bill(paymentAmount,snum,image,intotime,area,campusid) values(#{paymentAmount},#{snum},#{image},#{intotime},#{area},#{campusid})")
     public Integer addBillInfo(Bill bill);
 
     @Select("select * from bill where snum = #{snum}")

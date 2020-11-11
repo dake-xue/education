@@ -249,6 +249,7 @@ public class AliPayServiceImpl implements AliPayService {
                 bill.setArea(student.getArea());
                 bill.setCampusid(student.getCampusid());
                 bill.setSchoolid(student.getSchoolid());
+                bill.setIntotime(new Date());
                 //插入票据表
                 int j =billService.addBillInfo(bill);
                 logger.info("票据表影响行数："+j);

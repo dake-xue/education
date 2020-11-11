@@ -31,7 +31,6 @@ public class PayController {
 
     @RequestMapping(value = "/toPay", method = RequestMethod.GET)
     public void alipay(Order order, HttpServletResponse response) throws AlipayApiException {
-        logger.info("order:"+order.toString());
         response.setContentType("text/html;charset=utf-8");
         try {
             response.getWriter().write(aliPayService.aliPay(order));

@@ -76,7 +76,6 @@ public class Reader {
         stringBuffer.append(random);
         String r = stringBuffer.toString();
         PdfReader reader = null;
-        logger.info(student.toString());
         try {
             //判断省市区
             if (student.getArea() == 1 && student.getArea()!=null) {

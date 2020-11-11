@@ -124,8 +124,8 @@ public class StudentController {
     @RequestMapping("/addStudentTwo")
     @ResponseBody
     public String addStudentTwo(Student student) throws Exception {
-        Student stu = studentService.addStudentTwo(student);
-        if (stu!=null){
+        Integer integer = studentService.addStudentTwo(student);
+        if (integer!=0){
             return "yes";
         }
         return "no";
