@@ -109,7 +109,6 @@ public class AliPayServiceImpl implements AliPayService {
         }
         // 构建支付数据信息
         Map<String, String> data = new HashMap<>();
-        logger.info("order："+order.toString());
         data.put("subject",order.getGoods_name()); //订单标题
         data.put("out_trade_no",order.getOrder_number()); //商户订单号,64个字符以内、可包含字母、数字、下划线；需保证在商户端不重复      //此处模拟订单号为时间
         data.put("timeout_express", time_express); //该笔订单允许的最晚付款时间

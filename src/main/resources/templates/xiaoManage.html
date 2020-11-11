@@ -219,7 +219,7 @@
                             class="fa arrow"></span></a>
                 </li>
                 <li shiro:hasPermission=="score:list">
-                    <a href=""><i class="fa fa-table"></i> <span class="nav-label">积分管理</span><span
+                    <a href=""><i class="layui-icon layui-icon-form"></i> <span class="nav-label">积分管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/ScoreCotroller/toScore}">积分信息</a></li>
@@ -227,11 +227,11 @@
                     </ul>
                 </li>
                 <li class="active" shiro:hasPermission=="area:list">
-                    <a th:href="@{/areaManage}"><i class="fa fa-table"></i> <span class="nav-label">省区校管理</span><span
+                    <a th:href="@{/areaManage}"><i class="layui-icon layui-icon-layer"></i> <span class="nav-label">省区校管理</span><span
                             class="fa arrow"></span></a>
                 </li>
                 <li shiro:hasPermission=="classmoney:list">
-                    <a href=""><i class="fa fa-table"></i> <span class="nav-label">班次管理</span><span
+                    <a href=""><i class="layui-icon layui-icon-survey"></i> <span class="nav-label">班次管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/ClassesController/classes}">班次信息</a></li>
@@ -239,7 +239,7 @@
                     </ul>
                 </li>
                 <li shiro:hasPermission=="userdetails:list">
-                    <a th:href="@{/user/userDetails}"><i class="fa fa-table"></i> <span
+                    <a th:href="@{/user/userDetails}"><i class="layui-icon layui-icon-friends"></i> <span
                             class="nav-label">个人信息</span><span
                             class="fa arrow"></span></a>
                 </li>
@@ -273,7 +273,7 @@
                 <h2>&nbsp;</h2>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="index.html">省校区管理</a>
+                        <a href="#">省校区管理</a>
                     </li>
                     <li class="breadcrumb-item active">
                         <strong>省校区基本信息</strong>

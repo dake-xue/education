@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>中升学生信息管理后台</title>
+    <title>添加学生信息</title>
 
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
@@ -29,6 +29,14 @@
     <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
 
     <style>
+        .important:after {
+            content: "*";
+            color: red;
+            position: absolute;
+            top: 10px;
+            font-size: 20px;
+            left: 6px;
+        }
         .nobreak {
             white-space: nowrap !important;
         }
@@ -417,7 +425,7 @@
             <div class="col-lg-10">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="index.html">学生基本信息</a>
+                        <a href="#">学生基本信息</a>
                     </li>
                     <li class="breadcrumb-item active">
                         <strong>添加学生信息</strong>

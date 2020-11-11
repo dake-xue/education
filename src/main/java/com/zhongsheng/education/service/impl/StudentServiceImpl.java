@@ -24,7 +24,7 @@ import java.util.Locale;
 public class StudentServiceImpl implements StudentService {
 
 
-    private static final Logger log = LoggerFactory.getLogger(EducationApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(StudentServiceImpl.class);
 
     @Autowired
     private StudentMapper studentMapper;
@@ -162,7 +162,6 @@ public class StudentServiceImpl implements StudentService {
             //添加联系人
             familyService.addFamilyInfo(student.getFamilyInfo());
             schoolService.addSchoolInfo(student.getSchoolInfo());
-            log.info("=======================" + student.toString());
             //插入用户表
             User user = new User();
             user.setName(student.getSname());
@@ -171,7 +170,7 @@ public class StudentServiceImpl implements StudentService {
             user.setRoleid(3);
             userService.addUser(user);
             if (i != 0) {
-                log.info("添加用户完成。。。。。。" + i + "******学号：" + student.getSnum());
+                log.info("添加用户完成。。。。。学号：" + student.getSnum());
                 return student;
             }
 
