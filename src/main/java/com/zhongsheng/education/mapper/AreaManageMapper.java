@@ -1,6 +1,5 @@
 package com.zhongsheng.education.mapper;
 
-import com.zhongsheng.education.dao.StudentDao;
 import com.zhongsheng.education.dao.TableDao;
 import com.zhongsheng.education.entiy.Area;
 import com.zhongsheng.education.entiy.CampusDic;
@@ -45,6 +44,6 @@ public interface AreaManageMapper {
     @Update("update  training_school_dic set name=#{name} where id=#{id} ")
     public Integer toUpdateSchool(CampusDic campusDic);
 
-    @Select("select * from student where schoolid=#{schoolid}")
+    @Select("select * from student where schoolid=#{schoolid} and status !=0")
     public List<Student> selectStudent(Integer schoolid);
 }
