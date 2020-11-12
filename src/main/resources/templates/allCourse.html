@@ -140,7 +140,7 @@
                 var layer = layui.layer, $ = layui.$;
                 layer.open({
                     type: 1,//类型
-                    area: ['500px', '350px'],//定义宽和高
+                    area: ['350px', '250px'],//定义宽和高
                     title: '添加专业课',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#motaikunag')//打开的内容
@@ -157,7 +157,7 @@
                 var layer = layui.layer, $ = layui.$;
                 layer.open({
                     type: 1,//类型
-                    area: ['500px', '350px'],//定义宽和高
+                    area: ['350px', '250px'],//定义宽和高
                     title: '修改专业课',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#updateScore')//打开的内容
@@ -360,7 +360,7 @@
         <input type="hidden" id="a" name="aid">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">专业课名称</label>
+                <label class="layui-form-label" style="width: 100px;">专业课名称</label>
                 <div class="layui-input-inline">
                     <input name="name" class="layui-input" type="text" lay-verify="required"/>
                 </div>
@@ -369,7 +369,7 @@
         <div class="layui-form-inline" style="margin-top: 10%;">
 
             <div class="layui-input-inline">
-                <button class="layui-btn" lay-submit lay-filter="userform">提交</button>
+                <button class="layui-btn layui-btn-normal"  lay-submit lay-filter="userform">提交</button>
             </div>
 
         </div>
@@ -384,7 +384,7 @@
         <input type="hidden" id="id" name="id">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">专业课名称</label>
+                <label class="layui-form-label" style="width: 100px;">专业课名称</label>
                 <div class="layui-input-inline">
                     <input name="name" id="name1" class="layui-input" type="text" lay-verify="required"/>
                 </div>
@@ -393,7 +393,7 @@
         <div class="layui-form-inline" style="margin-top: 10%;">
 
             <div class="layui-input-inline">
-                <button class="layui-btn" lay-submit lay-filter="updateform">提交</button>
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="updateform">提交</button>
             </div>
 
         </div>
@@ -403,7 +403,7 @@
 </div>
 
 
-<!--删除积分-->
+<!--删除-->
 <div id="deleteScore" style="display: none;text-align: center;">
     <form class="layui-form" id="delete" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
         <input type="hidden" id="id1" name="id">
