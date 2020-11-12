@@ -17,6 +17,10 @@ public class ClassesServiceImpl implements ClassesService {
     public List<Classes> selectClasses(Integer area) {
         return classesMapper.selectClasses(area);
     }
+    @Override
+    public List<Classes> selectCourse(Integer area) {
+        return classesMapper.selectCourse(area);
+    }
 
     @Override
     public List<Classes> selectClassMoney(String name) {
@@ -27,6 +31,12 @@ public class ClassesServiceImpl implements ClassesService {
 
         return classesMapper.addScore(aid, name, classmoney);
     }
+
+    @Override
+    public Integer addCourse(Integer aid, String name){
+
+        return classesMapper.addCourse(aid, name);
+    }
     @Override
     public Integer deleteScore(Integer id) {
         return classesMapper.deleteScore(id);
@@ -34,6 +44,14 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public Integer updateScore(Integer id, String name, Integer classmoney) {
         return classesMapper.updateScore(id, name, classmoney);
+    }
+    @Override
+    public Integer deleteCourse(Integer id) {
+        return classesMapper.deleteCourse(id);
+    }
+    @Override
+    public Integer updateCourse(Integer id, String name) {
+        return classesMapper.updateCourse(id, name);
     }
 }
 
