@@ -413,7 +413,7 @@
                     </ul>
                 </li>
                 <li shiro:hasPermission=="userdetails:list">
-                    <a th:href="@{/user/userdetails}"><i class="layui-icon layui-icon-friends"></i> <span class="nav-label">个人信息</span><span
+                    <a th:href="@{/user/userDetails}"><i class="layui-icon layui-icon-friends"></i> <span class="nav-label">个人信息</span><span
                             class="fa arrow"></span></a>
                 </li>
             </ul>
@@ -495,7 +495,7 @@
                 <div class="layui-input-inline">
                     <label class="layui-form-label">生日</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input" id="birthday" name="birthday">
+                        <input autocomplete="off" type="text" class="layui-input" id="birthday" name="birthday">
                     </div>
                 </div>
 
