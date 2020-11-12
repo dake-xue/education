@@ -223,16 +223,18 @@ public class StudentServiceImpl implements StudentService {
             familyService.addFamilyInfo(student.getFamilyInfo());
             schoolService.addSchoolInfo(student.getSchoolInfo());
             //生成票据
-            String s = null;
-            try {
-                s = Reader.addBill(student, student.getCampusmanager());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            //生成图片
-            String ima = PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir") + "\\src\\main\\resources\\static\\pdfToImage", 300);
+            String s =  Reader.addBill(student, student.getCampusmanager());
             Bill bill = new Bill();
-            bill.setImage("\\zhongsheng\\pdfToImage\\" + MyUtil.linuxGetPngName(ima));
+            boolean isWin = System.getProperty("os.name").toLowerCase().contains("win");
+            String ima = "";
+            //根据系统判断
+            if (isWin){
+                ima =  PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
+                bill.setImage("\\zhongsheng\\pdfToImage\\"+MyUtil.getPngName(ima));
+            }else {
+                ima = PDF2IMAGE.pdf2Image(s, "/usr/img", 300);
+                bill.setImage("\\zhongsheng\\pdfToImage\\"+MyUtil.linuxGetPngName(ima));
+            }
             bill.setSnum(student.getSnum());
             bill.setRemark(student.getRemarks());
             bill.setArea(student.getArea());
