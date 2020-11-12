@@ -33,7 +33,6 @@
             //第一个实例
             table.render({
                 elem: '#demo'
-                , height: 312
                 , url: '/zhongsheng/ClassesController/selectClasses?area=' + $("#aid").val()//数据接口
                 , page: true //开启分页
                 , limit: 6//每页多少条数据
@@ -262,6 +261,10 @@
                 <li shiro:hasPermission=="userdetails:list">
                     <a th:href="@{/user/userDetails}"><i class="layui-icon layui-icon-friends"></i> <span
                             class="nav-label">个人信息</span><span
+                            class="fa arrow"></span></a>
+                </li>
+                <li shiro:hasPermission=="course:list">
+                    <a th:href="@{/ClassesController/course}"><i class="layui-icon layui-icon-tabs"></i> <span class="nav-label">专业课管理</span><span
                             class="fa arrow"></span></a>
                 </li>
             </ul>

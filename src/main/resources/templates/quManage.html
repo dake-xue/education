@@ -244,6 +244,10 @@
                             class="nav-label">个人信息</span><span
                             class="fa arrow"></span></a>
                 </li>
+                <li shiro:hasPermission=="course:list">
+                    <a th:href="@{/ClassesController/course}"><i class="layui-icon layui-icon-tabs"></i> <span class="nav-label">专业课管理</span><span
+                            class="fa arrow"></span></a>
+                </li>
             </ul>
 
         </div>

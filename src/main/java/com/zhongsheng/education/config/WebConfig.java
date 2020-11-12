@@ -1,6 +1,5 @@
 package com.zhongsheng.education.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.support.GenericConversionService;
@@ -12,7 +11,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import javax.annotation.PostConstruct;
-
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -45,7 +43,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/areaManage").setViewName("areaManage");
         //
         registry.addViewController("/marketPage").setViewName("marketPage");
-
     }
 
     /**
@@ -54,7 +51,7 @@ public class WebConfig implements WebMvcConfigurer {
      * @返回值
      * @创建时间 2020/9/24
      * @描述 添加拦截器
-    */
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //添加拦截器，registry.addInterceptor(new LoginHandlerInterceptor())
@@ -62,17 +59,12 @@ public class WebConfig implements WebMvcConfigurer {
         //排除那些请求
         //excludePatterns()
         registry.addInterceptor(new LoginHandIterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/static/**","/user/**",
+                .excludePathPatterns("/static/**", "/user/**",
                         "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg",
-                        "/**/*.jpeg", "/**/*.gif", "/**/fonts/*","/alipay/**","/toAdd/**",
-                        "/table/**","/student/select*","/ClassesController/select*",
-                        "/student/add*","/student/stuToStudentDetails");
+                        "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/alipay/**", "/toAdd/**",
+                        "/table/**", "/student/select*", "/ClassesController/select*",
+                        "/student/add*", "/student/stuToStudentDetails");
     }
-
-
-
-
-
 
     @Autowired
     private RequestMappingHandlerAdapter handlerAdapter;
@@ -93,9 +85,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         boolean isWin = System.getProperty("os.name").toLowerCase().contains("win");
-        if(isWin){
-            registry.addResourceHandler("/pdfToImage/**").addResourceLocations("file:"+System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage\\");
-        }else {
+        if (isWin) {
+            registry.addResourceHandler("/pdfToImage/**").addResourceLocations("file:" + System.getProperty("user.dir") + "\\src\\main\\resources\\static\\pdfToImage\\");
+        } else {
             registry.addResourceHandler("/pdfToImage/**").addResourceLocations("file:/usr/img/");
         }
 

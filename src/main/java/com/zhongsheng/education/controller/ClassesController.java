@@ -47,7 +47,7 @@ public class ClassesController {
         return layuiData;
     }
 
-   //添加兑换
+   //添加班次
     @RequestMapping("/addClass")
     @ResponseBody
     public Integer addScore(Integer aid,String name, Integer classmoney) {
@@ -89,5 +89,56 @@ public class ClassesController {
     public List<Classes> selectClassMoney(String name) {
         List<Classes> classesList = classesService.selectClassMoney(name);
         return classesList;
+    }
+
+
+    //跳转专业课页面
+    @RequestMapping("/course")
+    public String course(Model model) {
+        //取出session中的user
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        Integer area=loginUser.getArea();
+        model.addAttribute("aid",area);
+        return "allCourse";
+    }
+
+    //专业课管理
+    @RequestMapping("/selectCourse")
+    @ResponseBody
+    public LayuiData selectCourse(@RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "3") int limit,Integer area) {
+        Page pagehelper = PageHelper.startPage(page, limit);
+        List<Classes> classesList = classesService.selectCourse(area);
+
+        LayuiData layuiData = new LayuiData();
+        layuiData.setCode(0);
+        layuiData.setMsg("");
+        layuiData.setCount((int) pagehelper.getTotal());
+        layuiData.setData(classesList);
+        return layuiData;
+    }
+
+    //添加专业课
+    @RequestMapping("/addCourse")
+    @ResponseBody
+    public Integer addCourse(Integer aid,String name) {
+        Integer i = classesService.addCourse(aid,name);
+        return i;
+    }
+    //删除专业课
+    @RequestMapping("/deleteCourse")
+    @ResponseBody
+    public Integer deleteCourse(Integer id) {
+        Integer integer = classesService.deleteCourse(id);
+        return integer;
+    }
+
+    ;
+
+    //修改专业课
+    @RequestMapping("/updateCourse")
+    @ResponseBody
+    public Integer updateCourse(Integer id, String name) {
+        Integer integer = classesService.updateCourse(id, name);
+        return integer;
     }
 }
