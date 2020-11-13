@@ -408,6 +408,10 @@
                         }
                     });
                 }
+                if (data.value == 5) {
+                    $("#keyword").empty();
+                    $("#keyword").append("<input type='text' name='keyword' placeholder='请输入身份证号' autocomplete='off' class='layui-input' maxlength='18' style='width: 200px'>");
+                }
             });
         });
 
@@ -648,6 +652,7 @@
                                 <option value="2">按班次</option>
                                 <option value="3">按考试年份</option>
                                 <option value="4">按考试科目</option>
+                                <option value="5">按身份证号</option>
                             </select>
                         </div>
                         <div class="layui-inline" id="keyword">
