@@ -12,6 +12,7 @@ public class StudentDao {
             sql.append(" and  TO_DAYS(signupdate) = TO_DAYS(NOW())");
         }
         //本周
+
         if (searchVo.getStatus() != null && searchVo.getStatus() == 6) {
             sql.append("  and YEARWEEK( DATE_FORMAT(signupdate,'%Y-%m-%d'),1) = YEARWEEK(NOW(),1)");
 
@@ -42,7 +43,7 @@ public class StudentDao {
         if (searchVo.getModules() != null && searchVo.getModules() == 4 && searchVo.getKeyword() != null && searchVo.getKeyword() != "") {
             sql.append(" and subject ='" + searchVo.getKeyword() + " '");
         }
-        if (schoolid != null && !"".equals(schoolid)) {
+        if (schoolid != null && !"".equals(schoolid) && schoolid!=0) {
             sql.append(" and schoolid ='" + schoolid + " '");
         }
 

@@ -45,7 +45,8 @@ public class StudentController {
 
     @GetMapping("/allStudentInfo")
     @ResponseBody
-    public LayuiData allStudentInfo( @RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "3") int limit, Integer schoolid,SearchVo searchVo) throws Exception {
+    public LayuiData allStudentInfo( @RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "3") int limit,
+                                     Integer schoolid,SearchVo searchVo) throws Exception {
         //取出session中的user
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         //把user中的area字段赋给search

@@ -26,6 +26,7 @@
     <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
     <script>
         layui.use(['form', 'table', 'laydate'], function () {
+            getRole("role", "roleId");
             var $ = layui.jquery,
                 form = layui.form,
                 table = layui.table,
@@ -180,6 +181,25 @@
             })
         };
 
+        function getRole(tableName, scId) {
+            $.ajax({
+                type: 'post',
+                url: '/zhongsheng/table/all',
+                contentType: 'application/x-www-form-urlencoded',
+                data: {"tableName": tableName},
+                dataType: "json",
+                success: function (data) {
+                    var id =  $("#" + scId + "").val();
+                    for (var i = 0; i < data.length; i++) {
+                        if(id == data[i].id){
+                            $("#roleName").html(data[i].name);
+                        }
+                    }
+                }
+            });
+
+        }
+
     </script>
     <script type="text/html" id="update">
         <a class="layui-btn layui-btn-normal layui-btn-sm" style="color: white"
@@ -280,6 +300,10 @@
                     </a>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <input type="hidden" th:value="${session.user.roleid}" id="roleId">
+                        <span class="m-r-sm text-muted welcome-message">您当前的身份为：<span id="roleName" style="color: #c23450;font-weight: bold;">无</span></span>
+                    </li>
                     <li>
                         <span class="m-r-sm text-muted welcome-message">欢迎来到中升教育管理后台</span>
                     </li>

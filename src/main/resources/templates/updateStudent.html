@@ -50,6 +50,7 @@
 
         //Demo
         layui.use('form', function () {
+            getRole("role", "roleId");
             var form = layui.form;
             //班级
             getClassify("classes_dic", "classes",$("#classes1").val());
@@ -60,7 +61,7 @@
             //民族
             getClassify("nation_dic","nation",$("#nation1").val());
             //学校
-            //getClassify("training_school_dic","schoolname");
+            getClassify("training_school_dic","schoolname",$("#schoolname1").val());
             form.verify({
                 chinese: function (value, item) { //value：表单的值、item：表单的DOM对象
                     if (!new RegExp("^[\u4e00-\u9fa5\]+$").test(value)) {
@@ -269,6 +270,24 @@
 
         }
 
+        function getRole(tableName, scId) {
+            $.ajax({
+                type: 'post',
+                url: '/zhongsheng/table/all',
+                contentType: 'application/x-www-form-urlencoded',
+                data: {"tableName": tableName},
+                dataType: "json",
+                success: function (data) {
+                    var id =  $("#" + scId + "").val();
+                    for (var i = 0; i < data.length; i++) {
+                        if(id == data[i].id){
+                            $("#roleName").html(data[i].name);
+                        }
+                    }
+                }
+            });
+
+        }
 
     </script>
 
@@ -419,7 +438,7 @@
                 </div>
 
                 <div class="layui-input-inline">
-                    <label class="layui-form-label important">生日</label>
+                    <label class="layui-form-label">生日</label>
                     <div class="layui-input-inline">
                         <input type="text" class="layui-input" id="birthday"
                                onblur=""   name="birthday" th:value="${#dates.format(student.birthday, 'yyyy-MM-dd')}">
@@ -428,19 +447,19 @@
 
 
                 <div class="layui-input-inline">
-                    <label class="layui-form-label important" style="white-space:nowrap!important;">身份证号</label>
+                    <label class="layui-form-label" style="white-space:nowrap!important;">身份证号</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="ic" name="idcard" required lay-verify="identity"
+                        <input type="text" id="ic" name="idcard" lay-verify="identity"
                                autocomplete="off" class="layui-input" maxlength="18"
                                th:value="${student.idcard}" >
                     </div>
                 </div>
 
                 <div class="layui-input-inline">
-                    <label class="layui-form-label important">民族</label>
+                    <label class="layui-form-label">民族</label>
                     <div class="layui-input-inline selectWd">
                         <input hidden id="nation1" th:value="${student.nation}">
-                        <select id="nation" name="nation" lay-verify="required">
+                        <select id="nation" name="nation" lay-verify="">
                         </select>
                     </div>
                 </div>
@@ -466,7 +485,7 @@
                 <div class="layui-input-inline">
                     <label class="layui-form-label important">院系</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="department" required lay-verify="chinese"
+                        <input type="text" name="department"  lay-verify=""
                                autocomplete="off" class="layui-input" th:value="${student.department}">
                     </div>
                 </div>
@@ -553,14 +572,14 @@
                 <div class="layui-input-inline">
                     <label class="layui-form-label" style="white-space:nowrap!important;">在校职务</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="job" required lay-verify=""
+                        <input type="text" name="job"  lay-verify=""
                                autocomplete="off" class="layui-input" th:value="${student.job}">
                     </div>
                 </div>
                 <div class="layui-input-inline">
                     <label class="layui-form-label" style="white-space:nowrap!important;">校园伙伴</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="campusagent" required lay-verify=""
+                        <input type="text" name="campusagent"  lay-verify=""
                                autocomplete="off" class="layui-input" th:value="${student.campusagent}">
                     </div>
                 </div>
@@ -590,7 +609,7 @@
                     </div>
                 </div>
 
-                <div class="layui-input-inline important">
+                <div class="layui-input-inline ">
                     <label class="layui-form-label" style="white-space:nowrap!important;">补费日期</label>
                     <div class="layui-input-inline">
                         <input type="text" name="addmoneydate" class="layui-input" id="addMoney" th:value="${#dates.format(student.addmoneydate, 'yyyy-MM-dd')}">
@@ -602,6 +621,7 @@
                     <label class="layui-form-label nobreak">线上上课</label>
                     <div class="layui-input-inline selectWd">
                         <select name="onlinenumber" lay-verify="required">
+                            <option th:selected="${student.onlinenumber eq '0'}" value="0">0</option>
                             <option th:selected="${student.onlinenumber eq '1'}" value="1">1</option>
                             <option th:selected="${student.onlinenumber eq '2'}" value="2">2</option>
                             <option th:selected="${student.onlinenumber eq '3'}" value="3">3</option>
@@ -618,6 +638,7 @@
                     <label class="layui-form-label nobreak">线下上课</label>
                     <div class="layui-input-inline selectWd">
                         <select name="offlinenumber" lay-verify="required">
+                            <option th:selected="${student.offlinenumber eq '0'}" value="0">0</option>
                             <option th:selected="${student.offlinenumber eq '1'}" value="1">1</option>
                             <option th:selected="${student.offlinenumber eq '2'}" value="2">2</option>
                             <option th:selected="${student.offlinenumber eq '3'}" value="3">3</option>
@@ -633,23 +654,23 @@
                 <font size="4" style="font-weight: bold">附加信息</font>
                 <hr>
                 <div class="layui-form-item">
-                    <label class="layui-form-label important"
+                    <label class="layui-form-label "
                            style="white-space:nowrap!important;width: 140px;">家属联系方式</label>
 
                     <div class="layui-input-inline">
-                        <select name="familyInfo.relation" lay-verify="required">
+                        <select name="familyInfo.relation" lay-verify="">
                             <option value="父亲">父亲</option>
                             <option value="母亲">母亲</option>
                         </select>
                     </div>
 
                     <div class="layui-input-inline">
-                        <input type="text" name="familyInfo.fname" required lay-verify="required" placeholder="姓名"
+                        <input type="text" name="familyInfo.fname"  lay-verify="" placeholder="姓名"
                                autocomplete="off" class="layui-input" th:value="${student.familyInfo.fname}">
                     </div>
 
                     <div class="layui-input-inline">
-                        <input type="text" name="familyInfo.fphone" required lay-verify="phone" placeholder="电话"
+                        <input type="text" name="familyInfo.fphone"  lay-verify="" placeholder="电话"
                                autocomplete="off" class="layui-input phone" maxlength="11" th:value="${student.familyInfo.fphone}">
                     </div>
                     <label class="layui-form-label " style="white-space:nowrap!important;">收件地址</label>
@@ -659,12 +680,12 @@
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label important"
+                    <label class="layui-form-label "
                            style="white-space:nowrap!important;width: 140px;">校园联系方式</label>
 
                     <div class="layui-input-inline">
                         <div class="layui-input-inline" style="width: 187px;">
-                            <select name="schoolInfo.screlation" lay-verify="required">
+                            <select name="schoolInfo.screlation" lay-verify="">
                                 <option value="导员">导员</option>
                                 <option value="舍友">舍友</option>
                             </select>
@@ -672,12 +693,12 @@
                     </div>
 
                     <div class="layui-input-inline">
-                        <input type="text" name="schoolInfo.scname" required lay-verify="required" placeholder="姓名"
+                        <input type="text" name="schoolInfo.scname"  lay-verify="" placeholder="姓名"
                                autocomplete="off" class="layui-input" th:value="${student.schoolInfo.scname}">
                     </div>
 
                     <div class="layui-input-inline">
-                        <input type="text" name="schoolInfo.scphone" required lay-verify="phone" placeholder="电话"
+                        <input type="text" name="schoolInfo.scphone"  lay-verify="" placeholder="电话"
                                autocomplete="off" class="layui-input phone" maxlength="11" th:value="${student.schoolInfo.scphone}">
                     </div>
 
@@ -709,17 +730,6 @@
     </div>
 </div>
 
-
-<!-- Mainly scripts -->
-<script src="js/jquery-3.1.1.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-<!-- Custom and plugin javascript -->
-<script src="js/inspinia.js"></script>
-<script src="js/plugins/pace/pace.min.js"></script>
 
 </body>
 
