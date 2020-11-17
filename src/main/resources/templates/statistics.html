@@ -89,6 +89,9 @@
         <span style="color:#c23450;">{{d.weijiaokuan}}元</span>
         {{#  } }}
     </script>
+    <script type="text/html" id="jf">
+        <span style="color: #35bdae">{{d.jiaofeijine}}元</span>
+    </script>
     <script>
         layui.use(['form', 'table', 'laydate'], function () {
             var $ = layui.jquery,
@@ -119,6 +122,7 @@
                         , {field: 'subject', title: '考试科目'}
                         , {field: 'money', title: '学费' }
                         , {field: 'idcard', title: '身份证'}
+                        , {field: 'jiaofeijine', title: '已交费', templet: '#yj'}
                         , {field: 'weijiaokuan', title: '待补费', templet: '#cf'}
                         , {field: 'schoolname', title: '学校', sort: true}
                         , {field: 'major', title: '专业'}
