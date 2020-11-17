@@ -72,7 +72,6 @@
 
         });
 
-
     </script>
 </head>
 
@@ -158,6 +157,10 @@
                     </a>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <input type="hidden" th:value="${session.user.roleid}" id="roleId">
+                        <span class="m-r-sm text-muted welcome-message">您当前的身份为：<span style="color: #c23450;font-weight: bold;" th:text="${userVo.rolename}"></span></span>
+                    </li>
                     <li>
                         <span class="m-r-sm text-muted welcome-message">欢迎来到中升教育管理后台</span>
                     </li>

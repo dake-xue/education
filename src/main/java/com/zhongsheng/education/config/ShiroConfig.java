@@ -70,7 +70,13 @@ public class ShiroConfig {
 
         // 配置可以匿名访问的地址，可以根据实际情况自己添加，放行一些静态资源等，anon 表示放行
         filterChainMap.put("/css/**", "anon");
-        filterChainMap.put("/imgs/**", "anon");
+        filterChainMap.put("/font-awesome/**", "anon");
+        filterChainMap.put("/fonts/**", "anon");
+        filterChainMap.put("/images/**", "anon");
+        filterChainMap.put("/layui/**", "anon");
+        filterChainMap.put("/pdf/**", "anon");
+        filterChainMap.put("/pdfToImage/**", "anon");
+        filterChainMap.put("/img/**", "anon");
         filterChainMap.put("/js/**", "anon");
         filterChainMap.put("/swagger-*/**", "anon");
         filterChainMap.put("/swagger-ui.html/**", "anon");

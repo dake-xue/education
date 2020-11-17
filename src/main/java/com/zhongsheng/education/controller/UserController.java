@@ -119,6 +119,8 @@ public class UserController {
                 return "redirect:/student/stuToStudentDetails?phone=" + loginUser.getUsername();
             } else if (loginUser.getRoleid() == 4) {
                 return "redirect:/marketPage";
+            } else if(loginUser.getRoleid() == 5){
+                return "redirect:/bill/toAllBill";
             }
             return "redirect:/student/toAllStudent";
         } catch (UnknownAccountException uae) {
