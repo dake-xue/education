@@ -7,6 +7,7 @@ public class Classes implements Serializable {
     private Integer aid;
     private String name;
     private String classmoney;
+    private Integer classnumber;
 
     public Integer getId() {
         return id;
@@ -38,5 +39,13 @@ public class Classes implements Serializable {
 
     public void setClassmoney(String classmoney) {
         this.classmoney = classmoney;
+    }
+
+    public Integer getClassnumber() {
+        return classnumber;
+    }
+
+    public void setClassnumber(Integer classnumber) {
+        this.classnumber = classnumber;
     }
 }

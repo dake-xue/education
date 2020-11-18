@@ -43,6 +43,7 @@
                         {field: 'id', title: 'id', sort: true, fixed: 'left', hide: true}
                         , {field: 'name', title: '班次'}
                         , {field: 'classmoney', title: '学费', sort: true}
+                        , {field: 'classnumber', title: '轮数', sort: true}
                         , {field: 'area', title: '省', hide: true}
                         , {field: 'status', title: '操作', templet: '#update'}
                     ]
@@ -53,7 +54,7 @@
             form.on('submit(userform)', function (data) {
                 var score = data.field;
                 var a = /^[1-9]\d*$/;
-                if (a.test(score.classmoney) == false) {
+                if (a.test(score.classmoney) == false && a.test(score.classnumber) == false) {
                     layer.msg("请输入纯数字", {icon: 6});
                 } else {
                     $.ajax({
@@ -81,8 +82,8 @@
             form.on('submit(updateform)', function (data) {
                 var score = data.field;
                 var a = /^[1-9]\d*$/;
-                if (a.test(score.classmoney) == false) {
-                    layer.msg("请输入纯数字", {icon: 1000});
+                if (a.test(score.classmoney) == false && a.test(score.classnumber) == false) {
+                    layer.msg("请输入正确数字", {icon: 1000});
                 } else {
                     $.ajax({
                         url: "/zhongsheng/ClassesController/updateClass",
@@ -147,7 +148,7 @@
                 var layer = layui.layer, $ = layui.$;
                 layer.open({
                     type: 1,//类型
-                    area: ['500px', '350px'],//定义宽和高
+                    area: ['500px', '400px'],//定义宽和高
                     title: '添加班次',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#motaikunag')//打开的内容
@@ -157,15 +158,16 @@
 
 
         //修改
-        function openUpdateScore(id, name, classmoney) {
+        function openUpdateScore(id, name, classmoney,classnumber) {
             $("#id").val(id);
             $("#name1").val(name);
             $("#classmoney").val(classmoney);
+            $("#classnumber").val(classnumber);
             layui.use(['layer'], function () {
                 var layer = layui.layer, $ = layui.$;
                 layer.open({
                     type: 1,//类型
-                    area: ['500px', '350px'],//定义宽和高
+                    area: ['500px', '400px'],//定义宽和高
                     title: '修改班次',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#updateScore')//打开的内容
@@ -210,7 +212,7 @@
     </script>
     <script type="text/html" id="update">
         <a class="layui-btn layui-btn-normal layui-btn-sm" style="color: white"
-           onclick='openUpdateScore("{{d.id}}","{{d.name}}","{{d.classmoney}}");'>
+           onclick='openUpdateScore("{{d.id}}","{{d.name}}","{{d.classmoney}}","{{d.classnumber}}");'>
             编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-sm" style="color: white"
            onclick='openDeleteScore("{{d.id}}")'>
@@ -398,6 +400,14 @@
                 </div>
             </div>
         </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">上课轮数</label>
+                <div class="layui-input-inline">
+                    <input name="classnumber"  class="layui-input" type="text"/>
+                </div>
+            </div>
+        </div>
 
 
         <div class="layui-form-inline" style="margin-top: 10%;">
@@ -429,6 +439,14 @@
                 <label class="layui-form-label">学费</label>
                 <div class="layui-input-inline">
                     <input name="classmoney" class="layui-input" type="text" id="classmoney"/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">上课轮数</label>
+                <div class="layui-input-inline">
+                    <input name="classnumber"  id="classnumber" class="layui-input" type="text"/>
                 </div>
             </div>
         </div>

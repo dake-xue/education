@@ -6,8 +6,10 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.zhongsheng.education.entiy.Bill;
+import com.zhongsheng.education.entiy.Bnumber;
 import com.zhongsheng.education.entiy.Order;
 import com.zhongsheng.education.entiy.Student;
+import com.zhongsheng.education.pdf.BillNumber;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.AliPayService;
@@ -228,8 +230,10 @@ public class AliPayServiceImpl implements AliPayService {
                 student.setStatus(1);
                 int i =  studentService.updateStatus(student);
                 logger.info("学生表影响行数："+i);
+                //获取票据随机数
+                Bnumber billnumber= BillNumber.billNumber();
                 //生成票据
-                String s = Reader.addBill(student,student.getCampusmanager());
+                String s = Reader.addBill(student,student.getCampusmanager(),billnumber);
 
                 Bill bill = new Bill();
                 boolean isWin = System.getProperty("os.name").toLowerCase().contains("win");
@@ -250,6 +254,7 @@ public class AliPayServiceImpl implements AliPayService {
                 bill.setCampusid(student.getCampusid());
                 bill.setSchoolid(student.getSchoolid());
                 bill.setIntotime(new Date());
+                bill.setBillnumber(billnumber.getBillnumber());
                 //插入票据表
                 int j =billService.addBillInfo(bill);
                 logger.info("票据表影响行数："+j);

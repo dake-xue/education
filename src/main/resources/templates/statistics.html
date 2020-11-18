@@ -89,7 +89,7 @@
         <span style="color:#c23450;">{{d.weijiaokuan}}元</span>
         {{#  } }}
     </script>
-    <script type="text/html" id="jf">
+    <script type="text/html" id="yj">
         <span style="color: #35bdae">{{d.jiaofeijine}}元</span>
     </script>
     <script>
@@ -116,21 +116,22 @@
                     [//表头
                         {field: 'snum', title: '学号', sort: true,  fixed: 'left'}
                         , {field: 'sname', title: '姓名', style: "color:#009688"}
-                        , {field: 'sex', title: '性别', sort: true}
+                        , {field: 'sex', title: '性别'}
                         , {field: 'phone', title: '联系方式'}
                         , {field: 'classes', title: '班次'}
-                        , {field: 'examinationtime', title: '考试年份'}
-                        , {field: 'subject', title: '考试科目'}
-                        , {field: 'money', title: '学费' }
+                        , {field: 'examinationtime', title: '考试年份',hide:true}
+                        , {field: 'subject', title: '考试科目',hide:true}
                         , {field: 'idcard', title: '身份证'}
+                        , {field: 'money', title: '学费' }
                         , {field: 'jiaofeijine', title: '已交费', templet: '#yj'}
                         , {field: 'weijiaokuan', title: '待补费', templet: '#cf'}
+                        , {field: 'billnumber', title: '票据编号'}
                         , {field: 'schoolname', title: '学校', sort: true}
                         , {field: 'major', title: '专业'}
                         , {field: 'intentionmajor', title: '意向专业'}
                         , {field: 'campusmanager', title: '校区负责人'}
                         , {field: 'paymethod', title: '缴费方式'}
-                        , {field: 'publiccours', title: '公共课' }
+                        , {field: 'publiccours', title: '公共课' ,hide:true}
                     ]
                 ]
             });

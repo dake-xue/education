@@ -13,8 +13,8 @@ public interface ClassesMapper {
     @Select("select * from majorcours_dic where aid=#{area}")
     public List<Classes> selectCourse(Integer area);
 
-    @Insert("insert into classes_dic(name,classmoney,aid) values(#{name},#{classmoney},#{aid}) ")
-    public Integer addScore(Integer aid, String name, Integer classmoney);
+    @Insert("insert into classes_dic(name,classmoney,aid,classnumber) values(#{name},#{classmoney},#{aid},#{classnumber}) ")
+    public Integer addScore(Integer aid, String name, String classmoney,Integer classnumber);
 
     @Insert("insert into majorcours_dic(name,aid) values(#{name},#{aid}) ")
     public Integer addCourse(Integer aid, String name);
@@ -22,8 +22,8 @@ public interface ClassesMapper {
     @Delete("delete  from classes_dic where id=#{id}")
     public Integer deleteScore(Integer id);
 
-    @Update("update  classes_dic set name=#{name},classmoney=#{classmoney}  where id=#{id}")
-    public Integer updateScore(Integer id, String name, Integer classmoney);
+    @Update("update  classes_dic set name=#{name},classmoney=#{classmoney},classnumber=#{classnumber}  where id=#{id}")
+    public Integer updateScore(Integer id, String name,String classmoney,Integer classnumber);
 
     @Delete("delete  from majorcours_dic where id=#{id}")
     public Integer deleteCourse(Integer id);
