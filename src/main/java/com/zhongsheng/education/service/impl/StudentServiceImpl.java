@@ -235,6 +235,7 @@ public class StudentServiceImpl implements StudentService {
                 ima = PDF2IMAGE.pdf2Image(s, "/usr/img", 300);
                 bill.setImage("\\zhongsheng\\pdfToImage\\"+MyUtil.linuxGetPngName(ima));
             }
+
             bill.setSnum(student.getSnum());
             bill.setRemark(student.getRemarks());
             bill.setArea(student.getArea());

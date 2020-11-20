@@ -26,7 +26,7 @@
     <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
     <script>
         layui.use(['form', 'table','laydate'], function () {
-            getRole("role", "roleId");
+            getRole("role", "role");
             getClassify("role", "roleid");
             //getData("area");
             var $ = layui.jquery,
@@ -53,6 +53,18 @@
                         , {field: '', title: '操作',templet: '#dg'}
                      ]
                 ]
+                ,done: function (res, curr, count) {
+                    $("[data-field='aname']").children().each(function () {
+                        if ($(this).text() == '') {
+                            $(this).text("暂无")
+                        }
+                    });
+                    $("[data-field='cname']").children().each(function () {
+                        if ($(this).text() == '') {
+                            $(this).text("暂无")
+                        }
+                    });
+                }
             });
 
             //省份 省区二级联动
@@ -61,7 +73,7 @@
                 url: '/zhongsheng/student/selectArea',
                 contentType: 'application/json',
                 success: function(data) {
-                    var str = "<option value='0'>请选择省份</option>";
+                    var str = "<option value='0'>省负责人</option>";
                     for(var i = 0; i < data.length; i++) {
                         str += "<option value='" + data[i].aid + "'>" + data[i].aname + "</option>"
                     }
@@ -84,7 +96,7 @@
                     },
                     dataType: "json",
                     success: function(data) {
-                        var str;
+                        var str = '<option value="0">区负责人</option>';
                         for(var i = 0; i < data.length; i++) {
                             str += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"
                         }
@@ -259,6 +271,23 @@
         <span style="color: #e10d21;font-weight: bold;">禁用</span>
         {{#  } }}
     </script>
+
+    <script type="text/html" id="aname">
+        {{#  if(d.aname == null){ }}
+        <span style="color: #15bc0c;font-weight: bold;">正常</span>
+        {{#  } else { }}
+        <span style="color: #e10d21;font-weight: bold;">禁用</span>
+        {{#  } }}
+    </script>
+
+    <script type="text/html" id="cname">
+        {{#  if(d.status == 0){ }}
+        <span style="color: #15bc0c;font-weight: bold;">正常</span>
+        {{#  } else { }}
+        <span style="color: #e10d21;font-weight: bold;">禁用</span>
+        {{#  } }}
+    </script>
+
     <script type="text/html" id="dg">
         {{#  if(d.status == 0){ }}
         <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="disable('{{d.uid}}','{{d.name}}',1);" style="color: white">禁用</a>
@@ -427,11 +456,12 @@
             </div>
         </div>
         <div class="footer">
-            <div class="float-right">
-                <strong>2.9.2 inspinia</strong>
-            </div>
-            <div>
-                <strong>Copyright</strong> inspinia 2.9.2 &copy; 2014-2018
+            <div style="text-align: center;">
+                <strong>Copyright</strong>@ 2020. All rights reserved.中升教育科技有限公司 版权所有.
+                <strong>
+                    <a style="" href="https://beian.miit.gov.cn/" target="_blank">
+                        豫ICP备2020030416号-3</a>
+                </strong>
             </div>
         </div>
 
@@ -524,7 +554,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">地区</label>
                 <div class="layui-input-inline selectWd">
-                    <select id="area" lay-filter="area" name="area" lay-verify="required">
+                    <select id="area" lay-filter="area" required name="area" lay-verify="required">
                     </select>
                 </div>
             </div>
@@ -535,7 +565,8 @@
             <div class="layui-inline">
                 <label class="layui-form-label">负责校区</label>
                 <div class="layui-input-inline selectWd">
-                    <select id="campus" name="campus" lay-verify="required">
+                    <select id="campus" name="campus" required lay-verify="required">
+
                     </select>
                 </div>
             </div>

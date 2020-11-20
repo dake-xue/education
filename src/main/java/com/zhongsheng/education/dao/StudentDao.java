@@ -43,12 +43,11 @@ public class StudentDao {
         if (searchVo.getModules() != null && searchVo.getModules() == 4 && searchVo.getKeyword() != null && searchVo.getKeyword() != "") {
             sql.append(" and subject ='" + searchVo.getKeyword() + " '");
         }
-        if (schoolid != null && !"".equals(schoolid) && schoolid!=0) {
         //身份证
         if (searchVo.getModules() != null && searchVo.getModules() == 1 && searchVo.getKeyword() != null && searchVo.getKeyword() != "") {
             sql.append(" and  idcard = '" + searchVo.getKeyword() + "'");
         }
-        if (schoolid != null && !"".equals(schoolid)) {
+        if (schoolid != null && !"".equals(schoolid) && schoolid!=0) {
             sql.append(" and schoolid ='" + schoolid + " '");
         }
 
