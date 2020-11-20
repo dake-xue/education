@@ -170,10 +170,13 @@ public class BillServiceImpl implements BillService {
     @Override
     public List<Student> selectStudentInfo(Bill bill){
         List<Student> studentList =  billMapper.selectStudentInfo(bill);
-        //设置学生需要补款的金额
         for (Student stu : studentList) {
+            //学费
             BigDecimal money = new BigDecimal(stu.getMoney());
+            //缴费金额
             BigDecimal jfje = new BigDecimal(stu.getJiaofeijine());
+            stu.setJiaofeijine(jfje.toString());
+            //待补款
             BigDecimal wjje = money.subtract(jfje);
             stu.setWeijiaokuan(wjje.toString());
         }

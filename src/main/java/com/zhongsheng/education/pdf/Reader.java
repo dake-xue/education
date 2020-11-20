@@ -4,44 +4,31 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.*;
+import com.zhongsheng.education.entiy.Bnumber;
 import com.zhongsheng.education.entiy.Pdf;
 import com.zhongsheng.education.entiy.Student;
-import com.zhongsheng.education.service.impl.AliPayServiceImpl;
-import com.zhongsheng.education.util.UrlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class Reader {
 
     private static final boolean isWin = System.getProperty("os.name").toLowerCase().contains("win");
 
-    public static String addBill(Student student, String name) {
+    public static String addBill(Student student, String name, Bnumber b) {
         Logger logger = LoggerFactory.getLogger(Reader.class);
         String fi = null;
-        // 获得当前时间
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        DateFormat format1 = new SimpleDateFormat("yyyyMMddHH");
-        // 转换为字符串
-        String formatDate = format.format(new Date());
-        String formatDate1 = format1.format(new Date());
-        // 随机生成文件编号
-        int random = new Random().nextInt(10000);
-        StringBuffer sr = new StringBuffer();
-        sr.append(formatDate1);
-        sr.append(random);
-        sr.toString();
+
         String m = String.valueOf(student.getJiaofeijine());
         //金额转换中文
         String result = ConvertUpMoney.toChinese(m);
@@ -59,8 +46,8 @@ public class Reader {
         paraMap.put("Text10", student.getJiaofeijine());
         paraMap.put("Text11", result);
         paraMap.put("Text12", student.getRemarks());
-        paraMap.put("Text13", formatDate);
-        paraMap.put("Text14", sr);
+        paraMap.put("Text13", b.getFormatDate());
+        paraMap.put("Text14", b.getBillnumber());
         paraMap.put("Text15", student.getPhone());
         paraMap.put("Text16", student.getMajor());
         paraMap.put("Text17", student.getIntentionmajor());
@@ -73,7 +60,7 @@ public class Reader {
         //组合文件名
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(student.getSname());
-        stringBuffer.append(random);
+        stringBuffer.append(b.getRandom());
         String r = stringBuffer.toString();
         PdfReader reader = null;
         try {

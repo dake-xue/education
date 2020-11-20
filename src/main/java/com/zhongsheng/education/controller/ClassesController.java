@@ -50,8 +50,8 @@ public class ClassesController {
    //添加班次
     @RequestMapping("/addClass")
     @ResponseBody
-    public Integer addScore(Integer aid,String name, Integer classmoney) {
-        Integer i = classesService.addScore(aid,name,classmoney);
+    public Integer addScore(Integer aid,String name, String classmoney,Integer classnumber) {
+        Integer i = classesService.addScore(aid,name,classmoney,classnumber);
         return i;
     }
 
@@ -68,8 +68,8 @@ public class ClassesController {
     //修改
     @RequestMapping("/updateClass")
     @ResponseBody
-    public Integer updateScore(Integer id, String name, Integer classmoney) {
-        Integer integer = classesService.updateScore(id, name, classmoney);
+    public Integer updateScore(Integer id, String name,String classmoney,Integer classnumber) {
+        Integer integer = classesService.updateScore(id, name, classmoney,classnumber);
         return integer;
     }
 

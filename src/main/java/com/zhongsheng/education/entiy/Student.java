@@ -86,6 +86,16 @@ public class Student {
     //状态
     private Integer status;
 
+    private String billNumber;
+
+    public String getBillNumber() {
+        return billNumber;
+    }
+
+    public void setBillNumber(String billNumber) {
+        this.billNumber = billNumber;
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -448,10 +458,10 @@ public class Student {
                 ", major='" + major + '\'' +
                 ", phone='" + phone + '\'' +
                 ", classes='" + classes + '\'' +
-                ", money=" + money +
-                ", jiaofeijine=" + jiaofeijine +
-                ", examinationtime='" + examinationtime + '\'' +
-                ", admissiontime='" + admissiontime + '\'' +
+                ", money='" + money + '\'' +
+                ", jiaofeijine='" + jiaofeijine + '\'' +
+                ", examinationtime=" + examinationtime +
+                ", admissiontime=" + admissiontime +
                 ", signupdate=" + signupdate +
                 ", addmoneydate=" + addmoneydate +
                 ", paymethod='" + paymethod + '\'' +
@@ -478,6 +488,9 @@ public class Student {
                 ", number=" + number +
                 ", snum='" + snum + '\'' +
                 ", status=" + status +
+                ", billNumber='" + billNumber + '\'' +
+                ", weijiaokuan='" + weijiaokuan + '\'' +
+                ", schoolid=" + schoolid +
                 '}';
     }
 }

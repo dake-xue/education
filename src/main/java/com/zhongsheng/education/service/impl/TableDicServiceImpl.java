@@ -1,6 +1,5 @@
 package com.zhongsheng.education.service.impl;
 
-import com.zhongsheng.education.config.ShiroConfig;
 import com.zhongsheng.education.entiy.PermissionInfo;
 import com.zhongsheng.education.entiy.RoleVo;
 import com.zhongsheng.education.entiy.TableDic;
@@ -79,6 +78,10 @@ public class TableDicServiceImpl implements TableDicService {
     @Override
     public TableDic searchOneByName(TableDic tableDic) {
         return tableDicMapper.searchOneByName(tableDic);
+    }
+    @Override
+    public TableDic searchSchoolName(TableDic tableDic) {
+        return tableDicMapper.searchSchoolName(tableDic);
     }
 
 }

@@ -1,8 +1,8 @@
 package com.zhongsheng.education.service.impl;
 
-import com.zhongsheng.EducationApplication;
 import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.mapper.StudentMapper;
+import com.zhongsheng.education.pdf.BillNumber;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
 import com.zhongsheng.education.service.*;
@@ -153,7 +153,8 @@ public class StudentServiceImpl implements StudentService {
             TableDic tableDic = new TableDic();
             tableDic.setTableName("training_school_dic");
             tableDic.setName(student.getSchoolname());
-            TableDic table = tableDicService.searchOneByName(tableDic);
+            tableDic.setCampus_id(student.getCampusid());
+            TableDic table = tableDicService.searchSchoolName(tableDic);
             student.setSchoolid(table.getId());
 
             int i = studentMapper.addStudentInfo(student);
@@ -213,7 +214,8 @@ public class StudentServiceImpl implements StudentService {
             TableDic tableDic = new TableDic();
             tableDic.setTableName("training_school_dic");
             tableDic.setName(student.getSchoolname());
-            TableDic table = tableDicService.searchOneByName(tableDic);
+            tableDic.setCampus_id(student.getCampusid());
+            TableDic table = tableDicService.searchSchoolName(tableDic);
             student.setSchoolid(table.getId());
 
             int i = studentMapper.addStudentTwo(student);
@@ -222,8 +224,10 @@ public class StudentServiceImpl implements StudentService {
             //添加联系人
             familyService.addFamilyInfo(student.getFamilyInfo());
             schoolService.addSchoolInfo(student.getSchoolInfo());
+            //获取票据随机数
+            Bnumber billnumber= BillNumber.billNumber();
             //生成票据
-            String s =  Reader.addBill(student, student.getCampusmanager());
+            String s =  Reader.addBill(student, student.getCampusmanager(),billnumber);
             Bill bill = new Bill();
             boolean isWin = System.getProperty("os.name").toLowerCase().contains("win");
             String ima = "";
@@ -243,6 +247,7 @@ public class StudentServiceImpl implements StudentService {
             bill.setSchoolid(student.getSchoolid());
             bill.setPaymentAmount(student.getJiaofeijine());
             bill.setIntotime(student.getSignupdate());
+            bill.setBillnumber(billnumber.getBillnumber());
             //插入票据表
             billService.addBillInfo(bill);
             //插入用户表

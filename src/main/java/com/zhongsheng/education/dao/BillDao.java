@@ -99,19 +99,19 @@ public class BillDao {
     }
 
     public String selectStudentInfo(Bill bill){
-        StringBuffer sql = new StringBuffer("select * from student where 1=1 and status <> 0 ");
-        sql.append(" and  TO_DAYS(signupdate) = TO_DAYS(NOW())");
+        StringBuffer sql = new StringBuffer("select s.*,b.billnumber from student s,bill b where status <> 0 and s.snum=b.snum");
+        sql.append(" and  TO_DAYS(s.signupdate) = TO_DAYS(NOW())");
         //省
         if (bill.getArea()!= null && bill.getArea() !=0) {
-            sql.append(" and area = '" + bill.getArea() + " '");
+            sql.append(" and s.area = '" + bill.getArea() + " '");
         }
         //区
         if (bill.getCampusid() != null && bill.getCampusid() !=0) {
-            sql.append(" and campusid = " + bill.getCampusid() + " ");
+            sql.append(" and s.campusid = " + bill.getCampusid() + " ");
         }
         //校
         if (bill.getSchoolid() != null && bill.getSchoolid() !=0) {
-            sql.append(" and schoolid ='" + bill.getSchoolid() + " '");
+            sql.append(" and s.schoolid ='" + bill.getSchoolid() + " '");
         }
         return sql.toString();
 

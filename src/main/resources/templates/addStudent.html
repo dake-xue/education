@@ -241,6 +241,26 @@
                     }
                 });
             });*/
+            form.on('select(classes)', function(data) {
+                $.ajax({
+                    type: 'post',
+                    url: '/zhongsheng/ClassesController/selectClassMoney',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: {
+                        "name":data.value
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        var s;
+                        for(var j = 0; j < data.length; j++) {
+                            s += "<option value='" + data[j].classnumber + "'>" + data[j].classnumber + "</option>"
+                        }
+                        $("#classnumber").html(s);
+                        //重新渲染
+                        layui.form.render("select");
+                    }
+                });
+            });
 
             //根据身份证信息写入出生年月
             $("#ic").blur(function(){
@@ -583,6 +603,14 @@
                         </select>
                     </div>
                 </div>
+                <div class="layui-input-inline important">
+                    <label class="layui-form-label nobreak">上课轮数</label>
+                    <div class="layui-input-inline selectWd">
+                        <select id="classnumber" lay-filter="classnumber"  name="onlinenumber" lay-verify="required">
+                            <option value="">请先选择班次</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="layui-input-inline">
                     <label class="layui-form-label" style="white-space:nowrap!important;">升本专业</label>
                     <div class="layui-input-inline">
@@ -709,24 +737,9 @@
                 </div>
 
 
-                <div class="layui-input-inline important">
-                    <label class="layui-form-label nobreak">线上上课</label>
-                    <div class="layui-input-inline selectWd">
-                        <select name="onlinenumber" lay-verify="required">
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                        </select>
-                    </div>
-                </div>
 
-                <div class="layui-input-inline important">
+
+               <!-- <div class="layui-input-inline important">
                     <label class="layui-form-label nobreak">线下上课</label>
                     <div class="layui-input-inline selectWd">
                         <select name="offlinenumber" lay-verify="required">
@@ -741,7 +754,7 @@
                             <option value="8">8</option>
                         </select>
                     </div>
-                </div>
+                </div>-->
                 <hr>
                 <font size="4" style="font-weight: bold">附加信息</font>
                 <hr>

@@ -26,4 +26,5 @@ public interface TableDicService{
     Integer addRole(RoleVo roleVo);
 
     TableDic searchOneByName(TableDic tableDic);
+    TableDic searchSchoolName(TableDic tableDic);
 }

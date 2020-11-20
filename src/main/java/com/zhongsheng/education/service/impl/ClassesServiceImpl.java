@@ -27,9 +27,9 @@ public class ClassesServiceImpl implements ClassesService {
         return classesMapper.selectClassMoney(name);
     }
     @Override
-    public Integer addScore(Integer aid, String name, Integer classmoney) {
+    public Integer addScore(Integer aid, String name, String classmoney, Integer classnumber) {
 
-        return classesMapper.addScore(aid, name, classmoney);
+        return classesMapper.addScore(aid, name, classmoney,classnumber);
     }
 
     @Override
@@ -42,8 +42,8 @@ public class ClassesServiceImpl implements ClassesService {
         return classesMapper.deleteScore(id);
     }
     @Override
-    public Integer updateScore(Integer id, String name, Integer classmoney) {
-        return classesMapper.updateScore(id, name, classmoney);
+    public Integer updateScore(Integer id, String name,String classmoney,Integer classnumber) {
+        return classesMapper.updateScore(id, name, classmoney,classnumber);
     }
     @Override
     public Integer deleteCourse(Integer id) {

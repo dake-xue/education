@@ -412,6 +412,10 @@
                     $("#keyword").empty();
                     $("#keyword").append("<input type='text' name='keyword' placeholder='请输入身份证号' autocomplete='off' class='layui-input' maxlength='18' style='width: 200px'>");
                 }
+                if (data.value == 6) {
+                    $("#keyword").empty();
+                    $("#keyword").append("<input type='text' name='keyword' placeholder='请输入手机号' autocomplete='off' class='layui-input' maxlength='11' style='width: 200px'>");
+                }
             });
         });
 
@@ -652,10 +656,11 @@
                         <div class="layui-input-inline">
                             <select name="modules" lay-filter="modules" class="layui-form-select">
                                 <option value="1">按姓名</option>
+                                <option value="6">按手机号</option>
+                                <option value="5">按身份证号</option>
                                 <option value="2">按班次</option>
                                 <option value="3">按考试年份</option>
                                 <option value="4">按考试科目</option>
-                                <option value="5">按身份证号</option>
                             </select>
                         </div>
                         <div class="layui-inline" id="keyword">

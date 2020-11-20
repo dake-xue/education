@@ -16,6 +16,8 @@ public interface TableDicMapper {
 
     @Select("select * from ${tableName} where name = #{name}")
     TableDic searchOneByName(TableDic tableDic);
+    @Select("select * from ${tableName} where name = #{name} and campus_id=#{campus_id}")
+    TableDic searchSchoolName(TableDic tableDic);
 
     @Update("update ${tableName} set name=#{name} where id = #{id}")
     Integer update(TableDic tableDic);

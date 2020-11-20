@@ -14,6 +14,7 @@ public class Bill implements Serializable {
     private Integer area;
     private Integer campusid;
     private Integer schoolid;
+    private String billnumber;
 
     public Integer getArea() {
         return area;
@@ -87,18 +88,27 @@ public class Bill implements Serializable {
         this.image = image;
     }
 
+    public String getBillnumber() {
+        return billnumber;
+    }
+
+    public void setBillnumber(String billnumber) {
+        this.billnumber = billnumber;
+    }
+
     @Override
     public String toString() {
         return "Bill{" +
                 "bid=" + bid +
                 ", snum='" + snum + '\'' +
-                ", paymentAmount=" + paymentAmount +
+                ", paymentAmount='" + paymentAmount + '\'' +
                 ", image='" + image + '\'' +
                 ", remark='" + remark + '\'' +
                 ", intotime=" + intotime +
                 ", area=" + area +
                 ", campusid=" + campusid +
                 ", schoolid=" + schoolid +
+                ", billnumber=" + billnumber +
                 '}';
     }
 }
