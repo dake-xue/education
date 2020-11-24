@@ -157,8 +157,7 @@
 				    <li><span class="wt">院系：</span><span th:text="${student.department}"></span></li>
 				    <li><span class="wt">校园伙伴：</span><span th:text="${student.campusagent}"></span></li>
 				    <li><span class="wt">校园经理：</span><span th:text="${student.campusmanager}"></span></li>
-				    <li><span class="wt">线上上课轮数：</span><span th:text="${student.onlinenumber}"></span></li>
-				    <li><span class="wt">线下上课轮数：</span><span th:text="${student.offlinenumber}"></span></li>
+				    <li><span class="wt">上课轮数：</span><span th:text="${student.onlinenumber}"></span></li>
 				    <li><span class="wt">学费：</span><span th:text="${student.money}"></span></li>
 				    <li><span class="wt">缴费方式：</span><span th:text="${student.paymethod}"></span></li>
 				    <li><span class="wt">补费日期：</span><span th:text="${#dates.format(student.addmoneydate, 'yyyy-MM-dd')}"></span></li>
