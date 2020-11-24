@@ -72,7 +72,7 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentMapper.selectStudent(snum);
         //家庭和学校
         student.setFamilyInfo(familyService.selectFamilyInfo(snum));
-        student.setSchoolInfo(schoolService.selectSchoolInfo(snum));
+       // student.setSchoolInfo(schoolService.selectSchoolInfo(snum));
         //票据
         student.setBillList(billService.selectBill(student.getSnum()));
         return student;
@@ -162,7 +162,7 @@ public class StudentServiceImpl implements StudentService {
             student.getFamilyInfo().setSnum(student.getSnum());
             //添加联系人
             familyService.addFamilyInfo(student.getFamilyInfo());
-            schoolService.addSchoolInfo(student.getSchoolInfo());
+            //schoolService.addSchoolInfo(student.getSchoolInfo());
             //插入用户表
             User user = new User();
             user.setName(student.getSname());
@@ -223,7 +223,7 @@ public class StudentServiceImpl implements StudentService {
             student.getFamilyInfo().setSnum(student.getSnum());
             //添加联系人
             familyService.addFamilyInfo(student.getFamilyInfo());
-            schoolService.addSchoolInfo(student.getSchoolInfo());
+           // schoolService.addSchoolInfo(student.getSchoolInfo());
             //获取票据随机数
             Bnumber billnumber= BillNumber.billNumber();
             //生成票据

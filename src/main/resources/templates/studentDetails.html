@@ -410,10 +410,10 @@
                 <li><span class="wt">姓名：</span><span th:text="${student.familyInfo.fname}"></span></li>
                 <li><span class="wt">联系方式：</span><span th:text="${student.familyInfo.fphone}"></span></li>
 
-                <li><span class="wt">关系：</span><span th:text="${student.schoolInfo.screlation}"></span></li>
+            <!--    <li><span class="wt">关系：</span><span th:text="${student.schoolInfo.screlation}"></span></li>
                 <li><span class="wt">姓名：</span><span th:text="${student.schoolInfo.scname}"></span></li>
                 <li><span class="wt">联系方式：</span><span th:text="${student.schoolInfo.scphone}"></span></li>
-            </ul>
+            --></ul>
 
             <h3 class="dzpj">电子票据</h3>
             <ul class="my" style="margin-top: 2%;" th:each="bill, State : ${student.billList}">
