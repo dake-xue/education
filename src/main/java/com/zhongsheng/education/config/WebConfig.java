@@ -59,7 +59,7 @@ public class WebConfig implements WebMvcConfigurer {
         //排除那些请求
         //excludePatterns()
         registry.addInterceptor(new LoginHandIterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/static/**", "/user/**","/**/*.woff",
+                .excludePathPatterns("/static/**", "/user/**","/**/*.woff","/**/*.ico",
                         "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg","/**/*.ttf","/**/*.woff2",
                         "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/alipay/**", "/toAdd/**",
                         "/table/**", "/student/select*", "/ClassesController/select*",
