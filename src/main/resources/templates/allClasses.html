@@ -53,7 +53,7 @@
             //添加用户监听提交
             form.on('submit(userform)', function (data) {
                 var score = data.field;
-                var a = /^[1-9]\d*$/;
+                var a =  /^[1-9]d*|0$/;
                 if (a.test(score.classmoney) == false && a.test(score.classnumber) == false) {
                     layer.msg("请输入纯数字", {icon: 6});
                 } else {
@@ -81,7 +81,7 @@
             //修改监听提交
             form.on('submit(updateform)', function (data) {
                 var score = data.field;
-                var a = /^[1-9]\d*$/;
+                var a = /^[1-9]d*|0$/;
                 if (a.test(score.classmoney) == false && a.test(score.classnumber) == false) {
                     layer.msg("请输入正确数字", {icon: 1000});
                 } else {
