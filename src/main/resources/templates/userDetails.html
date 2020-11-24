@@ -200,9 +200,9 @@
                 <br>
                 <li><span class="wt">账号：</span><span th:text="${userVo.username}"></span></li>
                 <br>
-                <li><span class="wt">负责省份：</span><span th:text="${userVo.aname}"></span></li>
+                <li><span class="wt">负责省份：</span><span th:text="${userVo.aname}!=null ? ${userVo.aname}:'全省'"></span></li>
                 <br>
-                <li><span class="wt">负责区：</span><span th:text="${userVo.cname}"></span></li>
+                <li><span class="wt">负责区：</span><span th:text="${userVo.cname}!=null ? ${userVo.cname}:'全区'"></span></li>
                 <br>
                 <li><span class="wt">角色：</span><span th:text="${userVo.rolename}"></span></li>
                 <br>
@@ -217,7 +217,11 @@
 
         <div class="footer">
             <div style="text-align: center;">
-                <strong>Copyright</strong> inspinia 2.9.2 &copy; 2014-2018
+                <strong>Copyright</strong>@ 2020. All rights reserved.中升教育科技有限公司 版权所有.
+                <strong>
+                <a style="" href="https://beian.miit.gov.cn/" target="_blank">
+                    豫ICP备2020030416号-3</a>
+                </strong>
             </div>
         </div>
 
