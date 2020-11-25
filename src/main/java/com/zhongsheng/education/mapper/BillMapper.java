@@ -2,10 +2,7 @@ package com.zhongsheng.education.mapper;
 
 import com.zhongsheng.education.dao.BillDao;
 import com.zhongsheng.education.entiy.*;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +30,15 @@ public interface BillMapper {
 
     @SelectProvider(type = BillDao.class, method = "selectStudentInfo")
     public  List<Student> selectStudentInfo(Bill bill);
+
     @Select("select * from orders where snum=#{snum}")
     public  List<Order> selectJiaoFeiJinE(String snum);
+
+    /**
+     * @创建人 xueke
+     * @创建时间 2020/11/25
+     * @描述 修改时间
+    */
+    @Update("update bill set intotime=#{intotime} where paymentAmount=#{paymentAmount} and snum=#{snum}")
+    Integer updateIntoTimeByMoneyAndSnum(Bill bill);
 }

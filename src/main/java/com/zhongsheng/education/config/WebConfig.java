@@ -63,7 +63,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg","/**/*.ttf","/**/*.woff2",
                         "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/alipay/**", "/toAdd/**",
                         "/table/**", "/student/select*", "/ClassesController/select*",
-                        "/student/add*", "/student/stuToStudentDetails");
+                        "/student/add**", "/student/stuToStudentDetails");
     }
 
     @Autowired

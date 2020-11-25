@@ -281,48 +281,45 @@
                     layer.msg("身份证号格式有误！", {icon:2,time:1200, shift: 6});//一个叉
                 }
             });
+
+            selectDate('birthday');
+            selectDate('giveMoney');
+            selectDate('signUp');
+            selectDate('addMoney');
+            selectYear('examinationt');
+            selectYear('admission');
+
         });
 
-
+/*
         layui.use('laydate', function () {
             var laydate = layui.laydate;
-            $(".new-laydate").removeAttr("lay-key");
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#giveMoney' //指定元素
-                ,trigger: 'click'
-            });
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#signUp' //指定元素
-                ,trigger: 'click'
-            });
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#addMoney' //指定元素
-                ,trigger: 'click'
-            });
-
             //执行一个laydate实例
             laydate.render({
                 elem: '#birthday' //指定元素
                 ,trigger: 'click'
             });
-
             //执行一个laydate实例
             laydate.render({
                 elem: '#examinationt' //指定元素
                 , type: 'year'
                 ,trigger: 'click'
             });
-
             //执行一个laydate实例
             laydate.render({
                 elem: '#admission' //指定元素
                 , type: 'year'
                 ,trigger: 'click'
             });
-        });
+            laydate.render({
+                elem: '#signUp' //指定元素
+                ,trigger: 'click'
+            });
+            laydate.render({
+                elem: '#addMoney' //指定元素
+                ,trigger: 'click'
+            });
+        });*/
 
         function getClassify(tableName, scId) {
             $.ajax({
@@ -381,6 +378,33 @@
                 }
             });
 
+        }
+
+        //绑定日期控件(同时绑定多个)非常实用！
+        function selectDate(cls) {
+            layui.use('laydate', function() {
+                var laydate = layui.laydate;
+                lay('#' + cls).each(function() {
+                    laydate.render({
+                        elem : this,
+                        trigger : 'click'
+                    });
+                });
+            });
+        }
+
+        //绑定日期控件(同时绑定多个)非常实用！
+        function selectYear(cls) {
+            layui.use('laydate', function() {
+                var laydate = layui.laydate;
+                lay('#' + cls).each(function() {
+                    laydate.render({
+                        elem : this,
+                        type: 'year',
+                        trigger : 'click'
+                    });
+                });
+            });
         }
 
     </script>
@@ -542,7 +566,8 @@
                 <div class="layui-input-inline">
                     <label class="layui-form-label">生日</label>
                     <div class="layui-input-inline">
-                        <input autocomplete="off" type="text" class="layui-input" id="birthday" name="birthday">
+                        <input autocomplete="off" type="text" class="layui-input"
+                               id="birthday" name="birthday" placeholder="请选择日期">
                     </div>
                 </div>
 
@@ -667,14 +692,16 @@
                 <div class="layui-input-inline important">
                     <label class="layui-form-label" style="white-space:nowrap!important;">考试年份</label>
                     <div class="layui-input-inline">
-                        <input autocomplete="off" type="text" name="examinationtime" class="layui-input" id="examinationt">
+                        <input autocomplete="off" type="text" name="examinationtime"
+                               class="layui-input" id="examinationt" placeholder="请选择日期">
                     </div>
                 </div>
 
                 <div class="layui-input-inline important">
                     <label class="layui-form-label" style="white-space:nowrap!important;">入学年份</label>
                     <div class="layui-input-inline">
-                        <input autocomplete="off" type="text" name="admissiontime" class="layui-input" id="admission">
+                        <input autocomplete="off" type="text" name="admissiontime"
+                               class="layui-input" id="admission" placeholder="请选择日期">
                     </div>
                 </div>
                 <div class="layui-input-inline">
@@ -703,15 +730,17 @@
                 <div class="layui-input-inline">
                     <label class="layui-form-label important" style="white-space:nowrap!important;">报名日期</label>
                     <div class="layui-input-inline">
-                        <input autocomplete="off" type="text" name="signupdate" class="layui-input" id="signUp">
+                        <input autocomplete="off" type="text" name="signupdate"
+                               class="layui-input" id="signUp" required lay-verify="required"
+                               placeholder="请选择日期">
                     </div>
                 </div>
                 <div class="layui-input-inline important">
                     <label class="layui-form-label" style="white-space:nowrap!important;">缴费方式</label>
                     <div class="layui-input-inline selectWd">
                         <select id="cindustry" name="paymethod" class="layui-form-select">
+                            <option value="网上支付">网上支付</option>
                             <option value="现金">现金</option>
-                            <option value="网银">网银</option>
                         </select>
                     </div>
                 </div>
@@ -738,7 +767,8 @@
                 <div class="layui-input-inline">
                     <label class="layui-form-label" style="white-space:nowrap!important;">补费日期</label>
                     <div class="layui-input-inline">
-                        <input autocomplete="off" type="text" name="addmoneydate" class="layui-input" id="addMoney">
+                        <input autocomplete="off" type="text" name="addmoneydate"
+                               class="layui-input" id="addMoney" placeholder="请选择日期">
                     </div>
                 </div>
 

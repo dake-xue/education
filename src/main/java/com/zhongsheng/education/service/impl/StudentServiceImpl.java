@@ -158,7 +158,6 @@ public class StudentServiceImpl implements StudentService {
             student.setSchoolid(table.getId());
 
             int i = studentMapper.addStudentInfo(student);
-            student.getSchoolInfo().setSnum(student.getSnum());
             student.getFamilyInfo().setSnum(student.getSnum());
             //添加联系人
             familyService.addFamilyInfo(student.getFamilyInfo());
@@ -219,7 +218,6 @@ public class StudentServiceImpl implements StudentService {
             student.setSchoolid(table.getId());
 
             int i = studentMapper.addStudentTwo(student);
-            student.getSchoolInfo().setSnum(student.getSnum());
             student.getFamilyInfo().setSnum(student.getSnum());
             //添加联系人
             familyService.addFamilyInfo(student.getFamilyInfo());
@@ -308,12 +306,17 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Integer updateStudent(Student student) {
-        schoolService.updateSchool(student.getSchoolInfo());
         familyService.updateFamily(student.getFamilyInfo());
         TableDic tableDic = new TableDic();
         tableDic.setId(student.getCampusid());
         tableDic.setTableName("campus_dic");
         student.setCampus(tableDicService.searchOne(tableDic).getName());
+        //修改票据添加时间
+        Bill bill = new Bill();
+        bill.setPaymentAmount(student.getJiaofeijine());
+        bill.setIntotime(student.getSignupdate());
+        bill.setSnum(student.getSnum());
+        int i =  billService.updateIntoTimeByMoneyAndSnum(bill);
         return studentMapper.updateStudent(student);
     }
     @Override

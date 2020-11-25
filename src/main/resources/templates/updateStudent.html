@@ -434,6 +434,7 @@
             <form class="layui-form" id="form" style="padding-top: 15px;">
                 <font size="4" style="font-weight: bold">基本信息</font>
                 <hr>
+                <input hidden name="jiaofeijine" th:value="${student.jiaofeijine}" >
                 <div class="layui-input-inline">
                     <label class="layui-form-label important">姓名</label>
                     <div class="layui-input-inline">
@@ -641,38 +642,22 @@
 
 
                 <div class="layui-input-inline important">
-                    <label class="layui-form-label nobreak">线上上课</label>
+                    <label class="layui-form-label nobreak">上课轮数</label>
                     <div class="layui-input-inline selectWd">
                         <select name="onlinenumber" lay-verify="required">
-                            <option th:selected="${student.onlinenumber eq '0'}" value="0">0</option>
-                            <option th:selected="${student.onlinenumber eq '1'}" value="1">1</option>
-                            <option th:selected="${student.onlinenumber eq '2'}" value="2">2</option>
-                            <option th:selected="${student.onlinenumber eq '3'}" value="3">3</option>
-                            <option th:selected="${student.onlinenumber eq '4'}" value="4">4</option>
-                            <option th:selected="${student.onlinenumber eq '5'}" value="5">5</option>
-                            <option th:selected="${student.onlinenumber eq '6'}" value="6">6</option>
-                            <option th:selected="${student.onlinenumber eq '7'}" value="7">7</option>
-                            <option th:selected="${student.onlinenumber eq '8'}" value="8">8</option>
+                            <option th:selected="${student.onlinenumber eq 0}" value="0">0</option>
+                            <option th:selected="${student.onlinenumber eq 1}" value="1">1</option>
+                            <option th:selected="${student.onlinenumber eq 2}" value="2">2</option>
+                            <option th:selected="${student.onlinenumber eq 3}" value="3">3</option>
+                            <option th:selected="${student.onlinenumber eq 4}" value="4">4</option>
+                            <option th:selected="${student.onlinenumber eq 5}" value="5">5</option>
+                            <option th:selected="${student.onlinenumber eq 6}" value="6">6</option>
+                            <option th:selected="${student.onlinenumber eq 7}" value="7">7</option>
+                            <option th:selected="${student.onlinenumber eq 8}" value="8">8</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="layui-input-inline important">
-                    <label class="layui-form-label nobreak">线下上课</label>
-                    <div class="layui-input-inline selectWd">
-                        <select name="offlinenumber" lay-verify="required">
-                            <option th:selected="${student.offlinenumber eq '0'}" value="0">0</option>
-                            <option th:selected="${student.offlinenumber eq '1'}" value="1">1</option>
-                            <option th:selected="${student.offlinenumber eq '2'}" value="2">2</option>
-                            <option th:selected="${student.offlinenumber eq '3'}" value="3">3</option>
-                            <option th:selected="${student.offlinenumber eq '4'}" value="4">4</option>
-                            <option th:selected="${student.offlinenumber eq '5'}" value="5">5</option>
-                            <option th:selected="${student.offlinenumber eq '6'}" value="6">6</option>
-                            <option th:selected="${student.offlinenumber eq '7'}" value="7">7</option>
-                            <option th:selected="${student.offlinenumber eq '8'}" value="8">8</option>
-                        </select>
-                    </div>
-                </div>
                 <hr>
                 <font size="4" style="font-weight: bold">附加信息</font>
                 <hr>
@@ -701,31 +686,31 @@
                         <input name="homeaddress" class="layui-input" type="text"/>
                     </div>
                 </div>
+                <!--
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label "
+                                           style="white-space:nowrap!important;width: 140px;">校园联系方式</label>
 
-                <div class="layui-form-item">
-                    <label class="layui-form-label "
-                           style="white-space:nowrap!important;width: 140px;">校园联系方式</label>
+                                    <div class="layui-input-inline">
+                                        <div class="layui-input-inline" style="width: 187px;">
+                                            <select name="schoolInfo.screlation" lay-verify="">
+                                                <option value="导员">导员</option>
+                                                <option value="舍友">舍友</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                    <div class="layui-input-inline">
-                        <div class="layui-input-inline" style="width: 187px;">
-                            <select name="schoolInfo.screlation" lay-verify="">
-                                <option value="导员">导员</option>
-                                <option value="舍友">舍友</option>
-                            </select>
-                        </div>
-                    </div>
+                                   <div class="layui-input-inline">
+                                        <input type="text" name="schoolInfo.scname"  lay-verify="" placeholder="姓名"
+                                               autocomplete="off" class="layui-input" th:value="${student.schoolInfo.scname}">
+                                    </div>
 
-                    <div class="layui-input-inline">
-                        <input type="text" name="schoolInfo.scname"  lay-verify="" placeholder="姓名"
-                               autocomplete="off" class="layui-input" th:value="${student.schoolInfo.scname}">
-                    </div>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="schoolInfo.scphone"  lay-verify="" placeholder="电话"
+                                               autocomplete="off" class="layui-input phone" maxlength="11" th:value="${student.schoolInfo.scphone}">
+                                    </div>
 
-                    <div class="layui-input-inline">
-                        <input type="text" name="schoolInfo.scphone"  lay-verify="" placeholder="电话"
-                               autocomplete="off" class="layui-input phone" maxlength="11" th:value="${student.schoolInfo.scphone}">
-                    </div>
-
-                </div>
+                </div>-->
 
 
                 <div class="layui-form-item layui-form-text">

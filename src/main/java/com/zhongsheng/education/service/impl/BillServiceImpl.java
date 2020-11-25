@@ -162,6 +162,17 @@ public class BillServiceImpl implements BillService {
         }
         return "0.00";
     }
+
+    /**
+     * @创建人 xueke
+     * @创建时间 2020/11/25
+     * @描述 修改票据添加时间
+    */
+    @Override
+    public Integer updateIntoTimeByMoneyAndSnum(Bill bill) {
+        return billMapper.updateIntoTimeByMoneyAndSnum(bill);
+    }
+
     /**
      * @创建人 xueke
      * @创建时间 2020/11/4
