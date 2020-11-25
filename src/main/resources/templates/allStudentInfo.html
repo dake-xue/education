@@ -600,6 +600,10 @@
                     <a th:href="@{/ClassesController/course}"><i class="layui-icon layui-icon-tabs"></i> <span class="nav-label">专业课管理</span><span
                             class="fa arrow"></span></a>
                 </li>
+                <li shiro:hasPermission=="customer:list">
+                    <a th:href="@{/Customer}"><i class="layui-icon layui-icon-tabs"></i> <span class="nav-label">小程序报名人</span><span
+                            class="fa arrow"></span></a>
+                </li>
             </ul>
 
         </div>

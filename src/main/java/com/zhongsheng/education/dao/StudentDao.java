@@ -56,6 +56,9 @@ public class StudentDao {
             sql.append(" and schoolid ='" + schoolid + " '");
         }
 
+        //倒序
+        sql.append(" order by signupdate desc");
+
         return sql.toString();
     }
 }

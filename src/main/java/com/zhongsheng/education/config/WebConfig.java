@@ -43,6 +43,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/areaManage").setViewName("areaManage");
         //
         registry.addViewController("/marketPage").setViewName("marketPage");
+        //跳转小程序报名人信息页面
+        registry.addViewController("/Customer").setViewName("allCustomer");
     }
 
     /**
