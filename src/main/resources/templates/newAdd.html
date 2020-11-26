@@ -91,6 +91,7 @@
             //getClassify("campus_dic", "campus");
             getClassify("subject_dic", "subject");
             getClassify("nation_dic", "nation");
+            getClassify("majorcours_dic","majorcours")
             form.verify({
                 chinese: function(value, item) { //value：表单的值、item：表单的DOM对象
                     if(!new RegExp("^[\u4e00-\u9fa5\]+$").test(value)) {
@@ -513,15 +514,20 @@
 
             <div class="layui-input-inline">
                 <label class="layui-form-label important">公共课</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="publiccours" required lay-verify="required" autocomplete="off" class="layui-input">
+                <div class="layui-input-inline selectWd">
+                    <select id="publiccours" lay-filter="publiccours" name="publiccours" lay-verify="required">
+                        <option value="公共英语">公共英语</option>
+                        <option value="专业英语">专业英语</option>
+                        <option value="暂无">暂无</option>
+                    </select>
                 </div>
             </div>
 
             <div class="layui-input-inline">
                 <label class="layui-form-label important">专业课</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="majorcours" required lay-verify="required" autocomplete="off" class="layui-input">
+                <div class="layui-input-inline selectWd">
+                    <select id="majorcours"  lay-filter="majorcours" name="majorcours" lay-verify="required">
+                    </select>
                 </div>
             </div>
 

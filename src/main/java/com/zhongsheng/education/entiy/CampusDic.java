@@ -30,4 +30,13 @@ public class CampusDic implements Serializable {
     public void setCnum(String cnum) {
         this.cnum = cnum;
     }
+
+    @Override
+    public String toString() {
+        return "CampusDic{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", cnum='" + cnum + '\'' +
+                '}';
+    }
 }

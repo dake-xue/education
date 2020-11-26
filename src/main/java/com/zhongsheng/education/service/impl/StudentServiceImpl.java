@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -188,6 +189,7 @@ public class StudentServiceImpl implements StudentService {
             String str = String.format("%02d", student.getArea());
             //校区
             CampusDic cnum = studentMapper.selectCNumber(student.getCampusid());
+            log.info("参数为："+student.getCampusid()+"。校区信息为："+cnum);
             //年份后两位
             String year = new SimpleDateFormat("yy", Locale.CHINESE).format(new Date());
             String num = "0001";
@@ -199,6 +201,7 @@ public class StudentServiceImpl implements StudentService {
             }
             //拼接学生id  （省份+校区+年份+序号）
             StringBuffer sr = new StringBuffer();
+            log.info("省份："+str+"。校区："+cnum.getCnum()+"。年份："+year+"。序号："+num);
             sr.append(str);
             sr.append(cnum.getCnum());
             sr.append(year);
@@ -216,7 +219,7 @@ public class StudentServiceImpl implements StudentService {
             tableDic.setCampus_id(student.getCampusid());
             TableDic table = tableDicService.searchSchoolName(tableDic);
             student.setSchoolid(table.getId());
-
+            log.info(student.getCampus()+"校区的第"+num+"位学员。该校区id为"+student.getCampusid());
             int i = studentMapper.addStudentTwo(student);
             student.getFamilyInfo().setSnum(student.getSnum());
             //添加联系人
@@ -231,10 +234,18 @@ public class StudentServiceImpl implements StudentService {
             String ima = "";
             //根据系统判断
             if (isWin){
-                ima =  PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
+                try {
+                    ima =  PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 bill.setImage("\\zhongsheng\\pdfToImage\\"+MyUtil.getPngName(ima));
             }else {
-                ima = PDF2IMAGE.pdf2Image(s, "/usr/img", 300);
+                try {
+                    ima = PDF2IMAGE.pdf2Image(s, "/usr/img", 300);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 bill.setImage("\\zhongsheng\\pdfToImage\\"+MyUtil.linuxGetPngName(ima));
             }
 

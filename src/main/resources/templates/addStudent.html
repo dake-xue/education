@@ -51,9 +51,9 @@
         layui.use('form', function () {
             getRole("role", "roleId");
             var form = layui.form;
-           // getClassify("classes_dic", "classes");
+            //getClassify("classes_dic", "classes");
             //getClassify("campus_dic", "campus");
-            getClassify("subject_dic", "subject");
+            //getClassify("subject_dic", "subject");
             getClassify("nation_dic","nation");
             getClassify("majorcours_dic","majorcours")
             form.verify({
@@ -216,6 +216,29 @@
                         layui.form.render("select");
                     }
                 });
+            });
+
+            //拼接考试科目
+            form.on('select(publiccours)', function(data) {
+                $("#subject").val(data.value+"+");
+            });
+            var i = 0;
+            form.on('select(majorcours)', function(data) {
+                var val = $("#subject").val();
+                if(i==0){
+                    //原来的值拼接现在的值
+                    val = val+data.value;
+                }else {
+                    //截取字符串
+                    val = val.substring(0,val.indexOf('+')+1);
+                    //原来的值拼接现在的值
+                    val = val+data.value;
+                }
+
+                $("#subject").val(val);
+
+                i++;
+
             });
 
            /* //学费
@@ -615,10 +638,36 @@
                 </div>
 
                 <div class="layui-input-inline">
+                    <label class="layui-form-label important">班级</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="grade" required lay-verify="required"
+                               value="暂无" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important">公共课</label>
+                    <div class="layui-input-inline selectWd">
+                        <select id="publiccours" lay-filter="publiccours" name="publiccours" lay-verify="required">
+                            <option value="公共英语">公共英语</option>
+                            <option value="专业英语">专业英语</option>
+                            <option value="暂无">暂无</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-input-inline">
+                    <label class="layui-form-label important">专业课</label>
+                    <div class="layui-input-inline selectWd">
+                        <select id="majorcours"  lay-filter="majorcours" name="majorcours" lay-verify="required">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-input-inline">
                     <label class="layui-form-label important" style="white-space:nowrap!important;">考试科目</label>
                     <div class="layui-input-inline selectWd">
-                        <select id="subject" name="subject" lay-verify="required">
-                        </select>
+                        <input id="subject" name="subject" lay-verify="required" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-input-inline">
@@ -649,34 +698,6 @@
                     <div class="layui-input-inline">
                         <input type="text" name="major" required lay-verify="required"
                                value="暂无" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-
-                <div class="layui-input-inline">
-                    <label class="layui-form-label important">班级</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="grade" required lay-verify="required"
-                               value="暂无" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-
-
-                <div class="layui-input-inline">
-                    <label class="layui-form-label important">公共课</label>
-                    <div class="layui-input-inline selectWd">
-                        <select id="publiccours" lay-filter="publiccours" name="publiccours" lay-verify="required">
-                            <option value="公共英语">公共英语</option>
-                            <option value="专业英语">专业英语</option>
-                            <option value="暂无">暂无</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="layui-input-inline">
-                    <label class="layui-form-label important">专业课</label>
-                    <div class="layui-input-inline selectWd">
-                        <select id="majorcours"  lay-filter="majorcours" name="majorcours" lay-verify="required">
-                        </select>
                     </div>
                 </div>
 

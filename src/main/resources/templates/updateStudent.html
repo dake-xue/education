@@ -62,6 +62,8 @@
             getClassify("nation_dic","nation",$("#nation1").val());
             //学校
             getClassify("training_school_dic","schoolname",$("#schoolname1").val());
+            //专业课
+            getClassify("majorcours_dic","majorcours",$("#majorcours1").val());
             form.verify({
                 chinese: function (value, item) { //value：表单的值、item：表单的DOM对象
                     if (!new RegExp("^[\u4e00-\u9fa5\]+$").test(value)) {
@@ -554,22 +556,26 @@
                     </div>
                 </div>
 
-
                 <div class="layui-input-inline">
                     <label class="layui-form-label important">公共课</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="publiccours" required lay-verify="required"
-                               autocomplete="off" class="layui-input" th:value="${student.publiccours}">
+                    <div class="layui-input-inline selectWd">
+                        <select id="publiccours" lay-filter="publiccours" name="publiccours" lay-verify="required">
+                            <option th:selected="${student.publiccours eq '公共英语'}" value="公共英语">公共英语</option>
+                            <option th:selected="${student.publiccours eq '专业英语'}" value="专业英语">专业英语</option>
+                            <option th:selected="${student.publiccours eq '暂无'}" value="暂无">暂无</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="layui-input-inline">
                     <label class="layui-form-label important">专业课</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="majorcours" required lay-verify="required"
-                               autocomplete="off" class="layui-input" th:value="${student.majorcours}">
+                    <div class="layui-input-inline selectWd">
+                        <input type="text" hidden id="majorcours1" th:value="${student.majorcours}">
+                        <select id="majorcours"  lay-filter="majorcours" name="majorcours" lay-verify="required">
+                        </select>
                     </div>
                 </div>
+
 
                 <div class="layui-input-inline">
                     <label class="layui-form-label important" style="white-space:nowrap!important;">校区经理</label>

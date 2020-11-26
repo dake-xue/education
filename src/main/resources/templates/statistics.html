@@ -371,7 +371,7 @@
                     data: {"campus": data.value},
                     dataType: "json",
                     success: function (data) {
-                        var str = "<option value=''>请选择学校</option>";
+                        var str;
                         for (var i = 0; i < data.length; i++) {
                             str += "<option value='" + data[i].id + "'>" + data[i].name + "</option>"
                         }
@@ -542,7 +542,6 @@
                                         <label class="layui-form-label">省份</label>
                                         <div class="layui-input-inline selectWd">
                                             <select id="area" lay-filter="area" name="area">
-                                                <option value="">请选择省份</option>
                                             </select>
                                         </div>
                                     </div>
@@ -550,7 +549,6 @@
                                         <label class="layui-form-label">校区</label>
                                         <div class="layui-input-inline selectWd">
                                             <select id="campus" lay-filter="campus" name="campusid" >
-                                                <option value="">请选择校区</option>
                                             </select>
                                         </div>
                                     </div>
@@ -558,7 +556,6 @@
                                         <label class="layui-form-label">学校</label>
                                         <div class="layui-input-inline selectWd">
                                             <select id="schoolname" lay-filter="schoolname" name="schoolid" >
-                                                <option value="">请选择学校</option>
                                             </select>
                                         </div>
                                     </div>

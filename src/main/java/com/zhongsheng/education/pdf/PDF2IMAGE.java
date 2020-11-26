@@ -2,6 +2,7 @@ package com.zhongsheng.education.pdf;
 
 import com.itextpdf.text.pdf.PdfReader;
 import com.zhongsheng.education.config.ShiroConfig;
+import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.slf4j.Logger;
@@ -21,9 +22,9 @@ public class PDF2IMAGE {
      * @param dpi dpi越大转换后越清晰，相对转换速度越慢
      * @return
      */
-    public static String pdf2Image(String PdfFilePath, String dstImgFolder, int dpi){
+    public static String pdf2Image(String PdfFilePath, String dstImgFolder, int dpi) throws IOException {
         File file = new File(PdfFilePath);
-        PDDocument pdDocument;
+        PDDocument pdDocument = null;
         StringBuffer imgFilePath = null;
         try {
             String imgPDFPath = file.getParent();
@@ -56,6 +57,12 @@ public class PDF2IMAGE {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            if (pdDocument!=null){
+                COSDocument cos = pdDocument.getDocument();
+                cos.close();
+                pdDocument.close();
+            }
         }
         return imgFilePath.toString();
     }

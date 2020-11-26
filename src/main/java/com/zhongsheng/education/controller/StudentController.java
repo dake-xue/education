@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/student")
@@ -155,7 +156,12 @@ public class StudentController {
         //生成票据
         String s = Reader.addBill(student1, user.getName(),billnumber);
         //生成图片
-        String ima = PDF2IMAGE.pdf2Image(s, UrlUtil.getUrl() + "\\src\\main\\resources\\static\\pdfToImage", 300);
+        String ima = null;
+        try {
+            ima = PDF2IMAGE.pdf2Image(s, UrlUtil.getUrl() + "\\src\\main\\resources\\static\\pdfToImage", 300);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         student1.getBill().setImage(ima);
         //插入票据表
 
