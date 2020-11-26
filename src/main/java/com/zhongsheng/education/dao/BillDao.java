@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 public class BillDao {
     Logger logger = LoggerFactory.getLogger(BillDao.class);
     public String peopleCounts(Bill bill) {
-        StringBuffer sql = new StringBuffer("SELECT COUNT(*) val,DATE_FORMAT(signupdate,'%m') MONTH FROM student where 1=1 and status !=0 ");
+        StringBuffer sql = new StringBuffer("SELECT COUNT(*) val,DATE_FORMAT(signupdate,'%m') month FROM student where 1=1 and status !=0 ");
         //省
         if (bill.getArea()!= null && bill.getArea() !=0) {
 

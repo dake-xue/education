@@ -16,4 +16,5 @@ public interface BillService {
     String selectJiaoFeiJinE(String snum);
     Statistics people(Bill bill);
     String money(Bill bill);
+    Integer updateIntoTimeByMoneyAndSnum(Bill bill);
 }
