@@ -14,6 +14,7 @@ public class LoginHandIterceptor implements HandlerInterceptor {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             response.sendRedirect(request.getContextPath()+"/user/toLogin");
+            System.out.println("hfgshdfvbgfvuhduvjkdshiuue========================================");
             return false;
         } else {
             //已登录

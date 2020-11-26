@@ -14,8 +14,8 @@ public class CustomerServiceImpl implements CustomerService {
     CustomerMapper customerMapper;
 
     @Override
-    public Integer addSignUp() {
-        return customerMapper.addSignUp();
+    public Integer addSignUp(Customer customer) {
+        return customerMapper.addSignUp(customer);
     }
 
     public List<Customer> selectSignUp(){

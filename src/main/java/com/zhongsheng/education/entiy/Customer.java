@@ -12,6 +12,9 @@ public class Customer implements Serializable {
     private String period;
     private String remark;
 
+
+
+
     public String getRemark() {
         return remark;
     }

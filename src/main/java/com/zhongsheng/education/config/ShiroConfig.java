@@ -69,6 +69,8 @@ public class ShiroConfig {
         Map<String,String> filterChainMap = new LinkedHashMap<>();
 
         // 配置可以匿名访问的地址，可以根据实际情况自己添加，放行一些静态资源等，anon 表示放行
+        //小程序放行customer
+        filterChainMap.put("/customer/**", "anon");
         filterChainMap.put("/css/**", "anon");
         filterChainMap.put("/font-awesome/**", "anon");
         filterChainMap.put("/fonts/**", "anon");
@@ -83,6 +85,7 @@ public class ShiroConfig {
         filterChainMap.put("/student/stuToStudentDetails/**", "anon");
         // 登录 URL 放行
         filterChainMap.put("/login", "anon");
+
 
         // 以“/user/admin” 开头的用户需要身份认证，authc 表示要进行身份认证
         /*filterChainMap.put("/user/addUser", "authc");

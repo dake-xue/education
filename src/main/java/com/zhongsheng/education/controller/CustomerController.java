@@ -9,15 +9,12 @@ import com.zhongsheng.education.service.CustomerService;
 import com.zhongsheng.education.util.LayuiData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("customer")
+@RequestMapping("/customer")
 public class CustomerController {
     @Autowired
     CustomerService customerService;
@@ -33,10 +30,11 @@ public class CustomerController {
     }
 
     //录入报名信息
-    @RequestMapping("/addSignUp")
+    @CrossOrigin
+    @GetMapping("/addSignUp")
     @ResponseBody
-    public Integer addSignUp() {
-        Integer i = customerService.addSignUp();
+    public Integer addSignUp(Customer customer) {
+        Integer i = customerService.addSignUp(customer);
         return i;
     }
 
