@@ -5,15 +5,21 @@ import java.io.Serializable;
 public class Customer implements Serializable {
     private Integer id;
     private String name;
-    private Integer phone;
-    private Integer qq;
+    private String phone;
+    private String qq;
     private String schoolname;
     private String major;
     private String period;
     private String remark;
+    private Integer status;
 
+    public Integer getStatus() {
+        return status;
+    }
 
-
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public String getRemark() {
         return remark;
@@ -39,19 +45,19 @@ public class Customer implements Serializable {
         this.name = name;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public Integer getQq() {
+    public String getQq() {
         return qq;
     }
 
-    public void setQq(Integer qq) {
+    public void setQq(String qq) {
         this.qq = qq;
     }
 
@@ -90,6 +96,7 @@ public class Customer implements Serializable {
                 ", major='" + major + '\'' +
                 ", period='" + period + '\'' +
                 ", remark='" + remark + '\'' +
+                ", status=" + status +
                 '}';
     }
 }
