@@ -250,6 +250,7 @@
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
                         <li class=""><a onclick="openModak1();">添加用户</a></li>
+                        <li class=""><a th:href="@{/user/userDetails}">个人信息</a></li>
                     </ul>
                 </li>
                 <li shiro:hasPermission=="money:list">
@@ -276,14 +277,18 @@
                         <li class=""><a onclick="openClasses();">添加班次</a></li>
                     </ul>
                 </li>
-                <li shiro:hasPermission=="userdetails:list">
-                    <a th:href="@{/user/userDetails}"><i class="layui-icon layui-icon-friends"></i> <span
-                            class="nav-label">个人信息</span><span
-                            class="fa arrow"></span></a>
-                </li>
                 <li shiro:hasPermission=="course:list">
                     <a th:href="@{/ClassesController/course}"><i class="layui-icon layui-icon-tabs"></i> <span class="nav-label">专业课管理</span><span
                             class="fa arrow"></span></a>
+                </li>
+                <li shiro:hasPermission=="customer:list">
+                    <a href=""><i class="layui-icon layui-icon-survey"></i> <span class="nav-label">小程序管理</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class=""><a th:href="@{/Customer}">小程序报名人</a></li>
+                        <li class=""><a th:href="@{/major}">专业管理</a></li>
+                        <li class=""><a th:href="@{/subject}">考试科目管理</a></li>
+                    </ul>
                 </li>
             </ul>
 

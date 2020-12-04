@@ -45,6 +45,10 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/marketPage").setViewName("marketPage");
         //跳转小程序报名人信息页面
         registry.addViewController("/Customer").setViewName("allCustomer");
+        //跳转专业管理
+        registry.addViewController("/major").setViewName("allMajor");
+        //跳转考试科目管理
+        registry.addViewController("/subject").setViewName("allSubject");
     }
 
     /**
@@ -65,7 +69,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg","/**/*.ttf","/**/*.woff2",
                         "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/alipay/**", "/toAdd/**",
                         "/table/**", "/student/select*", "/ClassesController/select*",
-                        "/student/add**", "/student/stuToStudentDetails");
+                        "/student/add*", "/student/stuToStudentDetails","/customer/**");
     }
 
     @Autowired

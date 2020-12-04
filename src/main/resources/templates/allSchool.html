@@ -6,7 +6,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>班次信息</title>
+    <title>学校管理</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
     <link th:href="@{/css/animate.css}" rel="stylesheet">
@@ -34,17 +34,21 @@
             //第一个实例
             table.render({
                 elem: '#demo'
-                , url: '/zhongsheng/ClassesController/selectClasses?area=' + $("#aid").val()//数据接口
+                , url: '/zhongsheng/customer/allSchool?id='+ + $("#aid").val()//数据接口
                 , page: true //开启分页
-                , limit: 6//每页多少条数据
-                , limits: [6, 12, 18]//每页条数的选择项
+                , limit: 10//每页多少条数据
+                , limits: [10, 15, 20]//每页条数的选择项
+                , toolbar: '#toolbarDemo'
+                , defaultToolbar: ['filter', 'exports', 'print', {
+                    title: '提示',
+                    layEvent: 'LAYTABLE_TIPS',
+                    icon: 'layui-icon-tips'
+                }]
                 , cols: [
                     [//表头
                         {field: 'id', title: 'id', sort: true, fixed: 'left', hide: true}
-                        , {field: 'name', title: '班次'}
-                        , {field: 'classmoney', title: '学费', sort: true}
-                        , {field: 'classnumber', title: '轮数', sort: true}
-                        , {field: 'area', title: '省', hide: true}
+                        , {field: 'name', title: '学校名称'}
+                        , {field: 'yeardata', title: '历年数据'}
                         , {field: 'status', title: '操作', templet: '#update'}
                     ]
                 ]
@@ -52,18 +56,13 @@
 
             //添加用户监听提交
             form.on('submit(userform)', function (data) {
-                var score = data.field;
-                var a =  /^[1-9]d*|0$/;
-                if (a.test(score.classmoney) == false && a.test(score.classnumber) == false) {
-                    layer.msg("请输入纯数字", {icon: 6});
-                } else {
                     $.ajax({
-                        url: "/zhongsheng/ClassesController/addClass",
+                        url: "/zhongsheng/customer/addSubject",
                         type: "POST",
                         dataType: "text",
-                        data: score,
+                        data: data.field,
                         success: function (data) {
-                            if (data == 1) {
+                            if (data == 'yes') {
                                 layer.msg('添加成功！', {icon: 6}, {icon: 1000});
                                 // 重置清空
                                 $('#form1')[0].reset();
@@ -75,23 +74,18 @@
                             }
                         }
                     });
-                }
                 return false;
             });
             //修改监听提交
             form.on('submit(updateform)', function (data) {
-                var score = data.field;
-                var a = /^[1-9]d*|0$/;
-                if (a.test(score.classmoney) == false && a.test(score.classnumber) == false) {
-                    layer.msg("请输入正确数字", {icon: 1000});
-                } else {
+                var subject = data.field;
                     $.ajax({
-                        url: "/zhongsheng/ClassesController/updateClass",
+                        url: "/zhongsheng/customer/updateSubject",
                         type: "POST",
                         dataType: "text",
-                        data: score,
+                        data: subject,
                         success: function (data) {
-                            if (data == 1) {
+                            if (data == 'yes') {
                                 layer.msg('修改成功！', {icon: 6}, {icon: 1000});
                                 // 重置清空
                                 $('#up')[0].reset();
@@ -103,19 +97,18 @@
                             }
                         }
                     });
-                }
                 return false;
             });
             //删除监听提交
             form.on('submit(deleteform)', function (data) {
                 var id = data.field;
                 $.ajax({
-                    url: "/zhongsheng/ClassesController/deleteClass",
+                    url: "/zhongsheng/customer/deleteSubject",
                     type: "POST",
                     dataType: "text",
                     data: id,
                     success: function (data) {
-                        if (data == 1) {
+                        if (data == 'yes') {
                             layer.msg('删除成功！', {icon: 6}, {icon: 1000});
                             // 重置清空
                             $('#delete')[0].reset();
@@ -138,18 +131,27 @@
                 parent.layer.close(index);//关闭弹出层
             });
 
-        });
 
+            //返回上一个页面
+            $("body").on("click", ".data-add-btn", function () {
+                window.location.href = "/zhongsheng/major";
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+                parent.location.reload();
+            });
+            //刷新页面
+            $("body").on("click", '.refresh-btn', function () {
+                window.location.reload();
+            });
+        });
         //添加
-        function openClasses() {
-            var area=$("#aid").val();
-            $("#a").val(area);
+        function openAdd() {
             layui.use(['layer'], function () {
                 var layer = layui.layer, $ = layui.$;
                 layer.open({
                     type: 1,//类型
-                    area: ['500px', '400px'],//定义宽和高
-                    title: '添加班次',//题目
+                    area: ['400px', '350px'],//定义宽和高
+                    title: '添加考试科目',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#motaikunag')//打开的内容
                 });
@@ -158,17 +160,15 @@
 
 
         //修改
-        function openUpdateScore(id, name, classmoney,classnumber) {
-            $("#id").val(id);
+        function openUpdateScore(id, name) {
+            $("#sid").val(id);
             $("#name1").val(name);
-            $("#classmoney").val(classmoney);
-            $("#classnumber").val(classnumber);
             layui.use(['layer'], function () {
                 var layer = layui.layer, $ = layui.$;
                 layer.open({
                     type: 1,//类型
-                    area: ['500px', '400px'],//定义宽和高
-                    title: '修改班次',//题目
+                    area: ['400px', '350px'],//定义宽和高
+                    title: '修改考试科目',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#updateScore')//打开的内容
                 });
@@ -183,7 +183,7 @@
                 layer.open({
                     type: 1,//类型
                     area: ['260px', '170px'],//定义宽和高
-                    title: '删除班次',//题目
+                    title: '删除考试科目',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#deleteScore')//打开的内容
                 });
@@ -212,11 +212,24 @@
     </script>
     <script type="text/html" id="update">
         <a class="layui-btn layui-btn-normal layui-btn-sm" style="color: white"
-           onclick='openUpdateScore("{{d.id}}","{{d.name}}","{{d.classmoney}}","{{d.classnumber}}");'>
+           onclick='openUpdateScore("{{d.sid}}","{{d.subjectname}}");'>
             编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-sm" style="color: white"
-           onclick='openDeleteScore("{{d.id}}")'>
+           onclick='openDeleteScore("{{d.sid}}")'>
             删除</a>
+    </script>
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+            <button type="button" class="layui-btn" onclick="openAdd()">
+                <i class="layui-icon">&#xe608;</i> 新增本科
+            </button>
+            <button type="button" class="layui-btn refresh-btn">
+                <i class="layui-icon layui-icon-refresh"></i> 刷新
+            </button>
+            <button type="button" class="layui-btn data-add-btn">
+                <i class="layui-icon layui-icon-left"></i>返回
+            </button>
+        </div>
     </script>
 </head>
 
@@ -273,11 +286,11 @@
                             class="fa arrow"></span></a>
                 </li>
 
-                <li shiro:hasPermission=="classmoney:list" class="active">
+                <li shiro:hasPermission=="classmoney:list">
                     <a href="#"><i class="layui-icon layui-icon-survey"></i> <span class="nav-label">班次管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class="active"><a th:href="@{/ClassesController/classes}">班次信息</a></li>
+                        <li class=""><a th:href="@{/ClassesController/classes}">班次信息</a></li>
                         <li class=""><a onclick="openClasses();">添加班次</a></li>
                     </ul>
                 </li>
@@ -285,12 +298,12 @@
                     <a th:href="@{/ClassesController/course}"><i class="layui-icon layui-icon-tabs"></i> <span class="nav-label">专业课管理</span><span
                             class="fa arrow"></span></a>
                 </li>
-                <li shiro:hasPermission=="customer:list">
+                <li class="active" shiro:hasPermission=="customer:list">
                     <a href=""><i class="layui-icon layui-icon-survey"></i> <span class="nav-label">小程序管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/Customer}">小程序报名人</a></li>
-                        <li class=""><a th:href="@{/major}">专业管理</a></li>
+                        <li class="active"><a th:href="@{/major}">专业管理</a></li>
                         <li class=""><a th:href="@{/subject}">考试科目管理</a></li>
                     </ul>
                 </li>
@@ -329,10 +342,10 @@
                 <h2>&nbsp;</h2>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="#">班次管理</a>
+                        <a href="#">小程序管理</a>
                     </li>
                     <li class="breadcrumb-item active">
-                        <strong>班次基本信息</strong>
+                        <strong>专业管理</strong>
                     </li>
                 </ol>
             </div>
@@ -359,10 +372,11 @@
                             </div>
                         </div>
                         <div class="ibox-content">
-                            <input type="hidden" id="aid" name="aid" th:value="${aid}">
                             <div id="tab">
                                 <table id="demo" class="layui-tab" lay-filter="currentTableFilter"></table>
                             </div>
+                            <!--本科id-->
+                            <input type="hidden" th:value="${id}" id="aid">
                         </div>
                     </div>
                 </div>
@@ -386,36 +400,17 @@
 </html>
 
 
-<!--添加积分-->
+<!--添加-->
 <div id="motaikunag" style="display: none;text-align: center;">
     <form class="layui-form" id="form1" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
-        <input type="hidden" id="a" name="aid">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">班次名称</label>
+                <label class="layui-form-label">考试科目</label>
                 <div class="layui-input-inline">
-                    <input name="name" class="layui-input" type="text" lay-verify="required"/>
+                    <input name="subjectname" class="layui-input" type="text" lay-verify="required"/>
                 </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">学费</label>
-                <div class="layui-input-inline">
-                    <input name="classmoney" id="sss" class="layui-input" type="text"/>
-                </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">上课轮数</label>
-                <div class="layui-input-inline">
-                    <input name="classnumber"  class="layui-input" type="text"/>
-                </div>
-            </div>
-        </div>
-
-
         <div class="layui-form-inline" style="margin-top: 10%;">
 
             <div class="layui-input-inline">
@@ -431,33 +426,15 @@
 <!--修改班次-->
 <div id="updateScore" style="display: none;text-align: center;">
     <form class="layui-form" id="up" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
-        <input type="hidden" id="id" name="id">
+        <input type="hidden" id="sid" name="sid">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">班次名称</label>
+                <label class="layui-form-label">考试科目</label>
                 <div class="layui-input-inline">
-                    <input name="name" id="name1" class="layui-input" type="text" lay-verify="required"/>
+                    <input name="subjectname" id="name1" class="layui-input" type="text" lay-verify="required"/>
                 </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">学费</label>
-                <div class="layui-input-inline">
-                    <input name="classmoney" class="layui-input" type="text" id="classmoney"/>
-                </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">上课轮数</label>
-                <div class="layui-input-inline">
-                    <input name="classnumber"  id="classnumber" class="layui-input" type="text"/>
-                </div>
-            </div>
-        </div>
-
-
         <div class="layui-form-inline" style="margin-top: 10%;">
 
             <div class="layui-input-inline">
@@ -474,7 +451,7 @@
 <!--删除积分-->
 <div id="deleteScore" style="display: none;text-align: center;">
     <form class="layui-form" id="delete" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
-        <input type="hidden" id="id1" name="id">
+        <input type="hidden" id="id1" name="sid">
         <div class="layui-form-item">
             <div class="layui-input-inline">
                 确定删除?

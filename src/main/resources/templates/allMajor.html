@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>省区校管理</title>
+    <title>专业管理</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
     <link th:href="@{/css/animate.css}" rel="stylesheet">
@@ -37,15 +37,15 @@
     </style>
 
     <script type="text/html" id="ccc">
-        <a href="/zhongsheng/areaManage/selectQu?id={{d.aid}}" class="layui-table-link">{{d.count}}个区</a>
+        <a href="/zhongsheng/customer/selectRegularCollege?id={{d.id}}" class="layui-table-link">{{d.count}}个</a>
     </script>
     <script type="text/html" id="xxx">
-        <a onclick='openUpdateArea("{{d.aid}}","{{d.aname}}");' style="color:#c2a664;">修改</a>
+        <a onclick='openUpdateArea("{{d.id}}","{{d.name}}");' style="color:#c2a664;">修改</a>
     </script>
     <script type="text/html" id="toolbarDemo">
         <div class="layui-btn-container">
-            <button shiro:hasPermission=="add:area" type="button" class="layui-btn data-add-btn" onclick="openAddArea()">
-                <i class="layui-icon">&#xe608;</i> 新增省份
+            <button  type="button" class="layui-btn data-add-btn" onclick="openAddArea()">
+                <i class="layui-icon">&#xe608;</i> 新增专业
             </button>
             <button type="button" class="layui-btn refresh-btn">
                 <i class="layui-icon layui-icon-refresh"></i> 刷新
@@ -64,10 +64,10 @@
             //第一个实例
             table.render({
                 elem: '#demo'
-                , url: '/zhongsheng/areaManage/selectAreaByAid' //数据接口
+                , url: '/zhongsheng/customer/selectJuniorCollege' //数据接口
                 , page: true //开启分页
-                , limit: 6//每页多少条数据
-                , limits: [6, 12, 18]//每页条数的选择项
+                , limit: 10//每页多少条数据
+                , limits: [10, 15, 20]//每页条数的选择项
                 , cellMinWidth: 80
                 , toolbar: '#toolbarDemo'
                 , defaultToolbar: ['filter', 'exports', 'print', {
@@ -77,9 +77,9 @@
                 }]
                 , cols: [
                     [//表头
-                        {field: 'aid', title: '编号', sort: true, fixed: 'left',hide:true}
-                        , {field: 'aname', title: '省份'}
-                        , {field: 'count', title: '区数', templet: "#ccc"}
+                        {field: 'id', title: 'id', sort: true, fixed: 'left',hide:true}
+                        , {field: 'name', title: '专科名称'}
+                        , {field: 'count', title: '本科个数', templet: "#ccc"}
                         , {field: 'count', title: '操作', templet: "#xxx"}
                     ]
                 ]
@@ -95,7 +95,7 @@
             form.on('submit(formDemo)', function (data) {
                 var name = data.field;
                 $.ajax({
-                    url: "/zhongsheng/areaManage/addArea",
+                    url: "/zhongsheng/customer/addMajor",
                     type: "POST",
                     dataType: "text",
                     data: name,
@@ -117,14 +117,14 @@
                 return false;
             });
 
-//修改省份监听提交
+//修改监听提交
             form.on('submit(formDemo2)', function (data) {
-                var area = data.field;
+                var juniorCollege = data.field;
                 $.ajax({
-                    url: "/zhongsheng/areaManage/UpdateArea",
+                    url: "/zhongsheng/customer/UpdateMajor",
                     type: "POST",
                     dataType: "text",
-                    data: area,
+                    data: juniorCollege,
                     success: function (data) {
                         if (data == "yes") {
                             layer.msg('修改成功！', {icon: 6}, {time: 2000});
@@ -151,7 +151,7 @@
                 layer.open({
                     type: 1,//类型
                     area: ['350px', '250px'],//定义宽和高
-                    title: '添加省份',//题目
+                    title: '添加专科专业',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#mmm')//打开的内容
                 });
@@ -159,15 +159,15 @@
         }
 
 
-        function openUpdateArea(aid,aname) {
-            $("#aid").val(aid);
-            $("#aname").val(aname);
+        function openUpdateArea(id,name) {
+            $("#aid").val(id);
+            $("#aname").val(name);
             layui.use(['layer'], function () {
                 var layer = layui.layer, $ = layui.$;
                 layer.open({
                     type: 1,//类型
                     area: ['350px', '250px'],//定义宽和高
-                    title: '修改省份',//题目
+                    title: '修改专科名称',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#up')//打开的内容
                 });
@@ -241,7 +241,7 @@
                         <li class=""><a onclick="openModak();">添加奖品</a></li>
                     </ul>
                 </li>
-                <li class="active" shiro:hasPermission=="area:list">
+                <li  shiro:hasPermission=="area:list">
                     <a th:href="@{/areaManage}"><i class="layui-icon layui-icon-layer"></i> <span class="nav-label">省区校管理</span><span
                             class="fa arrow"></span></a>
                 </li>
@@ -257,12 +257,12 @@
                     <a th:href="@{/ClassesController/course}"><i class="layui-icon layui-icon-tabs"></i> <span class="nav-label">专业课管理</span><span
                             class="fa arrow"></span></a>
                 </li>
-                <li shiro:hasPermission=="customer:list">
+                <li class="active" shiro:hasPermission=="customer:list">
                     <a href=""><i class="layui-icon layui-icon-survey"></i> <span class="nav-label">小程序管理</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/Customer}">小程序报名人</a></li>
-                        <li class=""><a th:href="@{/major}">专业管理</a></li>
+                        <li class="active"><a th:href="@{/major}">专业管理</a></li>
                         <li class=""><a th:href="@{/subject}">考试科目管理</a></li>
                     </ul>
                 </li>
@@ -300,10 +300,10 @@
                 <h2>&nbsp;</h2>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="#">省校区管理</a>
+                        <a href="#">小程序管理</a>
                     </li>
                     <li class="breadcrumb-item active">
-                        <strong>省校区基本信息</strong>
+                        <strong>专业管理</strong>
                     </li>
                 </ol>
             </div>
@@ -355,7 +355,7 @@
     <form class="layui-form" id="mm" type="hidden" style="margin-top: 15%;">
 
         <div class="layui-input-inline">
-            <label class="layui-form-label">省份</label>
+            <label class="layui-form-label">专业名称</label>
             <div class="layui-input-inline">
                 <input type="text" name="name" class="layui-input" lay-verify="required" autocomplete="off"></div>
         </div>
@@ -368,12 +368,12 @@
 <!--修改省份-->
 <div id="up" style="display: none;text-align: center;">
     <form class="layui-form" id="update" type="hidden" style="margin-top: 15%;">
-        <input type="hidden" id="aid" name="aid">
+        <input type="hidden" id="aid" name="id">
 
        <div class="layui-input-inline">
-            <label class="layui-form-label">省份</label>
+            <label class="layui-form-label">专业名称</label>
             <div class="layui-input-inline">
-                <input type="text" id="aname" name="aname" class="layui-input" lay-verify="required" autocomplete="off">
+                <input type="text" id="aname" name="name" class="layui-input" lay-verify="required" autocomplete="off">
             </div>
         </div>
         <div class="layui-form-item" style="margin-top: 10%;">

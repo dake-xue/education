@@ -36,18 +36,19 @@
                 elem: '#demo'
                 , url: '/zhongsheng/customer/selectSignUp'//数据接口
                 , page: true //开启分页
-                , limit: 6//每页多少条数据
-                , limits: [6, 12, 18]//每页条数的选择项
+                , limit: 10//每页多少条数据
+                , limits: [10, 15, 20]//每页条数的选择项
                 , cols: [
                     [//表头
                         {field: 'id', title: 'id', sort: true, fixed: 'left', hide: true}
-                        , {field: 'name', title: '姓名'}
-                        , {field: 'phone', title: '手机号', sort: true}
-                        , {field: 'qq', title: 'QQ', sort: true}
-                        , {field: 'schoolname', title: '院校'}
-                        , {field: 'major', title: '专业'}
-                        , {field: 'period', title: '届别'}
-                        , {field: 'remark', title: '备注'}
+                        , {field: 'name', title: '姓名',width:'10%'}
+                        , {field: 'phone', title: '手机号', sort: true,width:'10%'}
+                        , {field: 'qq', title: 'QQ', sort: true,width:'10%'}
+                        , {field: 'schoolname', title: '院校',width:'10%'}
+                        , {field: 'major', title: '专业',width:'10%'}
+                        , {field: 'period', title: '届别',width:'10%'}
+                        , {field: 'remark', title: '备注',width:'20%'}
+                        , {field: 'status', title: '是否联络',templet:"#mo",width:'7%'}
                         , {field: 'status', title: '操作', templet: '#update'}
                     ]
                 ]
@@ -56,36 +57,31 @@
             //修改监听提交
             form.on('submit(updateform)', function (data) {
                 var score = data.field;
-                var a = /^[1-9]d*|0$/;
-                if (a.test(score.classmoney) == false && a.test(score.classnumber) == false) {
-                    layer.msg("请输入正确数字", {icon: 1000});
-                } else {
                     $.ajax({
-                        url: "/zhongsheng/ClassesController/updateClass",
+                        url: "/zhongsheng/customer/updateSignUp",
                         type: "POST",
                         dataType: "text",
                         data: score,
                         success: function (data) {
                             if (data == 1) {
-                                layer.msg('修改成功！', {icon: 6}, {icon: 1000});
+                                layer.msg('备注成功！', {icon: 6}, {icon: 1000});
                                 // 重置清空
                                 $('#up')[0].reset();
                                 form.render();//必须写
                                 window.parent.location.reload();//刷新父页面
                                 parent.layer.close(index);//关闭弹出层
                             } else {
-                                layer.msg('修改失败！', {icon: 5}, {icon: 1000});
+                                layer.msg('备注失败！', {icon: 5}, {icon: 1000});
                             }
                         }
                     });
-                }
                 return false;
             });
             //删除监听提交
             form.on('submit(deleteform)', function (data) {
                 var id = data.field;
                 $.ajax({
-                    url: "/zhongsheng/ClassesController/deleteClass",
+                    url: "/zhongsheng/customer/updateStatus",
                     type: "POST",
                     dataType: "text",
                     data: id,
@@ -114,20 +110,32 @@
             });
 
         });
-
-
-        //修改
-        function openUpdateScore(id, name, classmoney,classnumber) {
-            $("#id").val(id);
-            $("#name1").val(name);
-            $("#classmoney").val(classmoney);
-            $("#classnumber").val(classnumber);
+        //删除
+        function openDeleteScore(id) {
+            $("#id1").val(id);
             layui.use(['layer'], function () {
                 var layer = layui.layer, $ = layui.$;
                 layer.open({
                     type: 1,//类型
-                    area: ['500px', '400px'],//定义宽和高
-                    title: '修改班次',//题目
+                    area: ['260px', '170px'],//定义宽和高
+                    title: '确认已联络',//题目
+                    shadeClose: false,//点击遮罩层关闭
+                    content: $('#deleteScore')//打开的内容
+                });
+            })
+        };
+
+
+        //修改
+        function openUpdateScore(id,remark) {
+            $("#id").val(id);
+            $("#remark").val(remark);
+            layui.use(['layer'], function () {
+                var layer = layui.layer, $ = layui.$;
+                layer.open({
+                    type: 1,//类型
+                    area: ['500px', '350px'],//定义宽和高
+                    title: '新增备注',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#updateScore')//打开的内容
                 });
@@ -157,11 +165,19 @@
     </script>
     <script type="text/html" id="update">
         <a class="layui-btn layui-btn-normal layui-btn-sm" style="color: white"
-           onclick='openUpdateScore("{{d.id}}","{{d.name}}","{{d.classmoney}}","{{d.classnumber}}");'>
-            编辑</a>
+           onclick='openUpdateScore("{{d.id}}","{{d.remark}}");'>
+            备注</a>
         <a class="layui-btn layui-btn-danger layui-btn-sm" style="color: white"
            onclick='openDeleteScore("{{d.id}}")'>
-            删除</a>
+            已联络</a>
+    </script>
+
+    <script type="text/html" id="mo">
+        {{#  if(d.status == 0){ }}
+        <span style="color: #35bdae">已联络</span>
+        {{#  } else { }}
+        <span style="color:#c23450;">待联络</span>
+        {{#  } }}
     </script>
 </head>
 
@@ -198,6 +214,7 @@
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
                         <li class=""><a onclick="openModak1();">添加用户</a></li>
+                        <li class=""><a th:href="@{/user/userDetails}">个人信息</a></li>
                     </ul>
                 </li>
                 <li shiro:hasPermission=="money:list">
@@ -225,18 +242,18 @@
                         <li class=""><a onclick="openClasses();">添加班次</a></li>
                     </ul>
                 </li>
-                <li shiro:hasPermission=="userdetails:list">
-                    <a th:href="@{/user/userDetails}"><i class="layui-icon layui-icon-friends"></i> <span
-                            class="nav-label">个人信息</span><span
-                            class="fa arrow"></span></a>
-                </li>
                 <li shiro:hasPermission=="course:list">
                     <a th:href="@{/ClassesController/course}"><i class="layui-icon layui-icon-tabs"></i> <span class="nav-label">专业课管理</span><span
                             class="fa arrow"></span></a>
                 </li>
-                <li shiro:hasPermission=="customer:list"  class="active">
-                    <a th:href="@{/Customer}"><i class="layui-icon layui-icon-tabs"></i> <span class="nav-label">小程序报名人</span><span
+                <li class="active" shiro:hasPermission=="customer:list">
+                    <a href=""><i class="layui-icon layui-icon-survey"></i> <span class="nav-label">小程序管理</span><span
                             class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class="active"><a th:href="@{/Customer}">小程序报名人</a></li>
+                        <li class=""><a th:href="@{/major}">专业管理</a></li>
+                        <li class=""><a th:href="@{/subject}">考试科目管理</a></li>
+                    </ul>
                 </li>
             </ul>
 
@@ -327,5 +344,53 @@
 </body>
 
 </html>
+
+
+
+<!--修改班次-->
+<div id="updateScore" style="display: none;text-align: center;">
+    <form class="layui-form" id="up" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <input type="hidden" id="id" name="id">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-inline">
+                    <textarea name="remark" id="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-inline" style="margin-top: 10%;">
+
+            <div class="layui-input-inline">
+                <button class="layui-btn" lay-submit lay-filter="updateform">提交</button>
+            </div>
+
+        </div>
+
+        <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+    </form>
+</div>
+
+<!--已联系报名人-->
+<div id="deleteScore" style="display: none;text-align: center;">
+    <form class="layui-form" id="delete" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <input type="hidden" id="id1" name="id">
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                已联系?
+            </div>
+        </div>
+
+        <div class="layui-form-inline" style="margin-top: 10%;">
+
+            <div class="layui-input-inline">
+                <button class="layui-btn" lay-submit lay-filter="deleteform">确定</button>
+                <button class="layui-btn" lay-submit lay-filter="quxiao">取消</button>
+            </div>
+
+        </div>
+        <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+    </form>
+</div>
 
 
