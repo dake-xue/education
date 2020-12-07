@@ -211,7 +211,6 @@ public class StudentServiceImpl implements StudentService {
             student.setSnum(string);
             student.setNumber(n);
             student.setCampus(cnum.getName());
-
             //获取学校id
             TableDic tableDic = new TableDic();
             tableDic.setTableName("training_school_dic");
@@ -219,13 +218,15 @@ public class StudentServiceImpl implements StudentService {
             tableDic.setCampus_id(student.getCampusid());
             TableDic table = tableDicService.searchSchoolName(tableDic);
             student.setSchoolid(table.getId());
-            log.info(student.getCampus()+"校区的第"+num+"位学员。该校区id为"+student.getCampusid());
+            log.info(student.getSname()+"是"+student.getCampus()+"的第"+num+"位学员。该校区id为"+student.getCampusid());
+
+            log.info("学生信息："+student);
             int i = studentMapper.addStudentTwo(student);
             student.getFamilyInfo().setSnum(student.getSnum());
             //添加联系人
             familyService.addFamilyInfo(student.getFamilyInfo());
            // schoolService.addSchoolInfo(student.getSchoolInfo());
-            //获取票据随机数
+            //获取票据随机数0
             Bnumber billnumber= BillNumber.billNumber();
             //生成票据
             String s =  Reader.addBill(student, student.getCampusmanager(),billnumber);
