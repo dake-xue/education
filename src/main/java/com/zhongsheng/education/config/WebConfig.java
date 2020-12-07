@@ -49,6 +49,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/major").setViewName("allMajor");
         //跳转考试科目管理
         registry.addViewController("/subject").setViewName("allSubject");
+        //跳转所有学校管理
+        registry.addViewController("/school").setViewName("allSchoolInfo");
     }
 
     /**

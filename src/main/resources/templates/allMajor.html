@@ -40,7 +40,12 @@
         <a href="/zhongsheng/customer/selectRegularCollege?id={{d.id}}" class="layui-table-link">{{d.count}}个</a>
     </script>
     <script type="text/html" id="xxx">
-        <a onclick='openUpdateArea("{{d.id}}","{{d.name}}");' style="color:#c2a664;">修改</a>
+        <a class="layui-btn layui-btn-normal layui-btn-sm" style="color: white"
+           onclick='openUpdateArea("{{d.id}}","{{d.name}}");'>
+            修改</a>
+        <a class="layui-btn layui-btn-danger layui-btn-sm" style="color: white"
+           onclick='openDeleteScore("{{d.id}}")'>
+            删除</a>
     </script>
     <script type="text/html" id="toolbarDemo">
         <div class="layui-btn-container">
@@ -142,6 +147,41 @@
                 });
                 return false;
             });
+
+
+            //删除监听提交
+            form.on('submit(deleteform)', function (data) {
+                var id = data.field;
+                $.ajax({
+                    url: "/zhongsheng/customer/deleteMajor",
+                    type: "POST",
+                    dataType: "text",
+                    data: id,
+                    success: function (data) {
+                        if (data == 'yes') {
+                            layer.msg('删除成功！', {icon: 6}, {icon: 1000});
+                            // 重置清空
+                            $('#delete')[0].reset();
+                            form.render();//必须写
+                            window.parent.location.reload();//刷新父页面
+                            parent.layer.close(index);//关闭弹出层
+                        } else {
+                            layer.msg('修改失败！', {icon: 5}, {icon: 1000});
+                        }
+                    }
+                });
+
+                return false;
+            });
+            //取消删除
+            form.on('submit(quxiao)', function () {
+                $('#delete')[0].reset();
+                form.render();//必须写
+                window.parent.location.reload();//刷新父页面
+                parent.layer.close(index);//关闭弹出层
+            });
+
+
         });
 
         // 监听添加操作
@@ -158,7 +198,7 @@
             })
         }
 
-
+//修改
         function openUpdateArea(id,name) {
             $("#aid").val(id);
             $("#aname").val(name);
@@ -173,6 +213,21 @@
                 });
             })
         }
+
+        //删除
+        function openDeleteScore(id) {
+            $("#id1").val(id);
+            layui.use(['layer'], function () {
+                var layer = layui.layer, $ = layui.$;
+                layer.open({
+                    type: 1,//类型
+                    area: ['260px', '170px'],//定义宽和高
+                    title: '删除专科专业',//题目
+                    shadeClose: false,//点击遮罩层关闭
+                    content: $('#deleteScore')//打开的内容
+                });
+            })
+        };
 
         function getRole(tableName, scId) {
             $.ajax({
@@ -263,6 +318,7 @@
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/Customer}">小程序报名人</a></li>
                         <li class="active"><a th:href="@{/major}">专业管理</a></li>
+                        <li class=""><a th:href="@{/school}">本科学校管理</a></li>
                         <li class=""><a th:href="@{/subject}">考试科目管理</a></li>
                     </ul>
                 </li>
@@ -381,3 +437,26 @@
         </div>
     </form>
 </div>
+
+<!--删除-->
+<div id="deleteScore" style="display: none;text-align: center;">
+    <form class="layui-form" id="delete" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <input type="hidden" id="id1" name="id">
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                确定删除?
+            </div>
+        </div>
+
+        <div class="layui-form-inline" style="margin-top: 10%;">
+
+            <div class="layui-input-inline">
+                <button class="layui-btn" lay-submit lay-filter="deleteform">确定</button>
+                <button class="layui-btn" lay-submit lay-filter="quxiao">取消</button>
+            </div>
+
+        </div>
+        <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+    </form>
+</div>
+

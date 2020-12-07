@@ -110,15 +110,24 @@ public class CustomerController {
             return "no";
         }
     }
+    //删除专科
+    @RequestMapping("/deleteMajor")
+    @ResponseBody
+    public String deleteMajor(Integer id) throws Exception {
+        Integer integer = customerService.deleteMajor(id);
+        if (integer == 1) {
+            return "yes";
+        } else {
+            return "no";
+        }
+    }
 
-    //根据专科id查询本科专业
+    //查询本科专业
     @RequestMapping("/selectRegularCollege")
     public String selectArea(Integer id, Model model) {
         model.addAttribute("id", id);
         return "allRegular";
     }
-
-    //根据专科id查询本科专业
     @RequestMapping("/allregular")
     @ResponseBody
     public LayuiData allregular(@RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "10") int limit, Integer junior) {
@@ -143,20 +152,44 @@ public class CustomerController {
         layuiData.setData(regularColleges);
         return layuiData;
     }
+    //删除本科
+    @RequestMapping("/deleteRegular")
+    @ResponseBody
+    public String deleteRegular(Integer id) throws Exception {
+        Integer integer = customerService.deleteRegular(id);
+        if (integer == 1) {
+            return "yes";
+        } else {
+            return "no";
+        }
+    }
+    //添加本科
+    @RequestMapping("/addRegular")
+    @ResponseBody
+    public String addRegular(RegularCollege regular) throws Exception {
+        Integer integer = customerService.addRegular(regular);
+        if (integer == 1) {
+            return "yes";
+        } else {
+            return "no";
+        }
+    }
 
 
-    //给本科添加学校
+
+    //添加学校
     @ResponseBody
     @RequestMapping("/addSchool")
-    public Integer addSchool(Integer id,Integer schoolid) {
-        try {        //查出当前本科的学校
+    public String addSchool(Integer id,Integer school) {
+            //查出当前本科的学校
             RegularCollege regularColleges = customerService.selectSchool(id);
             //新增学校添加进去
-            customerService.setSchool(schoolid, regularColleges.getSchool(), id);
-        } catch (Exception e) {
-            return 0;
+         Integer integer=customerService.setSchool(school, regularColleges.getSchool(), id);
+        if (integer == 1) {
+            return "yes";
+        } else {
+            return "no";
         }
-        return 1;
     }
 
     //查询所有考试科目
@@ -172,6 +205,13 @@ public class CustomerController {
         layuiData.setCount((int) pagehelper.getTotal());
         layuiData.setData(subjects);
         return layuiData;
+    }
+    //查询考试科目
+    @RequestMapping("/selectSubject")
+    @ResponseBody
+    public List<subject> selectSubject() {
+        List<subject> areaList =  customerService.selectSubject();
+        return areaList;
     }
 
 
@@ -212,7 +252,7 @@ public class CustomerController {
     }
 
 
-    //根据本科id查询学校
+    //查询学校
     @RequestMapping("/selectSchool")
     public String selectSchool(Integer id,Model model) {
         model.addAttribute("id",id);
@@ -222,8 +262,13 @@ public class CustomerController {
     @ResponseBody
     public LayuiData allSchool(@RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "10") int limit, Integer id) {
 
+        RegularCollege r=customerService.selectSchool(id);
         Page pagehelper = PageHelper.startPage(page, limit);
-        List<School> schoolList=customerService.allSchool(id);
+        List<School> schoolList=customerService.allSchool(r.getSchool());
+        for (School j : schoolList) {
+            List<YearData> yearData = customerService.selectYearDataId(j.getId());
+            j.setCount(yearData.size());
+        }
 
         LayuiData layuiData = new LayuiData();
         layuiData.setCode(0);
@@ -232,4 +277,100 @@ public class CustomerController {
         layuiData.setData(schoolList);
         return layuiData;
     }
+    @RequestMapping("/selectSchoolInfo")
+    @ResponseBody
+    public List<School> selectSchoolInfo() {
+        List<School> areaList =  customerService.allSchoolInfo();
+        return areaList;
+    }
+
+    //删除学校
+    @RequestMapping("/deleteSchool")
+    @ResponseBody
+    public String deleteSchool(Integer id) throws Exception {
+        Integer integer = customerService.deleteSchool(id);
+        if (integer == 1) {
+            return "yes";
+        } else {
+            return "no";
+        }
+    }
+
+    //查询所有学校
+    @RequestMapping("/allSchoolInfo")
+    @ResponseBody
+    public LayuiData allSchoolInfo(@RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "10") int limit) {
+
+        Page pagehelper = PageHelper.startPage(page, limit);
+        List<School> schoolList=customerService.allSchoolInfo();
+        for (School j : schoolList) {
+            List<YearData> yearData = customerService.selectYearDataId(j.getId());
+            j.setCount(yearData.size());
+        }
+
+        LayuiData layuiData = new LayuiData();
+        layuiData.setCode(0);
+        layuiData.setMsg("");
+        layuiData.setCount((int) pagehelper.getTotal());
+        layuiData.setData(schoolList);
+        return layuiData;
+    }
+
+    //所有学校——新增
+    @RequestMapping("/addSchoolInfo")
+    @ResponseBody
+    public String addSchoolInfo(School school) throws Exception {
+        Integer integer = customerService.addSchoolInfo(school);
+        if (integer == 1) {
+            return "yes";
+        } else {
+            return "no";
+        }
+    }
+
+    //查询历年数据
+    @RequestMapping("/selectData")
+    public String selectData(Integer id,Model model) {
+        model.addAttribute("id",id);
+        return "allData";
+    }
+    @RequestMapping("/allData")
+    @ResponseBody
+    public LayuiData allData(@RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "10") int limit, Integer id) {
+
+        Page pagehelper = PageHelper.startPage(page, limit);
+        List<YearData> yearData=customerService.selectYearDataId(id);
+
+        LayuiData layuiData = new LayuiData();
+        layuiData.setCode(0);
+        layuiData.setMsg("");
+        layuiData.setCount((int) pagehelper.getTotal());
+        layuiData.setData(yearData);
+        return layuiData;
+    }
+
+    //添加历年数据
+    @RequestMapping("/addYearData")
+    @ResponseBody
+    public String addYearData(YearData yearData) throws Exception {
+        Integer integer = customerService.addYearData(yearData);
+        if (integer == 1) {
+            return "yes";
+        } else {
+            return "no";
+        }
+    }
+
+    //删除历年数据
+    @RequestMapping("/deleteYearData")
+    @ResponseBody
+    public String deleteYearData(Integer id) throws Exception {
+        Integer integer = customerService.deleteYearData(id);
+        if (integer == 1) {
+            return "yes";
+        } else {
+            return "no";
+        }
+    }
+
 }

@@ -6,7 +6,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>科目管理</title>
+    <title>所有学校管理</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
     <link th:href="@{/css/animate.css}" rel="stylesheet">
@@ -24,16 +24,6 @@
     <!-- Custom and plugin javascript -->
     <script th:src="@{/js/inspinia.js}"></script>
     <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
-    <script type="text/html" id="toolbarDemo">
-        <div class="layui-btn-container">
-            <button type="button" class="layui-btn data-add-btn" onclick="openAdd()">
-                <i class="layui-icon">&#xe608;</i> 新增科目
-            </button>
-            <button type="button" class="layui-btn refresh-btn">
-                <i class="layui-icon layui-icon-refresh"></i> 刷新
-            </button>
-        </div>
-    </script>
     <script>
         layui.use(['form', 'table', 'laydate'], function () {
             getRole("role", "roleId");
@@ -44,7 +34,7 @@
             //第一个实例
             table.render({
                 elem: '#demo'
-                , url: '/zhongsheng/customer/allSubject'//数据接口
+                , url: '/zhongsheng/customer/allSchoolInfo'//数据接口
                 , page: true //开启分页
                 , limit: 10//每页多少条数据
                 , limits: [10, 15, 20]//每页条数的选择项
@@ -56,8 +46,10 @@
                 }]
                 , cols: [
                     [//表头
-                        {field: 'sid', title: 'id', sort: true, fixed: 'left', hide: true}
-                        , {field: 'subjectname', title: '科目'}
+                        {field: 'id', title: 'id', sort: true, fixed: 'left', hide: true}
+                        , {field: 'name', title: '学校名称'}
+                        , {field: 'status', title: '公办/民办', templet: '#mbgb'}
+                        , {field: 'count', title: '历年数据', templet: '#lnsj'}
                         , {field: 'status', title: '操作', templet: '#update'}
                     ]
                 ]
@@ -65,54 +57,55 @@
 
             //添加用户监听提交
             form.on('submit(userform)', function (data) {
-                    $.ajax({
-                        url: "/zhongsheng/customer/addSubject",
-                        type: "POST",
-                        dataType: "text",
-                        data: data.field,
-                        success: function (data) {
-                            if (data == 'yes') {
-                                layer.msg('添加成功！', {icon: 6}, {icon: 1000});
-                                // 重置清空
-                                $('#form1')[0].reset();
-                                form.render();//必须写
-                                window.parent.location.reload();//刷新父页面
-                                parent.layer.close(index);//关闭弹出层
-                            } else {
-                                layer.msg('添加失败！', {icon: 5}, {icon: 1000});
-                            }
+                var school = data.field;
+                $.ajax({
+                    url: "/zhongsheng/customer/addSchoolInfo",
+                    type: "POST",
+                    dataType: "text",
+                    data: school,
+                    success: function (data) {
+                        if (data == 'yes') {
+                            layer.msg('添加成功！', {icon: 6}, {icon: 1000});
+                            // 重置清空
+                            $('#form1')[0].reset();
+                            form.render();//必须写
+                            window.parent.location.reload();//刷新父页面
+                            parent.layer.close(index);//关闭弹出层
+                        } else {
+                            layer.msg('添加失败！', {icon: 5}, {icon: 1000});
                         }
-                    });
+                    }
+                });
                 return false;
             });
             //修改监听提交
             form.on('submit(updateform)', function (data) {
                 var subject = data.field;
-                    $.ajax({
-                        url: "/zhongsheng/customer/updateSubject",
-                        type: "POST",
-                        dataType: "text",
-                        data: subject,
-                        success: function (data) {
-                            if (data == 'yes') {
-                                layer.msg('修改成功！', {icon: 6}, {icon: 1000});
-                                // 重置清空
-                                $('#up')[0].reset();
-                                form.render();//必须写
-                                window.parent.location.reload();//刷新父页面
-                                parent.layer.close(index);//关闭弹出层
-                            } else {
-                                layer.msg('修改失败！', {icon: 5}, {icon: 1000});
-                            }
+                $.ajax({
+                    url: "/zhongsheng/customer/updateSubject",
+                    type: "POST",
+                    dataType: "text",
+                    data: subject,
+                    success: function (data) {
+                        if (data == 'yes') {
+                            layer.msg('修改成功！', {icon: 6}, {icon: 1000});
+                            // 重置清空
+                            $('#up')[0].reset();
+                            form.render();//必须写
+                            window.parent.location.reload();//刷新父页面
+                            parent.layer.close(index);//关闭弹出层
+                        } else {
+                            layer.msg('修改失败！', {icon: 5}, {icon: 1000});
                         }
-                    });
+                    }
+                });
                 return false;
             });
             //删除监听提交
             form.on('submit(deleteform)', function (data) {
                 var id = data.field;
                 $.ajax({
-                    url: "/zhongsheng/customer/deleteSubject",
+                    url: "/zhongsheng/customer/deleteSchool",
                     type: "POST",
                     dataType: "text",
                     data: id,
@@ -140,11 +133,20 @@
                 parent.layer.close(index);//关闭弹出层
             });
 
+
+            //返回上一个页面
+            $("body").on("click", ".data-add-btn", function () {
+                window.location.href = "/zhongsheng/major";
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+                parent.location.reload();
+            });
+            //刷新页面
+            $("body").on("click", '.refresh-btn', function () {
+                window.location.reload();
+            });
         });
-        //刷新页面
-        $("body").on("click", '.refresh-btn', function () {
-            window.location.reload();
-        });
+
         //添加
         function openAdd() {
             layui.use(['layer'], function () {
@@ -161,15 +163,16 @@
 
 
         //修改
-        function openUpdateScore(id, name) {
-            $("#sid").val(id);
+        function openUpdateScore(id, name, status) {
+            $("#id").val(id);
             $("#name1").val(name);
+            //$("#status").val(status);
             layui.use(['layer'], function () {
                 var layer = layui.layer, $ = layui.$;
                 layer.open({
                     type: 1,//类型
                     area: ['400px', '350px'],//定义宽和高
-                    title: '修改考试科目',//题目
+                    title: '修改学校信息',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#updateScore')//打开的内容
                 });
@@ -184,7 +187,7 @@
                 layer.open({
                     type: 1,//类型
                     area: ['260px', '170px'],//定义宽和高
-                    title: '删除考试科目',//题目
+                    title: '删除学校',//题目
                     shadeClose: false,//点击遮罩层关闭
                     content: $('#deleteScore')//打开的内容
                 });
@@ -199,9 +202,9 @@
                 data: {"tableName": tableName},
                 dataType: "json",
                 success: function (data) {
-                    var id =  $("#" + scId + "").val();
+                    var id = $("#" + scId + "").val();
                     for (var i = 0; i < data.length; i++) {
-                        if(id == data[i].id){
+                        if (id == data[i].id) {
                             $("#roleName").html(data[i].name);
                         }
                     }
@@ -211,13 +214,36 @@
         }
 
     </script>
+    <script type="text/html" id="mbgb">
+        {{#  if(d.status == 1){ }}
+        公办
+        {{#  } else { }}
+        民办
+        {{#  } }}
+    </script>
+    <script type="text/html" id="lnsj">
+        <a href="/zhongsheng/customer/selectData?id={{d.id}}" class="layui-table-link">{{d.count}}条数据</a>
+    </script>
     <script type="text/html" id="update">
         <a class="layui-btn layui-btn-normal layui-btn-sm" style="color: white"
-           onclick='openUpdateScore("{{d.sid}}","{{d.subjectname}}");'>
+           onclick='openUpdateScore("{{d.id}}","{{d.name}}","{{d.status}}");'>
             编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-sm" style="color: white"
-           onclick='openDeleteScore("{{d.sid}}")'>
+           onclick='openDeleteScore("{{d.id}}")'>
             删除</a>
+    </script>
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+            <button type="button" class="layui-btn" onclick="openAdd()">
+                <i class="layui-icon">&#xe608;</i> 新增学校
+            </button>
+            <button type="button" class="layui-btn refresh-btn">
+                <i class="layui-icon layui-icon-refresh"></i> 刷新
+            </button>
+            <button type="button" class="layui-btn data-add-btn">
+                <i class="layui-icon layui-icon-left"></i>返回
+            </button>
+        </div>
     </script>
 </head>
 
@@ -283,7 +309,8 @@
                     </ul>
                 </li>
                 <li shiro:hasPermission=="course:list">
-                    <a th:href="@{/ClassesController/course}"><i class="layui-icon layui-icon-tabs"></i> <span class="nav-label">专业课管理</span><span
+                    <a th:href="@{/ClassesController/course}"><i class="layui-icon layui-icon-tabs"></i> <span
+                            class="nav-label">专业课管理</span><span
                             class="fa arrow"></span></a>
                 </li>
                 <li class="active" shiro:hasPermission=="customer:list">
@@ -292,8 +319,8 @@
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/Customer}">小程序报名人</a></li>
                         <li class=""><a th:href="@{/major}">专业管理</a></li>
-                        <li class=""><a th:href="@{/school}">本科学校管理</a></li>
-                        <li class="active"><a th:href="@{/subject}">考试科目管理</a></li>
+                        <li class="active"><a th:href="@{/school}">本科学校管理</a></li>
+                        <li class=""><a th:href="@{/subject}">考试科目管理</a></li>
                     </ul>
                 </li>
             </ul>
@@ -311,7 +338,8 @@
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
                         <input type="hidden" th:value="${session.user.roleid}" id="roleId">
-                        <span class="m-r-sm text-muted welcome-message">您当前的身份为：<span id="roleName" style="color: #c23450;font-weight: bold;">无</span></span>
+                        <span class="m-r-sm text-muted welcome-message">您当前的身份为：<span id="roleName"
+                                                                                      style="color: #c23450;font-weight: bold;">无</span></span>
                     </li>
                     <li>
                         <span class="m-r-sm text-muted welcome-message">欢迎来到中升教育管理后台</span>
@@ -361,7 +389,6 @@
                             </div>
                         </div>
                         <div class="ibox-content">
-                            <input type="hidden" id="aid" name="aid" th:value="${aid}">
                             <div id="tab">
                                 <table id="demo" class="layui-tab" lay-filter="currentTableFilter"></table>
                             </div>
@@ -393,9 +420,20 @@
     <form class="layui-form" id="form1" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">考试科目</label>
+                <label class="layui-form-label">学校名称</label>
                 <div class="layui-input-inline">
-                    <input name="subjectname" class="layui-input" type="text" lay-verify="required"/>
+                    <input name="name" class="layui-input" type="text" lay-verify="required"/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">学校类型</label>
+                <div class="layui-input-inline">
+                    <select name="status" id="status" lay-filter="modules" class="layui-form-select">
+                        <option value="1">公办院校</option>
+                        <option value="2">民办院校</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -414,12 +452,23 @@
 <!--修改班次-->
 <div id="updateScore" style="display: none;text-align: center;">
     <form class="layui-form" id="up" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
-        <input type="hidden" id="sid" name="sid">
+        <input type="hidden" id="id" name="id">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">考试科目</label>
+                <label class="layui-form-label">学校名称</label>
                 <div class="layui-input-inline">
-                    <input name="subjectname" id="name1" class="layui-input" type="text" lay-verify="required"/>
+                    <input name="name" id="name1" class="layui-input" type="text" lay-verify="required"/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">学校类型</label>
+                <div class="layui-input-inline">
+                    <select name="status" lay-filter="modules" class="layui-form-select">
+                        <option value="1">公办院校</option>
+                        <option value="2">民办院校</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -439,7 +488,7 @@
 <!--删除积分-->
 <div id="deleteScore" style="display: none;text-align: center;">
     <form class="layui-form" id="delete" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
-        <input type="hidden" id="id1" name="sid">
+        <input type="hidden" id="id1" name="id">
         <div class="layui-form-item">
             <div class="layui-input-inline">
                 确定删除?

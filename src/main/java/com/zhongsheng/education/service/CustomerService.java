@@ -14,11 +14,20 @@ public interface CustomerService {
     Integer UpdateMajor(JuniorCollege juniorCollege);
     Integer addMajor(String name);
     RegularCollege selectSchool(Integer id);
-    String  setSchool(Integer schoolid,String c,Integer id);
+    Integer setSchool(Integer schoolid, String c, Integer id);
     List<subject> selectSubject();
     Integer addSubject(String subjectname);
     Integer UpdateSubject(subject subject);
     Integer deleteSubject(Integer sid);
-    List<School>  allSchool(Integer id);
 
+    List<YearData>  selectYearDataId(Integer sid);
+    Integer  addYearData(YearData yearData);
+    Integer  deleteYearData(Integer id);
+    Integer  deleteSchool(Integer id);
+    Integer  deleteMajor(Integer id);
+    Integer  deleteRegular(Integer id);
+    List<School>  allSchoolInfo();
+    Integer addSchoolInfo(School school);
+    Integer  addRegular(RegularCollege regular);
+    List<School>  allSchool(String id);
 }
