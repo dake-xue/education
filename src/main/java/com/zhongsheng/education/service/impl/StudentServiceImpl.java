@@ -2,6 +2,7 @@ package com.zhongsheng.education.service.impl;
 
 import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.mapper.StudentMapper;
+import com.zhongsheng.education.mapper.WinterStudentMapper;
 import com.zhongsheng.education.pdf.BillNumber;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
@@ -35,6 +36,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private SchoolService schoolService;
+
     @Autowired
     private BillService billService;
 
@@ -43,6 +45,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private TableDicService tableDicService;
+
+    @Autowired
+    private WinterStudentMapper winterStudentMapper;
 
     /**
      * @创建人 xueke
@@ -210,6 +215,8 @@ public class StudentServiceImpl implements StudentService {
 
             student.setSnum(string);
             student.setNumber(n);
+            log.info("添加的校区名称为："+cnum.getName());
+
             student.setCampus(cnum.getName());
             //获取学校id
             TableDic tableDic = new TableDic();
@@ -225,7 +232,7 @@ public class StudentServiceImpl implements StudentService {
             student.getFamilyInfo().setSnum(student.getSnum());
             //添加联系人
             familyService.addFamilyInfo(student.getFamilyInfo());
-           // schoolService.addSchoolInfo(student.getSchoolInfo());
+            // schoolService.addSchoolInfo(student.getSchoolInfo());
             //获取票据随机数0
             Bnumber billnumber= BillNumber.billNumber();
             //生成票据
@@ -270,7 +277,17 @@ public class StudentServiceImpl implements StudentService {
 
         return i;
     }
-   
+
+    /**
+     * @创建人 xueke
+     * @创建时间 2020/12/9
+     * @描述 添加寒假班学生信息
+    */
+    @Override
+    public Integer addWinterStudent(Student student) {
+        return winterStudentMapper.addWinterStudent(student);
+    }
+
     @Override
     public Integer addScore(String snum, Integer scope) {
         return studentMapper.addScore(snum, scope);
@@ -361,6 +378,23 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.searchStuByCamp(name,page,limit);
     }
 
+    @Override
+    public List<WinterStu> allWinterStudent(Integer page, Integer limit) {
+        return winterStudentMapper.selectAll(page,limit);
+    }
+
+    @Override
+    public WinterStu selectWinterStudentByPhone(String phone) {
+        WinterStu student = winterStudentMapper.selectWinterStudentByPhone(phone);
+        //票据(用寒假学生的手机号查询票据)
+        student.setBillList(billService.selectBill(student.getPhone()));
+        return student;
+    }
+
+    @Override
+    public Integer updateWinterStatus(String phone) {
+        return winterStudentMapper.updateWinterStatus(phone);
+    }
 
 
 }

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+    <title>中升教育寒假班住宿费缴纳</title>
+
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/layui/layui.css}" rel="stylesheet">
+
+    <!-- Mainly scripts -->
+    <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
+    <script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+    <script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+
+
+    <!-- Custom and plugin javascript -->
+    <script th:src="@{/js/inspinia.js}"></script>
+    <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+    <style>
+        .nobreak {
+            white-space: nowrap !important;
+        }
+
+        .layui-input-inline .layui-input-inline {
+            width: 75%;
+        }
+        .layui-input,.layui-unselect,.layui-select-title {
+            width: 100%;
+        }
+        .layui-input-inline{
+            width: 100%;
+        }
+        .layui-form-label{
+            font-weight: bold;
+        }
+        .moren{
+            border-color:#D2D2D2;
+        }
+        .hong{
+            border-color:#ff5b5b;
+        }
+        .layui-input-block{
+            margin-left: 21%;
+        }
+        input:focus{
+            !important;border-color: #66afe9;box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+        }
+        form{
+            !important;
+            background-color: rgb(255, 255, 255);
+            border-color: rgba(255, 255, 255, 0);
+            border-width: 0px;
+            font-size: 15px;
+            padding-top: 15px;
+        }
+        h3{
+            text-align: center;
+        }
+    </style>
+    <script src="layui/layui.js"></script>
+
+    <script>
+        //Demo
+        layui.use('form', function() {
+
+            //验证名字是否规范
+            $("#sname").blur(function(){
+                checked(/^[\u4e00-\u9fa5]{2,6}$/,"sname","姓名不合法！");
+            });
+            //验证手机号
+            $("#phone").blur(function(){
+                var reg=/^[1](([3][0-9])|([4][0,1,4-9])|([5][0-3,5-9])|([6][2,5,6,7])|([7][0-8])|([8][0-9])|([9][0-3,5-9]))[0-9]{8}$/;
+                checked(reg,"phone","手机号不合法！")
+            });
+            //验证身份证信息
+            $("#ic").blur(function(){
+                var reg=/^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+                checked(reg,"ic","身份证不合法！")
+            });
+            //验证院校
+            $("#school").blur(function(){
+                var reg=/^[\u4e00-\u9fa5]+$/;
+                checked(reg,"school","不能含有数字或字母！")
+            });
+
+        });
+
+        function loading(msg) {
+            layer.msg(msg, {
+                icon: 16,
+                shade: [0.6, '#000005'],//遮罩的颜色与透明度
+                time: false  //取消自动关闭
+            })
+        };
+
+        //验证 regd：正则  id：模块id msg：提示信息
+        function checked(reg,id,msg) {
+            var re = new RegExp(reg);
+            if($.trim($("#"+id+"").val()) != ""&&re.test($("#"+id+"").val())) {
+                //去除边框
+                $("#"+id+"").removeClass('hong');
+                var red = $("#form").find(".hong");
+                //如果没有红色边框的input则解禁按钮
+                if(red.length==0){
+                    $('#btn').removeClass("layui-btn-disabled").attr("disabled",false);
+                }
+            }else {
+                $("#"+id+"").addClass('hong');
+                $('#btn').addClass("layui-btn-disabled").attr("disabled",true);
+                layer.msg(msg, {icon:2,time:1200, shift: 6});//一个叉
+            }
+        }
+
+    </script>
+</head>
+
+
+<body style="background-color: white;">
+
+<div id="wrapper" class="main" style="background-color: white;">
+
+    <div class="">
+        <div style="background-color: white;">
+            <img th:src="@{/img/t99.jpg}" alt="IMG" style="width: 100%;margin: 5% auto;">
+        </div>
+
+        <form class="layui-form" id="form" autocomplete="off"
+              method="post" th:action="@{/student/addWinterStudent}">
+            <input hidden name="jiaofeijine" value="440"/>
+
+            <div class="layui-input-inline">
+                <label class="layui-form-label important">姓名</label>
+                <div class="layui-input-inline wwd">
+                    <input type="text" id="sname" name="sname" required lay-verify="chinese|lgh" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-input-inline">
+                <label class="layui-form-label important">性别</label>
+                <div class="layui-input-inline">
+                    <select name="sex" lay-verify="required">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-input-inline">
+                <label class="layui-form-label important" style="white-space:nowrap!important;">联系方式</label>
+                <div class="layui-input-inline">
+                    <input name="phone" id="phone" class="layui-input phone" type="text" lay-verify="phone" style="ime-mode:disabled;" maxlength="11" />
+                </div>
+            </div>
+
+            <div class="layui-input-inline">
+                <label class="layui-form-label important" style="white-space:nowrap!important;">身份证号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="idcard" id="ic" required lay-verify="identity" onblur="" autocomplete="off" class="layui-input" maxlength="18">
+                </div>
+            </div>
+
+
+            <div class="layui-input-inline">
+                <label class="layui-form-label important" style="white-space:nowrap!important;">院校</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" id="school" name="schoolname" lay-verify="required"/>
+                </div>
+            </div>
+
+            <div class="layui-input-inline">
+                <span style="float: right;padding-right: 7%;color: #b81919bf;">
+                    ps：以上信息均需填写，不要漏哦。。。</span>
+            </div>
+
+            <div class="layui-form-item" style="padding-top: 15%;text-align: center;margin-bottom: 0;">
+                <button type="submit" id="btn" class="layui-btn layui-btn-fluid layui-btn-normal" style="border-radius: 20px;width: 85%;">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary layui-btn-fluid" style="margin-top: 2%;border-radius: 20px;margin-left: 0;width: 85%;">重置</button>
+            </div>
+
+        </form>
+
+
+
+    </div>
+
+
+</div>
+<div style="text-align: center;position:fixed;bottom:1%;">
+    <strong>Copyright</strong>@ 2020. All rights reserved.中升教育科技有限公司 版权所有.
+    <strong>
+        <a style="" href="https://beian.miit.gov.cn/" target="_blank">
+            豫ICP备2020030416号-3</a>
+    </strong>
+</div>
+
+</body>
+
+</html>

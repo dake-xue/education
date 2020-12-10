@@ -1,0 +1,80 @@
+<html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>生成二维码</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" /> 
+
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/new/main.css">
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/layui/layui.js}"></script>
+
+	<script>
+		layui.use('form', function () {
+			var $ = layui.jquery,
+					form = layui.form;
+			//btn点击事件
+			$("#btn").click(function(){
+				//获取生成二维码的url
+				var hr = $("#hr").attr('href');
+				//获取该用户的报名url连接
+				var newUrl = $("#ur").val();
+				if(newUrl != null && newUrl != ""){
+					layer.open({
+						type: 2
+						,content: [
+								hr+'?url='+newUrl, 'no']
+						,area:  ['200px', '250px']
+					});
+				}else {
+					layer.msg("请输入内容")
+				}
+
+			});
+
+		});
+	</script>
+</head>
+
+<body>
+
+	<div class="limiter">
+		<a id="hr" hidden th:href="@{/getCode}"></a>
+		<div class="container-login100" style="background-color: #ecc1c18c;">
+			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+				<form class="login100-form validate-form">
+					<span class="login100-form-title p-b-49">请输入url链接</span>
+
+					<div class="wrap-input100 validate-input m-b-23">
+						<input class="input100" type="text" id="ur" placeholder="请输入链接" autocomplete="off">
+					</div>
+
+					<div class="container-login100-form-btn">
+						<div class="wrap-login100-form-btn">
+							<div class="login100-form-bgbtn"></div>
+							<button class="login100-form-btn" id="btn"
+									lay-filter="code" type="button">生成二维码</button>
+						</div>
+						<button class="" style="margin-top: 2%"
+								lay-filter="code" type="reset">清空</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div style="text-align: center;background-color: #d2b9b9c7;color: white;">
+                <strong>Copyright</strong>@ 2020. All rights reserved.中升教育科技有限公司 版权所有.
+                <strong>
+                    <a style="" href="https://beian.miit.gov.cn/" target="_blank">
+                        豫ICP备2020030416号-3</a>
+                </strong>
+        </div>
+	</div>
+</body>
+
+</html>

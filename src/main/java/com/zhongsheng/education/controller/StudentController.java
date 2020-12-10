@@ -3,6 +3,7 @@ package com.zhongsheng.education.controller;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zhongsheng.education.entiy.*;
+import com.zhongsheng.education.mapper.WinterStudentMapper;
 import com.zhongsheng.education.pdf.BillNumber;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.QrCodeTest;
@@ -88,8 +89,8 @@ public class StudentController {
 
     /**
      * @创建人 xueke
-     * @参数 
-     * @返回值 
+     * @参数
+     * @返回值
      * @创建时间 2020/9/17
      * @描述
     */
@@ -134,6 +135,27 @@ public class StudentController {
         return "no";
     }
 
+    /**
+     * @创建人 xueke
+     * @创建时间 2020/12/9
+     * @描述 添加寒假班的学生信息
+    */
+    @RequestMapping("/addWinterStudent")
+    public String addWinterStudent(Student student,RedirectAttributes attr) throws Exception {
+        Integer integer = studentService.addWinterStudent(student);
+        //设置票据所需内容
+        student.setRemarks("寒假班缴费");
+        student.setFamilyInfo(new FamilyInfo());
+        if(integer!=0){
+            attr.addAttribute("goods_name","中升教育河南分校寒假班住宿费");
+            attr.addAttribute("price",student.getJiaofeijine());
+            attr.addAttribute("order_number",MyUtil.getOrderName());
+            attr.addAttribute("sNum",student.getPhone());
+            attr.addAttribute("area",2);
+            return "redirect:/alipay/toPay";
+        }
+        return "error";
+    }
 
 
     //补款
@@ -256,12 +278,43 @@ public class StudentController {
 
     }
 
+    /**
+     * @创建人 xueke
+     * @创建时间 2020/12/9
+     * @描述 所有寒假班学生信息
+    */
+    @RequestMapping("/allWinterStudent")
+    @ResponseBody
+    public LayuiData allWinterStudent(Integer page,Integer limit){
+        Page pagehelper= PageHelper.startPage(page,limit);
+        List<WinterStu> list = studentService.allWinterStudent(page,limit);
+        LayuiData layuiData=new LayuiData();
+        layuiData.setCode(0);
+        layuiData.setMsg("");
+        layuiData.setCount((int)pagehelper.getTotal());
+        layuiData.setData(list);
+        return layuiData;
+    }
+
+
+    /**
+     * @创建人 xueke
+     * @创建时间 2020/12/9
+     * @描述 寒假班学生详细信息
+    */
+    @RequestMapping("/winterStudentMsg")
+    public String winterStudentMsg(String phone , Model model) {
+        WinterStu student = studentService.selectWinterStudentByPhone(phone);
+        model.addAttribute("student",student);
+        return "winterStudentDetails";
+    }
 
     @RequestMapping("/select")
     @ResponseBody
     public String selectUrl(Integer campus) {
         return "地址是："+UrlUtil.getUrl();
     }
+
 
 
 }

@@ -49,6 +49,12 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/major").setViewName("allMajor");
         //跳转考试科目管理
         registry.addViewController("/subject").setViewName("allSubject");
+        //跳转寒假班报名
+        registry.addViewController("/winterAdd").setViewName("winterAdd");
+        //跳转寒假班学生信息页面
+        registry.addViewController("/student/toAllWinterStudent").setViewName("allWinterStudent");
+        //跳转生成二维码页面
+        registry.addViewController("/toGetCode").setViewName("getCode");
     }
 
     /**
@@ -65,10 +71,10 @@ public class WebConfig implements WebMvcConfigurer {
         //排除那些请求
         //excludePatterns()
         registry.addInterceptor(new LoginHandIterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/static/**", "/user/**","/**/*.woff","/**/*.ico",
-                        "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg","/**/*.ttf","/**/*.woff2",
-                        "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/alipay/**", "/toAdd/**",
-                        "/table/**", "/student/select*", "/ClassesController/select*",
+                .excludePathPatterns("/static/**", "/user/**","/**/*.woff","/**/*.ico","/winterAdd","/getCode",
+                        "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg","/**/*.ttf","/**/*.woff2","/toGetCode",
+                        "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/alipay/**", "/toAdd/**","/student/winterStudentMsg",
+                        "/table/**", "/student/select*", "/ClassesController/select*","/student/addWinterStudent",
                         "/student/add*", "/student/stuToStudentDetails","/customer/**");
     }
 

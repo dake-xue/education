@@ -4,6 +4,7 @@ package com.zhongsheng.education.controller;
 import com.alipay.api.AlipayApiException;
 import com.zhongsheng.education.entiy.Order;
 import com.zhongsheng.education.entiy.Student;
+import com.zhongsheng.education.entiy.WinterStu;
 import com.zhongsheng.education.service.AliPayService;
 import com.zhongsheng.education.service.StudentService;
 import org.slf4j.Logger;
@@ -64,13 +65,20 @@ public class PayController {
     public String returnAlipay(HttpServletRequest request) {
         try {
            String sNum = aliPayService.aliReturn(request);
-           Student student = studentService.selectStudent(sNum);
-           request.setAttribute("student",student);
-           return "stuToStudentDetails";
+           if(sNum.length()<11){
+               Student student = studentService.selectStudent(sNum);
+               request.setAttribute("student",student);
+               return "stuToStudentDetails";
+           }else {
+               WinterStu student =  studentService.selectWinterStudentByPhone(sNum);
+               request.setAttribute("student",student);
+               return "winterStudentDetails";
+           }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         logger.info("----return-----");
-        return "支付完成以后的回调接口";
+        return "error";
     }
 }

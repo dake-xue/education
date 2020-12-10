@@ -5,10 +5,7 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
-import com.zhongsheng.education.entiy.Bill;
-import com.zhongsheng.education.entiy.Bnumber;
-import com.zhongsheng.education.entiy.Order;
-import com.zhongsheng.education.entiy.Student;
+import com.zhongsheng.education.entiy.*;
 import com.zhongsheng.education.pdf.BillNumber;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.Reader;
@@ -225,11 +222,31 @@ public class AliPayServiceImpl implements AliPayService {
                 order.setStatus(1);
                 int n = orderService.updateStatus(order);
                 logger.info("订单表影响行数："+n);
-                //修改学生状态
-                Student student = studentService.selectStudent(order.getsNum());
-                student.setStatus(1);
-                int i =  studentService.updateStatus(student);
-                logger.info("学生表影响行数："+i);
+                //判断sunm的长度是否小于11，如果小于11则是寒假班学生（寒假班学生票据中snum为手机号）
+                Student student = null;
+                if(order.getsNum().length()<11){
+                    //修改学生状态
+                    student = studentService.selectStudent(order.getsNum());
+                    student.setStatus(1);
+                    int i =  studentService.updateStatus(student);
+                    logger.info("学生表影响行数："+i);
+                }else {
+                    WinterStu stu =  studentService.selectWinterStudentByPhone(order.getsNum());
+                    studentService.updateWinterStatus(stu.getPhone());
+                    student = new Student();
+                    student.setRemarks("寒假班住宿费340+押金100");
+                    student.setArea(2);
+                    student.setCampusmanager(" ");
+                    student.setFamilyInfo(new FamilyInfo());
+                    student.setSnum(stu.getPhone());
+                    student.setSname(stu.getSname());
+                    student.setJiaofeijine(stu.getJiaofeijine());
+                    student.setSchoolname(stu.getSchoolname());
+                    student.setSex(stu.getSex());
+                    student.setPhone(stu.getPhone());
+                    student.setIdcard(stu.getIdcard());
+                }
+                //
                 //获取票据随机数
                 Bnumber billnumber= BillNumber.billNumber();
                 //生成票据
