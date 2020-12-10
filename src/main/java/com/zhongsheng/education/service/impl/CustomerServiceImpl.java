@@ -6,6 +6,7 @@ import com.zhongsheng.education.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -64,11 +65,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     ;
 
-    public String setSchool(Integer schoolid, String c, Integer id) {
-        String[] s = c.split(",");
+    public Integer setSchool(Integer schoolid, String c, Integer id) {
+
         StringBuffer sr = new StringBuffer();
 
         if (c != null && !c.equals("")) {
+            String[] s = c.split(",");
             boolean a = true;
             for (int i = 0; i < s.length; i++) {
                 if (schoolid.toString().equals(s[i])) {
@@ -85,7 +87,6 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         String qwe = sr.toString();
-        System.out.println("qwe======" + qwe);
         return customerMapper.setSchool(qwe, id);
     }
 
@@ -113,8 +114,65 @@ public class CustomerServiceImpl implements CustomerService {
 
     ;
 
-    public List<School> allSchool(Integer id){
-        return customerMapper.allSchool(id);
-    };
+    public List<School> allSchool(String id) {
+        if (id!=null && !"".equals(id)){
+            return customerMapper.allSchool(id);
+        }else {
+            List<School> l=new ArrayList<>();
+            return l;
+        }
+
+
+    }
+
+    ;
+
+    public List<YearData> selectYearDataId(Integer sid) {
+        return customerMapper.selectYearDataId(sid);
+    }
+
+    ;
+
+    public Integer addYearData(YearData yearData) {
+        return customerMapper.addYearData(yearData);
+    }
+
+    ;
+
+    public Integer deleteYearData(Integer id) {
+        return customerMapper.deleteYearData(id);
+    }
+
+    ;
+
+    public Integer deleteSchool(Integer id) {
+        return customerMapper.deleteSchool(id);
+    }
+
+    ;
+
+    public Integer deleteMajor(Integer id) {
+        return customerMapper.deleteMajor(id);
+    }
+
+    ;
+
+    public Integer deleteRegular(Integer id) {
+        return customerMapper.deleteRegular(id);
+    }
+
+    ;
+
+  public   List<School>  allSchoolInfo(){
+      return customerMapper.allSchoolInfo();
+  };
+ public    Integer addSchoolInfo(School school){
+     return customerMapper.addSchoolInfo(school);
+ };
+
+ public Integer  addRegular(RegularCollege regular){
+     return customerMapper.addRegular(regular);
+ };
+
 
 }

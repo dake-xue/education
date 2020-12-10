@@ -5,7 +5,16 @@ import java.io.Serializable;
 public class School implements Serializable {
     private Integer id;
     private String name;
-    private Integer yeardata;
+    private Integer status;
+    private Integer count;
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
 
     public Integer getId() {
         return id;
@@ -23,11 +32,11 @@ public class School implements Serializable {
         this.name = name;
     }
 
-    public Integer getYeardata() {
-        return yeardata;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setYeardata(Integer yeardata) {
-        this.yeardata = yeardata;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

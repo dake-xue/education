@@ -55,6 +55,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/student/toAllWinterStudent").setViewName("allWinterStudent");
         //跳转生成二维码页面
         registry.addViewController("/toGetCode").setViewName("getCode");
+        //跳转所有学校管理
+        registry.addViewController("/school").setViewName("allSchoolInfo");
     }
 
     /**
