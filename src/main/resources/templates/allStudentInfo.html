@@ -556,7 +556,7 @@
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class="active"><a th:href="@{/student/toAllStudent}">学生信息</a></li>
-                        <li class=""><a th:href="@{/student/toAddStudent}">添加信息</a></li>
+                        <li class=""><a th:href="@{/student/toAddStudent}">添加学生</a></li>
                         <li class=""><a th:href="@{/student/toAllWinterStudent}">寒假班学生信息</a></li>
 
                     </ul>
@@ -566,7 +566,7 @@
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/user/toAllUser}">用户信息</a></li>
-                        <li class=""><a onclick="openModak1();">添加用户</a></li>
+                        <li class=""><a href="#" onclick="openModak1();">添加用户</a></li>
                         <li class=""><a th:href="@{/user/userDetails}">个人信息</a></li>
                     </ul>
                 </li>
@@ -579,7 +579,7 @@
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/ScoreCotroller/toScore}">积分信息</a></li>
-                        <li class=""><a onclick="openModak();">添加奖品</a></li>
+                        <li class=""><a href="#" onclick="openModak();">添加奖品</a></li>
                     </ul>
                 </li>
                 <li shiro:hasPermission=="area:list">
@@ -591,7 +591,7 @@
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class=""><a th:href="@{/ClassesController/classes}">班次信息</a></li>
-                        <li class=""><a onclick="openClasses();">添加班次</a></li>
+                        <li class=""><a href="#" onclick="openClasses();">添加班次</a></li>
                     </ul>
                 </li>
                 <li shiro:hasPermission=="course:list">

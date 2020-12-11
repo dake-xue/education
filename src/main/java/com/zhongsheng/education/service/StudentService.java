@@ -31,7 +31,7 @@ public interface StudentService {
     Integer updateStatus(Student student);
     public Student selectStudentBySnameAndIphone(Student student);
     List<Student> searchStuByCamp(String name,Integer page, Integer limit);
-    List<WinterStu> allWinterStudent(Integer page, Integer limit);
+    List<WinterStu> allWinterStudent(String sname);
     WinterStu selectWinterStudentByPhone(String id);
     Integer updateWinterStatus(String phone);
 }
