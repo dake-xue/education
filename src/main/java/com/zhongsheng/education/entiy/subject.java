@@ -1,11 +1,13 @@
 package com.zhongsheng.education.entiy;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class subject implements Serializable {
 
     private Integer sid;
     private String subjectname;
+    private List<RegularCollege> regularColleges;
 
     public Integer getSid() {
         return sid;
@@ -23,11 +25,20 @@ public class subject implements Serializable {
         this.subjectname = subjectname;
     }
 
+    public List<RegularCollege> getRegularColleges() {
+        return regularColleges;
+    }
+
+    public void setRegularColleges(List<RegularCollege> regularColleges) {
+        this.regularColleges = regularColleges;
+    }
+
     @Override
     public String toString() {
         return "subject{" +
                 "sid=" + sid +
                 ", subjectname='" + subjectname + '\'' +
+                ", regularColleges=" + regularColleges +
                 '}';
     }
 }

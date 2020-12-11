@@ -115,13 +115,12 @@ public class CustomerServiceImpl implements CustomerService {
     ;
 
     public List<School> allSchool(String id) {
-        if (id!=null && !"".equals(id)){
+        if (id != null && !"".equals(id)) {
             return customerMapper.allSchool(id);
-        }else {
-            List<School> l=new ArrayList<>();
+        } else {
+            List<School> l = new ArrayList<>();
             return l;
         }
-
 
     }
 
@@ -163,16 +162,62 @@ public class CustomerServiceImpl implements CustomerService {
 
     ;
 
-  public   List<School>  allSchoolInfo(){
-      return customerMapper.allSchoolInfo();
-  };
- public    Integer addSchoolInfo(School school){
-     return customerMapper.addSchoolInfo(school);
- };
+    public List<School> allSchoolInfo() {
+        return customerMapper.allSchoolInfo();
+    }
 
- public Integer  addRegular(RegularCollege regular){
-     return customerMapper.addRegular(regular);
- };
+    ;
 
+    public Integer addSchoolInfo(School school) {
+        return customerMapper.addSchoolInfo(school);
+    }
 
+    ;
+
+    public Integer addRegular(RegularCollege regular) {
+        return customerMapper.addRegular(regular);
+    }
+
+    ;
+
+    public List<RegularCollege> xSelectJunior(Integer sid, String name) {
+        return customerMapper.xSelectJunior(sid, name);
+    }
+
+    ;
+
+    public List<subject> xSelectJunior1(String name) {
+        return customerMapper.xSelectJunior1(name);
+    }
+
+    ;
+
+    public List<School> xSelectSchool(String id, String status) {
+        if (status.isEmpty() && status == "" && status.equals("")) {
+            return customerMapper.allSchool(id);
+        } else if (status.equals("0")) {
+            return customerMapper.allSchool(id);
+        } else {
+            return customerMapper.xSelectSchool(id, status);
+        }
+    }
+
+    ;
+
+    public ArrayList<String> selectYearDataId1(Integer id) {
+        DeskMonth1 d = new DeskMonth1();
+        ArrayList<YearData> yearData = customerMapper.selectYearDataId1(id);
+        for (int i = 0; i < yearData.size(); i++) {
+            d.setOne(String.valueOf(yearData.get(i).getData1()));
+            d.setTwo(String.valueOf(yearData.get(i).getData2()));
+            d.setThree(String.valueOf(yearData.get(i).getData3()));
+        }
+        ArrayList<String> arr = new ArrayList<>();
+            arr.add(0,d.getOne());
+            arr.add(1,d.getTwo());
+            arr.add(2,d.getThree());
+        return arr;
+    }
+
+    ;
 }

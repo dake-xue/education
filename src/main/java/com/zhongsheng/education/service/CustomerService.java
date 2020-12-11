@@ -2,6 +2,7 @@ package com.zhongsheng.education.service;
 
 import com.zhongsheng.education.entiy.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface CustomerService {
@@ -19,7 +20,6 @@ public interface CustomerService {
     Integer addSubject(String subjectname);
     Integer UpdateSubject(subject subject);
     Integer deleteSubject(Integer sid);
-
     List<YearData>  selectYearDataId(Integer sid);
     Integer  addYearData(YearData yearData);
     Integer  deleteYearData(Integer id);
@@ -30,4 +30,8 @@ public interface CustomerService {
     Integer addSchoolInfo(School school);
     Integer  addRegular(RegularCollege regular);
     List<School>  allSchool(String id);
+    List<RegularCollege>  xSelectJunior(Integer sid,String name);
+    List<subject>  xSelectJunior1(String name);
+    List<School>  xSelectSchool(String id,String status);
+    ArrayList<String> selectYearDataId1(Integer id);
 }

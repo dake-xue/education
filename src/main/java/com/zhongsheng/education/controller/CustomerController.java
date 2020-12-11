@@ -10,8 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
@@ -29,7 +31,6 @@ public class CustomerController {
     }
 
     //录入报名信息
-    @CrossOrigin
     @GetMapping("/addSignUp")
     @ResponseBody
     public Integer addSignUp(Customer customer) {
@@ -110,6 +111,7 @@ public class CustomerController {
             return "no";
         }
     }
+
     //删除专科
     @RequestMapping("/deleteMajor")
     @ResponseBody
@@ -128,6 +130,7 @@ public class CustomerController {
         model.addAttribute("id", id);
         return "allRegular";
     }
+
     @RequestMapping("/allregular")
     @ResponseBody
     public LayuiData allregular(@RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "10") int limit, Integer junior) {
@@ -135,12 +138,12 @@ public class CustomerController {
         List<RegularCollege> regularColleges = customerService.selectRegularCollegeId(junior);
         for (RegularCollege j : regularColleges) {
             //学校字段
-            String school=j.getSchool();
+            String school = j.getSchool();
             //判断学校不为空
             if (school != null && !school.equals("")) {
-               Integer a=school.split(",").length;
+                Integer a = school.split(",").length;
                 j.setCount(a);
-            }else{
+            } else {
                 j.setCount(0);
             }
 
@@ -152,6 +155,7 @@ public class CustomerController {
         layuiData.setData(regularColleges);
         return layuiData;
     }
+
     //删除本科
     @RequestMapping("/deleteRegular")
     @ResponseBody
@@ -163,6 +167,7 @@ public class CustomerController {
             return "no";
         }
     }
+
     //添加本科
     @RequestMapping("/addRegular")
     @ResponseBody
@@ -175,16 +180,14 @@ public class CustomerController {
         }
     }
 
-
-
     //添加学校
     @ResponseBody
     @RequestMapping("/addSchool")
-    public String addSchool(Integer id,Integer school) {
-            //查出当前本科的学校
-            RegularCollege regularColleges = customerService.selectSchool(id);
-            //新增学校添加进去
-         Integer integer=customerService.setSchool(school, regularColleges.getSchool(), id);
+    public String addSchool(Integer id, Integer school) {
+        //查出当前本科的学校
+        RegularCollege regularColleges = customerService.selectSchool(id);
+        //新增学校添加进去
+        Integer integer = customerService.setSchool(school, regularColleges.getSchool(), id);
         if (integer == 1) {
             return "yes";
         } else {
@@ -206,14 +209,14 @@ public class CustomerController {
         layuiData.setData(subjects);
         return layuiData;
     }
+
     //查询考试科目
     @RequestMapping("/selectSubject")
     @ResponseBody
     public List<subject> selectSubject() {
-        List<subject> areaList =  customerService.selectSubject();
+        List<subject> areaList = customerService.selectSubject();
         return areaList;
     }
-
 
     //添加考试科目
     @RequestMapping("/addSubject")
@@ -251,20 +254,20 @@ public class CustomerController {
         }
     }
 
-
     //查询学校
     @RequestMapping("/selectSchool")
-    public String selectSchool(Integer id,Model model) {
-        model.addAttribute("id",id);
+    public String selectSchool(Integer id, Model model) {
+        model.addAttribute("id", id);
         return "allSchool";
     }
+
     @RequestMapping("/allSchool")
     @ResponseBody
     public LayuiData allSchool(@RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "10") int limit, Integer id) {
 
-        RegularCollege r=customerService.selectSchool(id);
+        RegularCollege r = customerService.selectSchool(id);
         Page pagehelper = PageHelper.startPage(page, limit);
-        List<School> schoolList=customerService.allSchool(r.getSchool());
+        List<School> schoolList = customerService.allSchool(r.getSchool());
         for (School j : schoolList) {
             List<YearData> yearData = customerService.selectYearDataId(j.getId());
             j.setCount(yearData.size());
@@ -277,10 +280,11 @@ public class CustomerController {
         layuiData.setData(schoolList);
         return layuiData;
     }
+
     @RequestMapping("/selectSchoolInfo")
     @ResponseBody
     public List<School> selectSchoolInfo() {
-        List<School> areaList =  customerService.allSchoolInfo();
+        List<School> areaList = customerService.allSchoolInfo();
         return areaList;
     }
 
@@ -302,7 +306,7 @@ public class CustomerController {
     public LayuiData allSchoolInfo(@RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "10") int limit) {
 
         Page pagehelper = PageHelper.startPage(page, limit);
-        List<School> schoolList=customerService.allSchoolInfo();
+        List<School> schoolList = customerService.allSchoolInfo();
         for (School j : schoolList) {
             List<YearData> yearData = customerService.selectYearDataId(j.getId());
             j.setCount(yearData.size());
@@ -330,16 +334,17 @@ public class CustomerController {
 
     //查询历年数据
     @RequestMapping("/selectData")
-    public String selectData(Integer id,Model model) {
-        model.addAttribute("id",id);
+    public String selectData(Integer id, Model model) {
+        model.addAttribute("id", id);
         return "allData";
     }
+
     @RequestMapping("/allData")
     @ResponseBody
     public LayuiData allData(@RequestParam(value = "page", required = true, defaultValue = "1") int page, @RequestParam(value = "limit", required = true, defaultValue = "10") int limit, Integer id) {
 
         Page pagehelper = PageHelper.startPage(page, limit);
-        List<YearData> yearData=customerService.selectYearDataId(id);
+        List<YearData> yearData = customerService.selectYearDataId(id);
 
         LayuiData layuiData = new LayuiData();
         layuiData.setCode(0);
@@ -373,4 +378,48 @@ public class CustomerController {
         }
     }
 
+    //根据专科名称查询本科
+    @RequestMapping("/xSelectJunior")
+    @ResponseBody
+    public List<subject> xSelectJunior(String name) {
+        //根据专科把本科用科目进行分组
+        List<subject> subjectList = customerService.xSelectJunior1(name);
+        for (subject s : subjectList) {
+            //根据专科名称查询本科
+            List<RegularCollege> regularCollegeList = customerService.xSelectJunior(s.getSid(), name);
+            s.setRegularColleges(regularCollegeList);
+            for (RegularCollege j : regularCollegeList) {
+                //根据本科信息查询学校
+                List<School> schoolList = customerService.allSchool(j.getSchool());
+                j.setSchoolList(schoolList);
+               /* //根据学校查询数据
+                for (School i : schoolList) {
+                    List<YearData> yearDataList = customerService.selectYearDataId(i.getId());
+                    i.setYearDataList(yearDataList);
+                }*/
+            }
+        }
+        return subjectList;
+    }
+
+
+    //根据状态搜索学校   本科id  学校状态status
+    @RequestMapping("/xSelectSchool")
+    @ResponseBody
+    public List<School> xSelectSchool(Integer id,String status) {
+        RegularCollege r = customerService.selectSchool(id);
+        List<School> schoolList = customerService.xSelectSchool(r.getSchool(),status);
+        return schoolList;
+    }
+
+
+    @CrossOrigin
+    @RequestMapping("/xYearData")
+    @ResponseBody
+    public School xYearData(Integer id,Integer year) {
+        School school=new School();
+        ArrayList<String> yearData = customerService.selectYearDataId1(id);
+        school.setYearDataList(yearData);
+        return school;
+    }
 }

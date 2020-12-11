@@ -1,6 +1,7 @@
 package com.zhongsheng.education.entiy;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class RegularCollege implements Serializable {
 
@@ -12,6 +13,9 @@ public class RegularCollege implements Serializable {
     private String subjectname;
     private String school;
     private Integer count;
+    private List<School> schoolList;
+    private List<YearData> yearDataList;
+    private List<subject> subjectList;
 
     public Integer getSid() {
         return sid;
@@ -77,6 +81,30 @@ public class RegularCollege implements Serializable {
         this.count = count;
     }
 
+    public List<School> getSchoolList() {
+        return schoolList;
+    }
+
+    public void setSchoolList(List<School> schoolList) {
+        this.schoolList = schoolList;
+    }
+
+    public List<YearData> getYearDataList() {
+        return yearDataList;
+    }
+
+    public void setYearDataList(List<YearData> yearDataList) {
+        this.yearDataList = yearDataList;
+    }
+
+    public List<com.zhongsheng.education.entiy.subject> getSubjectList() {
+        return subjectList;
+    }
+
+    public void setSubjectList(List<com.zhongsheng.education.entiy.subject> subjectList) {
+        this.subjectList = subjectList;
+    }
+
     @Override
     public String toString() {
         return "RegularCollege{" +
@@ -88,6 +116,9 @@ public class RegularCollege implements Serializable {
                 ", subjectname='" + subjectname + '\'' +
                 ", school='" + school + '\'' +
                 ", count=" + count +
+                ", schoolList=" + schoolList +
+                ", yearDataList=" + yearDataList +
+                ", subjectList=" + subjectList +
                 '}';
     }
 }

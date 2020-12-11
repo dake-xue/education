@@ -3,6 +3,7 @@ package com.zhongsheng.education.mapper;
 import com.zhongsheng.education.entiy.*;
 import org.apache.ibatis.annotations.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper
@@ -81,5 +82,17 @@ public interface CustomerMapper {
     @Insert("insert into regularcollege(name,junior,subject) values(#{name},#{junior},#{subject})")
     public Integer  addRegular(RegularCollege regular);
 
+    @Select("select * from regularcollege where subject=#{sid} and junior=(select id from juniorcollege where name=#{name})")
+    public List<RegularCollege> xSelectJunior(Integer sid,String name);
 
+    @Select("SELECT s.* FROM regularcollege r,SUBJECT s WHERE r.subject=s.sid AND junior=(SELECT id FROM juniorcollege WHERE NAME=#{name}) GROUP BY r.subject")
+    public List<subject>  xSelectJunior1(String name);
+
+
+    @Select("SELECT * FROM school WHERE  id in (${id}) and status=#{status}")
+    public List<School>  xSelectSchool(String id,String status);
+
+
+    @Select("select * from yeardata where sid=#{sid}")
+    public ArrayList<YearData> selectYearDataId1(Integer sid);
 }
