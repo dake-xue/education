@@ -15,6 +15,7 @@ public interface StudentService {
     public Integer addScore(String snum,Integer scope);
     Student addStudentInfo(Student student, String name);
     Integer addStudentTwo(Student student);
+    Integer addWinterStudent(Student student);
     List<Area> selectArea();
     List<TableDic> selectQu(Integer id);
     List<TableDic> selectSchool(Integer id);
@@ -30,5 +31,7 @@ public interface StudentService {
     Integer updateStatus(Student student);
     public Student selectStudentBySnameAndIphone(Student student);
     List<Student> searchStuByCamp(String name,Integer page, Integer limit);
-
+    List<WinterStu> allWinterStudent(Integer page, Integer limit);
+    WinterStu selectWinterStudentByPhone(String id);
+    Integer updateWinterStatus(String phone);
 }

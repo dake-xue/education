@@ -4,7 +4,7 @@ import org.springframework.core.io.ClassPathResource;
 
 public class QrCodeTest {
     private static final boolean isWin = System.getProperty("os.name").toLowerCase().contains("win");
-    public static String erweima(String phone){
+    public static String erweima(String url){
         String codeUrl = Pdf.CODE_url;
         // 存放在二维码中的内容
         String text = "";
@@ -13,14 +13,14 @@ public class QrCodeTest {
         try {
             if(isWin){
 
-                text = "http://"+"mxxbz9pk.xiaomy.net:36569"+"/zhongsheng/student/stuToStudentDetails?phone="+phone;
+                text = "http://"+"mxxbz9pk.xiaomy.net:36569"+url;
                 // 嵌入二维码的图片路径
                 imgPath = new ClassPathResource("static/pdf/nei.png").getFile().getPath();
                 // 生成的二维码的路径及名称
                 destPath = new ClassPathResource("static/pdf/erweima.png").getFile().getPath();
             }else {
 
-                text = "http://"+codeUrl+"/zhongsheng/student/stuToStudentDetails?phone="+phone;
+                text = "http://"+codeUrl+url;
                 // 嵌入二维码的图片路径
                 imgPath = "/usr/code/nei.png";
                 // 生成的二维码的路径及名称

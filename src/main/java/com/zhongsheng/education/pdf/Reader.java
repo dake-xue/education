@@ -113,7 +113,13 @@ public class Reader {
             float y = signRect.getBottom();
 
             //获取二维码路径
-            String erweima = QrCodeTest.erweima(student.getPhone());
+            String erweima;
+            logger.info("学生信息为："+student.getSnum());
+            if (student.getSnum().length()<11){
+                erweima = QrCodeTest.erweima("/zhongsheng/student/stuToStudentDetails?phone="+student.getPhone());
+            }else {
+                erweima = QrCodeTest.erweima("/zhongsheng/student/winterStudentMsg?phone="+student.getPhone());
+            }
             // 读图片
             Image image = Image.getInstance(erweima);
             // 获取操作的页面
