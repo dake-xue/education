@@ -12,8 +12,8 @@ import java.util.List;
 @Mapper
 public interface WinterStudentMapper {
 
-    @Select("select * from winter_student where status != 0")
-    List<WinterStu> selectAll(Integer page, Integer limit);
+    @Select("select * from winter_student where status != 0 and sname like '%${sname}%'")
+    List<WinterStu> selectAll(String sname);
 
     @Insert("insert into winter_student(sname,sex,phone,idcard,schoolname,jiaofeijine) value (#{sname},#{sex},#{phone},#{idcard},#{schoolname},#{jiaofeijine})")
     Integer addWinterStudent(Student student);

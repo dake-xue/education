@@ -144,7 +144,6 @@ public class StudentController {
     public String addWinterStudent(Student student,RedirectAttributes attr) throws Exception {
         Integer integer = studentService.addWinterStudent(student);
         //设置票据所需内容
-        student.setRemarks("寒假班缴费");
         student.setFamilyInfo(new FamilyInfo());
         if(integer!=0){
             attr.addAttribute("goods_name","中升教育河南分校寒假班住宿费");
@@ -285,9 +284,9 @@ public class StudentController {
     */
     @RequestMapping("/allWinterStudent")
     @ResponseBody
-    public LayuiData allWinterStudent(Integer page,Integer limit){
+    public LayuiData allWinterStudent(String sname,Integer page,Integer limit){
         Page pagehelper= PageHelper.startPage(page,limit);
-        List<WinterStu> list = studentService.allWinterStudent(page,limit);
+        List<WinterStu> list = studentService.allWinterStudent(sname);
         LayuiData layuiData=new LayuiData();
         layuiData.setCode(0);
         layuiData.setMsg("");

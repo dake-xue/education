@@ -379,8 +379,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<WinterStu> allWinterStudent(Integer page, Integer limit) {
-        return winterStudentMapper.selectAll(page,limit);
+    public List<WinterStu> allWinterStudent(String sname) {
+        return winterStudentMapper.selectAll(sname);
     }
 
     @Override
