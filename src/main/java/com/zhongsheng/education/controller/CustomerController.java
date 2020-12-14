@@ -299,6 +299,18 @@ public class CustomerController {
             return "no";
         }
     }
+    //在本科里删除学校
+    @RequestMapping("/deleteSchoolInfo")
+    @ResponseBody
+    public String deleteSchoolInfo(Integer rid,Integer id) throws Exception {
+        RegularCollege r = customerService.selectSchool(rid);
+        Integer integer = customerService.deleteSchoolInfo(rid,r.getSchool(),id);
+        if (integer == 1) {
+            return "yes";
+        } else {
+            return "no";
+        }
+    }
 
     //查询所有学校
     @RequestMapping("/allSchoolInfo")
@@ -331,7 +343,17 @@ public class CustomerController {
             return "no";
         }
     }
-
+    //修改考试科目
+    @RequestMapping("/updateSchoolInfo")
+    @ResponseBody
+    public String UpdateSchoolInfo(School school) throws Exception {
+        Integer integer = customerService.UpdateSchoolInfo(school);
+        if (integer == 1) {
+            return "yes";
+        } else {
+            return "no";
+        }
+    }
     //查询历年数据
     @RequestMapping("/selectData")
     public String selectData(Integer id, Model model) {
