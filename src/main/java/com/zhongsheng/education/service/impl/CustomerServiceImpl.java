@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -66,9 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
     ;
 
     public Integer setSchool(Integer schoolid, String c, Integer id) {
-
         StringBuffer sr = new StringBuffer();
-
         if (c != null && !c.equals("")) {
             String[] s = c.split(",");
             boolean a = true;
@@ -220,4 +219,55 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     ;
+
+   public Integer  UpdateSchoolInfo(School school){
+       return customerMapper.UpdateSchoolInfo(school);
+   };
+
+    // 求两个数组的差集
+    public static String[] minus(String[] arr1, String[] arr2) {
+        LinkedList<String> list = new LinkedList<String>();
+        LinkedList<String> history = new LinkedList<String>();
+        String[] longerArr = arr1;
+        String[] shorterArr = arr2;
+        // 找出较长的数组来减较短的数组
+        if (arr1.length > arr2.length) {
+            longerArr = arr2;
+            shorterArr = arr1;
+        }
+        for (String str : longerArr) {
+            if (!list.contains(str)) {
+                list.add(str);
+            }
+        }
+        for (String str : shorterArr) {
+            if (list.contains(str)) {
+                history.add(str);
+                list.remove(str);
+            } else {
+                if (!history.contains(str)) {
+                    list.add(str);
+                }
+            }
+        }
+
+        String[] result = {};
+        return list.toArray(result);
+    }
+  public Integer deleteSchoolInfo(Integer rid,String sid,Integer id){
+      String[]  s=sid.split(",");
+      StringBuffer sr= new StringBuffer();
+      String  id1=String.valueOf(id);
+      String[]  s1=id1.split(",");
+      String [] ids = minus(s,s1);
+      for (int i = 0; i <ids.length; i++) {
+          System.out.println("之后============================="+ids[i]);
+          sr.append(ids[i]);
+          if (i<ids.length-1){
+              sr.append(",");
+          }
+      }
+      String qwe=  sr.toString();
+      return customerMapper.setSchool(qwe,rid);
+  };
 }

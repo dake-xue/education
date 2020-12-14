@@ -95,4 +95,7 @@ public interface CustomerMapper {
 
     @Select("select * from yeardata where sid=#{sid} and year=#{year}")
     public ArrayList<YearData> selectYearDataId1(Integer sid,Integer year);
+
+    @Update("update school set name=#{name},status=#{status} where id=#{id}")
+    public Integer  UpdateSchoolInfo(School school);
 }

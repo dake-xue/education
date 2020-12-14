@@ -82,7 +82,7 @@
             form.on('submit(updateform)', function (data) {
                 var subject = data.field;
                 $.ajax({
-                    url: "/zhongsheng/customer/updateSubject",
+                    url: "/zhongsheng/customer/updateSchoolInfo",
                     type: "POST",
                     dataType: "text",
                     data: subject,
@@ -163,7 +163,7 @@
 
 
         //修改
-        function openUpdateScore(id, name, status) {
+        function openUpdateScore(id, name) {
             $("#id").val(id);
             $("#name1").val(name);
             //$("#status").val(status);
@@ -219,7 +219,7 @@
     </script>
     <script type="text/html" id="update">
         <a class="layui-btn layui-btn-normal layui-btn-sm" style="color: white"
-           onclick='openUpdateScore("{{d.id}}","{{d.name}}","{{d.status}}");'>
+           onclick='openUpdateScore("{{d.id}}","{{d.name}}");'>
             编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-sm" style="color: white"
            onclick='openDeleteScore("{{d.id}}")'>

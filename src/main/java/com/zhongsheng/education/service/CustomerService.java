@@ -34,4 +34,6 @@ public interface CustomerService {
     List<subject>  xSelectJunior1(String name);
     List<School>  xSelectSchool(String id,String status);
     ArrayList<String> selectYearDataId1(Integer id,Integer year);
+    Integer  UpdateSchoolInfo(School school);
+    Integer deleteSchoolInfo(Integer rid,String sid,Integer id);
 }

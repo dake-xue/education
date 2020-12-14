@@ -82,7 +82,7 @@
             form.on('submit(deleteform)', function (data) {
                 var id = data.field;
                 $.ajax({
-                    url: "/zhongsheng/customer/deleteSchool/待定",
+                    url: "/zhongsheng/customer/deleteSchoolInfo",
                     type: "POST",
                     dataType: "text",
                     data: id,
@@ -158,6 +158,8 @@
         //删除
         function openDeleteScore(id) {
             $("#id1").val(id);
+            var a=$("#aid").val();
+            $("#rid").val(a);
             layui.use(['layer'], function () {
                 var layer = layui.layer, $ = layui.$;
                 layer.open({
@@ -195,7 +197,7 @@
     </script>
     <script type="text/html" id="update">
         <a class="layui-btn layui-btn-danger layui-btn-sm" style="color: white"
-           onclick='openDeleteScore("{{d.sid}}")'>
+           onclick='openDeleteScore("{{d.id}}")'>
             删除</a>
     </script>
     <script type="text/html" id="toolbarDemo">
@@ -413,6 +415,7 @@
 <div id="deleteScore" style="display: none;text-align: center;">
     <form class="layui-form" id="delete" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
         <input type="hidden" id="id1" name="id">
+        <input type="hidden" id="rid" name="rid">
         <div class="layui-form-item">
             <div class="layui-input-inline">
                 确定删除?
