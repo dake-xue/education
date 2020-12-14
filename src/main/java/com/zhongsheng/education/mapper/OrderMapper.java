@@ -1,10 +1,7 @@
 package com.zhongsheng.education.mapper;
 
 import com.zhongsheng.education.entiy.Order;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface OrderMapper {
@@ -20,5 +17,8 @@ public interface OrderMapper {
 
     @Update("UPDATE orders set status = #{status} where order_number = #{order_number}")
     Integer updateStatus(Order order);
+
+    @Delete("delete from orders where snum = #{phone}")
+    Integer deleteOrders(String phone);
 }
 
