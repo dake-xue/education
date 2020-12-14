@@ -93,6 +93,6 @@ public interface CustomerMapper {
     public List<School>  xSelectSchool(String id,String status);
 
 
-    @Select("select * from yeardata where sid=#{sid}")
-    public ArrayList<YearData> selectYearDataId1(Integer sid);
+    @Select("select * from yeardata where sid=#{sid} and year=#{year}")
+    public ArrayList<YearData> selectYearDataId1(Integer sid,Integer year);
 }

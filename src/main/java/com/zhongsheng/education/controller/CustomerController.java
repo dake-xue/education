@@ -386,17 +386,12 @@ public class CustomerController {
         List<subject> subjectList = customerService.xSelectJunior1(name);
         for (subject s : subjectList) {
             //根据专科名称查询本科
-            List<RegularCollege> regularCollegeList = customerService.xSelectJunior(s.getSid(), name);
-            s.setRegularColleges(regularCollegeList);
-            for (RegularCollege j : regularCollegeList) {
+            List<RegularCollege> rc = customerService.xSelectJunior(s.getSid(), name);
+            s.setRegularColleges(rc);
+            for (RegularCollege j : rc) {
                 //根据本科信息查询学校
                 List<School> schoolList = customerService.allSchool(j.getSchool());
                 j.setSchoolList(schoolList);
-               /* //根据学校查询数据
-                for (School i : schoolList) {
-                    List<YearData> yearDataList = customerService.selectYearDataId(i.getId());
-                    i.setYearDataList(yearDataList);
-                }*/
             }
         }
         return subjectList;
@@ -418,7 +413,7 @@ public class CustomerController {
     @ResponseBody
     public School xYearData(Integer id,Integer year) {
         School school=new School();
-        ArrayList<String> yearData = customerService.selectYearDataId1(id);
+        ArrayList<String> yearData = customerService.selectYearDataId1(id,year);
         school.setYearDataList(yearData);
         return school;
     }

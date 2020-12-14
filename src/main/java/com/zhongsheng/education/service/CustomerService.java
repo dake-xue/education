@@ -33,5 +33,5 @@ public interface CustomerService {
     List<RegularCollege>  xSelectJunior(Integer sid,String name);
     List<subject>  xSelectJunior1(String name);
     List<School>  xSelectSchool(String id,String status);
-    ArrayList<String> selectYearDataId1(Integer id);
+    ArrayList<String> selectYearDataId1(Integer id,Integer year);
 }
