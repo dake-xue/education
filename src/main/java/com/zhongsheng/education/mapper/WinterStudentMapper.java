@@ -2,10 +2,7 @@ package com.zhongsheng.education.mapper;
 
 import com.zhongsheng.education.entiy.Student;
 import com.zhongsheng.education.entiy.WinterStu;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -23,4 +20,8 @@ public interface WinterStudentMapper {
 
     @Update("update winter_student set status = 1 where phone = #{phone} ")
     Integer updateWinterStatus(String phone);
+
+    @Delete("delete from winter_student where id = #{id}")
+    Integer deleteStu(String id);
+
 }
