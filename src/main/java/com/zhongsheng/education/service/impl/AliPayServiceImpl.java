@@ -234,7 +234,12 @@ public class AliPayServiceImpl implements AliPayService {
                     WinterStu stu =  studentService.selectWinterStudentByPhone(order.getsNum());
                     studentService.updateWinterStatus(stu.getPhone());
                     student = new Student();
-                    student.setRemarks("寒假班住宿费340+押金100");
+                    logger.info("金额为："+stu.getJiaofeijine());
+                    if(stu.getJiaofeijine().contains("440")){
+                        student.setRemarks("寒假班住宿费340+押金100");
+                    }else {
+                        student.setRemarks("寒假零基础英语班230+押金100");
+                    }
                     student.setArea(2);
                     student.setCampusmanager(" ");
                     student.setFamilyInfo(new FamilyInfo());

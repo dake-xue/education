@@ -14,10 +14,5 @@ import java.util.List;
 @SpringBootTest
 class EducationApplicationTests {
 
-    @Test
-    void contextLoads() {
-
-
-    }
 
 }
