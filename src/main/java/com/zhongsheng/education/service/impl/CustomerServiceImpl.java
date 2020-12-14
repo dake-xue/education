@@ -204,9 +204,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     ;
 
-    public ArrayList<String> selectYearDataId1(Integer id) {
+    public ArrayList<String> selectYearDataId1(Integer id,Integer year) {
         DeskMonth1 d = new DeskMonth1();
-        ArrayList<YearData> yearData = customerMapper.selectYearDataId1(id);
+        ArrayList<YearData> yearData = customerMapper.selectYearDataId1(id,year);
         for (int i = 0; i < yearData.size(); i++) {
             d.setOne(String.valueOf(yearData.get(i).getData1()));
             d.setTwo(String.valueOf(yearData.get(i).getData2()));

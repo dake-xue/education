@@ -48,7 +48,7 @@
                     [//表头
                         {field: 'id', title: 'id', sort: true, fixed: 'left', hide: true}
                         , {field: 'name', title: '学校名称'}
-                        , {field: 'status', title: '公办/民办',templet: '#mbgb'}
+                        , {field: 'status', title: '公办/民办'}
                         , {field: 'count', title: '历年数据', templet: '#lnsj'}
                         , {field: 'status', title: '操作', templet: '#update'}
                     ]
@@ -189,13 +189,6 @@
 
         }
 
-    </script>
-    <script type="text/html" id="mbgb">
-        {{#  if(d.status == 1){ }}
-        公办
-        {{#  } else { }}
-        民办
-        {{#  } }}
     </script>
     <script type="text/html" id="lnsj">
         <a href="/zhongsheng/customer/selectData?id={{d.id}}" class="layui-table-link">{{d.count}}条数据</a>
