@@ -11,10 +11,8 @@ public class EducationApplication {
     private static final Logger log = LoggerFactory.getLogger(EducationApplication.class);
 
     public static void main(String[] args) {
-
         SpringApplication.run(EducationApplication.class, args);
         log.info("系统已启动。。。");
-
     }
 
 }

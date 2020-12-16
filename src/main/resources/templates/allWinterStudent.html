@@ -58,7 +58,7 @@
                         , {field: 'sname', title: '姓名', style: "color:#009688"}
                         , {field: 'sex', title: '性别', sort: true}
                         , {field: 'phone', title: '电话'}
-                        , {field: 'idcard', title: '身份证号'}
+                        , {field: 'idcard', title: '身份证号',templet: function(d){ return (d.idcard+"\t");}}
                         , {field: 'schoolname', title: '院校'}
                         , {field: 'jiaofeijine', title: '缴费金额'}
                         , {field: '', title: '操作', templet: '#dg'}

@@ -21,7 +21,5 @@ public interface WinterStudentMapper {
     @Update("update winter_student set status = 1 where phone = #{phone} ")
     Integer updateWinterStatus(String phone);
 
-    @Delete("delete from winter_student where id = #{id}")
-    Integer deleteStu(String id);
 
 }

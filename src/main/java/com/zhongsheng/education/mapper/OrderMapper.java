@@ -17,8 +17,5 @@ public interface OrderMapper {
 
     @Update("UPDATE orders set status = #{status} where order_number = #{order_number}")
     Integer updateStatus(Order order);
-
-    @Delete("delete from orders where snum = #{phone}")
-    Integer deleteOrders(String phone);
 }
 

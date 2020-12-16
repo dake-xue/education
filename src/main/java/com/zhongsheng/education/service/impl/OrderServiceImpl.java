@@ -32,8 +32,5 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.searchOrderBySnum(snum);
     }
 
-    @Override
-    public Integer deleteOrders(String phone) {
-        return orderMapper.deleteOrders(phone);
-    }
+
 }

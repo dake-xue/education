@@ -8,5 +8,4 @@ public interface OrderService {
     Order searchByOrderNum (String order_number);
     Integer updateStatus(Order order);
     Order searchOrderBySnum (String snum);
-    Integer deleteOrders(String phone);
 }

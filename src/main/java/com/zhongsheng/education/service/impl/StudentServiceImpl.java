@@ -288,13 +288,6 @@ public class StudentServiceImpl implements StudentService {
     */
     @Override
     public Integer addWinterStudent(Student student) {
-        WinterStu stu = winterStudentMapper.selectWinterStudentByPhone(student.getPhone());
-        if(stu!=null&&stu.getStatus()==0){
-            int i = winterStudentMapper.deleteStu(stu.getId().toString());
-            int j = orderService.deleteOrders(stu.getPhone());
-            log.info("寒假表影响："+i);
-            log.info("订单表影响："+j);
-        }
         return winterStudentMapper.addWinterStudent(student);
     }
 
