@@ -281,6 +281,60 @@ public class StudentServiceImpl implements StudentService {
         return i;
     }
 
+
+    //添加学生
+    @Override
+    public Integer  addWinterStudent1(Student student)throws Exception{
+        int i = winterStudentMapper.addWinterStudent1(student);
+        student.setCampusmanager(" ");
+        student.setSnum(student.getPhone());
+        student.setArea(2);
+        student.setFamilyInfo(new FamilyInfo());
+        student.setSname(student.getSname());
+        student.setJiaofeijine(student.getJiaofeijine());
+        student.setSchoolname(student.getSchoolname());
+        student.setSex(student.getSex());
+        student.setPhone(student.getPhone());
+        student.setIdcard(student.getIdcard());
+        student.setRemarks("寒假班住宿费340+押金100");
+
+        //获取票据随机数0
+        Bnumber billnumber= BillNumber.billNumber();
+        //生成票据
+        String s =  Reader.addBill(student, student.getCampusmanager(),billnumber);
+        Bill bill = new Bill();
+        boolean isWin = System.getProperty("os.name").toLowerCase().contains("win");
+        String ima = "";
+        //根据系统判断
+        if (isWin){
+            ima =  PDF2IMAGE.pdf2Image(s, System.getProperty("user.dir")+"\\src\\main\\resources\\static\\pdfToImage", 300);
+            bill.setImage("\\zhongsheng\\pdfToImage\\"+MyUtil.getPngName(ima));
+        }else {
+            ima = PDF2IMAGE.pdf2Image(s, "/usr/img", 300);
+            bill.setImage("\\zhongsheng\\pdfToImage\\"+MyUtil.linuxGetPngName(ima));
+        }
+        bill.setSnum(student.getSnum());
+        bill.setRemark(student.getRemarks());
+        bill.setArea(student.getArea());
+        bill.setCampusid(student.getCampusid());
+        bill.setSchoolid(student.getSchoolid());
+        bill.setPaymentAmount(student.getJiaofeijine());
+        bill.setIntotime(student.getSignupdate());
+        bill.setBillnumber(billnumber.getBillnumber());
+        //插入票据表
+        billService.addBillInfo(bill);
+        //插入用户表
+        User user = new User();
+        user.setName(student.getSname());
+        user.setUsername(student.getPhone());
+        user.setPassword(student.getPhone().substring(student.getPhone().length() - 6));
+        user.setRoleid(3);
+        userService.addUser(user);
+
+        return i;
+    }
+
+
     /**
      * @创建人 xueke
      * @创建时间 2020/12/9

@@ -14,6 +14,8 @@ public interface WinterStudentMapper {
 
     @Insert("insert into winter_student(sname,sex,phone,idcard,schoolname,jiaofeijine) value (#{sname},#{sex},#{phone},#{idcard},#{schoolname},#{jiaofeijine})")
     Integer addWinterStudent(Student student);
+    @Insert("insert into winter_student(sname,sex,phone,idcard,schoolname,jiaofeijine,status) value (#{sname},#{sex},#{phone},#{idcard},#{schoolname},#{jiaofeijine},1)")
+    Integer addWinterStudent1(Student student);
 
     @Select("select * from winter_student where phone = #{phone}")
     WinterStu selectWinterStudentByPhone(String phone);

@@ -75,7 +75,44 @@
                 return false;
             });
 
+            //添加用户监听提交
+            form.on('submit(userform)', function (data) {
+                var student=data.field;
+                $.ajax({
+                    url: "/zhongsheng/student/addWinterStudent1",
+                    type: "POST",
+                    dataType: "text",
+                    data: student,
+                    success: function (data) {
+                        if (data == 'yes') {
+                            layer.msg('添加成功！', {icon: 6}, {icon: 1000});
+                            // 重置清空
+                            $('#form1')[0].reset();
+                            form.render();//必须写
+                            window.parent.location.reload();//刷新父页面
+                            parent.layer.close(index);//关闭弹出层
+                        } else {
+                            layer.msg('添加失败！', {icon: 5}, {icon: 1000});
+                        }
+                    }
+                });
+                return false;
+            });
+
         });
+        //添加
+        function openwin() {
+            layui.use(['layer'], function () {
+                var layer = layui.layer, $ = layui.$;
+                layer.open({
+                    type: 1,//类型
+                    area: ['500px', '400px'],//定义宽和高
+                    title: '添加学生',//题目
+                    shadeClose: false,//点击遮罩层关闭
+                    content: $('#motaikunag')//打开的内容
+                });
+            })
+        }
             function getRole(tableName, scId) {
                 $.ajax({
                     type: 'post',
@@ -97,7 +134,13 @@
 
 
     </script>
-
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+            <button type="button" class="layui-btn" onclick="openwin()">
+                <i class="layui-icon">&#xe608;</i> 新增学生
+            </button>
+        </div>
+    </script>
     <script type="text/html" id="dg">
         <a class="layui-btn layui-btn-sm layui-btn-normal"
            th:href="@{/student/winterStudentMsg?phone={{d.phone}}}">详情</a>
@@ -247,7 +290,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ibox">
-                        <div class="ibox-title" id="toolbarDemo">
+                        <div class="ibox-title">
                             <h5>用户信息</h5>
                         </div>
                         <div class="layui-form-item" style="background-color: #ffffff;">
@@ -274,52 +317,6 @@
     </div>
 </div>
 
-<!--模仿bootstrap的模态框-->
-<!--<div id="role" style="display: none;text-align: center;">
-    <form class="layui-form" id="form2" style="margin-top: 20px;"> &lt;!&ndash; 提示：如果你不想用form，你可以换成div等任何一个普通元素 &ndash;&gt;
-
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">姓名</label>
-                <div class="layui-input-inline">
-                    <input name="name" class="layui-input" type="text" placeholder="姓名" lay-verify="required"/>
-                </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">用户名</label>
-                <div class="layui-input-inline">
-                    <input name="username" class="layui-input" type="text" placeholder="电话号码" maxlength="11" lay-verify="phone"/>
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">权限</label>
-                <div class="layui-input-inline selectWd">
-                    <select name="whoid" lay-verify="required">
-                        <option value="1">管理员</option>
-                        <option value="2">用户</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-form-inline" style="margin-top: 10%;">
-
-            <div class="layui-input-inline">
-                <button class="layui-btn" lay-submit lay-filter="userform">提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-            </div>
-
-        </div>
-
-        &lt;!&ndash; 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 &ndash;&gt;
-    </form>
-</div>-->
-
 </body>
 
 </html>
@@ -328,58 +325,42 @@
 <div id="motaikunag" style="display: none;text-align: center;">
     <form class="layui-form" id="form1" style="margin-top: 20px;"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
 
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">姓名</label>
-                <div class="layui-input-inline">
-                    <input name="name" class="layui-input" type="text" placeholder="姓名" lay-verify="required"/>
-                </div>
+        <input hidden name="jiaofeijine" value="440"/>
+
+        <div class="layui-input-inline">
+            <label class="layui-form-label important">姓名</label>
+            <div class="layui-input-inline wwd">
+                <input type="text" id="sname" name="sname" required lay-verify="chinese|lgh" autocomplete="off" class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">用户名</label>
-                <div class="layui-input-inline">
-                    <input name="username" id="username" class="layui-input" type="text" placeholder="电话号码" maxlength="11"
-                           lay-verify="phone"/>
-                </div>
+        <div class="layui-input-inline">
+            <label class="layui-form-label important">性别</label>
+            <div class="layui-input-inline">
+                <select name="sex" lay-verify="required">
+                    <option value="男">男</option>
+                    <option value="女">女</option>
+                </select>
             </div>
         </div>
-
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">角色</label>
-                <div class="layui-input-inline selectWd">
-                    <select id="roleid" name="roleid" lay-verify="required">
-                    </select>
-                </div>
+        <div class="layui-input-inline">
+            <label class="layui-form-label important" style="white-space:nowrap!important;">联系方式</label>
+            <div class="layui-input-inline">
+                <input name="phone" id="phone" class="layui-input phone" type="text" lay-verify="phone" style="ime-mode:disabled;" maxlength="11" />
             </div>
         </div>
-
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">地区</label>
-                <div class="layui-input-inline selectWd">
-                    <select id="area" lay-filter="area" required name="area" lay-verify="required">
-                    </select>
-                </div>
+        <div class="layui-input-inline">
+            <label class="layui-form-label important" style="white-space:nowrap!important;">身份证号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="idcard" id="ic" required lay-verify="identity" onblur="" autocomplete="off" class="layui-input" maxlength="18">
             </div>
         </div>
-
-
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">负责校区</label>
-                <div class="layui-input-inline selectWd">
-                    <select id="campus" name="campus" required lay-verify="required">
-
-                    </select>
-                </div>
+        <div class="layui-input-inline">
+            <label class="layui-form-label important" style="white-space:nowrap!important;">院校</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" id="school" name="schoolname" lay-verify="required"/>
             </div>
         </div>
-
         <div class="layui-form-inline" style="margin-top: 10%;">
-
             <div class="layui-input-inline">
                 <button class="layui-btn" lay-submit lay-filter="userform">提交</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -390,7 +371,5 @@
         <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
     </form>
 </div>
-
-
 
 

@@ -15,6 +15,7 @@ public class EducationApplication {
         log.info("系统已启动。。。");
     }
 
+
 }
 
 

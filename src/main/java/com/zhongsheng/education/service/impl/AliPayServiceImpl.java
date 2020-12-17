@@ -204,10 +204,13 @@ public class AliPayServiceImpl implements AliPayService {
             //付款金额
             String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"),"UTF-8");
             logger.info("交易状态："+trade_status);
+            //判断是否交款成功
+            String jiaokuan=null;
             if (trade_status.equals("TRADE_FINISHED")) {
                 //判断该笔订单是否在商户网站中已经做过处理
                 //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
                 //如果有做过处理，不执行商户的业务程序
+                jiaokuan="fail";
                 logger.info("执行：TRADE_FINISHED");
                 //注意：
                 //退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
@@ -256,7 +259,6 @@ public class AliPayServiceImpl implements AliPayService {
                 Bnumber billnumber= BillNumber.billNumber();
                 //生成票据
                 String s = Reader.addBill(student,student.getCampusmanager(),billnumber);
-
                 Bill bill = new Bill();
                 boolean isWin = System.getProperty("os.name").toLowerCase().contains("win");
                 String ima = "";
@@ -282,15 +284,15 @@ public class AliPayServiceImpl implements AliPayService {
                 logger.info("票据表影响行数："+j);
                 //注意：
                 //付款完成后，支付宝系统发送该交易状态通知
+                jiaokuan="success";
             }
-            return "success";
+            return jiaokuan;
         } else {//验证失败
             return "fail";
             //调试用，写文本函数记录程序运行情况是否正常
             //String sWord = AlipaySignature.getSignCheckContentV1(params);
             //AlipayConfig.logResult(sWord);
         }
-
     }
 
     //同步回调

@@ -118,6 +118,7 @@ public class Reader {
             if (student.getSnum().length()<11){
                 erweima = QrCodeTest.erweima("/zhongsheng/student/stuToStudentDetails?phone="+student.getPhone());
             }else {
+                logger.info("学生信息为："+student.getSnum()+student.getPhone());
                 erweima = QrCodeTest.erweima("/zhongsheng/student/winterStudentMsg?phone="+student.getPhone());
             }
             // 读图片

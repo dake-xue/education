@@ -15,6 +15,7 @@ public interface StudentService {
     public Integer addScore(String snum,Integer scope);
     Student addStudentInfo(Student student, String name);
     Integer addStudentTwo(Student student);
+    Integer  addWinterStudent1(Student student) throws Exception;
     Integer addWinterStudent(Student student);
     List<Area> selectArea();
     List<TableDic> selectQu(Integer id);

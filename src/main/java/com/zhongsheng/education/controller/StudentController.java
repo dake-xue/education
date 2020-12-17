@@ -3,7 +3,6 @@ package com.zhongsheng.education.controller;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zhongsheng.education.entiy.*;
-import com.zhongsheng.education.mapper.WinterStudentMapper;
 import com.zhongsheng.education.pdf.BillNumber;
 import com.zhongsheng.education.pdf.PDF2IMAGE;
 import com.zhongsheng.education.pdf.QrCodeTest;
@@ -154,6 +153,15 @@ public class StudentController {
             return "redirect:/alipay/toPay";
         }
         return "error";
+    }
+    @RequestMapping("/addWinterStudent1")
+    @ResponseBody
+    public String addWinterStudent1(Student student) throws Exception {
+        Integer integer = studentService.addWinterStudent1(student);
+        if (integer!=0){
+            return "yes";
+        }
+        return "no";
     }
 
 

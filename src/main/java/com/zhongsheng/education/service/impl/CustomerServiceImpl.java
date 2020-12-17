@@ -261,7 +261,6 @@ public class CustomerServiceImpl implements CustomerService {
       String[]  s1=id1.split(",");
       String [] ids = minus(s,s1);
       for (int i = 0; i <ids.length; i++) {
-          System.out.println("之后============================="+ids[i]);
           sr.append(ids[i]);
           if (i<ids.length-1){
               sr.append(",");
